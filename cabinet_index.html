@@ -309,23 +309,6 @@ input[type=range]::-webkit-slider-thumb:hover{background:var(--gold)}
 #toast{position:fixed;bottom:18px;right:18px;background:#1A1814;color:#fff;padding:7px 16px;border-radius:20px;font-size:11.5px;z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s}
 .link-box{background:var(--iv2);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;font-size:10.5px;color:var(--ink3);word-break:break-all;margin-bottom:7px;font-family:monospace;line-height:1.7}
 .link-box strong{color:var(--gold)}
-
-/* ── LOGIN ── */
-.login-overlay{position:fixed;inset:0;background:#141210;z-index:9999;display:flex;align-items:center;justify-content:center}
-.login-card{width:100%;max-width:340px;padding:0 24px}
-.login-chroma{display:flex;height:2px;margin-bottom:40px;border-radius:1px;overflow:hidden}
-.login-chroma div{flex:1}
-.login-logo{text-align:center;margin-bottom:36px}
-.login-logo-mark{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#A8873A}
-.login-logo-mark sup{font-size:9px;vertical-align:super}
-.login-sub{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(168,135,58,.35);margin-top:3px}
-.login-label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
-.login-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 16px;font-family:"DM Sans",sans-serif;font-size:14px;color:#fff;outline:none;box-sizing:border-box;transition:border-color .2s}
-.login-input:focus{border-color:rgba(168,135,58,.5)}
-.login-btn{width:100%;background:#A8873A;color:#fff;border:none;border-radius:8px;padding:13px;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:14px;transition:background .2s}
-.login-btn:hover{background:#C9A84C}
-.login-err{font-size:11px;color:rgba(181,49,42,.8);text-align:center;margin-top:10px;min-height:18px}
-
 </style>
 </head>
 <body>
@@ -402,7 +385,7 @@ input[type=range]::-webkit-slider-thumb:hover{background:var(--gold)}
   <div class="sb-footer">
     cabinet.psyh.fr · Usage exclusif<br>
     © Céline Bourbon — V.A.L.E.U.R©<br>
-
+    <button onclick="logout()" style="background:none;border:none;color:rgba(255,255,255,.2);font-size:9px;cursor:pointer;padding:4px 0;letter-spacing:1px;text-transform:uppercase;margin-top:4px">Verrouiller →</button>
   </div>
 </aside>
 
@@ -731,112 +714,17 @@ function hexToRgba(hex,a){
 
 // ── STORAGE ──────────────────────────────────────────────
 const KEY='valeur_cabinet_v2';
-// ── DATA LAYER : localStorage (cache local) + Neon (serveur) ────────────────
-// Pattern write-through : écriture localStorage immédiate, sync Neon async
-// L'UI est toujours instantanée, les données sont sauvegardées côté serveur
-
-function load(){
-  try{ return JSON.parse(localStorage.getItem(KEY))||{patients:[]}; }catch(e){ return{patients:[]}; }
-}
-function save(data){
-  try{ localStorage.setItem(KEY,JSON.stringify(data)); }catch(e){}
-}
-
-function getPatients(){ return load().patients||[]; }
-function getPatient(id){ return getPatients().find(p=>p.id===id)||null; }
-
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{patients:[]};}catch(e){return{patients:[]};}}
+function save(data){localStorage.setItem(KEY,JSON.stringify(data));}
+function getPatients(){return load().patients;}
+function getPatient(id){return load().patients.find(p=>p.id===id)||null;}
 function upsertPatient(p){
   const d=load();
   const i=d.patients.findIndex(x=>x.id===p.id);
-  if(i>=0) d.patients[i]=p; else d.patients.unshift(p);
+  if(i>=0)d.patients[i]=p;else d.patients.push(p);
   save(d);
-  // Sync Neon (non-bloquant, invisible)
-  _syncPatient(p).catch(()=>{});
 }
-
-function removePatient(id){
-  const d=load(); d.patients=d.patients.filter(p=>p.id!==id); save(d);
-  fetch(CABINET_API+'/patients/'+id,{method:'DELETE',headers:CAB_HEADERS}).catch(()=>{});
-}
-
-// ── SYNC NEON ────────────────────────────────────────────────────────────────
-async function _syncPatient(p){
-  // 1. Upsert patient
-  await fetch(CABINET_API+'/patients',{
-    method:'POST', headers:CAB_HEADERS,
-    body:JSON.stringify({
-      id:p.id, prenom:p.prenom, nom:p.nom||'',
-      email:p.email||null, tel:p.tel||null,
-      dob:p.dob||null, notes:p.notes||null
-    })
-  });
-  // 2. Upsert bilans
-  for(const b of p.bilans||[]){
-    const date_bilan=b.date||new Date().toISOString().split('T')[0];
-    await fetch(CABINET_API+'/bilans',{
-      method:'POST', headers:CAB_HEADERS,
-      body:JSON.stringify({
-        id:b.id, patient_id:p.id,
-        scores:b.scores||{}, date_bilan,
-        source:b.source||'manuel', notes:b.notes||null
-      })
-    });
-  }
-  // 3. Protocole
-  if(p.bilans&&p.bilans.length>0){
-    const lb=p.bilans.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
-    const moduleActif=(lb.protocole&&lb.protocole.moduleActif)||'0';
-    await fetch(CABINET_API+'/protocoles',{
-      method:'POST', headers:CAB_HEADERS,
-      body:JSON.stringify({patient_id:p.id, action:'set_module', module_code:moduleActif})
-    }).catch(()=>{});
-  }
-}
-
-// ── HYDRATATION NEON → localStorage (au démarrage) ──────────────────────────
-async function hydrateFromNeon(){
-  try{
-    const r=await fetch(CABINET_API+'/patients',{headers:CAB_HEADERS});
-    if(!r.ok) return;
-    const{patients}=await r.json();
-    if(!patients||!patients.length) return;
-    // Merger : localStorage = source de vérité si patient déjà présent
-    const local=load();
-    const localIds=new Set((local.patients||[]).map(p=>p.id));
-    const added=[];
-    patients.forEach(p=>{ if(!localIds.has(p.id)) added.push({
-      id:p.id, prenom:p.prenom, nom:p.nom||'', email:p.email||null,
-      tel:p.tel||null, dob:p.dob||null, notes:p.notes||null,
-      bilans:[], // sera chargé séparément si nécessaire
-    }); });
-    if(added.length){
-      local.patients=[...(local.patients||[]),...added];
-      save(local);
-      console.log('[Neon] '+added.length+' patient(s) synchronisé(s)');
-      renderPatientList(); renderDashboard();
-    }
-  }catch(e){ console.warn('[Neon] Hydration failed:',e.message); }
-}
-
-// ── CALCUL PROFIL : serveur d'abord, fallback local ─────────────────────────
-async function computeProfileAPI(scores){
-  try{
-    const r=await fetch(CABINET_API+'/compute-profile',{
-      method:'POST', headers:CAB_HEADERS,
-      body:JSON.stringify({scores})
-    });
-    if(r.ok){
-      const d=await r.json();
-      return{
-        type:d.profil_type, masks:d.profil_masks,
-        subType:d.profil_sub||null
-      };
-    }
-  }catch(e){ console.warn('[Neon] compute-profile fallback:',e.message); }
-  // Fallback : algorithme local (déjà présent dans detectProfile)
-  return detectProfile(scores);
-}
-
+function removePatient(id){const d=load();d.patients=d.patients.filter(p=>p.id!==id);save(d);}
 function genId(){return'p'+Date.now()+'_'+Math.random().toString(36).slice(2,6);}
 function genBilanId(){return'b'+Date.now()+'_'+Math.random().toString(36).slice(2,6);}
 
@@ -2070,6 +1958,56 @@ async function loadPurchases(){
 
 // ── AUTHENTIFICATION CABINET ─────────────────────────────────────────────────
 // Hash SHA-256 de votre mot de passe — changez le mot de passe en recalculant le hash
+// Mot de passe actuel : psyh2026
+// Pour changer : ouvrez la console JS et tapez :
+//   crypto.subtle.digest('SHA-256', new TextEncoder().encode('nouveau_mdp'))
+//     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+const AUTH_HASH = '5c039e70259fef850d8b3e189ebcef2c72889e11cbbb7535abeb1510fcda3cae';
+const AUTH_KEY  = 'valeur_cab_auth';
+const AUTH_TTL  = 7 * 24 * 3600 * 1000; // 7 jours
+
+async function hashPassword(pwd){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pwd));
+  return [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+async function checkLogin(){
+  const pwd = document.getElementById('login-pwd')?.value||'';
+  const err = document.getElementById('login-error');
+  if(!pwd){ if(err) err.textContent='Mot de passe requis'; return; }
+  const h = await hashPassword(pwd);
+  if(h === AUTH_HASH){
+    localStorage.setItem(AUTH_KEY, Date.now().toString());
+    const overlay = document.getElementById('cab-login-overlay');
+    if(overlay){ overlay.style.opacity='0'; overlay.style.transition='opacity .4s'; setTimeout(()=>overlay.remove(),400); }
+    renderDashboard();
+  } else {
+    if(err){ err.textContent='Mot de passe incorrect'; }
+    const input = document.getElementById('login-pwd');
+    if(input){ input.value=''; input.focus(); }
+  }
+}
+
+function checkAuth(){
+  const ts = parseInt(localStorage.getItem(AUTH_KEY)||'0');
+  if(Date.now() - ts < AUTH_TTL) return true;
+  return false;
+}
+
+function logout(){
+  localStorage.removeItem(AUTH_KEY);
+  location.reload();
+}
+
+
+function copyRes(url){
+  navigator.clipboard.writeText(url).then(()=>toast('🔗 Lien copié'));
+}
+function openAndPrint(path){
+  var w=window.open(path,'_blank');
+  if(w) w.addEventListener('load',()=>w.print());
+}
+
 
 // ── PRINT CONFIGURATION ACTIVE ───────────────────────────────────────────────
 var CONFIG_CODES = {
@@ -2133,133 +2071,15 @@ function viewConfig(bilanId){
   window.open('/livret_dyades_triades.html?section='+code,'_blank');
 }
 
-
-// ── AUTH CABINET ─────────────────────────────────────────────────────────────
-var _AUTH = 'cHN5aDIwMjY=';
-var _AUTH_KEY = 'valeur_cab_v2';
-var _AUTH_TTL = 7 * 24 * 3600 * 1000;
-
-function doLogin(){
-  var pwd = document.getElementById('login-pwd').value;
-  var err = document.getElementById('login-err');
-  if(!pwd){ if(err) err.textContent='Mot de passe requis'; return; }
-  // btoa côté navigateur
-  var encoded;
-  try{ encoded = btoa(pwd); }catch(e){ encoded = ''; }
-  if(encoded === _AUTH){
-    localStorage.setItem(_AUTH_KEY, Date.now().toString());
-    var ov = document.getElementById('cab-login-overlay');
-    if(ov){ ov.style.transition='opacity .3s'; ov.style.opacity='0'; setTimeout(function(){ov.remove();},300); }
-    renderDashboard();
-  } else {
-    if(err) err.textContent='Mot de passe incorrect';
-    var inp = document.getElementById('login-pwd');
-    if(inp){ inp.value=''; inp.focus(); }
-  }
-}
-
-function cabIsAuth(){
-  var ts = parseInt(localStorage.getItem(_AUTH_KEY)||'0');
-  return (Date.now() - ts) < _AUTH_TTL;
-}
-
-
-// ── HASH ROUTER ──────────────────────────────────────────────────────────────
-// URL pattern : #/dashboard | #/patients | #/patient/ID | #/patient/ID/tab
-function router(){
-  const hash = window.location.hash || '#/dashboard';
-  const parts = hash.replace('#/','').split('/');
-  const view  = parts[0] || 'dashboard';
-  const pid   = parts[1] || null;
-  const tab   = parts[2] || 'portrait';
-
-  if(view === 'patient' && pid){
-    _activePatientId = pid;
-    const p = getPatient(pid);
-    if(p){ showView('patient'); updateSidebarPatient(p); renderBandeau(p); switchPatientTab(tab); }
-    else{ navigate('/patients'); }
-  } else if(view === 'patients'){
-    showViewDirect('patients');
-  } else if(view === 'ressources'){
-    showViewDirect('dashboard');
-    setTimeout(()=>switchDashTab('ressources'), 50);
-  } else {
-    showViewDirect('dashboard');
-  }
-}
-
-function navigate(path){
-  window.location.hash = '#' + path;
-}
-
-function showViewDirect(name){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
-  document.getElementById('view-'+name)?.classList.add('active');
-  document.getElementById('nav-'+name)?.classList.add('active');
-  updateBreadcrumb(name);
-  if(name==='dashboard') renderDashboard();
-  if(name==='patients')  renderPatientList();
-}
-
-function updateBreadcrumb(view){
-  const bc = document.getElementById('breadcrumb'); if(!bc) return;
-  const labels = {dashboard:'Tableau de bord', patients:'Mes patients'};
-  if(view==='patient' && _activePatientId){
-    const p = getPatient(_activePatientId);
-    bc.innerHTML = '<span onclick="navigate(\'/patients\')" style="cursor:pointer;color:var(--gold)">Patients</span>'
-      +' <span class="breadcrumb-sep">›</span> '
-      +'<span class="breadcrumb-active">'+(p?p.prenom+' '+p.nom:'')+'</span>';
-  } else {
-    bc.innerHTML = '<span class="breadcrumb-active">'+(labels[view]||view)+'</span>';
-  }
-}
-
-// Patch showView pour utiliser le router
-function showView(name){
-  if(name==='dashboard') navigate('/dashboard');
-  else if(name==='patients') navigate('/patients');
-  else if(name==='patient'){ navigate('/patient/'+(_activePatientId||'')+'/'+(_activeTab||'portrait')); }
-  else showViewDirect(name);
-}
-
-function switchPatientTab(tab){
-  _activeTab = tab;
-  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.ptc').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.sb-patient-nav-item').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+tab)?.classList.add('active');
-  document.getElementById('ptc-'+tab)?.classList.add('active');
-  document.getElementById('pnav-'+tab)?.classList.add('active');
-  updateBreadcrumb('patient');
-  // Mettre à jour l'URL sans recharger
-  if(_activePatientId) history.replaceState(null,'','#/patient/'+_activePatientId+'/'+tab);
-  if(tab==='portrait')  renderPortraitTab();
-  if(tab==='protocole') renderProtocoleTab();
-  if(tab==='evolution') renderEvolutionTab();
-  if(tab==='livret')    renderLivretTab();
-}
-function switchTab(tab){ switchPatientTab(tab); }
-
-function openPatient(id){
-  navigate('/patient/'+id+'/portrait');
-}
-
-window.addEventListener('hashchange', router);
-
 // ── INIT ─────────────────────────────────────────────────
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded',()=>{
-  // Démarrer l'hydratation Neon en arrière-plan
-  setTimeout(hydrateFromNeon, 1500);
-  if(!cabIsAuth()){
-    // L'overlay est déjà dans le DOM — attendre le login
-    document.getElementById('login-pwd')?.focus();
+  if(!checkAuth()){
+    // Overlay affiché par défaut — attendre le login
     return;
   }
   document.getElementById('cab-login-overlay')?.remove();
-
   renderDashboard();
   renderPatientList();
   ['modal-patient','modal-bilan','modal-pdf','modal-seance'].forEach(id=>{
@@ -2280,9 +2100,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 </script>
 
-
-
-
 <div class="login-overlay" id="cab-login-overlay">
   <div class="login-card">
     <div class="login-chroma">
@@ -2293,13 +2110,15 @@ document.addEventListener('DOMContentLoaded',()=>{
     </div>
     <div class="login-logo">
       <div class="login-logo-mark">V.A.L.E.U.R<sup>©</sup></div>
-      <div class="login-sub">Espace Praticien</div>
+      <div class="login-subtitle">Espace Praticien</div>
     </div>
-    <label class="login-label" for="login-pwd">Mot de passe</label>
-    <input class="login-input" type="password" id="login-pwd" placeholder="••••••••"
-      onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">Accéder au cabinet →</button>
-    <div class="login-err" id="login-err"></div>
+    <div class="login-field">
+      <label>Mot de passe</label>
+      <input type="password" id="login-pwd" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter') checkLogin()">
+    </div>
+    <button class="login-btn" onclick="checkLogin()">Accéder au cabinet →</button>
+    <div class="login-error" id="login-error"></div>
   </div>
 </div>
 
