@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<title>Cabinet V.A.L.E.U.R© — Espace Praticien</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:#F7F4EE;color:#1A1814;font-family:"DM Sans",sans-serif;font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
+:root{
+  --iv:#F7F4EE;--iv2:#F0EBE1;--iv3:#E8E1D4;
+  --ink:#1A1814;--ink2:#2C2820;--ink3:#5A534A;--ink4:#8C8278;--ink5:#B8B0A5;
+  --gold:#A8873A;--gold2:#C9A84C;
+  --line:rgba(26,24,20,.1);--line2:rgba(26,24,20,.06);
+  --rouge:#B5312A;--orange:#C4581F;--jaune:#B8930A;
+  --vert:#2D7A4F;--bleu:#1D5F8A;--indigo:#5C3280;--violet:#7A3594;
+  --r:8px;--r2:12px;--sb:230px;
+}
+
+/* ══ LAYOUT SPLIT ══════════════════════════════════════════ */
+.layout{display:flex;height:100vh;overflow:hidden}
+
+/* ══ SIDEBAR ══════════════════════════════════════════════ */
+.sidebar{
+  width:var(--sb);flex-shrink:0;
+  background:#141210;display:flex;flex-direction:column;
+  border-right:1px solid rgba(168,135,58,.12);
+  overflow:hidden;position:relative;z-index:10
+}
+.sb-logo{
+  padding:22px 18px 18px;
+  border-bottom:1px solid rgba(255,255,255,.06)
+}
+.sb-logo-mark{
+  font-family:"Cormorant Garamond",serif;font-size:15px;font-weight:600;
+  letter-spacing:4px;text-transform:uppercase;color:#A8873A
+}
+.sb-logo-mark sup{font-size:9px;vertical-align:super}
+.sb-logo-sub{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(168,135,58,.35);margin-top:2px}
+.sb-scroll{flex:1;overflow-y:auto;padding:10px 0;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.06) transparent}
+.sb-section{
+  font-size:8px;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.18);padding:12px 18px 4px;
+  font-weight:600
+}
+.sb-item{
+  display:flex;align-items:center;gap:8px;padding:8px 18px;
+  font-size:11.5px;font-weight:400;color:rgba(255,255,255,.45);
+  cursor:pointer;transition:all .15s;border:none;background:none;
+  width:100%;text-align:left;border-left:2px solid transparent
+}
+.sb-item:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.8)}
+.sb-item.active{background:rgba(168,135,58,.1);color:#A8873A;border-left-color:#A8873A}
+.sb-item-ico{font-size:12px;flex-shrink:0;width:14px;text-align:center;opacity:.7}
+
+/* Patient actif sidebar block */
+.sb-patient-block{
+  margin:6px 10px;border-radius:8px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  overflow:hidden
+}
+.sb-patient-header{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  cursor:pointer
+}
+.sb-patient-avatar{
+  width:30px;height:30px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-family:"Cormorant Garamond",serif;
+  font-size:12px;font-weight:600;color:#fff;flex-shrink:0
+}
+.sb-patient-name{font-size:11px;font-weight:500;color:rgba(255,255,255,.8);line-height:1.3}
+.sb-patient-meta{font-size:9.5px;color:rgba(255,255,255,.35)}
+.sb-patient-nav{border-top:1px solid rgba(255,255,255,.06)}
+.sb-patient-nav-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 12px 7px 20px;font-size:11px;color:rgba(255,255,255,.4);
+  cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left
+}
+.sb-patient-nav-item:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.75)}
+.sb-patient-nav-item.active{color:#A8873A;background:rgba(168,135,58,.08)}
+.sb-badge{
+  font-size:8.5px;font-weight:700;letter-spacing:1px;
+  padding:2px 6px;border-radius:10px;
+  background:rgba(168,135,58,.2);color:#A8873A;flex-shrink:0
+}
+.sb-badge-vert{background:rgba(45,122,79,.2);color:#2D7A4F}
+
+/* Outils section */
+.sb-tool-item{
+  display:flex;align-items:center;gap:8px;padding:7px 18px;
+  font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;
+  transition:all .15s;border:none;background:none;width:100%;text-align:left
+}
+.sb-tool-item:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.04)}
+
+.sb-footer{
+  padding:12px 18px;border-top:1px solid rgba(255,255,255,.05);
+  font-size:9px;color:rgba(255,255,255,.15);line-height:1.7
+}
+
+/* ══ MAIN AREA ════════════════════════════════════════════ */
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* ══ TOPBAR ═══════════════════════════════════════════════ */
+.topbar{
+  height:52px;flex-shrink:0;
+  background:rgba(247,244,238,.96);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;z-index:5
+}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink4)}
+.breadcrumb-sep{color:var(--ink5)}
+.breadcrumb-active{color:var(--ink);font-weight:500}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+
+/* ══ VIEWS CONTAINER ══════════════════════════════════════ */
+.views-wrap{flex:1;overflow-y:auto;overflow-x:hidden}
+.view{display:none;padding:24px 28px 80px;animation:fadeIn .2s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ══ PATIENT BANDEAU ══════════════════════════════════════ */
+.patient-bandeau{
+  background:#fff;border-bottom:1px solid var(--line);
+  padding:14px 28px;display:flex;align-items:center;gap:14px;
+  flex-shrink:0;position:sticky;top:0;z-index:4
+}
+.pb-avatar{
+  width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Cormorant Garamond",serif;font-size:18px;color:#fff;flex-shrink:0
+}
+.pb-name{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:2px}
+.pb-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pb-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px
+}
+.pb-actions{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+
+/* ══ PATIENT VIEW WRAPPER ═════════════════════════════════ */
+.patient-view-inner{display:flex;flex-direction:column;height:100%;overflow:hidden}
+#view-patient{padding:0;display:none}
+#view-patient.active{display:flex;flex-direction:column;height:100%}
+
+/* Patient tabs + content */
+.patient-tabs-bar{
+  background:#fff;border-bottom:1px solid var(--line);
+  padding:0 28px;display:flex;gap:0;flex-shrink:0
+}
+.ptab{
+  padding:10px 18px;font-size:11px;font-weight:500;letter-spacing:.5px;
+  border:none;background:none;cursor:pointer;color:var(--ink4);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:all .15s;text-transform:uppercase
+}
+.ptab:hover{color:var(--ink3)}
+.ptab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.patient-tab-contents{flex:1;overflow-y:auto;overflow-x:hidden;padding:24px 28px 80px}
+.ptc{display:none}
+.ptc.active{display:block;animation:fadeIn .2s ease}
+
+/* ══ BUTTONS ══════════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:var(--r);border:none;cursor:pointer;font-family:"DM Sans",sans-serif;font-size:10.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:all .18s;text-decoration:none;white-space:nowrap}
+.btn-primary{background:var(--ink);color:var(--iv)}
+.btn-primary:hover{background:#2C2820}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{background:var(--gold2)}
+.btn-ghost{background:transparent;color:var(--ink3);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--ink3);color:var(--ink)}
+.btn-sm{padding:5px 12px;font-size:9.5px}
+.btn-danger{background:rgba(181,49,42,.08);color:var(--rouge);border:1px solid rgba(181,49,42,.18)}
+
+/* ══ CARDS ════════════════════════════════════════════════ */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:20px}
+.card-sm{padding:14px 18px}
+
+/* ══ STATS ════════════════════════════════════════════════ */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.stat-val{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:300;color:var(--ink);line-height:1}
+.stat-lbl{font-size:10.5px;color:var(--ink4);margin-top:3px}
+
+/* ══ PATIENT LIST ═════════════════════════════════════════ */
+.patient-grid{display:flex;flex-direction:column;gap:6px}
+.patient-row{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r);
+  padding:12px 16px;display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all .15s
+}
+.patient-row:hover{border-color:rgba(168,135,58,.3);box-shadow:0 2px 10px rgba(26,24,20,.05);transform:translateY(-1px)}
+.patient-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-size:14px;color:#fff;flex-shrink:0}
+.patient-name{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px}
+.patient-meta{font-size:10.5px;color:var(--ink4)}
+.patient-spa .spa-val{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:300;color:var(--ink);line-height:1;text-align:right}
+.patient-badge{display:inline-block;font-size:8.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:20px}
+
+/* ══ SEARCH ═══════════════════════════════════════════════ */
+.search-bar{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:8px 12px;margin-bottom:14px}
+.search-bar input{flex:1;border:none;outline:none;font-family:"DM Sans",sans-serif;font-size:12.5px;color:var(--ink);background:transparent}
+
+/* ══ SCORE BARS ═══════════════════════════════════════════ */
+.score-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.score-bar-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.score-bar-name{font-size:10.5px;font-weight:500;width:50px;flex-shrink:0;color:var(--ink3)}
+.score-bar-track{flex:1;height:4px;background:var(--iv3);border-radius:2px;overflow:hidden}
+.score-bar-fill{height:4px;border-radius:2px;transition:width .8s ease}
+.score-bar-pct{font-size:10.5px;font-weight:600;width:32px;text-align:right;color:var(--ink)}
+.badge{display:inline-block;font-size:8.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:20px}
+
+/* ══ SPA RING ═════════════════════════════════════════════ */
+.spa-ring-wrap{position:relative;width:68px;height:68px;flex-shrink:0}
+.spa-ring-wrap svg{transform:rotate(-90deg)}
+.spa-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.spa-center .num{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:300;line-height:1}
+.spa-center .pct{font-size:8.5px;color:var(--ink4)}
+
+/* ══ SLIDERS ══════════════════════════════════════════════ */
+.slider-group{margin-bottom:10px}
+.slider-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.slider-label span:first-child{font-size:10.5px;font-weight:500;color:var(--ink3)}
+.slider-val{font-size:12px;font-weight:700;font-family:"Cormorant Garamond",serif}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--iv3);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--ink);cursor:pointer;transition:background .15s}
+input[type=range]::-webkit-slider-thumb:hover{background:var(--gold)}
+
+/* ══ TIMELINE SÉANCES ═════════════════════════════════════ */
+.timeline{position:relative;padding-left:20px}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:0;width:1px;background:var(--iv3)}
+.timeline-item{position:relative;margin-bottom:12px;padding-left:16px}
+.timeline-dot{position:absolute;left:-12px;top:8px;width:10px;height:10px;border-radius:50%;border:2px solid #fff;z-index:1}
+.timeline-card{background:var(--iv2);border-radius:var(--r);padding:10px 14px}
+.timeline-date{font-size:10px;color:var(--ink5);margin-bottom:3px}
+.timeline-notes{font-size:12px;color:var(--ink3);line-height:1.6}
+.timeline-dur{font-size:9.5px;color:var(--ink5);margin-top:3px}
+
+/* ══ PROTOCOLE ÉTAPES ═════════════════════════════════════ */
+.etape-card{border:1px solid var(--line);border-radius:var(--r2);overflow:hidden;margin-bottom:10px;transition:all .2s}
+.etape-card.actif{border-color:rgba(168,135,58,.35);box-shadow:0 2px 14px rgba(168,135,58,.08)}
+.etape-card.valide{border-color:rgba(45,122,79,.25);background:rgba(45,122,79,.01)}
+.etape-card.locked{opacity:.42}
+.etape-card-header{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;user-select:none}
+.etape-letter-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.etape-meta{flex:1}
+.etape-nom{font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:1px}
+.etape-semaines{font-size:10px;color:var(--ink4)}
+.etape-statut{font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:none;cursor:pointer;transition:all .15s}
+.etape-body{border-top:1px solid rgba(26,24,20,.06);padding:14px 16px}
+.etape-citation{border-left:2.5px solid;padding:7px 12px;border-radius:0 6px 6px 0;margin-bottom:12px}
+.etape-concept{font-size:12px;color:var(--ink3);line-height:1.75;margin-bottom:12px}
+.etape-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.etape-col{border-radius:6px;padding:10px 12px}
+.etape-col-title{font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+.etape-col-text{font-size:11.5px;color:var(--ink3);line-height:1.6}
+
+/* ══ FORMS ════════════════════════════════════════════════ */
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:10px;font-weight:600;color:var(--ink3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
+.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid var(--line);border-radius:var(--r);padding:8px 11px;font-family:"DM Sans",sans-serif;font-size:12.5px;color:var(--ink);background:#fff;outline:none;transition:border-color .15s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group textarea{resize:vertical;min-height:64px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ══ MODAL ════════════════════════════════════════════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,24,20,.55);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;padding:14px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:var(--r2);padding:28px;width:100%;position:relative;max-height:92vh;overflow-y:auto}
+.modal-sm{max-width:440px}
+.modal-md{max-width:580px}
+.modal-lg{max-width:720px}
+.modal h3{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:400;margin-bottom:16px}
+.modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:16px;cursor:pointer;color:var(--ink4)}
+
+/* ══ UPLOAD ═══════════════════════════════════════════════ */
+.upload-zone{border:2px dashed var(--line);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--iv2)}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--gold);background:rgba(168,135,58,.04)}
+.upload-zone input{display:none}
+
+/* ══ NOTES ════════════════════════════════════════════════ */
+.notes-area{width:100%;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;font-family:"DM Sans",sans-serif;font-size:12.5px;color:var(--ink);background:var(--iv2);resize:vertical;min-height:72px;outline:none;transition:border-color .2s}
+.notes-area:focus{border-color:var(--gold);background:#fff}
+
+/* ══ MISC ═════════════════════════════════════════════════ */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-header h3{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:300}
+.eyebrow{font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-weight:600;display:block}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.chroma{display:flex;height:2.5px;margin-bottom:20px;border-radius:2px;overflow:hidden}
+.chroma div{flex:1}
+.alert{padding:9px 13px;border-radius:var(--r);font-size:11.5px;margin-bottom:12px}
+.alert-info{background:rgba(168,135,58,.06);border:1px solid rgba(168,135,58,.18);color:var(--gold)}
+.alert-success{background:rgba(45,122,79,.07);border:1px solid rgba(45,122,79,.2);color:var(--vert)}
+.empty{text-align:center;padding:40px 16px;color:var(--ink4)}
+.empty-ico{font-size:32px;margin-bottom:10px;opacity:.4}
+.empty p{font-size:12.5px;margin-bottom:14px}
+.progress-bar{height:4px;background:var(--iv3);border-radius:2px;overflow:hidden}
+.progress-fill{height:4px;border-radius:2px;background:var(--gold);transition:width .6s ease}
+.portrait-section{padding:12px 0;border-bottom:1px solid var(--line2)}
+.portrait-section:last-child{border-bottom:none}
+.portrait-section-title{font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:600}
+.portrait-content{font-size:12.5px;color:var(--ink3);line-height:1.85}
+#toast{position:fixed;bottom:18px;right:18px;background:#1A1814;color:#fff;padding:7px 16px;border-radius:20px;font-size:11.5px;z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s}
+.link-box{background:var(--iv2);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;font-size:10.5px;color:var(--ink3);word-break:break-all;margin-bottom:7px;font-family:monospace;line-height:1.7}
+.link-box strong{color:var(--gold)}
+
+/* ── LOGIN ── */
+.login-overlay{position:fixed;inset:0;background:#141210;z-index:9999;display:flex;align-items:center;justify-content:center}
+.login-card{width:100%;max-width:340px;padding:0 24px}
+.login-chroma{display:flex;height:2px;margin-bottom:40px;border-radius:1px;overflow:hidden}
+.login-chroma div{flex:1}
+.login-logo{text-align:center;margin-bottom:36px}
+.login-logo-mark{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#A8873A}
+.login-logo-mark sup{font-size:9px;vertical-align:super}
+.login-sub{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(168,135,58,.35);margin-top:3px}
+.login-label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+.login-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 16px;font-family:"DM Sans",sans-serif;font-size:14px;color:#fff;outline:none;box-sizing:border-box;transition:border-color .2s}
+.login-input:focus{border-color:rgba(168,135,58,.5)}
+.login-btn{width:100%;background:#A8873A;color:#fff;border:none;border-radius:8px;padding:13px;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:14px;transition:background .2s}
+.login-btn:hover{background:#C9A84C}
+.login-err{font-size:11px;color:rgba(181,49,42,.8);text-align:center;margin-top:10px;min-height:18px}
+
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ══ SIDEBAR ══════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-mark">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="sb-logo-sub">Espace Praticien</div>
+  </div>
+
+  <div class="sb-scroll">
+    <div class="sb-section">Navigation</div>
+    <button class="sb-item active" onclick="showView('dashboard')" id="nav-dashboard">
+      <span class="sb-item-ico">◈</span>Tableau de bord
+    </button>
+    <button class="sb-item" onclick="showView('patients')" id="nav-patients">
+      <span class="sb-item-ico">◎</span>Mes patients
+    </button>
+
+    <!-- Patient actif -->
+    <div id="sb-patient-block" style="display:none;margin-top:6px">
+      <div class="sb-section">Patient actif</div>
+      <div class="sb-patient-block">
+        <div class="sb-patient-header" onclick="showView('patient')">
+          <div class="sb-patient-avatar" id="sb-pa-avatar">—</div>
+          <div style="flex:1;min-width:0">
+            <div class="sb-patient-name" id="sb-pa-name">—</div>
+            <div class="sb-patient-meta" id="sb-pa-meta">—</div>
+          </div>
+        </div>
+        <div class="sb-patient-nav">
+          <button class="sb-patient-nav-item active" onclick="switchPatientTab('portrait')" id="pnav-portrait">Portrait &amp; bilans</button>
+          <button class="sb-patient-nav-item" onclick="switchPatientTab('protocole')" id="pnav-protocole">
+            Protocole V.A.L.E.U.R©
+            <span class="sb-badge" id="sb-pa-etape" style="display:none"></span>
+          </button>
+          <button class="sb-patient-nav-item" onclick="switchPatientTab('evolution')" id="pnav-evolution">
+            Évolution
+            <span class="sb-badge sb-badge-vert" id="sb-pa-spa" style="display:none"></span>
+          </button>
+          <button class="sb-patient-nav-item" onclick="switchPatientTab('livret')" id="pnav-livret" id="pnav-livret">Livret</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outils séance -->
+    <div class="sb-section" style="margin-top:8px">Outils séance</div>
+    <button class="sb-tool-item" onclick="openOutil('protocole_valeur.html')">
+      <span class="sb-item-ico">📋</span>Guide de séance
+    </button>
+    <button class="sb-tool-item" onclick="openOutil('manuel_valeur.html')">
+      <span class="sb-item-ico">📖</span>Manuel V.A.L.E.U.R©
+    </button>
+    <button class="sb-tool-item" onclick="openOutil('livret_psychoeducation.html')">
+      <span class="sb-item-ico">🎓</span>Psychoéducation
+    </button>
+
+    <!-- Cabinet -->
+    <div class="sb-section" style="margin-top:8px">Cabinet</div>
+    <button class="sb-item" onclick="openModalPatient()">
+      <span class="sb-item-ico">＋</span>Nouveau patient
+    </button>
+    <button class="sb-item" onclick="exportData()">
+      <span class="sb-item-ico">↓</span>Sauvegarder
+    </button>
+    <button class="sb-item" onclick="document.getElementById('import-input').click()">
+      <span class="sb-item-ico">↑</span>Restaurer
+    </button>
+    <input type="file" id="import-input" accept=".json" style="display:none" onchange="importData(event)">
+  </div>
+
+  <div class="sb-footer">
+    cabinet.psyh.fr · Usage exclusif<br>
+    © Céline Bourbon — V.A.L.E.U.R©<br>
+
+  </div>
+</aside>
+
+<!-- ══ MAIN AREA ══════════════════════════════════════════ -->
+<div class="main-area">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="breadcrumb" id="breadcrumb">
+      <span>Cabinet</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openModalPatient()">＋ Patient</button>
+      <button class="btn btn-ghost btn-sm" onclick="copyLink()" title="Copier lien praticien">🔗 Lien test</button>
+    </div>
+  </div>
+
+  <!-- VIEWS WRAPPER -->
+  <div class="views-wrap">
+
+    <!-- DASHBOARD -->
+    <div class="view active" id="view-dashboard">
+      <div class="chroma">
+        <div style="background:var(--rouge)"></div><div style="background:var(--orange)"></div>
+        <div style="background:var(--jaune)"></div><div style="background:var(--vert)"></div>
+        <div style="background:var(--bleu)"></div><div style="background:var(--indigo)"></div>
+        <div style="background:var(--violet)"></div>
+      </div>
+      <div class="stats-grid" id="stats-grid"></div>
+
+      
+
+      <div style="display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:18px">
+        <button class="ptab active" onclick="switchDashTab('activite')" id="dtab-activite">Activité récente</button>
+        <button class="ptab" onclick="switchDashTab('leads')" id="dtab-leads">Tests questionnaire <span id="leads-badge" style="display:none;background:var(--rouge);color:#fff;font-size:8px;font-weight:700;padding:1px 5px;border-radius:10px;margin-left:4px">0</span></button>
+        <button class="ptab" onclick="switchDashTab('achats')" id="dtab-achats">Portraits achetés <span id="achats-badge" style="display:none;background:var(--vert);color:#fff;font-size:8px;font-weight:700;padding:1px 5px;border-radius:10px;margin-left:4px">0</span></button>
+        <button class="ptab" onclick="switchDashTab('ressources')" id="dtab-ressources">📚 Ressources</button>
+      </div>
+      <div id="dtc-activite">
+        <div class="section-header" style="margin-bottom:12px">
+          <h3>Activité récente</h3>
+          <button class="btn btn-ghost btn-sm" onclick="showView('patients')">Tous →</button>
+        </div>
+        <div id="recent-list" class="patient-grid"></div>
+      </div>
+      <div id="dtc-leads" style="display:none">
+        <div class="section-header" style="margin-bottom:12px">
+          <div><span class="eyebrow">Pipeline commercial</span><h3>Résultats questionnaire</h3></div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <select id="leads-filter" onchange="loadLeads()" style="font-size:11px;border:1px solid var(--line);border-radius:var(--r);padding:5px 10px;background:#fff;color:var(--ink3);outline:none">
+              <option value="pending">En attente</option>
+              <option value="attributed">Attribués</option>
+              <option value="purchased">Portrait acheté</option>
+              <option value="ignored">Ignorés</option>
+              <option value="all">Tous</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="loadLeads()">↻ Actualiser</button>
+          </div>
+        </div>
+        <div id="leads-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px"></div>
+        <div id="leads-list"></div>
+      </div>
+      <div id="dtc-achats" style="display:none"><div class="section-header" style="margin-bottom:12px"><div><span class="eyebrow">Revenus V.A.L.E.U.R©</span><h3>Portraits achetés</h3></div><button class="btn btn-ghost btn-sm" onclick="loadPurchases()">↻</button></div><div id="purchases-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px"></div><div id="purchases-masques" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px"></div><div id="purchases-list"></div></div>
+
+      <div id="dtc-ressources" style="display:none"><div class="section-header" style="margin-bottom:16px"><div><span class="eyebrow">Accès direct · cabinet.psyh.fr</span><h3>Tous les livrets</h3></div></div><div style="background:rgba(168,135,58,.06);border:1px solid rgba(168,135,58,.18);border-radius:8px;padding:10px 14px;margin-bottom:6px;font-size:11.5px;color:var(--ink3)">🔒 <strong>Accès direct</strong> — seul index.html est protégé par mot de passe. Tous les livrets sont accessibles via leur URL directe sans connexion. <strong>🔗 Lien patient</strong> = copier l'URL à envoyer au patient.</div><div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin:20px 0 10px">Livrets patients — 7 masques</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:4px"><div class="card card-sm" style="border-top:3px solid #B5312A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Masque Rouge</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">21 défis progressifs</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_rouge.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_rouge.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #C4581F"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Masque Orange</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">21 défis progressifs</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_orange.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_orange.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #B8930A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Masque Jaune</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">21 défis progressifs</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_jaune.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_jaune.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #2D7A4F"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Masque Vert</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">21 défis progressifs</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_vert.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_vert.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #1D5F8A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Masque Bleu</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">21 défis progressifs</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_bleu.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_bleu.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #5C3280"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Masque Indigo</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">21 défis progressifs</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_indigo.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_indigo.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #7A3594"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Masque Violet</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">21 défis progressifs</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_violet.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_violet.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div></div><div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin:20px 0 10px">Configurations — Dyades &amp; Triades</div><div class="card card-sm" style="display:flex;align-items:center;gap:14px;margin-bottom:4px"><div style="font-size:24px">🔗</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--ink)">Livret Dyades &amp; Triades</div><div style="font-size:10px;color:var(--ink4)">16 configurations · 336 défis · Référence praticien</div></div><div style="display:flex;gap:5px"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_dyades_triades.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_dyades_triades.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien</button></div></div><div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin:20px 0 10px">Outils praticien</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px"><div class="card card-sm" style="border-top:3px solid #A8873A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Psychoéducation</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Introduction — à remettre au patient</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/livret_psychoeducation.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/livret_psychoeducation.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #A8873A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Manuel V.A.L.E.U.R©</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">7 masques · défis · dyades · triades</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/manuel_valeur.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/manuel_valeur.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #A8873A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Protocole V.A.L.E.U.R©</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Guide opérationnel séance par séance</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/protocole_valeur.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/protocole_valeur.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div></div><div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin:20px 0 10px">Workbooks 21 défis — Étape R</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px"><div class="card card-sm" style="border-top:3px solid #B5312A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Workbook Rouge</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Étape R · renforcement</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/workbook_21defis_rouge.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/workbook_21defis_rouge.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #C4581F"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Workbook Orange</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Étape R · renforcement</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/workbook_21defis_orange.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/workbook_21defis_orange.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #B8930A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Workbook Jaune</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Étape R · renforcement</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/workbook_21defis_jaune.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/workbook_21defis_jaune.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #2D7A4F"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Workbook Vert</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Étape R · renforcement</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/workbook_21defis_vert.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/workbook_21defis_vert.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #1D5F8A"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Workbook Bleu</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Étape R · renforcement</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/workbook_21defis_bleu.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/workbook_21defis_bleu.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #5C3280"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Workbook Indigo</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Étape R · renforcement</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/workbook_21defis_indigo.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/workbook_21defis_indigo.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div><div class="card card-sm" style="border-top:3px solid #7A3594"><div style="font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px">Workbook Violet</div><div style="font-size:10px;color:var(--ink4);margin-bottom:10px">Étape R · renforcement</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="window.open('/workbook_21defis_violet.html','_blank')">📖 Ouvrir</button><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('https://cabinet.psyh.fr/workbook_21defis_violet.html').then(()=>toast('🔗 Lien copié'))">🔗 Lien patient</button></div></div></div></div>
+    </div>
+
+    <!-- PATIENTS -->
+    <div class="view" id="view-patients">
+      <div class="section-header">
+        <div><span class="eyebrow">Cabinet V.A.L.E.U.R©</span><h3>Mes patients</h3></div>
+        <button class="btn btn-primary" onclick="openModalPatient()">＋ Nouveau patient</button>
+      </div>
+      <div class="search-bar">
+        <span style="color:var(--ink5)">🔍</span>
+        <input type="text" id="search-input" placeholder="Rechercher un patient…" oninput="renderPatientList()">
+      </div>
+      <div id="patient-list" class="patient-grid"></div>
+    </div>
+
+    <!-- PATIENT FICHE -->
+    <div class="view" id="view-patient">
+      <!-- Bandeau patient -->
+      <div class="patient-bandeau" id="patient-bandeau" style="display:none">
+        <div class="pb-avatar" id="pb-avatar">—</div>
+        <div style="flex:1;min-width:0">
+          <div class="pb-name" id="pb-name">—</div>
+          <div class="pb-meta" id="pb-meta"></div>
+        </div>
+        <div class="pb-actions">
+          <button class="btn btn-primary btn-sm" id="pb-btn-bilan" onclick="openModalBilan(null)">＋ Bilan</button>
+          <button class="btn btn-ghost btn-sm" onclick="copyPatientLink()" title="Lien test patient">🔗 Lien test</button>
+          <button class="btn btn-ghost btn-sm" onclick="editPatient(null)">✎ Modifier</button>
+          <button class="btn btn-danger btn-sm" onclick="confirmDelete(null)">🗑</button>
+        </div>
+      </div>
+
+      <div id="pending-notif" style="display:none;background:rgba(45,122,79,.07);border-left:3px solid #2D7A4F;padding:10px 28px;align-items:center;gap:14px;flex-shrink:0"><span style="font-size:18px">\U0001f4e5</span><div style="flex:1"><div style="font-size:12px;font-weight:600;color:#2D7A4F;margin-bottom:2px">R\u00e9sultats du questionnaire disponibles</div><div style="font-size:11px;color:rgba(26,24,20,.55)">Test r\u00e9alis\u00e9 le <span id="pending-date">\u2014</span></div></div><button class="btn btn-vert btn-sm" onclick="importPendingScores()">\U0001f4e5 Importer le bilan \u2192</button></div>
+      <div id="pending-notif" style="display:none;background:rgba(45,122,79,.07);border-left:3px solid #2D7A4F;padding:10px 28px;align-items:center;gap:14px;flex-shrink:0"><span style="font-size:18px">📥</span><div style="flex:1"><div style="font-size:12px;font-weight:600;color:#2D7A4F;margin-bottom:2px">Résultats du questionnaire disponibles</div><div style="font-size:11px;color:rgba(26,24,20,.55)">Test réalisé le <span id="pending-date">—</span></div></div><button class="btn btn-vert btn-sm" onclick="importPendingScores()">📥 Importer →</button></div>
+      <!-- Onglets -->
+      <div class="patient-tabs-bar">
+        <button class="ptab active" onclick="switchPatientTab('portrait')" id="tab-portrait">Portrait &amp; bilans</button>
+        <button class="ptab" onclick="switchPatientTab('protocole')" id="tab-protocole">Protocole V.A.L.E.U.R©</button>
+        <button class="ptab" onclick="switchPatientTab('evolution')" id="tab-evolution">Évolution</button>
+        <button class="ptab" onclick="switchPatientTab('livret')" id="tab-livret">Livret</button>
+      </div>
+
+      <!-- Contenu onglets -->
+      <div class="patient-tab-contents">
+        <div class="ptc active" id="ptc-portrait"><div id="portrait-content"></div></div>
+        <div class="ptc" id="ptc-protocole"><div id="protocole-content"></div></div>
+        <div class="ptc" id="ptc-evolution"><div id="evolution-content"></div></div>
+        <div class="ptc" id="ptc-livret"><div id="livret-content"></div></div>
+      </div>
+    </div>
+
+  </div><!-- /views-wrap -->
+</div><!-- /main-area -->
+</div><!-- /layout -->
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-patient">
+  <div class="modal modal-md">
+    <button class="modal-close" onclick="closeModal('modal-patient')">✕</button>
+    <h3 id="modal-patient-title">Nouveau patient</h3>
+    <div class="form-row">
+      <div class="form-group"><label>Prénom *</label><input type="text" id="f-prenom" placeholder="Marie"></div>
+      <div class="form-group"><label>Nom *</label><input type="text" id="f-nom" placeholder="Dupont"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Date de naissance</label><input type="date" id="f-dob"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="patient@email.com"></div>
+    </div>
+    <div class="form-group"><label>Téléphone</label><input type="tel" id="f-tel" placeholder="06 …"></div>
+    <div class="form-group"><label>Notes initiales</label><textarea id="f-notes" placeholder="Motif de consultation, contexte…"></textarea></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+      <button class="btn btn-ghost" onclick="closeModal('modal-patient')">Annuler</button>
+      <button class="btn btn-primary" onclick="savePatient()">Enregistrer →</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-bilan">
+  <div class="modal modal-lg">
+    <button class="modal-close" onclick="closeModal('modal-bilan')">✕</button>
+    <h3>Nouveau bilan — saisie des scores</h3>
+    <div class="alert alert-info">Saisissez les 7 scores (0–100%) reçus dans l'email praticien après le test sur questionnaire.psyh.fr</div>
+    <div class="form-row" style="margin-bottom:12px">
+      <div class="form-group"><label>Date du bilan</label><input type="date" id="b-date"></div>
+      <div class="form-group"><label>Source</label>
+        <select id="b-source">
+          <option value="seance">Test réalisé en séance</option>
+          <option value="distance">Test réalisé à distance</option>
+          <option value="upload">Portrait public (acheté)</option>
+        </select>
+      </div>
+    </div>
+    <div id="sliders-zone"></div>
+    <div style="background:var(--iv2);border-radius:var(--r);padding:12px 14px;margin:12px 0;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <span class="eyebrow" style="margin-bottom:2px">SPA calculé</span>
+        <div id="b-spa-val" style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);line-height:1">—%</div>
+      </div>
+      <div style="text-align:right">
+        <span class="eyebrow" style="margin-bottom:2px">Profil</span>
+        <div id="b-profil-val" style="font-size:12.5px;font-weight:500;color:var(--ink)">—</div>
+        <div id="b-dominant-val" style="font-size:11px;color:var(--ink4)">—</div>
+      </div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="b-notes" placeholder="Observations, contexte…"></textarea></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="closeModal('modal-bilan')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveBilan()">Enregistrer le bilan →</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-pdf">
+  <div class="modal modal-md">
+    <button class="modal-close" onclick="closeModal('modal-pdf')">✕</button>
+    <h3>Portrait PDF</h3>
+    <div class="upload-zone" onclick="document.getElementById('pdf-input').click()">
+      <input type="file" id="pdf-input" accept=".pdf" onchange="handlePdfUpload(event)">
+      <div style="font-size:26px;margin-bottom:8px;opacity:.4">📄</div>
+      <p style="font-size:11.5px;color:var(--ink4)">Cliquez ou déposez le PDF du portrait</p>
+    </div>
+    <div id="pdf-preview" style="display:none;margin-top:10px"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+      <button class="btn btn-ghost" onclick="closeModal('modal-pdf')">Annuler</button>
+      <button class="btn btn-primary" id="btn-save-pdf" onclick="savePdf()" disabled>Enregistrer →</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-seance">
+  <div class="modal modal-md">
+    <button class="modal-close" onclick="closeModal('modal-seance')">✕</button>
+    <h3 id="seance-modal-title">Nouvelle séance</h3>
+    <div class="form-row">
+      <div class="form-group"><label>Date</label><input type="date" id="s-date"></div>
+      <div class="form-group"><label>Durée (min)</label><input type="number" id="s-duree" value="60" min="15" max="180"></div>
+    </div>
+    <div class="form-group"><label>Notes de séance</label><textarea id="s-notes" placeholder="Exercices réalisés, observations, avancées…" style="min-height:100px"></textarea></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="closeModal('modal-seance')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSeance()">Enregistrer →</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div><script>
+// ── CONSTANTES MASQUES ──────────────────────────────────
+const MASKS = ['rouge','orange','jaune','vert','bleu','indigo','violet'];
+const MASK_META = {
+  rouge:  {name:'Masque Rouge',  short:'Rouge',  emoji:'🔴', peur:'la peur de la maladie et de la mort',     color:'#B5312A'},
+  orange: {name:'Masque Orange', short:'Orange', emoji:'🟠', peur:'la peur de la souffrance émotionnelle',   color:'#C4581F'},
+  jaune:  {name:'Masque Jaune',  short:'Jaune',  emoji:'🟡', peur:"la peur de l'inconnu et de l'incertitude",color:'#B8930A'},
+  vert:   {name:'Masque Vert',   short:'Vert',   emoji:'🟢', peur:"la peur du rejet et de l'abandon",        color:'#2D7A4F'},
+  bleu:   {name:'Masque Bleu',   short:'Bleu',   emoji:'🔵', peur:"la peur de l'impuissance",                color:'#1D5F8A'},
+  indigo: {name:'Masque Indigo', short:'Indigo', emoji:'🟣', peur:"la peur de l'échec et du jugement",       color:'#5C3280'},
+  violet: {name:'Masque Violet', short:'Violet', emoji:'🟪', peur:"la peur de perdre le sens de son identité",color:'#7A3594'},
+};
+
+const ETAPES_VALEUR = [
+  {l:'V',n:'VOIR',      color:'#1D5F8A',desc:"Je vois le masque qui s'active et la peur qui le nourrit. Je prends conscience de mes mécanismes défensifs."},
+  {l:'A',n:'ACCUEILLIR',color:'#B5312A',desc:"J'accueille l'émotion sous le masque, sans fuir. Je cesse de lutter contre ce que je ressens."},
+  {l:'L',n:'LOCALISER', color:'#C4581F',desc:"Je localise dans mon corps où le masque se manifeste. Les tensions, les blocages, les sensations figées."},
+  {l:'E',n:'EXPLORER',  color:'#B8930A',desc:"J'explore le conflit entre mon masque et ma valeur authentique. Je découvre ce qui est vraiment important pour moi."},
+  {l:'U',n:'UNIFIER',   color:'#2D7A4F',desc:"J'intègre la part blessée et je choisis ma valeur. Je réconcilie mes peurs et ma vérité intérieure."},
+  {l:'R',n:'RENFORCER', color:'#A8873A',desc:"J'ancre le nouveau choix pour qu'il devienne ma nouvelle voie. Je consolide ma liberté retrouvée."},
+];
+
+const CONTENT = {
+  rouge:{
+    origine:"La peur de la maladie et de la mort s'est construite tôt, souvent dans un environnement où la fragilité du corps était survalorisée — maladie d'un proche, hospitalisations, anxiété parentale autour de la santé. Le corps est devenu un terrain d'alerte permanente.",
+    scenes:"Ces moments où une douleur banale devient une catastrophe mentale. L'attente d'un résultat médical qui colonise toutes les pensées. La consultation de symptômes sur internet qui aggrave l'inquiétude. La difficulté à profiter d'un moment présent quand une sensation physique survient.",
+    spheres:"La vie quotidienne (qualité de présence réduite), les relations (recherche de réassurance épuisante pour l'entourage), le travail (concentration fragilisée par les pensées intrusives), la santé paradoxalement (évitement ou surinvestissement médical).",
+    couts:"Une énergie psychique considérable mobilisée dans la surveillance. Une vie vécue dans l'anticipation du pire. Des relations parfois distancées par le besoin de réassurance chronique. Une confiance en la résilience du corps qui ne se construit pas.",
+    masque_vs_vous:"Le masque surveille, anticipe, catastrophise. Derrière ce masque — une capacité d'une profonde présence au corps, une sensibilité fine aux signaux intérieurs, une intelligence somatique qui, libérée de la peur, devient une boussole fiable.",
+    transformation:"La transformation passe par la reconstruction d'une relation de confiance avec le corps. Apprendre à distinguer l'information (sensation réelle) du bruit (interprétation catastrophiste). Développer une tolérance progressive à l'incertitude corporelle."
+  },
+  orange:{
+    origine:"L'évitement émotionnel s'est construit dans un environnement où les émotions n'avaient pas leur place — famille où l'on fonctionnait, pas où l'on ressentait. Ou au contraire, un environnement émotionnellement envahissant qui a nécessité une mise à distance protectrice.",
+    scenes:"Ces moments où quelqu'un demande ce que l'on ressent et on reste sans réponse. La difficulté à nommer une émotion quand elle est là. Préférer analyser une situation plutôt que de la traverser. Ressentir une fatigue sans pouvoir identifier sa source émotionnelle.",
+    spheres:"L'intimité (difficulté à se laisser toucher vraiment), les décisions (guidées par la raison quand le cœur ne répond pas), la créativité (bridée par l'absence d'accès au monde intérieur), la santé psychique (les émotions bloquées qui s'expriment somatiquement).",
+    couts:"Des relations qui restent en surface malgré la volonté de connexion. Une fatigue inexpliquée liée aux émotions non traitées. Des décisions parfaites en apparence mais qui ne nourrissent pas. Un sentiment de vide ou d'étrangeté à soi-même.",
+    masque_vs_vous:"Le masque gère, analyse, observe de loin. Derrière — une vie intérieure riche, une sensibilité que l'on a appris à taire mais qui n'a pas disparu. Elle attend d'être accueillie sans danger.",
+    transformation:"La transformation passe par une réappropriation progressive du monde intérieur. Apprendre à nommer les états émotionnels, d'abord physiquement, puis cognitivement, puis dans l'échange avec l'autre. La sécurité se construit graduellement."
+  },
+  jaune:{
+    origine:"L'intolérance à l'incertitude s'est construite dans un contexte où l'imprévu était associé au danger — instabilité familiale, contextes chaotiques, ou sur-protection qui n'a pas permis de développer la tolérance à l'inconnu.",
+    scenes:"La liste qui précède toute action. Les scénarios élaborés pour chaque éventualité. L'inconfort intense face à une décision sans toutes les informations. La difficulté à lâcher prise quand les plans changent. L'épuisement de l'anticipation constante.",
+    spheres:"La prise de décision (paralysée ou sur-analytique), les relations (besoin de prévisibilité), le travail (excellence au prix d'une charge cognitive élevée), le repos (difficile à trouver quand le mental est en alerte).",
+    couts:"Une énergie considérable mobilisée dans la préparation. Des opportunités manquées parce que le moment « parfait » n'arrive pas. Une présence au présent difficile. La fatigue de toujours devoir tout maîtriser.",
+    masque_vs_vous:"Le masque planifie, prévoit, sécurise. Derrière — une extraordinaire intelligence stratégique qui, libérée de la peur, devient une ressource précieuse plutôt qu'un fardeau.",
+    transformation:"La transformation passe par la construction progressive d'une tolérance à l'incertitude. Apprendre que l'imprévu n'est pas une menace, que les ressources pour y faire face existent, que la vie sans script complet reste navigable."
+  },
+  vert:{
+    origine:"La peur de l'abandon s'est construite dans des expériences précoces de séparation, de disponibilité émotionnelle inconsistante, ou de pertes relationnelles. Le système d'attachement a enregistré que les liens peuvent disparaître.",
+    scenes:"L'absence de réponse à un message qui déclenche l'inquiétude. La sensation de marcher sur des œufs pour ne pas déplaire. L'anticipation de la rupture avant qu'elle arrive. La difficulté à exprimer un besoin de peur de trop demander.",
+    spheres:"Les relations intimes (hypervigilance aux signaux de rejet), les amitiés (tendance à effacer ses besoins), le travail (difficulté à s'imposer ou exprimer un désaccord), l'identité (qui se définit en partie par le regard de l'autre).",
+    couts:"Des relations vécues sous tension même quand elles vont bien. Une partie de soi qui s'efface pour préserver le lien. L'épuisement de la vigilance relationnelle permanente. Des besoins non exprimés qui s'accumulent.",
+    masque_vs_vous:"Le masque surveille, s'adapte, anticipe le rejet. Derrière — une capacité d'amour profonde, une loyauté rare, une sensibilité relationnelle précieuse qui, libérée de la peur, devient la fondation de liens authentiques.",
+    transformation:"La transformation passe par la reconstruction d'une sécurité intérieure indépendante de la présence de l'autre. Apprendre que l'on peut être aimé·e même imparfait·e, même exigeant·e."
+  },
+  bleu:{
+    origine:"La peur de perdre le contrôle s'est construite dans des contextes d'impuissance — chaos familial, violence, humiliation, ou sur-responsabilisation précoce. Le contrôle est devenu la seule forme de sécurité disponible.",
+    scenes:"La résistance automatique à toute demande, même raisonnable. La difficulté à déléguer même quand cela allègerait la charge. La colère qui monte quand quelqu'un empiète sur les décisions. L'hyperorganisation comme rempart contre le chaos.",
+    spheres:"Le management (leadership efficace mais épuisant), les relations (tensions liées au besoin de maîtrise), la santé (le corps qui se raidit pour ne pas se laisser aller), la créativité (parfois bridée par le besoin de contrôle).",
+    couts:"Un isolement lié à la difficulté de faire confiance. Une charge portée seul·e qui use sur le long terme. Des relations où l'intimité est difficile à laisser entrer. La rigidité qui empêche l'adaptabilité.",
+    masque_vs_vous:"Le masque contrôle, organise, résiste. Derrière — une capacité de direction extraordinaire, un sens des responsabilités rare, une fiabilité profonde qui, libérée de la peur, devient un leadership ancré plutôt qu'armé.",
+    transformation:"La transformation passe par l'expérience progressive que lâcher prise n'est pas perdre. Reconstruire une confiance dans le monde et dans les autres à travers des expériences graduelles."
+  },
+  indigo:{
+    origine:"La peur de l'échec et du jugement s'est construite dans un environnement où la valeur conditionnelle était liée à la performance — amour reçu quand on réussissait, retiré quand on échouait. Ou dans des contextes de honte publique.",
+    scenes:"La procrastination comme évitement du jugement. L'incapacité à livrer quelque chose d'imparfait. La voix intérieure qui tourne en boucle après chaque erreur. L'hyperinvestissement dans la performance pour ne jamais être pris en défaut.",
+    spheres:"Le travail (excellence épuisante ou blocage), les projets personnels (souvent abandonnés avant d'être exposés), les relations (peur de décevoir), la prise de parole (retenue par la peur du jugement).",
+    couts:"Une énergie considérable mobilisée pour éviter l'erreur. Des projets qui n'aboutissent pas par peur de l'exposition. Une estime de soi fragile et fluctuante. La difficulté à célébrer les réussites.",
+    masque_vs_vous:"Le masque perfectionne, anticipe le jugement, s'autocritique. Derrière — une aspiration à l'excellence authentique, un souci de qualité rare, une profondeur qui, libérée de la peur, devient une force créatrice.",
+    transformation:"La transformation passe par la dissociation entre la valeur en tant que personne et la qualité des productions. Reconstruire une estime inconditionnelle — pas parce que l'on réussit, mais parce que l'on existe."
+  },
+  violet:{
+    origine:"La peur de ne plus savoir qui l'on est s'est construite dans des contextes de discontinuité identitaire — multiples ruptures, environnements radicalement différents, parentification précoce, traumatismes qui ont fragmenté le sentiment de continuité du soi.",
+    scenes:"Le sentiment d'être plusieurs personnes différentes selon les contextes. La difficulté à répondre à 'qui es-tu vraiment ?'. La peur du vide intérieur quand on s'arrête. L'hyperactivité comme rempart contre le néant.",
+    spheres:"L'identité (fragmentée, fluctuante), les relations (difficultés d'intimité par peur de disparaître dans l'autre), les transitions de vie (particulièrement déstabilisantes), le rapport au temps (discontinuité).",
+    couts:"Un sentiment de vide qui revient. La fatigue de se construire différemment selon les contextes. Des relations complexes liées à l'instabilité identitaire. La difficulté à se projeter dans un avenir cohérent.",
+    masque_vs_vous:"Le masque fuit, joue des rôles, se dissout. Derrière — une capacité de transformation exceptionnelle, une fluidité adaptative rare, une profondeur existentielle qui, ancrée dans un fil conducteur, devient une ressource unique.",
+    transformation:"La transformation passe par la reconstruction d'un fil conducteur identitaire — un sens de continuité entre passé, présent et avenir. Identifier les valeurs stables, les désirs profonds qui perdurent à travers les transformations."
+  }
+};
+
+// ── CALCULS ─────────────────────────────────────────────
+const TIEBREAK = ['jaune','rouge','indigo','vert','bleu','orange','violet'];
+
+function computeSPA(sc){
+  const t=MASKS.reduce((s,m)=>s+(sc[m]||0),0);
+  return Math.max(0,Math.min(100,Math.round(100-t/7)));
+}
+
+function lv(p){
+  if(p>=80)return'Dominant';
+  if(p>=65)return'Élevé';
+  if(p>=50)return'Significatif';
+  if(p>=30)return'Modéré';
+  return'Non significatif';
+}
+
+function detectProfile(sc){
+  const sorted=MASKS.map(m=>({k:m,v:sc[m]||0}))
+    .sort((a,b)=>b.v!==a.v?b.v-a.v:TIEBREAK.indexOf(a.k)-TIEBREAK.indexOf(b.k));
+  const max=sorted[0].v;
+  const tiebroken=sorted.filter(m=>m.v===max).length>1;
+  if(max<50)return{type:'adaptatif',masks:[sorted[0].k],tiebroken};
+  const a60=sorted.filter(m=>m.v>=60);
+  if(a60.length>=3&&(a60[0].v-a60[2].v)<=15)
+    return{type:'Triade',masks:a60.slice(0,3).map(m=>m.k),tiebroken};
+  if(sorted[0].v>=65&&sorted[1]?.v>=65&&(sorted[0].v-sorted[1].v)<=10)
+    return{type:'Dyade',masks:[sorted[0].k,sorted[1].k],tiebroken};
+  return{type:'Mono',masks:[sorted[0].k],secondary:sorted[1]?.v>=65?sorted[1].k:null,tiebroken};
+}
+
+function hexToRgba(hex,a){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return`rgba(${r},${g},${b},${a})`;
+}
+
+// ── STORAGE ──────────────────────────────────────────────
+const KEY='valeur_cabinet_v2';
+// ── DATA LAYER : localStorage (cache local) + Neon (serveur) ────────────────
+// Pattern write-through : écriture localStorage immédiate, sync Neon async
+// L'UI est toujours instantanée, les données sont sauvegardées côté serveur
+
+function load(){
+  try{ return JSON.parse(localStorage.getItem(KEY))||{patients:[]}; }catch(e){ return{patients:[]}; }
+}
+function save(data){
+  try{ localStorage.setItem(KEY,JSON.stringify(data)); }catch(e){}
+}
+
+function getPatients(){ return load().patients||[]; }
+function getPatient(id){ return getPatients().find(p=>p.id===id)||null; }
+
+function upsertPatient(p){
+  const d=load();
+  const i=d.patients.findIndex(x=>x.id===p.id);
+  if(i>=0) d.patients[i]=p; else d.patients.unshift(p);
+  save(d);
+  // Sync Neon (non-bloquant, invisible)
+  _syncPatient(p).catch(()=>{});
+}
+
+function removePatient(id){
+  const d=load(); d.patients=d.patients.filter(p=>p.id!==id); save(d);
+  fetch(CABINET_API+'/patients/'+id,{method:'DELETE',headers:CAB_HEADERS}).catch(()=>{});
+}
+
+// ── SYNC NEON ────────────────────────────────────────────────────────────────
+async function _syncPatient(p){
+  // 1. Upsert patient
+  await fetch(CABINET_API+'/patients',{
+    method:'POST', headers:CAB_HEADERS,
+    body:JSON.stringify({
+      id:p.id, prenom:p.prenom, nom:p.nom||'',
+      email:p.email||null, tel:p.tel||null,
+      dob:p.dob||null, notes:p.notes||null
+    })
+  });
+  // 2. Upsert bilans
+  for(const b of p.bilans||[]){
+    const date_bilan=b.date||new Date().toISOString().split('T')[0];
+    await fetch(CABINET_API+'/bilans',{
+      method:'POST', headers:CAB_HEADERS,
+      body:JSON.stringify({
+        id:b.id, patient_id:p.id,
+        scores:b.scores||{}, date_bilan,
+        source:b.source||'manuel', notes:b.notes||null
+      })
+    });
+  }
+  // 3. Protocole
+  if(p.bilans&&p.bilans.length>0){
+    const lb=p.bilans.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+    const moduleActif=(lb.protocole&&lb.protocole.moduleActif)||'0';
+    await fetch(CABINET_API+'/protocoles',{
+      method:'POST', headers:CAB_HEADERS,
+      body:JSON.stringify({patient_id:p.id, action:'set_module', module_code:moduleActif})
+    }).catch(()=>{});
+  }
+}
+
+// ── HYDRATATION NEON → localStorage (au démarrage) ──────────────────────────
+async function hydrateFromNeon(){
+  try{
+    const r=await fetch(CABINET_API+'/patients',{headers:CAB_HEADERS});
+    if(!r.ok) return;
+    const{patients}=await r.json();
+    if(!patients||!patients.length) return;
+    // Merger : localStorage = source de vérité si patient déjà présent
+    const local=load();
+    const localIds=new Set((local.patients||[]).map(p=>p.id));
+    const added=[];
+    patients.forEach(p=>{ if(!localIds.has(p.id)) added.push({
+      id:p.id, prenom:p.prenom, nom:p.nom||'', email:p.email||null,
+      tel:p.tel||null, dob:p.dob||null, notes:p.notes||null,
+      bilans:[], // sera chargé séparément si nécessaire
+    }); });
+    if(added.length){
+      local.patients=[...(local.patients||[]),...added];
+      save(local);
+      console.log('[Neon] '+added.length+' patient(s) synchronisé(s)');
+      renderPatientList(); renderDashboard();
+    }
+  }catch(e){ console.warn('[Neon] Hydration failed:',e.message); }
+}
+
+// ── CALCUL PROFIL : serveur d'abord, fallback local ─────────────────────────
+async function computeProfileAPI(scores){
+  try{
+    const r=await fetch(CABINET_API+'/compute-profile',{
+      method:'POST', headers:CAB_HEADERS,
+      body:JSON.stringify({scores})
+    });
+    if(r.ok){
+      const d=await r.json();
+      return{
+        type:d.profil_type, masks:d.profil_masks,
+        subType:d.profil_sub||null
+      };
+    }
+  }catch(e){ console.warn('[Neon] compute-profile fallback:',e.message); }
+  // Fallback : algorithme local (déjà présent dans detectProfile)
+  return detectProfile(scores);
+}
+
+function genId(){return'p'+Date.now()+'_'+Math.random().toString(36).slice(2,6);}
+function genBilanId(){return'b'+Date.now()+'_'+Math.random().toString(36).slice(2,6);}
+
+// ── STATE & NAVIGATION ──────────────────────────────────────────────────────
+let _activePatientId = null;
+let _activeTab = 'portrait';
+let _editPatientId = null;
+let _bilanPatientId = null;
+let _pdfPatientId = null;
+let _pdfBilanId = null;
+let _pendingPdfB64 = null;
+let _seanceEtapeIdx = null;
+let _seanceBilanId = null;
+
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  const view = document.getElementById('view-'+name);
+  if(view) view.classList.add('active');
+  const nav = document.getElementById('nav-'+name);
+  if(nav) nav.classList.add('active');
+  const bc = document.getElementById('breadcrumb');
+  const labels = {dashboard:'Tableau de bord',patients:'Mes patients'};
+  if(bc){
+    if(name==='patient' && _activePatientId){
+      const p = getPatient(_activePatientId);
+      bc.innerHTML = '<span onclick="showView(\'patients\')" style="cursor:pointer;color:var(--gold)">Patients</span> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-active">'+(p?p.prenom+' '+p.nom:'')+' </span>';
+    } else {
+      bc.innerHTML = '<span class="breadcrumb-active">'+(labels[name]||'')+'</span>';
+    }
+  }
+  if(name==='dashboard') renderDashboard();
+  if(name==='patients') renderPatientList();
+}
+
+function switchPatientTab(tab){
+  _activeTab = tab;
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ptc').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sb-patient-nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab)?.classList.add('active');
+  document.getElementById('ptc-'+tab)?.classList.add('active');
+  document.getElementById('pnav-'+tab)?.classList.add('active');
+  if(tab==='portrait') renderPortraitTab();
+  if(tab==='protocole') renderProtocoleTab();
+  if(tab==='evolution') renderEvolutionTab();
+  if(tab==='livret') renderLivretTab();
+}
+function switchTab(tab){ switchPatientTab(tab); }
+
+function openPatient(id){
+  const p = getPatient(id); if(!p) return;
+  _activePatientId = id;
+  showView('patient');
+  updateSidebarPatient(p);
+  renderBandeau(p);
+  const bb = document.getElementById('pb-btn-bilan');
+  if(bb) bb.onclick = function(){ openModalBilan(id); };
+  switchPatientTab('portrait');
+  checkPendingScores(id);
+}
+
+function updateSidebarPatient(p){
+  const bilans = (p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const lb = bilans[0]||null;
+  const m = lb&&lb.dominant ? MASK_META[lb.dominant] : null;
+  const color = m ? m.color : '#8C8278';
+  const initials = (p.prenom[0]+(p.nom?p.nom[0]:'')).toUpperCase();
+  document.getElementById('sb-patient-block').style.display = 'block';
+  const av = document.getElementById('sb-pa-avatar');
+  if(av){ av.textContent=initials; av.style.background=color; }
+  const nm = document.getElementById('sb-pa-name');
+  if(nm) nm.textContent = p.prenom+' '+p.nom;
+  const mt = document.getElementById('sb-pa-meta');
+  if(mt) mt.textContent = (m?m.short:'—')+(lb?' · SPA '+lb.spa+'%':'');
+  const eb = document.getElementById('sb-pa-etape');
+  const proto = lb&&lb.protocole;
+  if(eb){ if(proto&&proto.moduleActif){eb.textContent=proto.moduleActif;eb.style.display='inline';}else{eb.style.display='none';} }
+  const sb = document.getElementById('sb-pa-spa');
+  if(sb){ if(bilans.length>=2){const d=(bilans[0].spa||0)-(bilans[bilans.length-1].spa||0);sb.textContent=(d>=0?'+':'')+d+'%';sb.style.display='inline';}else{sb.style.display='none';} }
+  const lt = document.getElementById('tab-livret');
+  if(lt&&m) lt.textContent = 'Livret '+m.short;
+  const ltn = document.getElementById('pnav-livret');
+  if(ltn&&m) ltn.textContent = 'Livret '+m.short;
+}
+
+function renderBandeau(p){
+  const bilans = (p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const lb = bilans[0]||null;
+  const m = lb&&lb.dominant ? MASK_META[lb.dominant] : null;
+  const color = m ? m.color : '#8C8278';
+  const initials = (p.prenom[0]+(p.nom?p.nom[0]:'')).toUpperCase();
+  const age = p.dob ? Math.floor((Date.now()-new Date(p.dob))/(365.25*24*3600*1000)) : null;
+  const bd = document.getElementById('patient-bandeau');
+  if(bd) bd.style.display = 'flex';
+  const av = document.getElementById('pb-avatar');
+  if(av){ av.textContent=initials; av.style.background=color; }
+  const nm = document.getElementById('pb-name');
+  if(nm) nm.textContent = p.prenom+' '+p.nom;
+  const mt = document.getElementById('pb-meta');
+  if(mt){
+    let chips = '';
+    if(age) chips += '<span class="pb-chip" style="background:rgba(26,24,20,.06);color:var(--ink4)">'+age+' ans</span>';
+    if(m) chips += '<span class="pb-chip" style="background:'+hexToRgba(color,.1)+';color:'+color+';border:1px solid '+hexToRgba(color,.25)+'">'+m.emoji+' '+m.name+'</span>';
+    if(lb) chips += '<span class="pb-chip" style="background:rgba(168,135,58,.08);color:var(--gold)">SPA '+lb.spa+'%</span>';
+    if(lb&&lb.protocole&&lb.protocole.moduleActif) chips += '<span class="pb-chip" style="background:rgba(168,135,58,.1);color:var(--gold)">Étape '+lb.protocole.moduleActif+'</span>';
+    mt.innerHTML = chips;
+  }
+  document.querySelectorAll('[data-action="edit-patient"]').forEach(b=>{ b.onclick=function(){editPatient(p.id);}; });
+  document.querySelectorAll('[data-action="delete-patient"]').forEach(b=>{ b.onclick=function(){confirmDelete(p.id);}; });
+}
+function renderPatientHeader(p){ renderBandeau(p); }
+
+
+// ── DASHBOARD ────────────────────────────────────────────
+function renderDashboard(){
+  const patients=getPatients();
+  const allBilans=patients.flatMap(p=>(p.bilans||[]).map(b=>({...b,patient:p})));
+  const now=new Date();
+  const mois=allBilans.filter(b=>{const d=new Date(b.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();});
+  const spas=allBilans.filter(b=>b.spa).map(b=>b.spa);
+  const avgSpa=spas.length?Math.round(spas.reduce((a,b)=>a+b,0)/spas.length):null;
+
+  document.getElementById('stats-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-val">${patients.length}</div><div class="stat-lbl">Patients suivis</div></div>
+    <div class="stat-card"><div class="stat-val">${allBilans.length}</div><div class="stat-lbl">Bilans réalisés</div></div>
+    <div class="stat-card"><div class="stat-val">${mois.length}</div><div class="stat-lbl">Bilans ce mois</div></div>
+    <div class="stat-card"><div class="stat-val">${avgSpa!==null?avgSpa+'%':'—'}</div><div class="stat-lbl">SPA moyen</div></div>
+  `;
+
+  const recent=allBilans.sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,6);
+  const el=document.getElementById('recent-list');
+  if(!recent.length){el.innerHTML=`<div class="empty"><div class="empty-ico">📋</div><p>Aucun bilan encore. Créez votre premier patient.</p><button class="btn btn-primary" onclick="openModalPatient()">＋ Nouveau patient</button></div>`;return;}
+  el.innerHTML=recent.map(b=>patientRowHTML(b.patient,b)).join('');
+}
+
+// ── PATIENT LIST ─────────────────────────────────────────
+function renderPatientList(){
+  const q=(document.getElementById('search-input')?.value||'').toLowerCase();
+  const patients=getPatients().filter(p=>!q||(p.prenom+' '+p.nom).toLowerCase().includes(q));
+  const el=document.getElementById('patient-list');
+  if(!patients.length){el.innerHTML=`<div class="empty"><div class="empty-ico">👤</div><p>${q?'Aucun résultat.':'Aucun patient enregistré.'}</p><button class="btn btn-primary" onclick="openModalPatient()">＋ Nouveau patient</button></div>`;return;}
+  el.innerHTML=patients.map(p=>{
+    const lb=(p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date))[0]||null;
+    return patientRowHTML(p,lb);
+  }).join('');
+}
+
+function patientRowHTML(p,bilan){
+  const m=bilan?.dominant?MASK_META[bilan.dominant]:null;
+  const color=m?m.color:'#8C8278';
+  const initials=(p.prenom[0]+(p.nom?.[0]||'')).toUpperCase();
+  const dateStr=bilan?new Date(bilan.date).toLocaleDateString('fr-FR'):'Aucun bilan';
+  return`<div class="patient-row" onclick="openPatient('${p.id}')">
+    <div class="patient-avatar" style="background:${color}">${initials}</div>
+    <div class="patient-info">
+      <div class="patient-name">${p.prenom} ${p.nom}</div>
+      <div class="patient-meta">${dateStr} · ${(p.bilans||[]).length} bilan(s)</div>
+    </div>
+    ${m?`<span class="patient-badge" style="background:${hexToRgba(color,.1)};color:${color};border:1px solid ${hexToRgba(color,.25)}">${m.short}</span>`:'<span class="patient-badge" style="background:var(--iv3);color:var(--ink5)">Pas de bilan</span>'}
+    <div class="patient-spa"><div class="spa-val">${bilan?.spa||'—'}</div><div style="font-size:9px;color:var(--ink5)">SPA%</div></div>
+  </div>`;
+}
+
+// ── OPEN PATIENT ─────────────────────────────────────────
+function openPatient(id){
+  const p=getPatient(id);
+  if(!p)return;
+  _activePatientId=id;
+  showView('patient',`${p.prenom} ${p.nom}`);
+  document.getElementById('sb-patient-nav').style.display='block';
+  renderPatientHeader(p);
+  switchTab('portrait');
+}
+
+function renderPatientHeader(p){
+  const bilans=(p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const lb=bilans[0]||null;
+  const m=lb?.dominant?MASK_META[lb.dominant]:null;
+  const color=m?m.color:'#8C8278';
+  const initials=(p.prenom[0]+(p.nom?.[0]||'')).toUpperCase();
+  const age=p.dob?Math.floor((Date.now()-new Date(p.dob))/(365.25*24*3600*1000)):null;
+  document.getElementById('patient-header-zone').innerHTML=`
+    <div class="patient-header">
+      <div class="patient-avatar-lg" style="background:${color}">${initials}</div>
+      <div class="patient-details" style="flex:1">
+        <h2>${p.prenom} ${p.nom}</h2>
+        <div class="meta">
+          ${age?`<span>🎂 ${age} ans</span>`:''}
+          ${p.email?`<span>✉ ${p.email}</span>`:''}
+          ${p.tel?`<span>📱 ${p.tel}</span>`:''}
+          <span>📋 ${bilans.length} bilan(s)</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start">
+        <button class="btn btn-primary btn-sm" onclick="openModalBilan('${p.id}')">＋ Nouveau bilan</button>
+        <button class="btn btn-ghost btn-sm" onclick="editPatient('${p.id}')">✎ Modifier</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDelete('${p.id}')">🗑</button>
+      </div>
+    </div>
+  `;
+}
+
+// ── PORTRAIT TAB ─────────────────────────────────────────
+function renderPortraitTab(){
+  const p=getPatient(_activePatientId);
+  if(!p){return;}
+  const bilans=(p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const el=document.getElementById('portrait-content');
+  if(!bilans.length){
+    el.innerHTML=`<div class="empty card"><div class="empty-ico">📊</div><p>Aucun bilan. Saisissez les scores reçus par email après le test.</p><button class="btn btn-primary" onclick="openModalBilan('${p.id}')">＋ Nouveau bilan</button></div>`;
+    return;
+  }
+
+  // Tabs bilans
+  let html=`<div style="display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;align-items:center">`;
+  bilans.forEach((b,i)=>{
+    html+=`<button onclick="showBilanDetail('${b.id}')" id="btab-${b.id}"
+      style="padding:6px 14px;border-radius:20px;border:1px solid var(--line);background:${i===0?'var(--ink)':'#fff'};color:${i===0?'#fff':'var(--ink3)'};font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s">
+      Bilan ${bilans.length-i} · ${new Date(b.date).toLocaleDateString('fr-FR')}
+    </button>`;
+  });
+  html+=`<button class="btn btn-ghost btn-sm" onclick="openModalBilan('${p.id}')" style="margin-left:auto">＋ Bilan</button>`;
+  html+=`</div><div id="bilan-detail-zone"></div>`;
+  el.innerHTML=html;
+  showBilanDetail(bilans[0].id);
+}
+
+function showBilanDetail(bilanId){
+  const p=getPatient(_activePatientId);
+  if(!p)return;
+  const bilan=p.bilans.find(b=>b.id===bilanId);
+  if(!bilan)return;
+
+  // Update button styles
+  p.bilans.forEach(b=>{
+    const btn=document.getElementById('btab-'+b.id);
+    if(btn){btn.style.background=b.id===bilanId?'var(--ink)':'#fff';btn.style.color=b.id===bilanId?'#fff':'var(--ink3)';}
+  });
+
+  const dom=bilan.dominant;
+  const m=dom?MASK_META[dom]:null;
+  const color=m?m.color:'#8C8278';
+  const sc=bilan.scores||{};
+  const spa=bilan.spa||0;
+  const prof=bilan.profil;
+  const c=dom?CONTENT[dom]:null;
+  const circ=150;
+  const offset=circ-(spa/100)*circ;
+
+  let html=`
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="eyebrow">Emprise par masque</div>
+      ${MASKS.map(k=>{const pct=sc[k]||0,mm=MASK_META[k],isDom=k===dom;return`
+        <div class="score-bar-row">
+          <div class="score-bar-dot" style="background:${mm.color}${isDom?'':'88'}"></div>
+          <div class="score-bar-name" style="font-weight:${isDom?'600':'400'};color:${isDom?mm.color:'var(--ink3)'}">${mm.short}</div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:${pct}%;background:${mm.color}${isDom?'':'99'}"></div></div>
+          <div class="score-bar-pct" style="color:${isDom?mm.color:'var(--ink)'}">${pct}%</div>
+          <div class="badge" style="background:${hexToRgba(mm.color,isDom?.12:.05)};color:${isDom?mm.color:'var(--ink4)'}">${lv(pct)}</div>
+        </div>`;}).join('')}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="eyebrow">Présence Authentique</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:8px">
+          <div class="spa-ring-wrap">
+            <svg width="76" height="76" viewBox="0 0 76 76">
+              <circle cx="38" cy="38" r="29" fill="none" stroke="var(--iv3)" stroke-width="7"/>
+              <circle cx="38" cy="38" r="29" fill="none" stroke="${color}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+            </svg>
+            <div class="spa-center"><span class="num" style="color:${color}">${spa}</span><span class="pct">%</span></div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px">${spa>=70?'Présence significative':spa>=50?'Présence modérée':spa>=30?'Présence réduite':'Présence faible'}</div>
+            <div style="font-size:11px;color:var(--ink4)">Fonctionnement hors masques</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Configuration</div>
+        ${m?`<div style="display:flex;align-items:center;gap:10px;margin:8px 0">
+          <div style="width:30px;height:30px;border-radius:50%;background:${hexToRgba(color,.15)};border:2px solid ${hexToRgba(color,.3)};display:flex;align-items:center;justify-content:center;font-size:14px">${m.emoji}</div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--ink)">${m.name}</div>
+          <div style="font-size:11px;color:var(--ink4)">${prof?.type||'Mono'} ${prof?.masks?.length>1?'· '+prof.masks.length+' masques':''}</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);line-height:1.6">${m.peur}</div>`:'<div style="color:var(--ink4);font-size:12px">Non défini</div>'}
+      </div>
+      <div class="card card-sm" style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div class="eyebrow" style="margin-bottom:2px">Source</div>
+          <div style="font-size:12px;color:var(--ink3)">${{seance:'Séance cabinet',distance:'Test à distance',upload:'Portrait public'}[bilan.source]||bilan.source||'—'}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          ${bilan.portraitPdfB64?`<button class="btn btn-ghost btn-sm" onclick="viewPdf('${bilan.id}')">📄 Portrait</button>`:''}
+          <button class="btn btn-ghost btn-sm" onclick="openPortraitComplet('${bilan.id}')">🔍 Portrait 14p</button>
+          ${bilan.profil&&bilan.profil.type&&bilan.profil.type!=='Mono dominant'&&bilan.profil.masks&&bilan.profil.masks.length>1?`
+          <button class="btn btn-gold btn-sm" onclick="viewConfig('${bilan.id}')">🔗 Configuration</button>
+          <button class="btn btn-ghost btn-sm" onclick="printConfig('${bilan.id}')">🖨 Imprimer</button>
+          `:''}
+          <button class="btn btn-ghost btn-sm" onclick="openModalPdf('${_activePatientId}','${bilan.id}')">📎 Upload PDF</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteBilan('${bilan.id}')">🗑</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  // Portrait clinique
+  if(c){
+    html+=`<div class="card"><div class="eyebrow" style="margin-bottom:16px">Portrait clinique complet — ${m?.name||''}</div>`;
+    [{k:'origine',t:"Origine du masque"},{k:'scenes',t:"Scènes typiques"},{k:'spheres',t:"Sphères impactées"},{k:'couts',t:"Coûts cachés"},{k:'masque_vs_vous',t:"Masque vs nature authentique"},{k:'transformation',t:"Chemin de transformation"}]
+    .forEach(s=>{html+=`<div class="portrait-section"><div class="portrait-section-title">${s.t}</div><div class="portrait-content">${c[s.k]||''}</div></div>`;});
+    html+=`</div>`;
+  }
+
+  // Notes
+  html+=`<div class="card" style="margin-top:14px">
+    <div class="eyebrow">Notes du praticien</div>
+    <textarea class="notes-area" id="notes-bilan" onblur="saveNotesB('${bilan.id}')" style="margin-top:8px">${bilan.notes||''}</textarea>
+  </div>`;
+
+  document.getElementById('bilan-detail-zone').innerHTML=html;
+}
+
+// ── PROTOCOLE TAB (délégue à v2) ────────────────────────────────────────────
+function renderProtocoleTab(){ renderProtocoleTabV2(); }
+
+// ── EVOLUTION TAB ────────────────────────────────────────
+function renderEvolutionTab(){
+  const p=getPatient(_activePatientId);
+  if(!p)return;
+  const bilans=(p.bilans||[]).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const el=document.getElementById('evolution-content');
+
+  if(bilans.length<2){
+    el.innerHTML=`<div class="empty card"><div class="empty-ico">📈</div><p>Deux bilans minimum pour afficher l'évolution.</p></div>`;
+    return;
+  }
+
+  const dom=bilans[bilans.length-1].dominant;
+  const m=dom?MASK_META[dom]:null;
+  const spas=bilans.map(b=>({date:new Date(b.date).toLocaleDateString('fr-FR'),spa:b.spa||0}));
+  const spaDelta=(bilans[bilans.length-1].spa||0)-(bilans[0].spa||0);
+
+  let html=`
+  <div class="card" style="margin-bottom:14px">
+    <div class="eyebrow">Évolution SPA · ${bilans.length} bilans</div>
+    <div style="display:flex;align-items:center;gap:16px;margin:14px 0">
+      <div><div class="eyebrow" style="margin-bottom:2px">Initial</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300">${bilans[0].spa||'—'}<span style="font-size:14px;color:var(--ink4)">%</span></div>
+        <div style="font-size:10px;color:var(--ink5)">${spas[0].date}</div>
+      </div>
+      <div style="font-size:24px;color:var(--ink4)">→</div>
+      <div><div class="eyebrow" style="margin-bottom:2px">Actuel</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:${spaDelta>=0?'var(--vert)':'var(--rouge)'}">${bilans[bilans.length-1].spa||'—'}<span style="font-size:14px">%</span></div>
+        <div style="font-size:10px;color:var(--ink5)">${spas[spas.length-1].date}</div>
+      </div>
+      <div style="margin-left:12px;padding:12px 18px;background:${spaDelta>=0?'rgba(45,122,79,.08)':'rgba(181,49,42,.08)'};border-radius:var(--r);border:1px solid ${spaDelta>=0?'rgba(45,122,79,.2)':'rgba(181,49,42,.2)'}">
+        <div class="eyebrow" style="color:${spaDelta>=0?'var(--vert)':'var(--rouge)'}">Évolution</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:${spaDelta>=0?'var(--vert)':'var(--rouge)'}">${spaDelta>0?'+':''}${spaDelta}%</div>
+      </div>
+    </div>
+    ${buildSPAChart(bilans)}
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">Évolution des 7 masques</div>
+    <div style="display:flex;gap:16px;margin:10px 0 14px;flex-wrap:wrap;font-size:10px;color:var(--ink4)">
+      ${bilans.map((b,i)=>`<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${i===0?'var(--ink5)':i===bilans.length-1?m?.color||'var(--gold)':'var(--ink4)'};margin-right:4px"></span>Bilan ${i+1} (${new Date(b.date).toLocaleDateString('fr-FR')})</span>`).join('')}
+    </div>
+    ${MASKS.map(k=>{
+      const mm=MASK_META[k];
+      return`<div style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div style="width:8px;height:8px;border-radius:50%;background:${mm.color};flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:500;color:${mm.color};width:56px">${mm.short}</span>
+          ${bilans.map((b,i)=>{const pct=b.scores?.[k]||0;const isLast=i===bilans.length-1;return`
+            <div style="flex:1;position:relative">
+              <div style="height:${i===0?6:4}px;background:${hexToRgba(mm.color,isLast?.85:.25)};border-radius:2px;width:${pct}%;transition:width .8s ease"></div>
+            </div>
+            <span style="font-size:10px;font-weight:${isLast?600:400};color:${isLast?mm.color:'var(--ink4)'};min-width:30px;text-align:right">${pct}%</span>`;}).join('')}
+          <span style="font-size:10px;color:${(bilans[bilans.length-1].scores?.[k]||0)-(bilans[0].scores?.[k]||0)<0?'var(--vert)':'var(--rouge)'};min-width:38px;text-align:right;font-weight:500">
+            ${(()=>{const d=(bilans[bilans.length-1].scores?.[k]||0)-(bilans[0].scores?.[k]||0);return(d>0?'+':'')+d+'%';})()}
+          </span>
+        </div>
+      </div>`;}).join('')}
+  </div>`;
+
+  el.innerHTML=html;
+}
+
+function buildSPAChart(bilans){
+  if(bilans.length<2)return'';
+  const W=500,H=80,pad=20;
+  const spas=bilans.map(b=>b.spa||0);
+  const maxV=100,minV=0;
+  const pts=spas.map((v,i)=>{
+    const x=pad+(i/(bilans.length-1))*(W-pad*2);
+    const y=H-pad-(v-minV)/(maxV-minV)*(H-pad*2);
+    return`${x},${y}`;
+  }).join(' ');
+  const polyline=`<polyline points="${pts}" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const dots=spas.map((v,i)=>{
+    const x=pad+(i/(bilans.length-1))*(W-pad*2);
+    const y=H-pad-(v-minV)/(maxV-minV)*(H-pad*2);
+    return`<circle cx="${x}" cy="${y}" r="4" fill="var(--gold)" stroke="#fff" stroke-width="2"/>
+    <text x="${x}" y="${y-8}" text-anchor="middle" font-size="10" fill="var(--ink4)" font-family="DM Sans,sans-serif">${v}%</text>`;
+  }).join('');
+  return`<svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible;margin-top:8px">
+    <line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" stroke="var(--iv3)" stroke-width="1"/>
+    ${polyline}${dots}
+  </svg>`;
+}
+
+// ── LIVRET TAB ───────────────────────────────────────────
+function getPatientBundle(p){
+  var bilans=(p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  var lb=bilans[0]||null;
+  var dom=lb&&lb.dominant;
+  var profil=lb&&lb.profil;
+  var type=profil&&profil.type||'';
+  var masks=profil&&profil.masks||[];
+  var NAMES={rouge:'Rouge',orange:'Orange',jaune:'Jaune',vert:'Vert',bleu:'Bleu',indigo:'Indigo',violet:'Violet'};
+  var COLORS={rouge:'#B5312A',orange:'#C4581F',jaune:'#B8930A',vert:'#2D7A4F',bleu:'#1D5F8A',indigo:'#5C3280',violet:'#7A3594'};
+  var CONFIG_MAP={
+    'bleu+indigo':'indigo_bleu','indigo+bleu':'indigo_bleu',
+    'bleu+rouge':'rouge_bleu','rouge+bleu':'rouge_bleu',
+    'bleu+vert':'vert_bleu','vert+bleu':'vert_bleu',
+    'indigo+jaune':'jaune_indigo','jaune+indigo':'jaune_indigo',
+    'indigo+vert':'vert_indigo','vert+indigo':'vert_indigo',
+    'jaune+orange':'jaune_orange','orange+jaune':'jaune_orange',
+    'jaune+rouge':'rouge_jaune','rouge+jaune':'rouge_jaune',
+    'jaune+vert':'jaune_vert','vert+jaune':'jaune_vert',
+    'jaune+violet':'violet_jaune','violet+jaune':'violet_jaune',
+    'orange+rouge':'rouge_orange','rouge+orange':'rouge_orange',
+    'orange+vert':'orange_vert','vert+orange':'orange_vert',
+    'orange+violet':'orange_violet','violet+orange':'orange_violet',
+    'bleu+indigo+orange':'indigo_bleu_orange','indigo+bleu+orange':'indigo_bleu_orange','orange+indigo+bleu':'indigo_bleu_orange',
+    'indigo+jaune+vert':'jaune_indigo_vert','jaune+indigo+vert':'jaune_indigo_vert','vert+indigo+jaune':'jaune_indigo_vert',
+    'indigo+violet+vert':'vert_indigo_violet','vert+indigo+violet':'vert_indigo_violet','violet+vert+indigo':'vert_indigo_violet',
+    'bleu+jaune+vert':'vert_bleu_jaune','vert+bleu+jaune':'vert_bleu_jaune','jaune+vert+bleu':'vert_bleu_jaune',
+    'jaune+orange+rouge':'rouge_jaune_orange','orange+rouge+jaune':'rouge_jaune_orange','rouge+jaune+orange':'rouge_jaune_orange',
+  };
+  var bundle=[];
+  // Psychoed toujours en premier
+  bundle.push({nom:'Psycho\u00e9ducation V.A.L.E.U.R\u00a9',url:'/livret_psychoeducation.html',type:'intro',color:'#A8873A'});
+  // Protocole toujours
+  bundle.push({nom:'Protocole V.A.L.E.U.R\u00a9',url:'/protocole_valeur.html',type:'protocole',color:'#A8873A'});
+
+  if(type==='Dyade'||type==='Triade'){
+    var key=masks.slice().sort().join('+');
+    var code=CONFIG_MAP[key]||null;
+    if(code){
+      bundle.push({nom:'Configuration : '+masks.map(function(m){return NAMES[m]||m;}).join(' + '),
+        url:'/livret_dyades_triades.html?section='+code,type:'config',
+        color:dom?COLORS[dom]:'#1D5F8A'});
+    }
+  } else {
+    // Mono dominant ou résiduel
+    if(dom){
+      bundle.push({nom:'Livret Masque '+(NAMES[dom]||dom),url:'/livret_'+dom+'.html',type:'livret',color:COLORS[dom]||'#8C8278'});
+      bundle.push({nom:'Workbook 21 d\u00e9fis',url:'/workbook_21defis_'+dom+'.html',type:'workbook',color:COLORS[dom]||'#8C8278'});
+    }
+  }
+  return bundle;
+}
+
+function copyBundleLinks(p){
+  var bundle=getPatientBundle(p);
+  var base='https://cabinet.psyh.fr';
+  var text='Vos ressources V.A.L.E.U.R\u00a9 :\n\n'+bundle.map(function(b){return '\u2022 '+b.nom+' : '+base+b.url;}).join('\n');
+  navigator.clipboard.writeText(text).then(function(){toast('\U0001f517 Liens copi\u00e9s pour '+p.prenom);});
+}
+
+function renderLivretTab(){
+  var p=getPatient(_activePatientId);if(!p)return;
+  var bilans=(p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  var dom=bilans[0]&&bilans[0].dominant;
+  var profil=bilans[0]&&bilans[0].profil;
+  var proto=bilans[0]&&bilans[0].protocole;
+  var activeKey=proto&&proto.moduleActif;
+  var ANCRES={'0':'intro','V':'mod1','A':'mod2','L':'mod3','E':'mod4','U':'mod5','R':'mod6'};
+  var ancre=activeKey?ANCRES[activeKey]:'';
+  var m=dom?MASK_META[dom]:null;
+  var el=document.getElementById('livret-content');
+
+  if(!bilans.length){
+    el.innerHTML='<div class="empty card"><div class="empty-ico">\U0001f4da</div><p>Cr\u00e9ez un bilan pour acc\u00e9der aux livrets personnalis\u00e9s.</p></div>';
+    return;
+  }
+
+  var bundle=getPatientBundle(p);
+  var COLORS={'intro':'#A8873A','protocole':'#A8873A','config':'#1D5F8A','livret':m?m.color:'#8C8278','workbook':m?m.color:'#8C8278'};
+  var TYPE_LABELS={'intro':'Introduction','protocole':'Protocole','config':'Configuration','livret':'Livret masque','workbook':'Workbook'};
+  var base='https://cabinet.psyh.fr';
+
+  var bundleHtml=bundle.map(function(b){
+    var col=b.color||'#A8873A';
+    return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--line);border-radius:var(--r);margin-bottom:8px;background:#fff">'
+      +'<div style="width:6px;height:40px;border-radius:3px;background:'+col+';flex-shrink:0"></div>'
+      +'<div style="flex:1">'
+        +'<div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:'+col+';margin-bottom:2px">'+(TYPE_LABELS[b.type]||b.type)+'</div>'
+        +'<div style="font-size:13px;font-weight:500;color:var(--ink)">'+b.nom+'</div>'
+      +'</div>'
+      +'<div style="display:flex;gap:5px">'
+        +'<button class="btn btn-primary btn-sm" onclick="window.open(\''+b.url+'\',\'_blank\')">📖 Ouvrir</button>'
+        +'<button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText(\''+base+b.url+'\').then(()=>toast(\'\U0001f517 Lien copi\u00e9\'))">🔗</button>'
+        +(b.type==='config'?'<button class="btn btn-ghost btn-sm" onclick="window.open(\''+b.url+'&print=1\',\'_blank\')">🖨</button>':'')
+      +'</div>'
+    +'</div>';
+  }).join('');
+
+  // Livrets complémentaires (accès direct à tous les masques)
+  var otherMasks=Object.keys(MASK_META).filter(function(k){return k!==dom;});
+  var othersHtml='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px">'
+    +[...Object.keys(MASK_META)].map(function(k){
+      var mm=MASK_META[k];
+      return '<div onclick="openLivretMasque(\''+k+'\',\'\')" style="cursor:pointer;padding:10px 12px;border:1px solid rgba(0,0,0,.07);border-radius:var(--r);background:#fff;display:flex;align-items:center;gap:7px;transition:all .15s" onmouseover="this.style.borderColor=\''+mm.color+'\'" onmouseout="this.style.borderColor=\'rgba(0,0,0,.07)\'">'
+        +'<span style="font-size:14px">'+mm.emoji+'</span>'
+        +'<span style="font-size:11px;font-weight:500;color:'+mm.color+'">'+mm.short+'</span>'
+      +'</div>';
+    }).join('')
+  +'</div>';
+
+  el.innerHTML=
+    // Bundle personnalisé
+    '<div class="card" style="margin-bottom:14px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'
+        +'<div><span class="eyebrow">Acc\u00e8s personnalis\u00e9</span>'
+        +'<div style="font-size:15px;font-weight:500;color:var(--ink)">Ressources de '+(p.prenom||'ce patient')+'</div></div>'
+        +'<button class="btn btn-gold btn-sm" onclick="copyBundleLinks(getPatient(\''+p.id+'\'))">🔗 Copier tous les liens</button>'
+      +'</div>'
+      +bundleHtml
+    +'</div>'
+    // Livrets complémentaires
+    +'<div class="card card-sm">'
+      +'<div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:10px">Tous les livrets masques</div>'
+      +othersHtml
+    +'</div>';
+}
+
+function openLivretMasque(masque,ancre){ window.open('/livret_'+(masque||'vert')+'.html'+(ancre?'#'+ancre:''),'_blank'); }
+function openWorkbook(masque){ window.open('/workbook_21defis_'+(masque||'vert')+'.html','_blank'); }
+function copyLink(){
+  navigator.clipboard.writeText(getCabinetLink(null)).then(()=>toast('Lien copi\u00e9'));
+}
+
+
+function exportData(){
+  const data=load();
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='cabinet_valeur_'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();toast('Sauvegarde téléchargée');
+}
+
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!data.patients)throw new Error();
+      if(!confirm(`Restaurer ${data.patients.length} patients ? Les données actuelles seront remplacées.`))return;
+      save(data);location.reload();
+    }catch(err){alert('Fichier invalide.');}
+  };
+  reader.readAsText(file);
+}
+
+
+// ── DONNÉES PROTOCOLE V.A.L.E.U.R© ─────────────────────────────────────────
+const PROTOCOLE_DATA = {
+  '0': {
+    lettre: '0',
+    nom: 'FONDATIONS',
+    semaines: 'Avant le parcours',
+    citation: 'Votre anxiété n\'est pas abstraite — elle a une adresse précise dans votre corps et dans votre cerveau.',
+    concept: 'Comprendre la biologie de vos masques avant de commencer. Le Système Nerveux Autonome, l\'amygdale, la formule D=e×r². Ces fondations sont le langage commun de tout le parcours.',
+    exerciceCle: 'Lecture du portrait · D=e×r² · Module 0 du livret',
+    travailPatient: 'Lire les pages fondations du livret. Cocher les manifestations qui résonnent.',
+    ancre: 'module-0',
+    couleur: '#8C8278',
+    seancesReco: 1
+  },
+  'V': {
+    lettre: 'V',
+    nom: 'VOIR',
+    semaines: 'Semaines 1–2',
+    citation: 'Je vois ce qui m\'active.',
+    concept: 'La Conscience Observatrice — la part de vous qui peut regarder le masque sans en être. Si vous pouvez observer un problème, une part de vous n\'est pas ce problème.',
+    exerciceCle: 'Conscience Observatrice · Les 3 questions de VOIR · Témoin bienveillant',
+    travailPatient: 'Journal Semaines 1–2 : noter les déclencheurs quotidiens. Observer sans juger.',
+    ancre: 'VOIR',
+    couleur: '#1D5F8A',
+    seancesReco: 2
+  },
+  'A': {
+    lettre: 'A',
+    nom: 'ACCUEILLIR',
+    semaines: 'Semaines 3–4',
+    citation: 'Je reçois ce qui est là, sans lui ajouter de combat.',
+    concept: 'La résistance amplifie la souffrance : D=e×r². Les émotions ne sont pas des ennemies — ce sont des messagers. La cohérence cardiaque comme outil physiologique.',
+    exerciceCle: 'Formule de la résistance · Météo émotionnelle · Cohérence cardiaque (5 min/jour)',
+    travailPatient: 'Journal Semaines 3–4 : météo émotionnelle quotidienne. 3 séances de cohérence cardiaque par jour.',
+    ancre: 'ACCUEILLIR',
+    couleur: '#B5312A',
+    seancesReco: 2
+  },
+  'L': {
+    lettre: 'L',
+    nom: 'LOCALISER',
+    semaines: 'Semaines 5–6',
+    citation: 'Le corps ne ment jamais.',
+    concept: 'Trouver l\'adresse exacte de la peur dans le corps. La thermographie des émotions — votre masque produit des tensions spécifiques. Le corps est une boussole, pas un ennemi.',
+    exerciceCle: 'Body Scan V.A.L.E.U.R© · Carte corporelle du masque dominant · Respirer vers la zone',
+    travailPatient: 'Journal corporel Semaines 5–6 : noter les sensations physiques lors des déclencheurs.',
+    ancre: 'LOCALISER',
+    couleur: '#C4581F',
+    seancesReco: 2
+  },
+  'E': {
+    lettre: 'E',
+    nom: 'EXPLORER',
+    semaines: 'Semaines 7–8',
+    citation: 'Le conflit intérieur est la manifestation de votre conscience profonde qui lutte contre les réflexes de votre ego.',
+    concept: 'Explorer le conflit entre le masque et la valeur authentique. Le masque protège quelque chose — mais au prix de quelque chose d\'autre. Clarifier ce qui compte vraiment.',
+    exerciceCle: 'Les 7 questions du dialogue · Technique des 5 pourquoi · Cartographie des valeurs · Nommer le conflit',
+    travailPatient: 'Journal d\'exploration Semaines 7–8 : identifier la valeur derrière le masque.',
+    ancre: 'EXPLORER',
+    couleur: '#B8930A',
+    seancesReco: 2
+  },
+  'U': {
+    lettre: 'U',
+    nom: 'UNIFIER',
+    semaines: 'Semaines 9–10',
+    citation: 'Ce n\'est pas la paix par la capitulation — c\'est la paix par l\'intelligence.',
+    concept: 'Réconcilier les parties en conflit. Honorer le besoin de sécurité ET le désir de liberté. Le masque a eu raison d\'être là. Il peut maintenant être remercié et déposé.',
+    exerciceCle: 'Les 3 questions d\'unification · "J\'ai peur ET..." · Lettre au masque dominant · Acte de fidélité',
+    travailPatient: 'Journal d\'unification Semaines 9–10 : pratiquer la formule "J\'ai peur ET..." quotidiennement.',
+    ancre: 'UNIFIER',
+    couleur: '#2D7A4F',
+    seancesReco: 3
+  },
+  'R': {
+    lettre: 'R',
+    nom: 'RENFORCER',
+    semaines: 'Semaines 11–12',
+    citation: 'Répéter le nouveau choix — jusqu\'à ce qu\'il devienne votre nouvelle nature.',
+    concept: 'La plasticité cérébrale — remplacer une autoroute par une autre. La loi des 90 jours. Chaque nouveau choix conscient élargit le nouveau sentier. Les 4 piliers du renforcement.',
+    exerciceCle: 'Les 4 piliers du renforcement · 16 défis progressifs · Bilan 12 semaines · Lettre au soi futur',
+    travailPatient: 'Journal de renforcement Semaines 11–12 : poser un nouveau choix différent 3 fois par semaine.',
+    ancre: 'RENFORCER',
+    couleur: '#A8873A',
+    seancesReco: 2
+  }
+};
+
+const ETAPES_ORDRE = ['0','V','A','L','E','U','R'];
+
+// ── PROTOCOLE INIT v2 ────────────────────────────────────────────────────────
+function initProtocoleV2(){
+  return {
+    version: 2,
+    phase: 'fondations',       // fondations | parcours | cloture
+    moduleActif: '0',
+    dateDebut: new Date().toISOString(),
+    etapes: ETAPES_ORDRE.map(key=>{
+      const d = PROTOCOLE_DATA[key];
+      return {
+        key,
+        statut: key==='0' ? 'actif' : 'locked',
+        dateDebut: key==='0' ? new Date().toISOString() : null,
+        dateBilan: null,
+        seances: [],
+        bilanNotes: '',
+        journalNotes: ''
+      };
+    }),
+    bilanFinalId: null
+  };
+}
+
+function getEtapeIdx(key){ return ETAPES_ORDRE.indexOf(key); }
+function getEtapeStatut(proto, key){ return proto.etapes.find(e=>e.key===key)?.statut||'locked'; }
+
+function validerBilanEtape(bilanId, etapeKey){
+  const p = getPatient(_activePatientId); if(!p) return;
+  const bi = p.bilans.findIndex(b=>b.id===bilanId); if(bi<0) return;
+  if(!p.bilans[bi].protocole) p.bilans[bi].protocole = initProtocoleV2();
+  const proto = p.bilans[bi].protocole;
+  const etapeIdx = getEtapeIdx(etapeKey);
+  const etape = proto.etapes[etapeIdx];
+  if(!etape) return;
+
+  // Valider l'étape courante
+  etape.statut = 'valide';
+  etape.dateBilan = new Date().toISOString();
+
+  // Déverrouiller la suivante
+  const next = proto.etapes[etapeIdx + 1];
+  if(next){
+    next.statut = 'actif';
+    next.dateDebut = new Date().toISOString();
+    proto.moduleActif = next.key;
+    proto.phase = next.key === '0' ? 'fondations' : next.key === 'R' ? 'parcours' : 'parcours';
+  } else {
+    proto.phase = 'cloture';
+    proto.moduleActif = null;
+  }
+
+  p.bilans[bi].protocole = proto;
+  upsertPatient(p);
+  renderProtocoleTab();
+  toast('Bilan ' + PROTOCOLE_DATA[etapeKey].nom + ' validé — ' + (next ? PROTOCOLE_DATA[next.key]?.nom + ' débloqué' : 'Parcours terminé !'));
+}
+
+// ── RENDER PROTOCOLE TAB v2 ──────────────────────────────────────────────────
+function renderProtocoleTabV2(){
+  const p = getPatient(_activePatientId); if(!p) return;
+  const bilans = (p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const el = document.getElementById('protocole-content');
+
+  if(!bilans.length){
+    el.innerHTML=`<div class="empty card"><div class="empty-ico">🗺</div><p>Créez un bilan pour démarrer le protocole.</p></div>`;
+    return;
+  }
+
+  // Utiliser le bilan le plus récent
+  const bilan = bilans[0];
+  const dom = bilan.dominant;
+  const m = dom ? MASK_META[dom] : null;
+  const color = m ? m.color : '#A8873A';
+
+  // Migrer ancien protocole si besoin
+  if(!bilan.protocole || !bilan.protocole.version){
+    bilan.protocole = initProtocoleV2();
+    p.bilans[p.bilans.findIndex(b=>b.id===bilan.id)].protocole = bilan.protocole;
+    upsertPatient(p);
+  }
+
+  const proto = bilan.protocole;
+  const done = proto.etapes.filter(e=>e.statut==='valide').length;
+  const total = ETAPES_ORDRE.length;
+  const pct = Math.round(done/total*100);
+
+  // En-tête
+  let html = `
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div>
+        <div class="eyebrow">Parcours V.A.L.E.U.R© — 12 semaines</div>
+        <div style="font-size:12px;color:var(--ink4)">${m?m.name:''} · Démarré le ${new Date(proto.dateDebut).toLocaleDateString('fr-FR')}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:${color}">${done}/${total}</div>
+        <div style="font-size:9px;color:var(--ink5);letter-spacing:1px;text-transform:uppercase">Modules validés</div>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:8px">
+      ${ETAPES_ORDRE.map(key=>{
+        const e = proto.etapes.find(et=>et.key===key);
+        const d = PROTOCOLE_DATA[key];
+        const st = e?.statut||'locked';
+        return `<div style="text-align:center;flex:1">
+          <div style="width:28px;height:28px;border-radius:50%;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid ${st==='valide'?d.couleur:st==='actif'?d.couleur:'var(--iv3)'};background:${st==='valide'?d.couleur:st==='actif'?hexToRgba(d.couleur,.12):'#fff'};color:${st==='valide'?'#fff':st==='actif'?d.couleur:'var(--ink5)'}">
+            ${st==='valide'?'✓':d.lettre}
+          </div>
+          <div style="font-size:8px;color:${st==='locked'?'var(--ink5)':st==='valide'?d.couleur:'var(--ink3)'}">${d.nom}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  // Modules
+  proto.etapes.forEach((etape, i) => {
+    const d = PROTOCOLE_DATA[etape.key];
+    if(!d) return;
+    const st = etape.statut;
+    const isLocked = st === 'locked';
+    const isActif = st === 'actif';
+    const isValide = st === 'valide';
+    const seances = etape.seances || [];
+    const totalSeances = seances.length;
+
+    html += `
+    <div style="border:1px solid ${isActif?d.couleur:isValide?hexToRgba(d.couleur,.3):'var(--line)'};border-radius:12px;overflow:hidden;margin-bottom:12px;opacity:${isLocked?.4:1};background:${isValide?hexToRgba(d.couleur,.02):'#fff'}">
+      
+      <!-- Header module -->
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:${isLocked?'default':'pointer'}" onclick="${isLocked?'':('toggleModuleBody('+i+')')}">
+        <div style="width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;letter-spacing:1px;background:${isValide?d.couleur:isActif?hexToRgba(d.couleur,.15):'var(--iv3)'};color:${isValide?'#fff':isActif?d.couleur:'var(--ink5)'};border:2px solid ${isActif?d.couleur:'transparent'}">
+          ${isValide?'✓':d.lettre}
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
+            <span style="font-size:13px;font-weight:600;color:${isLocked?'var(--ink5)':d.couleur}">${d.nom}</span>
+            ${isActif?`<span style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:${hexToRgba(d.couleur,.1)};color:${d.couleur}">EN COURS</span>`:''}
+            ${isValide?`<span style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(45,122,79,.1);color:var(--vert)">✓ VALIDÉ</span>`:''}
+            ${isLocked?`<span style="font-size:9px;color:var(--ink5)">🔒 Verrouillé</span>`:''}
+          </div>
+          <div style="font-size:11px;color:var(--ink4)">${d.semaines} · ${totalSeances}/${d.seancesReco} séance(s)</div>
+        </div>
+        ${!isLocked?`<span style="color:var(--ink5);font-size:14px" id="chevron-${i}">▾</span>`:''}
+      </div>
+
+      <!-- Body module -->
+      ${!isLocked?`
+      <div id="mbody-${i}" style="display:${isActif?'block':'none'};border-top:1px solid ${hexToRgba(d.couleur,.15)};padding:16px 18px">
+        
+        <!-- Citation -->
+        <div style="border-left:2.5px solid ${d.couleur};padding:8px 12px;margin-bottom:14px;background:${hexToRgba(d.couleur,.04)};border-radius:0 6px 6px 0">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--ink3);line-height:1.7;margin:0">«\u00a0${d.citation}\u00a0»</p>
+        </div>
+
+        <!-- Concept -->
+        <div style="margin-bottom:14px">
+          <div class="eyebrow" style="margin-bottom:6px">Concept de l'étape</div>
+          <p style="font-size:12.5px;color:var(--ink3);line-height:1.75">${d.concept}</p>
+        </div>
+
+        <!-- 2 colonnes : exercice + travail patient -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <div style="background:${hexToRgba(d.couleur,.06)};border-radius:8px;padding:12px 14px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${d.couleur};margin-bottom:6px">Exercice en séance</div>
+            <p style="font-size:12px;color:var(--ink3);line-height:1.65">${d.exerciceCle}</p>
+            <a href="/livret_${dom||'vert'}.html#${d.ancre}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:10px;font-weight:600;color:${d.couleur};text-decoration:none;padding:4px 10px;border:1px solid ${hexToRgba(d.couleur,.3)};border-radius:20px">📖 Livret →</a>
+          </div>
+          <div style="background:rgba(240,235,225,.45);border-radius:8px;padding:12px 14px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:6px">Travail intersession</div>
+            <p style="font-size:12px;color:var(--ink3);line-height:1.65">${d.travailPatient}</p>
+          </div>
+        </div>
+
+        <!-- Journal intersession praticien -->
+        <div style="margin-bottom:14px">
+          <div class="eyebrow" style="margin-bottom:5px">Notes de l'étape</div>
+          <textarea class="notes-area" style="min-height:60px" 
+            placeholder="Observations, résistances, avancées notables…"
+            onblur="saveEtapeNotes('${bilan.id}',${i},this.value)">${etape.bilanNotes||''}</textarea>
+        </div>
+
+        <!-- Séances -->
+        <div style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div class="eyebrow">Séances (${totalSeances}/${d.seancesReco} recommandées)</div>
+            <button class="btn btn-ghost btn-sm" onclick="openModalSeance(${i},'${bilan.id}')">＋ Séance</button>
+          </div>
+          ${totalSeances?`
+          <div style="display:flex;flex-direction:column;gap:4px">
+            ${seances.map((s,si)=>`
+            <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:var(--iv2);border-radius:6px;font-size:12px">
+              <span style="color:var(--ink5);width:70px;flex-shrink:0">${new Date(s.date).toLocaleDateString('fr-FR')}</span>
+              <span style="flex:1;color:var(--ink3)">${s.notes||'—'}</span>
+              <span style="color:var(--ink5);flex-shrink:0">${s.duree||60} min</span>
+            </div>`).join('')}
+          </div>`:'<div style="font-size:11px;color:var(--ink5);padding:6px 0">Aucune séance enregistrée.</div>'}
+        </div>
+
+        <!-- Bilan d'étape -->
+        ${!isValide?`
+        <div style="border-top:1px solid var(--line);padding-top:14px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:12px;color:var(--ink4)">
+            ${totalSeances>=d.seancesReco?`<span style="color:var(--vert)">✓ Séances complètes</span>`:`<span style="color:var(--rouge)">${d.seancesReco - totalSeances} séance(s) manquante(s)</span>`}
+          </div>
+          <button class="btn btn-sm" 
+            onclick="validerBilanEtape('${bilan.id}','${etape.key}')"
+            style="background:${d.couleur};color:#fff;font-weight:600">
+            Valider le bilan ${d.nom} →
+          </button>
+        </div>`:`
+        <div style="border-top:1px solid var(--line);padding-top:12px;display:flex;align-items:center;gap:8px">
+          <span style="color:var(--vert);font-size:12px">✓ Bilan validé le ${new Date(etape.dateBilan).toLocaleDateString('fr-FR')}</span>
+        </div>`}
+
+      </div>`:''}
+    </div>`;
+  });
+
+  // Phase clôture
+  if(proto.phase === 'cloture'){
+    html += `
+    <div style="border:2px solid var(--gold);border-radius:12px;padding:20px 24px;background:rgba(168,135,58,.04);margin-top:4px">
+      <div class="eyebrow" style="margin-bottom:10px">Parcours 12 semaines — Clôture</div>
+      <p style="font-size:13px;color:var(--ink3);line-height:1.75;margin-bottom:14px">Toutes les étapes sont validées. Il est maintenant pertinent de réaliser un bilan de contrôle pour mesurer l'évolution.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="openModalBilan('${_activePatientId}')">Re-test → Bilan final</button>
+        <a href="/livret_${dom||'vert'}.html#bilan-final" target="_blank" class="btn btn-ghost btn-sm">Lettre au soi futur</a>
+      </div>
+    </div>`;
+  }
+
+  el.innerHTML = html;
+
+  // Ouvrir automatiquement l'étape active
+  const activeIdx = ETAPES_ORDRE.indexOf(proto.moduleActif);
+  if(activeIdx >= 0){
+    const body = document.getElementById(`mbody-${activeIdx}`);
+    const chev = document.getElementById(`chevron-${activeIdx}`);
+    if(body) body.style.display = 'block';
+    if(chev) chev.textContent = '▴';
+  }
+}
+
+function toggleModuleBody(i){
+  const body = document.getElementById('mbody-'+i);
+  const chev = document.getElementById('chevron-'+i);
+  if(!body) return;
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  if(chev) chev.textContent = open ? '▾' : '▴';
+}
+
+function saveEtapeNotes(bilanId, etapeIdx, val){
+  const p = getPatient(_activePatientId); if(!p) return;
+  const bi = p.bilans.findIndex(b=>b.id===bilanId); if(bi<0) return;
+  if(!p.bilans[bi].protocole) return;
+  p.bilans[bi].protocole.etapes[etapeIdx].bilanNotes = val;
+  upsertPatient(p);
+}
+
+
+
+// ── SCORES EN ATTENTE (Neon/Vercel) ─────────────────────────────────────
+var CABINET_API = 'https://valeur-backend-api.vercel.app/api';
+
+async function checkPendingScores(patientId){
+  try {
+    const r = await fetch(CABINET_API+'/get-scores?patient_id='+encodeURIComponent(patientId, {headers: CAB_HEADERS}), {headers: CAB_HEADERS});
+    const data = await r.json();
+    if(!data.pending) return;
+    const notif = document.getElementById('pending-notif');
+    if(notif){
+      notif.style.display='flex';
+      const d = new Date(data.created_at);
+      const dateEl = document.getElementById('pending-date');
+      if(dateEl) dateEl.textContent = d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+    }
+    window._pendingScores = data;
+  } catch(e){ console.warn('checkPendingScores:', e); }
+}
+
+async function importPendingScores(){
+  const data = window._pendingScores;
+  if(!data || !_activePatientId) return;
+  const p = getPatient(_activePatientId); if(!p) return;
+  const sc = data.scores;
+  const spa = data.spa || computeSPA(sc);
+  const prof = detectProfile(sc);
+  const dom = data.dominant || prof.masks[0];
+  const bilan = {
+    id: genBilanId(),
+    date: new Date(data.created_at).toISOString().split('T')[0],
+    source:'questionnaire',scores:sc,spa,dominant:dom,
+    profil:{type:prof.type,masks:prof.masks},
+    notes:'Importé automatiquement depuis le questionnaire en ligne.',
+    protocole:initProtocoleV2(),portraitPdfB64:null
+  };
+  p.bilans = p.bilans||[];
+  p.bilans.push(bilan);
+  upsertPatient(p);
+  try{ await fetch(CABINET_API+'/get-scores?patient_id='+encodeURIComponent(_activePatientId, {headers: CAB_HEADERS})+'&consume=true', {headers: CAB_HEADERS}); }catch(e){}
+  window._pendingScores = null;
+  const notif = document.getElementById('pending-notif');
+  if(notif) notif.style.display='none';
+  updateSidebarPatient(p);
+  renderBandeau(p);
+  switchPatientTab('portrait');
+  toast('\u2705 Bilan import\u00e9 automatiquement');
+}
+
+function openOutil(file){ window.open('/'+file,'_blank'); }
+function getCabinetLink(patientId){
+  const base='https://questionnaire.psyh.fr/index.html?praticien=VALEUR-CABINET-2025';
+  return patientId ? base+'&pid='+encodeURIComponent(patientId) : base;
+}
+function copyPatientLink(){
+  const link = getCabinetLink(_activePatientId||null);
+  navigator.clipboard.writeText(link).then(()=>toast('\ud83d\udd17 Lien patient copi\u00e9'));
+}
+
+
+// ── LEADS / RÉSULTATS QUESTIONNAIRE ─────────────────────────────────────────
+var _pendingLead = null;
+
+function switchDashTab(tab){
+  document.querySelectorAll('[id^="dtab-"]').forEach(t=>t.classList.remove('active'));
+  document.getElementById('dtab-'+tab)?.classList.add('active');
+  document.getElementById('dtc-activite').style.display = tab==='activite'?'block':'none';
+  document.getElementById('dtc-leads').style.display    = tab==='leads'?'block':'none';
+  const da=document.getElementById('dtc-achats');if(da)da.style.display=tab==='achats'?'block':'none';
+  if(tab==='leads') loadLeads();
+  if(tab==='achats') loadPurchases();
+  var dr=document.getElementById('dtc-ressources');if(dr)dr.style.display=tab==='ressources'?'block':'none';
+
+}
+
+async function loadLeads(){
+  const filter = document.getElementById('leads-filter')?.value||'pending';
+  const list   = document.getElementById('leads-list');
+  const stats  = document.getElementById('leads-stats');
+  if(list) list.innerHTML='<div style="text-align:center;padding:24px;color:var(--ink5);font-size:12px">Chargement\u2026</div>';
+  try{
+    const r = await fetch(CABINET_API+'/get-results?status='+filter+'&limit=50', {headers: CAB_HEADERS});
+    const data = await r.json();
+    renderLeadsStats(data.stats);
+    renderLeadsList(data.results, filter);
+    const badge=document.getElementById('leads-badge');
+    if(badge&&data.stats){
+      const n=parseInt(data.stats.pending)||0;
+      badge.textContent=n; badge.style.display=n>0?'inline':'none';
+    }
+  }catch(e){
+    if(list) list.innerHTML='<div class="alert alert-warn">Impossible de charger les r\u00e9sultats. V\u00e9rifiez la connexion Vercel.</div>';
+  }
+}
+
+function renderLeadsStats(s){
+  const el=document.getElementById('leads-stats');if(!el||!s)return;
+  const items=[
+    {v:s.pending,   l:'En attente',     c:'var(--rouge)'},
+    {v:s.attributed,l:'Attribu\u00e9s', c:'var(--gold)'},
+    {v:s.purchased, l:'Portrait achet\u00e9',c:'var(--vert)'},
+    {v:s.total,     l:'Total tests',    c:'var(--ink4)'},
+  ];
+  el.innerHTML=items.map(i=>'<div class="stat-card"><div class="stat-val" style="color:'+i.c+'">'+i.v+'</div><div class="stat-lbl">'+i.l+'</div></div>').join('');
+}
+
+function renderLeadsList(results, filter){
+  const el=document.getElementById('leads-list');if(!el)return;
+  if(!results||!results.length){
+    el.innerHTML='<div class="empty"><div class="empty-ico">\ud83d\udcad</div><p>'+(filter==='pending'?'Aucun r\u00e9sultat en attente.':'Aucun r\u00e9sultat dans cette cat\u00e9gorie.')+'</p></div>';
+    return;
+  }
+  const MCOLORS={rouge:'#B5312A',orange:'#C4581F',jaune:'#B8930A',vert:'#2D7A4F',bleu:'#1D5F8A',indigo:'#5C3280',violet:'#7A3594'};
+  const SLABELS={pending:'En attente',attributed:'Attribu\u00e9',purchased:'Portrait achet\u00e9',ignored:'Ignor\u00e9'};
+  const SCOLORS={pending:'var(--rouge)',attributed:'var(--gold)',purchased:'var(--vert)',ignored:'var(--ink5)'};
+  el.innerHTML=results.map(function(lead){
+    const domColor=MCOLORS[lead.dominant]||'#8C8278';
+    const d=new Date(lead.created_at);
+    const dateStr=d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const spaNum=lead.spa||0;
+    const domName=lead.dominant?(lead.dominant.charAt(0).toUpperCase()+lead.dominant.slice(1)):'\u2014';
+    const initiale=lead.prenom?lead.prenom[0].toUpperCase():'?';
+    const encodedLead=encodeURIComponent(JSON.stringify(lead));
+    let html='<div class="patient-row" style="flex-wrap:wrap;gap:10px">';
+    html+='<div style="width:38px;height:38px;border-radius:50%;background:'+domColor+';display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0">'+initiale+'</div>';
+    html+='<div style="flex:1;min-width:120px">';
+    html+='<div style="font-size:13px;font-weight:500;color:var(--ink)">'+(lead.prenom||'Anonyme');
+    if(lead.email) html+=' <span style="font-size:10.5px;color:var(--ink4);font-weight:300">\u00b7 '+lead.email+'</span>';
+    html+='</div>';
+    html+='<div style="font-size:10.5px;color:var(--ink4)">'+dateStr+(lead.source==='cabinet'?' \u00b7 <span style="color:var(--gold)">Patient cabinet</span>':' \u00b7 Public')+'</div>';
+    html+='</div>';
+    html+='<div style="display:flex;align-items:center;gap:8px;flex-shrink:0">';
+    html+='<span style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:rgba(0,0,0,.05);color:'+domColor+'">'+domName+'</span>';
+    html+='<span style="font-family:\'Cormorant Garamond\',serif;font-size:18px;font-weight:300;color:var(--ink)">'+spaNum+'<span style="font-size:10px;color:var(--ink5)">%</span></span>';
+    html+='</div>';
+    html+='<span style="font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:'+(SCOLORS[lead.status]||'var(--ink4)')+'">'+( SLABELS[lead.status]||lead.status)+'</span>';
+    if(lead.status==='pending'){
+      html+='<div style="display:flex;gap:5px">';
+      html+='<button class="btn btn-primary btn-sm" onclick="openAttribModal(decodeURIComponent(\''+encodedLead+'\'))">Attribuer \u2192</button>';
+      html+='<button class="btn btn-ghost btn-sm" onclick="createFromLeadDirect(decodeURIComponent(\''+encodedLead+'\'))">＋ Fiche</button>';
+      html+='<button class="btn btn-danger btn-sm" onclick="ignoreLead('+lead.id+')">✕</button>';
+      html+='</div>';
+    }
+    html+='</div>';
+    return html;
+  }).join('');
+}
+
+function openAttribModal(leadJson){
+  _pendingLead=typeof leadJson==='string'?JSON.parse(leadJson):leadJson;
+  document.getElementById('attrib-search').value='';
+  filterAttribPatients();
+  document.getElementById('modal-attrib').classList.add('open');
+}
+
+function filterAttribPatients(){
+  const q=(document.getElementById('attrib-search')?.value||'').toLowerCase();
+  const patients=getPatients().filter(p=>!q||(p.prenom+' '+p.nom).toLowerCase().includes(q));
+  const el=document.getElementById('attrib-patients-list');
+  if(!el)return;
+  if(!patients.length){el.innerHTML='<div style="padding:12px;font-size:12px;color:var(--ink4);text-align:center">Aucun patient trouv\u00e9</div>';return;}
+  el.innerHTML=patients.map(function(p){
+    const lb=(p.bilans||[]).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+    const m=lb?.dominant?MASK_META[lb.dominant]:null;
+    const col=m?m.color:'#8C8278';
+    return '<div onclick="attributeLead(\''+p.id+'\')" style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--line2);transition:background .15s" onmouseover="this.style.background=\'var(--iv2)\'" onmouseout="this.style.background=\'\'">'
+      +'<div style="width:32px;height:32px;border-radius:50%;background:'+col+';display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff">'+(p.prenom[0]+p.nom[0]).toUpperCase()+'</div>'
+      +'<div><div style="font-size:13px;font-weight:500;color:var(--ink)">'+p.prenom+' '+p.nom+'</div>'
+        +'<div style="font-size:10.5px;color:var(--ink4)">'+(lb?.dominant?lb.dominant+' \u00b7 SPA '+lb.spa+'%':'Aucun bilan')+'</div></div></div>';
+  }).join('');
+}
+
+async function attributeLead(patientId){
+  if(!_pendingLead)return;
+  const p=getPatient(patientId);if(!p)return;
+  const sc=_pendingLead.scores;
+  const spa=_pendingLead.spa||computeSPA(sc);
+  const prof=detectProfile(sc);
+  const bilan={id:genBilanId(),
+    date:new Date(_pendingLead.created_at).toISOString().split('T')[0],
+    source:'questionnaire',scores:sc,spa,
+    dominant:_pendingLead.dominant||prof.masks[0],
+    profil:{type:prof.type,masks:prof.masks},
+    notes:'Attribu\u00e9 depuis les r\u00e9sultats questionnaire.',
+    protocole:initProtocoleV2(),portraitPdfB64:null};
+  p.bilans=p.bilans||[];p.bilans.push(bilan);upsertPatient(p);
+  try{await fetch(CABINET_API+'/get-results',{method:'PATCH',headers:{'Content-Type':'application/json','x-cabinet-secret':CABINET_SECRET},
+    body:JSON.stringify({id:_pendingLead.id,status:'attributed',patient_id:patientId})});}catch(e){}
+  closeModal('modal-attrib');_pendingLead=null;
+  loadLeads();openPatient(patientId);
+  toast('\u2705 Bilan attribu\u00e9 \u00e0 '+p.prenom+' '+p.nom);
+}
+
+function createFromLeadDirect(leadJson){
+  _pendingLead=typeof leadJson==='string'?JSON.parse(leadJson):leadJson;
+  openModalPatient();
+  setTimeout(()=>{
+    if(_pendingLead.prenom) document.getElementById('f-prenom').value=_pendingLead.prenom.split(' ')[0]||'';
+    if(_pendingLead.email)  document.getElementById('f-email').value =_pendingLead.email;
+  },120);
+  window._createFromLeadCallback=true;
+}
+function createFromLead(){ createFromLeadDirect(JSON.stringify(_pendingLead)); }
+
+async function ignoreLead(id){
+  if(!confirm('Ignorer ce r\u00e9sultat ?'))return;
+  try{await fetch(CABINET_API+'/get-results',{method:'PATCH',headers:{'Content-Type':'application/json','x-cabinet-secret':CABINET_SECRET},
+    body:JSON.stringify({id,status:'ignored'})});}catch(e){}
+  loadLeads();toast('R\u00e9sultat ignor\u00e9');
+}
+
+
+var CABINET_API='https://valeur-backend-api.vercel.app/api';
+var CABINET_SECRET='valeur-cab-2026'; // Doit correspondre à l'env var Vercel CABINET_SECRET
+var CAB_HEADERS={'Content-Type':'application/json','x-cabinet-secret':CABINET_SECRET};
+async function checkPendingScores(patientId){
+  try{
+    const r=await fetch(CABINET_API+'/get-scores?patient_id='+encodeURIComponent(patientId, {headers: CAB_HEADERS}), {headers: CAB_HEADERS});
+    const data=await r.json();if(!data.pending)return;
+    const notif=document.getElementById('pending-notif');
+    if(notif){notif.style.display='flex';
+      const dateEl=document.getElementById('pending-date');
+      if(dateEl)dateEl.textContent=new Date(data.created_at).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});}
+    window._pendingScores=data;
+  }catch(e){}
+}
+async function importPendingScores(){
+  const data=window._pendingScores;if(!data||!_activePatientId)return;
+  const p=getPatient(_activePatientId);if(!p)return;
+  const sc=data.scores;const spa=data.spa||computeSPA(sc);const prof=detectProfile(sc);
+  const bilan={id:genBilanId(),date:new Date(data.created_at).toISOString().split('T')[0],
+    source:'questionnaire',scores:sc,spa,dominant:data.dominant||prof.masks[0],
+    profil:{type:prof.type,masks:prof.masks},notes:'Importé automatiquement.',
+    protocole:initProtocoleV2(),portraitPdfB64:null};
+  p.bilans=p.bilans||[];p.bilans.push(bilan);upsertPatient(p);
+  try{await fetch(CABINET_API+'/get-scores?patient_id='+encodeURIComponent(_activePatientId, {headers: CAB_HEADERS})+'&consume=true', {headers: CAB_HEADERS});}catch(e){}
+  window._pendingScores=null;
+  const notif=document.getElementById('pending-notif');if(notif)notif.style.display='none';
+  updateSidebarPatient(p);renderBandeau(p);switchPatientTab('portrait');
+  toast('✅ Bilan importé');
+}
+
+
+function openPortraitComplet(bilanId){
+  const p=getPatient(_activePatientId);if(!p)return;
+  const bilan=p.bilans.find(b=>b.id===bilanId);if(!bilan)return;
+  const sc=bilan.scores||{};
+  const masks=['rouge','orange','jaune','vert','bleu','indigo','violet'];
+  // Passer les scores dans l'URL (cross-domain — localStorage ne fonctionne pas entre domaines)
+  const params=new URLSearchParams({
+    praticien:'VALEUR-CABINET-2025',
+    prenom:p.prenom||'',
+    email:p.email||'cab_'+p.id+'@cabinet.local',
+    spa:bilan.spa||0,
+  });
+  masks.forEach(m=>params.set(m, sc[m]||0));
+  window.open('https://questionnaire.psyh.fr/resultats.html?'+params.toString(),'_blank');
+}
+
+
+function openPortraitByEmail(e){window.open('https://questionnaire.psyh.fr/resultats.html?email='+encodeURIComponent(e)+'&portrait=unlocked&admin=VALEUR-ADMIN-2025','_blank');}
+async function loadPurchases(){
+  const list=document.getElementById('purchases-list');
+  if(list) list.textContent='Chargement...';
+  try{
+    const r=await fetch(CABINET_API+'/get-purchases?limit=50', {headers: CAB_HEADERS});
+    const data=await r.json();
+    const s=data.stats||{};
+    const pstats=document.getElementById('purchases-stats');
+    if(pstats) pstats.innerHTML=[
+      {v:s.total||0,l:'Total',c:'var(--ink)'},
+      {v:s.this_month||0,l:'Ce mois',c:'var(--gold)'},
+      {v:s.this_week||0,l:'Semaine',c:'var(--vert)'},
+      {v:(parseInt(s.total||0)*39)+'€',l:'Revenus',c:'var(--gold)'},
+    ].map(i=>'<div class="stat-card"><div class="stat-val" style="font-size:22px;color:'+i.c+'">'+i.v+'</div><div class="stat-lbl">'+i.l+'</div></div>').join('');
+    const pm=document.getElementById('purchases-masques');
+    const MCOLORS={rouge:'#B5312A',orange:'#C4581F',jaune:'#B8930A',vert:'#2D7A4F',bleu:'#1D5F8A',indigo:'#5C3280',violet:'#7A3594'};
+    if(pm&&data.by_masque){
+      const tot=data.by_masque.reduce((s,m)=>s+parseInt(m.count),0)||1;
+      pm.innerHTML=data.by_masque.map(m=>'<div style="display:flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 11px">'
+        +'<span style="width:8px;height:8px;border-radius:50%;background:'+(MCOLORS[m.masque]||'#8C')+'"></span>'
+        +'<span style="font-size:11px;font-weight:500">'+m.masque+'</span>'
+        +'<strong style="font-size:11px;color:'+(MCOLORS[m.masque]||'#8C')+'">'+m.count+'</strong>'
+        +'<span style="font-size:9px;color:var(--ink5)">'+Math.round(parseInt(m.count)/tot*100)+'%</span></div>'
+      ).join('');
+    }
+    if(list&&data.purchases&&data.purchases.length){
+      list.innerHTML=data.purchases.map(p=>{
+        const col=MCOLORS[p.masque]||'#8C';
+        const ds=new Date(p.created_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'});
+        const ini=(p.prenom||p.email||'?')[0].toUpperCase();
+        return '<div class="patient-row" style="gap:10px">'
+          +'<div style="width:36px;height:36px;border-radius:50%;background:'+col+';display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff">'+ini+'</div>'
+          +'<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">'+(p.prenom||'&mdash;')+' <span style="font-size:10.5px;color:var(--ink4)">&middot; '+p.email+'</span></div>'
+          +'<div style="font-size:10.5px;color:var(--ink4)">'+ds+'</div></div>'
+          +'<span style="font-size:9px;font-weight:700;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:rgba(0,0,0,.05);color:'+col+'">'+p.masque+'</span>'
+          +'<span style="font-size:11px;font-weight:700;color:var(--gold)">39&euro;</span>'
+          +'<button class="btn btn-gold btn-sm" onclick="openPortraitByEmail(\'' + p.email + '\')">Portrait &rarr;</button></div>';
+      }).join('');
+    } else if(list){ list.innerHTML='<div class="empty"><p>Aucun achat.</p></div>'; }
+    const badge=document.getElementById('achats-badge');
+    if(badge){const n=parseInt(s.this_week||0);badge.textContent=n;badge.style.display=n>0?'inline':'none';}
+  }catch(e){if(list) list.textContent='Erreur chargement achats';}
+}
+
+
+// ── AUTHENTIFICATION CABINET ─────────────────────────────────────────────────
+// Hash SHA-256 de votre mot de passe — changez le mot de passe en recalculant le hash
+
+// ── PRINT CONFIGURATION ACTIVE ───────────────────────────────────────────────
+var CONFIG_CODES = {
+  // Dyades
+  'rouge+jaune':'rouge_jaune','jaune+rouge':'rouge_jaune',
+  'orange+vert':'orange_vert','vert+orange':'orange_vert',
+  'vert+bleu':'vert_bleu','bleu+vert':'vert_bleu',
+  'jaune+vert':'jaune_vert','vert+jaune':'jaune_vert',
+  'rouge+orange':'rouge_orange','orange+rouge':'rouge_orange',
+  'vert+indigo':'vert_indigo','indigo+vert':'vert_indigo',
+  'indigo+bleu':'indigo_bleu','bleu+indigo':'indigo_bleu',
+  'jaune+indigo':'jaune_indigo','indigo+jaune':'jaune_indigo',
+  'violet+jaune':'violet_jaune','jaune+violet':'violet_jaune',
+  'rouge+bleu':'rouge_bleu','bleu+rouge':'rouge_bleu',
+  'orange+violet':'orange_violet','violet+orange':'orange_violet',
+  // Triades
+  'rouge+jaune+orange':'rouge_jaune_orange','rouge+orange+jaune':'rouge_jaune_orange',
+  'jaune+rouge+orange':'rouge_jaune_orange','orange+rouge+jaune':'rouge_jaune_orange',
+  'vert+bleu+jaune':'vert_bleu_jaune','bleu+vert+jaune':'vert_bleu_jaune',
+  'jaune+vert+bleu':'vert_bleu_jaune',
+  'vert+indigo+violet':'vert_indigo_violet','indigo+vert+violet':'vert_indigo_violet',
+  'violet+vert+indigo':'vert_indigo_violet',
+  'indigo+bleu+orange':'indigo_bleu_orange','bleu+indigo+orange':'indigo_bleu_orange',
+  'orange+indigo+bleu':'indigo_bleu_orange',
+  'jaune+indigo+vert':'jaune_indigo_vert','indigo+jaune+vert':'jaune_indigo_vert',
+  'vert+jaune+indigo':'jaune_indigo_vert',
+};
+
+function getConfigCode(profil){
+  if(!profil||!profil.masks||profil.masks.length<2) return null;
+  var key = profil.masks.slice().sort().join('+');
+  // Chercher toutes les permutations dans CONFIG_CODES
+  for(var k in CONFIG_CODES){
+    var sorted = k.split('+').sort().join('+');
+    if(sorted === key) return CONFIG_CODES[k];
+  }
+  return null;
+}
+
+function printConfig(bilanId){
+  var p = getPatient(_activePatientId); if(!p) return;
+  var bilan = p.bilans.find(function(b){return b.id===bilanId;});
+  if(!bilan||!bilan.profil) return;
+  var code = getConfigCode(bilan.profil);
+  if(!code){
+    toast('Aucune configuration dyade/triade pour ce profil');
+    return;
+  }
+  window.open('/livret_dyades_triades.html?section='+code+'&print=1','_blank');
+}
+
+function viewConfig(bilanId){
+  var p = getPatient(_activePatientId); if(!p) return;
+  var bilan = p.bilans.find(function(b){return b.id===bilanId;});
+  if(!bilan||!bilan.profil) return;
+  var code = getConfigCode(bilan.profil);
+  if(!code){
+    toast('Aucune configuration dyade/triade pour ce profil');
+    return;
+  }
+  window.open('/livret_dyades_triades.html?section='+code,'_blank');
+}
+
+
+// ── AUTH CABINET ─────────────────────────────────────────────────────────────
+var _AUTH = 'cHN5aDIwMjY=';
+var _AUTH_KEY = 'valeur_cab_v2';
+var _AUTH_TTL = 7 * 24 * 3600 * 1000;
+
+function doLogin(){
+  var pwd = document.getElementById('login-pwd').value;
+  var err = document.getElementById('login-err');
+  if(!pwd){ if(err) err.textContent='Mot de passe requis'; return; }
+  // btoa côté navigateur
+  var encoded;
+  try{ encoded = btoa(pwd); }catch(e){ encoded = ''; }
+  if(encoded === _AUTH){
+    localStorage.setItem(_AUTH_KEY, Date.now().toString());
+    var ov = document.getElementById('cab-login-overlay');
+    if(ov){ ov.style.transition='opacity .3s'; ov.style.opacity='0'; setTimeout(function(){ov.remove();},300); }
+    renderDashboard();
+  } else {
+    if(err) err.textContent='Mot de passe incorrect';
+    var inp = document.getElementById('login-pwd');
+    if(inp){ inp.value=''; inp.focus(); }
+  }
+}
+
+function cabIsAuth(){
+  var ts = parseInt(localStorage.getItem(_AUTH_KEY)||'0');
+  return (Date.now() - ts) < _AUTH_TTL;
+}
+
+
+// ── HASH ROUTER ──────────────────────────────────────────────────────────────
+// URL pattern : #/dashboard | #/patients | #/patient/ID | #/patient/ID/tab
+function router(){
+  const hash = window.location.hash || '#/dashboard';
+  const parts = hash.replace('#/','').split('/');
+  const view  = parts[0] || 'dashboard';
+  const pid   = parts[1] || null;
+  const tab   = parts[2] || 'portrait';
+
+  if(view === 'patient' && pid){
+    _activePatientId = pid;
+    const p = getPatient(pid);
+    if(p){ showView('patient'); updateSidebarPatient(p); renderBandeau(p); switchPatientTab(tab); }
+    else{ navigate('/patients'); }
+  } else if(view === 'patients'){
+    showViewDirect('patients');
+  } else if(view === 'ressources'){
+    showViewDirect('dashboard');
+    setTimeout(()=>switchDashTab('ressources'), 50);
+  } else {
+    showViewDirect('dashboard');
+  }
+}
+
+function navigate(path){
+  window.location.hash = '#' + path;
+}
+
+function showViewDirect(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('view-'+name)?.classList.add('active');
+  document.getElementById('nav-'+name)?.classList.add('active');
+  updateBreadcrumb(name);
+  if(name==='dashboard') renderDashboard();
+  if(name==='patients')  renderPatientList();
+}
+
+function updateBreadcrumb(view){
+  const bc = document.getElementById('breadcrumb'); if(!bc) return;
+  const labels = {dashboard:'Tableau de bord', patients:'Mes patients'};
+  if(view==='patient' && _activePatientId){
+    const p = getPatient(_activePatientId);
+    bc.innerHTML = '<span onclick="navigate(\'/patients\')" style="cursor:pointer;color:var(--gold)">Patients</span>'
+      +' <span class="breadcrumb-sep">›</span> '
+      +'<span class="breadcrumb-active">'+(p?p.prenom+' '+p.nom:'')+'</span>';
+  } else {
+    bc.innerHTML = '<span class="breadcrumb-active">'+(labels[view]||view)+'</span>';
+  }
+}
+
+// Patch showView pour utiliser le router
+function showView(name){
+  if(name==='dashboard') navigate('/dashboard');
+  else if(name==='patients') navigate('/patients');
+  else if(name==='patient'){ navigate('/patient/'+(_activePatientId||'')+'/'+(_activeTab||'portrait')); }
+  else showViewDirect(name);
+}
+
+function switchPatientTab(tab){
+  _activeTab = tab;
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ptc').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sb-patient-nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab)?.classList.add('active');
+  document.getElementById('ptc-'+tab)?.classList.add('active');
+  document.getElementById('pnav-'+tab)?.classList.add('active');
+  updateBreadcrumb('patient');
+  // Mettre à jour l'URL sans recharger
+  if(_activePatientId) history.replaceState(null,'','#/patient/'+_activePatientId+'/'+tab);
+  if(tab==='portrait')  renderPortraitTab();
+  if(tab==='protocole') renderProtocoleTab();
+  if(tab==='evolution') renderEvolutionTab();
+  if(tab==='livret')    renderLivretTab();
+}
+function switchTab(tab){ switchPatientTab(tab); }
+
+function openPatient(id){
+  navigate('/patient/'+id+'/portrait');
+}
+
+window.addEventListener('hashchange', router);
+
+// ── INIT ─────────────────────────────────────────────────
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  // Démarrer l'hydratation Neon en arrière-plan
+  setTimeout(hydrateFromNeon, 1500);
+  if(!cabIsAuth()){
+    // L'overlay est déjà dans le DOM — attendre le login
+    document.getElementById('login-pwd')?.focus();
+    return;
+  }
+  document.getElementById('cab-login-overlay')?.remove();
+
+  renderDashboard();
+  renderPatientList();
+  ['modal-patient','modal-bilan','modal-pdf','modal-seance'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal(id);});
+  });
+  const uz=document.getElementById('upload-zone');
+  if(uz){
+    uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag');});
+    uz.addEventListener('dragleave',()=>uz.classList.remove('drag'));
+    uz.addEventListener('drop',e=>{
+      e.preventDefault();uz.classList.remove('drag');
+      const f=e.dataTransfer.files[0];
+      if(f){const dt=new DataTransfer();dt.items.add(f);document.getElementById('pdf-input').files=dt.files;handlePdfUpload({target:{files:dt.files}});}
+    });
+  }
+});
+
+</script>
+
+
+
+
+<div class="login-overlay" id="cab-login-overlay">
+  <div class="login-card">
+    <div class="login-chroma">
+      <div style="background:#B5312A"></div><div style="background:#C4581F"></div>
+      <div style="background:#B8930A"></div><div style="background:#2D7A4F"></div>
+      <div style="background:#1D5F8A"></div><div style="background:#5C3280"></div>
+      <div style="background:#7A3594"></div>
+    </div>
+    <div class="login-logo">
+      <div class="login-logo-mark">V.A.L.E.U.R<sup>©</sup></div>
+      <div class="login-sub">Espace Praticien</div>
+    </div>
+    <label class="login-label" for="login-pwd">Mot de passe</label>
+    <input class="login-input" type="password" id="login-pwd" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Accéder au cabinet →</button>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+</body>
+</html>
