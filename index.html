@@ -202,6 +202,10 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
 .import-pane{display:none}
 .import-pane.active{display:block}
 
+/* ── DIFF BOUTONS ── */
+.diff-btn{padding:6px 12px;border-radius:var(--r-sm);font-family:inherit;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .15s}
+.diff-btn:hover{opacity:.8}
+
 /* ── RESPONSIVE ── */
 @media(max-width:700px){
   .sidebar{width:52px}
@@ -247,13 +251,13 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
     <button class="nav-item" id="nav-workbooks" onclick="V.router.go('workbooks')">
       <span class="nav-icon">📝</span><span>Workbooks patients</span>
     </button>
-    <a class="nav-item" href="livret_psychoeducation.html" target="_blank">
+    <a class="nav-item" href="livret_psychoeducation.html?admin=VALEUR-ADMIN-2025" target="_blank">
       <span class="nav-icon">🎓</span><span>Psychoéducation</span>
     </a>
-    <a class="nav-item" href="livret_dyades_triades.html" target="_blank">
+    <a class="nav-item" href="livret_dyades_triades.html?admin=VALEUR-ADMIN-2025" target="_blank">
       <span class="nav-icon">🔗</span><span>Dyades &amp; Triades</span>
     </a>
-    <a class="nav-item" href="manuel_valeur.html" target="_blank">
+    <a class="nav-item" href="manuel_valeur.html?admin=VALEUR-ADMIN-2025" target="_blank">
       <span class="nav-icon">📖</span><span>Manuel V.A.L.E.U.R©</span>
     </a>
     <a class="nav-item" href="protocole_valeur.html?admin=VALEUR-ADMIN-2025" target="_blank">
@@ -375,6 +379,17 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
 
 <script>
 const ADMIN_PWD = 'VALEUR-ADMIN-2025';
+
+// ── Défis par masque (workbook 21 défis) ──────────────────────────
+const V_DEFIS = {
+  rouge: ["Observer une sensation sans l'interpréter — juste la nommer","Identifier l'émotion présente au moment d'un signal corporel","Traverser 5 minutes d'incertitude corporelle sans vérifier","Reporter une vérification de 10 minutes — puis observer ce qui s'est passé","Écrire : Mon corps fait ça quand je ressens…","Pratiquer la respiration abdominale 3 min au moment d'une sensation","Finir la journée sans avoir vérifié un seul symptôme","Aller dehors sans consulter les symptômes au retour","Décrire une sensation à quelqu'un — sans catastrophisme","Tolérer une incertitude corporelle 30 min sans action","Choisir une activité physique pour le plaisir, pas pour surveiller","Écrire ce que vous feriez si vous n'aviez pas peur de votre corps","Identifier 3 moments où votre corps vous a soutenu","Remplacer Et si c'était grave ? par Que ressens-je vraiment ?","Traverser un symptôme inhabituel sans recherche ni consultation","Passer une journée sans penser à votre corps comme à un sujet de surveillance","Parler d'un succès physique récent — même petit","Pratiquer quelque chose que vous évitiez par peur corporelle","Imaginer votre relation à votre corps dans 1 an sans ce travail, puis avec","Identifier un signal que votre corps vous envoie sur vos besoins — et l'écouter","Écrire : Ce que je veux faire avec mon corps quand il est allié"],
+  orange: ["Nommer une émotion au moins une fois dans la journée — même vaguement","Observer ce qui se passe dans votre corps quand quelqu'un vous parle de lui·elle","Terminer une phrase : En ce moment, je ressens un peu…","Écouter une musique qui vous touche — et rester avec ce que ça fait","Poser la question : Qu'est-ce que j'ai vraiment envie de faire ce soir ?","Identifier la dernière fois que vous avez ressenti quelque chose intensément","Écrire sans filtrer pendant 5 minutes ce qui passe dans votre tête","Partager quelque chose de personnel avec quelqu'un de confiance","Laisser une émotion durer 30 secondes sans la court-circuiter","Regarder un film qui vous touche — rester avec ce que ça fait","Identifier l'émotion derrière une décision récente","Demander à quelqu'un comment il·elle va — et vraiment écouter la réponse","Remarquer ce que vous ressentez quand quelqu'un vous fait un compliment","Écrire : Ce qui me donnerait envie de me lever demain matin, c'est…","Exprimer un besoin clairement à quelqu'un de proche","Traverser un moment difficile sans l'intellectualiser immédiatement","Identifier une chose qui vous a procuré du plaisir cette semaine","Accepter du soutien sans le minimiser","Écrire : Ce que je voudrais vraiment que les autres sachent de moi","Remarquer la différence entre gérer une émotion et la traverser","Identifier ce que vous ressentez quand vous aidez quelqu'un — réellement"],
+  jaune: ["Laisser une décision mineure au hasard (pile ou face)","Identifier une inquiétude et demander : à quelle probabilité elle se réalise ?","Terminer une journée avec une tâche non terminée — intentionnellement","Déléguer quelque chose de petit — sans vérifier le résultat","Partir quelque part sans avoir tout prévu","Observer ce qui se passe en vous quand un plan change","Écrire les 3 pires scénarios d'une incertitude actuelle — puis les probabilités réelles","Tolérer une conversation ambiguë sans demander de précisions immédiates","Prendre une décision avec 70 % des informations — pas 100 %","Laisser quelqu'un d'autre organiser quelque chose, sans intervenir","Identifier ce que vous contrôlez vraiment — et ce que vous ne contrôlez pas","Pratiquer l'imprévu : changer de route, de restaurant, de film","Remarquer quand la planification devient de l'évitement","Écrire : Si je ne planifiais pas ça, ce qui se passerait probablement c'est…","Traverser un imprévu sans plan B préparé — et constater ce qui s'est passé","Prendre une décision importante sans la reporter davantage","Laisser quelqu'un prendre en charge quelque chose d'important pour vous","Identifier une chose agréable arrivée sans que vous l'ayez planifiée","Écrire : Ce que je perds à vouloir tout prévoir","Pratiquer 10 minutes d'activité totalement non planifiée chaque jour","Remarquer que l'incertitude tolérée ne s'est pas transformée en catastrophe"],
+  vert: ["Exprimer une préférence quand quelqu'un vous demande ce que vous voulez","Remarquer le moment où vous commencez à vous adapter automatiquement","Laisser un silence dans une conversation sans le remplir","Dire non à une demande mineure — sans s'expliquer pendant dix minutes","Observer votre réaction quand quelqu'un ne répond pas immédiatement","Écrire : Ce que je veux vraiment dans mes relations, c'est…","Identifier un besoin que vous n'avez pas formulé cette semaine — et le formuler","Formuler un besoin dans une relation de confiance","Laisser l'autre gérer son humeur sans que vous interveniez","Ne pas vérifier si quelqu'un est fâché·e après un échange — laisser le temps passer","Traverser un moment de distance relationnelle sans l'interpréter comme un rejet","Refuser une invitation — et noter ce qui se passe en vous","Remarquer quand vous vous adaptez pour maintenir la paix plutôt que par vraie envie","Écrire : Ce que je permettrais si je savais que je ne serais pas rejeté·e","Initier une conversation difficile dans une relation importante","Exprimer un désaccord — doucement, mais clairement","Laisser une relation exister à son propre rythme, sans la surveiller","Identifier une chose que vous voulez — et la vouloir sans justification","Recevoir un compliment sans le minimiser","Passer du temps seul·e par choix — et trouver ça nourrissant","Écrire : Qui suis-je en dehors des besoins des autres ?"],
+  bleu: ["Confier une tâche mineure à quelqu'un — sans vérifier le résultat","Observer ce que vous ressentez quand vous ne contrôlez pas quelque chose","Laisser quelqu'un d'autre décider de quelque chose de petit","Identifier un domaine où vous pourriez lâcher sans risque réel","Remarquer quand vous reprenez quelque chose que vous aviez confié","Écrire : Si quelqu'un d'autre s'en occupait, ce qui arriverait probablement c'est…","Pratiquer une activité où vous êtes débutant·e — sans vouloir maîtriser rapidement","Déléguer quelque chose d'important — et laisser faire","Demander de l'aide dans un domaine où vous vous débrouillez habituellement seul·e","Laisser une conversation se diriger sans que vous la guidiez","Accepter un résultat imparfait sans le corriger","Observer la différence entre contrôle utile et contrôle défensif","Identifier quelqu'un qui fait bien — différemment de vous — et le reconnaître","Écrire : Ce que j'aurais envie de faire si je ne devais pas tout tenir","Passer une journée entière sans vérifier, reprendre ou corriger","Laisser quelqu'un d'autre diriger un projet important pour vous","Recevoir de l'aide — pleinement, sans minimiser ni gérer la personne qui aide","Identifier une chose que vous contrôlez qui ne vous nourrit plus","Remarquer ce que vous ressentez quand quelqu'un fait bien sans vous","Écrire : Ce que ça serait de faire confiance à…","Pratiquer le silence dans un groupe — laisser les autres décider"],
+  indigo: ["Recevoir un compliment sans le minimiser — juste dire merci","Identifier une chose que vous avez bien faite aujourd'hui","Livrer quelque chose d'imparfait intentionnellement","Remarquer la voix critique — et lui donner un nom ridicule","Écrire 3 qualités qui n'ont rien à voir avec vos performances","Observer la différence entre exigence utile et punition automatique","Faire quelque chose pour le plaisir — pas pour être bon·ne","Montrer un travail en cours — sans attendre qu'il soit fini","Identifier une règle de votre voix critique — et la questionner","Raconter un succès à quelqu'un sans le dévaluer","Faire une erreur mineure — et la laisser être ce qu'elle est","Écrire : Ma valeur inconditionnelle, c'est…","Remarquer quand vous cherchez la validation externe — et ce que ça dit","Identifier quelque chose qui vous rend fier·e — sans condition","Prendre une décision importante en ayant 70 % de certitudes — pas 100 %","Lancer quelque chose que vous reportez depuis longtemps","Arrêter de travailler à l'heure prévue — même si ce n'est pas parfait","Lire à voix haute 3 réussites de votre semaine — vraiment","Écrire : Ce que je vaux indépendamment de ce que je produis","Faire quelque chose de nouveau en acceptant d'être débutant·e","Identifier ce que vous voudriez que les autres sachent de vous — au-delà des performances"],
+  violet: ["Exprimer une préférence réelle — même petite : film, restaurant, activité","Identifier une valeur personnelle qui n'a rien à voir avec les attentes des autres","Remarquer un moment où vous dites peu importe — et chercher ce que vous voulez vraiment","Écrire : 3 choses qui me font me sentir vraiment moi·même","Observer quand vous changez de comportement selon les personnes présentes","Trouver une activité que vous faites pour vous — sans utilité pour les autres","Terminer la phrase : Sans mes rôles, je suis quelqu'un qui…","Partager une opinion personnelle — même si l'autre pourrait ne pas être d'accord","Renouer avec quelque chose que vous aimiez avant — une passion ancienne","Passer du temps seul·e dans un endroit qui vous appartient vraiment","Identifier une décision que vous avez prise pour vous — pas pour quelqu'un","Remarquer la différence entre ce que vous ressentez et ce que vous montrez","Écrire votre propre description — pas selon vos rôles, mais selon qui vous êtes","Identifier un refus récent que vous n'avez pas osé formuler — et l'écrire","Prendre une décision importante en fonction de qui vous voulez être — pas des attentes","Renoncer à un rôle qui ne vous nourrit plus","Dire clairement ce que vous voulez dans une situation importante","Passer une journée en faisant uniquement ce que vous avez choisi","Écrire : Ce que je veux que ma vie ressemble dans 3 ans — vraiment","Identifier une chose qui vous appartient en propre — et la nommer à voix haute","Reconnaître un moment cette semaine où vous étiez vraiment vous-même"]
+};
 const API = 'https://valeur-backend-api.vercel.app/api';
 const MASKS = ['rouge','orange','jaune','vert','bleu','indigo','violet'];
 const MASK_COLORS = {rouge:'#B5312A',orange:'#C4581F',jaune:'#B8930A',vert:'#2D7A4F',bleu:'#1D5F8A',indigo:'#5C3280',violet:'#7A3594'};
@@ -470,6 +485,8 @@ const MASK_PREAMBULE = {
 
 // ── DATA ──────────────────────────────────────────────────────────────
 const V = {
+  _defis: V_DEFIS,
+
 
   auth: {
     login() {
@@ -513,7 +530,8 @@ const V = {
         portrait: null,
         protocole: { etape_courante: 1, etapes: {} },
         seances: [],
-        spa_historique: []
+        spa_historique: [],
+        moments_cles: []
       };
     },
     exportJSON() {
@@ -773,7 +791,8 @@ const V = {
 
     patient: {
       _id: null,
-      _tab: 'portrait',
+      _tab: 'seance',
+
       render(id) {
         this._id = id;
         const list = V.data.getPatients();
@@ -782,182 +801,342 @@ const V = {
         const d = V.data.getPatient(id) || V.data.newPatientData();
         const masque = d.portrait?.masque;
         const col = masque ? MASK_COLORS[masque] : 'var(--gold)';
+        const etapeNum = d.protocole?.etape_courante || 1;
+        const etape = VALEUR_STEPS[etapeNum-1];
+        const spaActuel = d.portrait?.spa !== undefined ? d.portrait.spa : null;
 
         document.getElementById('app-content').innerHTML = `
           <div class="patient-page" style="max-width:900px">
+            <!-- BANDEAU -->
             <div class="patient-bandeau">
               <div class="pb-left">
                 <div class="pb-name">${p.prenom} ${p.nom||''}</div>
-                <div class="pb-masque-row">
-                  ${masque ? `<div class="masque-dot" style="background:${col}"></div><span style="font-size:12px;font-weight:600;color:${col}">${MASK_NAMES[masque]}</span>` : '<span style="font-size:12px;color:var(--ink4)">Portrait non importé</span>'}
-                  ${d.portrait?.config && d.portrait.config!=='mono' ? `<span class="badge badge--active" style="margin-left:4px">${d.portrait.config}</span>` : ''}
-                  ${d.portrait?.spa !== undefined ? `<span class="badge badge--neutral">SPA ${d.portrait.spa}%</span>` : ''}
+                <div class="pb-masque-row" style="margin-top:4px;flex-wrap:wrap;gap:6px">
+                  ${masque ? `<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:${col}"><span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block"></span>${MASK_NAMES[masque]}</span>` : '<span style="font-size:12px;color:var(--ink4)">Portrait non importé</span>'}
+                  ${d.portrait?.config && d.portrait.config!=='mono' ? `<span class="badge badge--active">${d.portrait.config}</span>` : ''}
+                  ${spaActuel !== null ? `<span class="badge badge--neutral">SPA ${spaActuel}%</span>` : ''}
+                  ${masque ? `<span class="badge badge--neutral" style="color:var(--gold);border-color:rgba(168,135,58,.3)">${etape?.l||'?'} · ${etape?.name||''}</span>` : ''}
                 </div>
               </div>
               <div class="pb-actions">
-                <button class="btn btn--ghost btn--sm" onclick="V.views.patients.openModal('${id}')">✏️ Modifier</button>
-                <button class="btn btn--gold btn--sm" onclick="V.portrait.openImport('${id}')">📊 ${masque ? 'Mettre à jour' : 'Importer portrait'}</button>
+                <button class="btn btn--ghost btn--sm" onclick="V.views.patients.openModal('${id}')">✏️</button>
+                <button class="btn btn--gold btn--sm" onclick="V.portrait.openImport('${id}')">📊 ${masque ? 'MAJ portrait' : 'Importer portrait'}</button>
                 <button class="btn btn--danger btn--sm" onclick="V.views.patient.confirmDelete('${id}')">🗑</button>
               </div>
             </div>
+            <!-- TABS -->
             <div class="tabs">
-              <button class="tab ${this._tab==='portrait'?'active':''}" onclick="V.views.patient.switchTab('portrait')">Portrait</button>
-              <button class="tab ${this._tab==='protocole'?'active':''}" onclick="V.views.patient.switchTab('protocole')">Protocole V→R</button>
-              <button class="tab ${this._tab==='suivi'?'active':''}" onclick="V.views.patient.switchTab('suivi')">Suivi SPA</button>
-              <button class="tab ${this._tab==='livrets'?'active':''}" onclick="V.views.patient.switchTab('livrets')">Livrets</button>
+              <button class="tab ${this._tab==='seance'?'active':''}" onclick="V.views.patient.switchTab('seance','${id}')">🗓 Séance</button>
+              <button class="tab ${this._tab==='portrait'?'active':''}" onclick="V.views.patient.switchTab('portrait','${id}')">Portrait</button>
+              <button class="tab ${this._tab==='protocole'?'active':''}" onclick="V.views.patient.switchTab('protocole','${id}')">Protocole</button>
+              <button class="tab ${this._tab==='historique'?'active':''}" onclick="V.views.patient.switchTab('historique','${id}')">Historique</button>
+              <button class="tab ${this._tab==='outils'?'active':''}" onclick="V.views.patient.switchTab('outils','${id}')">Outils</button>
             </div>
             <div id="tab-body"></div>
           </div>`;
         this.renderTab(id, this._tab);
       },
-      switchTab(tab) {
+
+      switchTab(tab, id) {
         this._tab = tab;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         event.target.classList.add('active');
-        this.renderTab(this._id, tab);
+        this.renderTab(id || this._id, tab);
       },
+
       renderTab(id, tab) {
         const d = V.data.getPatient(id) || V.data.newPatientData();
         const el = document.getElementById('tab-body');
-        if(tab === 'portrait') el.innerHTML = V.views.patient._tabPortrait(d);
-        else if(tab === 'protocole') el.innerHTML = V.views.patient._tabProtocole(d, id);
-        else if(tab === 'suivi') el.innerHTML = V.views.patient._tabSuivi(d);
-        else if(tab === 'livrets') el.innerHTML = V.views.patient._tabLivrets(d);
-        // Animate bars
-        if(tab === 'portrait' && d.portrait) {
-          setTimeout(() => {
-            MASKS.forEach(m => {
-              const el = document.getElementById('bar-'+m);
-              if(el) el.style.width = (d.portrait.scores[m]||0) + '%';
-            });
-          }, 50);
-        }
+        if(!el) return;
+        if(tab==='seance')     el.innerHTML = V.views.patient._tabSeance(d, id);
+        else if(tab==='portrait')   { el.innerHTML = V.views.patient._tabPortrait(d); V.views.patient._animBars(d); }
+        else if(tab==='protocole')  el.innerHTML = V.views.patient._tabProtocole(d, id);
+        else if(tab==='historique') el.innerHTML = V.views.patient._tabHistorique(d, id);
+        else if(tab==='outils')     el.innerHTML = V.views.patient._tabOutils(d, id);
       },
+
+      _animBars(d) {
+        if(!d.portrait) return;
+        setTimeout(() => {
+          MASKS.forEach(m => {
+            const el = document.getElementById('bar-'+m);
+            if(el) el.style.width = (d.portrait.scores[m]||0)+'%';
+          });
+        }, 50);
+      },
+
+      // ── TAB SÉANCE ──────────────────────────────────────────────────
+      _tabSeance(d, id) {
+        const etapeNum = d.protocole?.etape_courante || 1;
+        const etapes = d.protocole?.etapes || {};
+        const s = VALEUR_STEPS[etapeNum-1];
+        const col = d.portrait ? (MASK_COLORS[d.portrait.masque]||'var(--gold)') : 'var(--gold)';
+        const seances = d.seances || [];
+        const lastSeance = seances.length ? seances[seances.length-1] : null;
+        const etapeCourante = etapes[etapeNum] || {};
+        const defiActuel = etapeCourante.defi_actuel || (s ? s.defi : '');
+        const masque = d.portrait?.masque;
+
+        // Défis disponibles pour ce masque
+        const defisDisponibles = masque && V._defis[masque]
+          ? V._defis[masque]
+          : (s ? [s.defi] : []);
+
+        return `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+          <!-- RAPPEL SÉANCE PRÉCÉDENTE -->
+          <div class="card" style="border-left:3px solid ${col}">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:10px">Rappel · Séance précédente</div>
+            ${lastSeance ? `
+              <div style="font-size:11px;color:var(--ink5);margin-bottom:6px">${lastSeance.date}</div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${col};margin-bottom:4px">Défi donné</div>
+              <div style="font-size:13px;color:var(--ink3);line-height:1.65;padding:8px 10px;background:var(--bg);border-radius:var(--r-sm);margin-bottom:8px">${lastSeance.defi_donne || '—'}</div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Retour noté</div>
+              <div style="font-size:13px;color:var(--ink4);line-height:1.65">${lastSeance.note || '—'}</div>
+            ` : `<div style="font-size:13px;color:var(--ink5);font-style:italic">Première séance</div>`}
+          </div>
+
+          <!-- ÉTAPE EN COURS -->
+          <div class="card">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:10px">Protocole · Étape en cours</div>
+            ${s ? `
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                <div style="width:34px;height:34px;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:#fff;flex-shrink:0">${s.l}</div>
+                <div>
+                  <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:${col}">${s.name}</div>
+                  <div style="font-size:12.5px;color:var(--ink3)">${s.title}</div>
+                </div>
+              </div>
+              <div style="font-size:12px;color:var(--ink4);line-height:1.65;border-left:2px solid rgba(168,135,58,.2);padding-left:10px">${s.desc}</div>
+            ` : '<div style="font-size:13px;color:var(--ink5)">Protocole non démarré</div>'}
+          </div>
+        </div>
+
+        <!-- SAISIE SÉANCE DU JOUR -->
+        <div class="card" style="margin-top:14px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Séance du jour</div>
+          <div style="display:grid;grid-template-columns:140px 1fr;gap:12px;margin-bottom:12px">
+            <div class="field-group" style="margin:0">
+              <label class="field-label">Date</label>
+              <input class="field-input" id="sj-date" type="date" value="${new Date().toISOString().slice(0,10)}">
+            </div>
+            <div class="field-group" style="margin:0">
+              <label class="field-label">SPA mesuré (%)</label>
+              <input class="field-input" id="sj-spa" type="number" min="0" max="100" placeholder="Ex: 42">
+            </div>
+          </div>
+          <div class="field-group" style="margin-bottom:12px">
+            <label class="field-label">Ce qui a émergé · Observations</label>
+            <textarea class="field-input" id="sj-emerge" rows="3" placeholder="Prises de conscience, résistances, moments clés…"></textarea>
+          </div>
+          <div class="field-group" style="margin-bottom:12px">
+            <label class="field-label">Défi pour la prochaine séance</label>
+            <select class="field-input" id="sj-defi-select" onchange="document.getElementById('sj-defi-custom').value=this.value">
+              <option value="">— Sélectionner dans le workbook —</option>
+              ${defisDisponibles.map((d,i) => `<option value="${d.replace(/"/g,'&quot;')}">${i+1}. ${d.length>60?d.slice(0,60)+'…':d}</option>`).join('')}
+              <option value="__custom">Défi personnalisé…</option>
+            </select>
+            <textarea class="field-input" id="sj-defi-custom" rows="2" placeholder="Ou saisissez un défi personnalisé…" style="margin-top:6px">${defiActuel}</textarea>
+          </div>
+          <div class="field-group" style="margin-bottom:16px">
+            <label class="field-label">Difficulté signalée par le patient</label>
+            <div style="display:flex;gap:8px;margin-top:4px">
+              <button class="diff-btn" id="diff-fluide" onclick="V.views.patient.setDiff('fluide','${id}')" style="background:rgba(45,122,79,.08);border:1px solid rgba(45,122,79,.3);color:#2D7A4F">✓ Fluide</button>
+              <button class="diff-btn" id="diff-resistance" onclick="V.views.patient.setDiff('resistance','${id}')" style="background:rgba(184,147,10,.08);border:1px solid rgba(184,147,10,.3);color:#B8930A">⚡ Résistance</button>
+              <button class="diff-btn" id="diff-blocage" onclick="V.views.patient.setDiff('blocage','${id}')" style="background:rgba(181,49,42,.08);border:1px solid rgba(181,49,42,.3);color:#B5312A">⛔ Blocage</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn--primary" onclick="V.views.patient.saveSeance('${id}')">Enregistrer la séance</button>
+            <button class="btn btn--ghost" onclick="V.views.patient.addMomentCle('${id}')">★ Moment clé</button>
+            ${s && etapeNum <= 6 ? `<button class="btn btn--gold" onclick="V.views.patient.validateStep(${etapeNum},'${id}')">✓ Valider étape ${s.l} →</button>` : ''}
+          </div>
+        </div>
+
+        <!-- MOMENTS CLÉS RÉCENTS -->
+        ${(d.moments_cles||[]).length ? `
+        <div class="card" style="margin-top:14px;background:rgba(168,135,58,.03);border-color:rgba(168,135,58,.15)">
+          <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">★ Moments clés</div>
+          ${[...(d.moments_cles||[])].reverse().slice(0,3).map(m => `
+            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)">
+              <span style="font-size:11px;color:var(--ink5);flex-shrink:0;min-width:70px">${m.date}</span>
+              <span style="font-size:13px;color:var(--ink3);line-height:1.6">${m.texte}</span>
+            </div>`).join('')}
+        </div>` : ''}`;
+      },
+
+      setDiff(val, id) {
+        document.querySelectorAll('.diff-btn').forEach(b => b.style.fontWeight = '400');
+        const el = document.getElementById('diff-'+val);
+        if(el) el.style.fontWeight = '700';
+        V.views.patient._diffCurrent = val;
+      },
+      _diffCurrent: '',
+
+      saveSeance(id) {
+        const date   = document.getElementById('sj-date')?.value;
+        const spa    = parseInt(document.getElementById('sj-spa')?.value)||null;
+        const emerge = document.getElementById('sj-emerge')?.value.trim();
+        const defi   = document.getElementById('sj-defi-custom')?.value.trim();
+        const diff   = V.views.patient._diffCurrent || '';
+        if(!date) { V.ui.toast('Date requise', true); return; }
+
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        const etapeNum = d.protocole?.etape_courante || 1;
+
+        // Enregistrer la séance
+        if(!d.seances) d.seances = [];
+        d.seances.push({
+          id: Date.now().toString(36),
+          date, etape: etapeNum, spa,
+          note: emerge, defi_donne: defi, difficulte: diff
+        });
+
+        // Mettre à jour SPA dans l'historique
+        if(spa !== null) {
+          if(!d.spa_historique) d.spa_historique = [];
+          d.spa_historique.push({ date, valeur: spa, notes: emerge ? emerge.slice(0,80) : '' });
+        }
+
+        // Sauvegarder le défi actuel dans l'étape
+        if(!d.protocole.etapes[etapeNum]) d.protocole.etapes[etapeNum] = {};
+        d.protocole.etapes[etapeNum].defi_actuel = defi;
+        d.protocole.etapes[etapeNum].difficulte = diff;
+
+        V.data.savePatient(id, d);
+        V.views.patient._diffCurrent = '';
+        V.ui.toast('✓ Séance enregistrée');
+        V.views.patient.renderTab(id, 'seance');
+      },
+
+      addMomentCle(id) {
+        const emerge = document.getElementById('sj-emerge')?.value.trim();
+        const texte = emerge || prompt('Moment clé à noter :');
+        if(!texte) return;
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(!d.moments_cles) d.moments_cles = [];
+        d.moments_cles.push({ date: new Date().toISOString().slice(0,10), texte, etape: d.protocole?.etape_courante||1 });
+        V.data.savePatient(id, d);
+        V.ui.toast('★ Moment clé enregistré');
+        V.views.patient.renderTab(id, 'seance');
+      },
+
+      // ── TAB PORTRAIT ────────────────────────────────────────────────
       _tabPortrait(d) {
-        if(!d.portrait) return `<div class="card" style="text-align:center;padding:36px"><p style="font-size:14px;color:var(--ink4);margin-bottom:16px">Aucun portrait importé.</p><p style="font-size:12px;color:var(--ink5)">Cliquez sur "Importer portrait" pour commencer.</p></div>`;
-        const sc = d.portrait.scores || {};
+        if(!d.portrait) return `<div class="card" style="text-align:center;padding:36px"><p style="font-size:14px;color:var(--ink4);margin-bottom:12px">Aucun portrait importé.</p></div>`;
+        const sc = d.portrait.scores||{};
         const masque = d.portrait.masque;
         const col = MASK_COLORS[masque]||'var(--gold)';
         const sorted = [...MASKS].sort((a,b)=>(sc[b]||0)-(sc[a]||0));
-        // Config
-        const elevated = MASKS.filter(m => (sc[m]||0) >= 65);
-        let configLabel = 'Dominance unique';
-        if(elevated.length >= 3) configLabel = 'Triade : '+elevated.slice(0,3).map(m=>MASK_NAMES[m]).join(' + ');
-        else if(elevated.length === 2) configLabel = 'Dyade : '+elevated.map(m=>MASK_NAMES[m]).join(' + ');
-        const spaVal = d.portrait.spa || 0;
-        const spaCirc = Math.round(spaVal / 100 * 251);
+        const elevated = MASKS.filter(m=>(sc[m]||0)>=65);
+        let configLabel = 'Dominance unique', configDesc = '';
+        if(elevated.length>=3) {
+          configLabel = 'Triade : '+elevated.slice(0,3).map(m=>MASK_NAMES[m]).join(' + ');
+          configDesc = 'Trois masques actifs se renforcent mutuellement. Le travail doit adresser la dynamique commune.';
+        } else if(elevated.length===2) {
+          configLabel = 'Dyade : '+elevated.map(m=>MASK_NAMES[m]).join(' + ');
+          configDesc = 'Deux masques en amplification mutuelle. Identifier le cycle de renforcement est prioritaire.';
+        }
+        const spaVal = d.portrait.spa||0;
+        const spaCirc = Math.round(spaVal/100*251);
+        const pre = MASK_PREAMBULE[masque];
         return `
-          <div style="display:grid;grid-template-columns:1fr 220px;gap:16px">
+          <div style="display:grid;grid-template-columns:1fr 200px;gap:14px;margin-bottom:14px">
             <div class="card">
-              <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Scores par masque</div>
-              <div class="scores-grid" style="grid-template-columns:1fr">
-                ${sorted.map(m => `
-                  <div class="score-row">
-                    <div class="score-label" style="color:${MASK_COLORS[m]}">${m.charAt(0).toUpperCase()+m.slice(1)}</div>
-                    <div class="score-track"><div class="score-fill" id="bar-${m}" style="width:0;background:${MASK_COLORS[m]}"></div></div>
-                    <div class="score-value">${sc[m]||0}%</div>
-                  </div>`).join('')}
-              </div>
+              <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:12px">Scores par masque</div>
+              ${sorted.map(m=>`<div class="score-row" style="margin-bottom:6px">
+                <div class="score-label" style="color:${MASK_COLORS[m]}">${m[0].toUpperCase()+m.slice(1)}</div>
+                <div class="score-track"><div class="score-fill" id="bar-${m}" style="width:0;background:${MASK_COLORS[m]}"></div></div>
+                <div class="score-value">${sc[m]||0}%</div>
+              </div>`).join('')}
             </div>
             <div style="display:flex;flex-direction:column;gap:12px">
               <div class="card" style="text-align:center">
-                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:10px">Score de Présence Authentique</div>
-                <svg width="110" height="110" viewBox="0 0 110 110">
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px">SPA</div>
+                <svg width="100" height="100" viewBox="0 0 110 110">
                   <circle cx="55" cy="55" r="40" fill="none" stroke="var(--bg2)" stroke-width="8"/>
-                  <circle cx="55" cy="55" r="40" fill="none" stroke="${col}" stroke-width="8"
-                    stroke-dasharray="${spaCirc} 251" stroke-linecap="round"
-                    transform="rotate(-90 55 55)" stroke-dashoffset="0"/>
+                  <circle cx="55" cy="55" r="40" fill="none" stroke="${col}" stroke-width="8" stroke-dasharray="${spaCirc} 251" stroke-linecap="round" transform="rotate(-90 55 55)"/>
                   <text x="55" y="52" text-anchor="middle" font-family="Cormorant Garamond" font-size="22" fill="${col}" font-weight="300">${spaVal}</text>
                   <text x="55" y="65" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#8C8278">%</text>
                 </svg>
-                <div style="font-size:11px;font-weight:600;color:${col};margin-top:4px">SPA</div>
               </div>
               <div class="card">
-                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px">Configuration</div>
-                <div style="font-size:12px;font-weight:600;color:${col};line-height:1.5">${configLabel}</div>
-                <div style="font-size:11px;color:var(--ink4);margin-top:6px">${MASK_PEURS[masque]||''}</div>
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:6px">Config</div>
+                <div style="font-size:12px;font-weight:600;color:${col};line-height:1.5;margin-bottom:4px">${configLabel}</div>
+                ${configDesc ? `<div style="font-size:11px;color:var(--ink4);line-height:1.55">${configDesc}</div>` : `<div style="font-size:11px;color:var(--ink4)">${MASK_PEURS[masque]||''}</div>`}
               </div>
             </div>
-          </div>`;
+          </div>
+          ${pre ? `<div class="card" style="border-left:3px solid ${col}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+              <div><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Peur centrale</div><div style="font-size:13px;color:${col};font-style:italic;font-family:'Cormorant Garamond',serif">${pre.peur}</div></div>
+              <div><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Origine</div><div style="font-size:12px;color:var(--ink3);line-height:1.65">${pre.origine.slice(0,180)}…</div></div>
+            </div>
+            <div style="background:rgba(168,135,58,.05);border:1px solid rgba(168,135,58,.15);border-radius:var(--r-sm);padding:12px">
+              <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px">Nature authentique</div>
+              <div style="font-size:12.5px;color:var(--ink3);line-height:1.7;font-style:italic">${pre.nature}</div>
+            </div>
+          </div>` : ''}`;
       },
+
+      // ── TAB PROTOCOLE ───────────────────────────────────────────────
       _tabProtocole(d, id) {
-        const etapeCourante = d.protocole?.etape_courante || 1;
-        const etapes = d.protocole?.etapes || {};
-        const masque = d.portrait?.masque;
-        const col = masque ? (MASK_COLORS[masque]||'var(--gold)') : 'var(--gold)';
-        const pre = masque && MASK_PREAMBULE[masque];
-        let html = '';
+        const etapeCourante = d.protocole?.etape_courante||1;
+        const etapes = d.protocole?.etapes||{};
+        const col = d.portrait ? (MASK_COLORS[d.portrait.masque]||'var(--gold)') : 'var(--gold)';
+        const STATUTS = {a_venir:'À venir',en_cours:'En cours',validee:'✓ Validée',bloquee:'⛔ Bloquée'};
+        const DIFF_STYLE = {fluide:'color:#2D7A4F', resistance:'color:#B8930A', blocage:'color:#B5312A'};
 
-        // ── Préambule masque ──
-        if(pre) {
-          html += `<div class="card" style="margin-bottom:18px;border-left:3px solid ${col}">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-              <div style="width:10px;height:10px;border-radius:50%;background:${col};flex-shrink:0"></div>
-              <span style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col}">${MASK_NAMES[masque]||masque} — Portrait de travail</span>
-            </div>
-            <div style="margin-bottom:10px">
-              <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Peur centrale</div>
-              <div style="font-size:13px;font-weight:500;color:${col};font-style:italic">${pre.peur}</div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
-              <div style="background:var(--bg);border-radius:var(--r-sm);padding:12px">
-                <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:6px">Origine</div>
-                <div style="font-size:12px;color:var(--ink3);line-height:1.75">${pre.origine}</div>
-              </div>
-              <div style="background:var(--bg);border-radius:var(--r-sm);padding:12px">
-                <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:6px">Ce que fait le masque</div>
-                <div style="font-size:12px;color:var(--ink3);line-height:1.75">${pre.masque}</div>
-              </div>
-            </div>
-            <div style="margin-top:10px;background:rgba(${col.includes('#')?'168,135,58':'168,135,58'},.06);border-radius:var(--r-sm);padding:12px;border:1px solid rgba(168,135,58,.15)">
-              <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Nature authentique sous-jacente</div>
-              <div style="font-size:12px;color:var(--ink3);line-height:1.75;font-style:italic">${pre.nature}</div>
-            </div>
-          </div>`;
-        }
+        let html = `<div class="protocole-timeline">`;
+        VALEUR_STEPS.forEach((s,i) => {
+          const num = i+1;
+          const et = etapes[num]||{};
+          const done = et.validee;
+          const isActive = num===etapeCourante;
+          const locked = num>etapeCourante;
+          const statut = done?'validee': et.statut==='bloquee'?'bloquee': isActive?'en_cours':'a_venir';
+          const circBg = done?col : isActive?'#fff' : 'var(--bg2)';
+          const circBorder = done||isActive ? col : 'var(--line)';
+          const circColor = done?'#fff' : isActive?col : 'var(--ink4)';
+          const diffBadge = et.difficulte ? `<span style="font-size:10px;margin-left:6px;${DIFF_STYLE[et.difficulte]||''}">· ${et.difficulte==='fluide'?'✓ Fluide':et.difficulte==='resistance'?'⚡ Résistance':'⛔ Blocage'}</span>` : '';
+          const mcCount = (d.moments_cles||[]).filter(m=>m.etape===num).length;
 
-        html += `<div class="protocole-timeline">`;
-        VALEUR_STEPS.forEach((s, i) => {
-          const num = i + 1;
-          const done = etapes[num]?.validee;
-          const isActive = num === etapeCourante;
-          const locked = num > etapeCourante;
-          const circBg = done ? col : isActive ? '#fff' : 'var(--bg2)';
-          const circBorder = done || isActive ? col : 'var(--line)';
-          const circColor = done ? '#fff' : isActive ? col : 'var(--ink4)';
-          const noteVal = etapes[num]?.note_seance || '';
-          const defiNote = etapes[num]?.note_defi || '';
-          const defiFait = etapes[num]?.defi_fait || false;
           html += `
             <div class="step-item">
               <div class="step-connector">
                 <div class="step-circle" style="background:${circBg};border-color:${circBorder};color:${circColor};cursor:${locked?'default':'pointer'}" onclick="${!locked?`V.views.patient.toggleStep(${num})`:''}">
-                  ${done ? '✓' : s.l}
+                  ${done?'✓':s.l}
                 </div>
-                ${num < 6 ? '<div class="step-line"></div>' : ''}
+                ${num<6?'<div class="step-line"></div>':''}
               </div>
               <div class="step-body">
                 <div class="step-header" onclick="${!locked?`V.views.patient.toggleStep(${num})`:''}">
                   <span class="step-letter" style="color:${locked?'var(--ink5)':col}">${s.l} · ${s.name}</span>
                   <span class="step-name" style="color:${locked?'var(--ink5)':'var(--ink)'}">${s.title}</span>
-                  ${done ? '<span class="badge badge--done" style="margin-left:auto">✓ Validée</span>' : isActive ? '<span class="badge badge--active" style="margin-left:auto">En cours</span>' : locked ? '<span class="badge badge--neutral" style="margin-left:auto">Verrouillée</span>' : ''}
+                  ${diffBadge}
+                  ${mcCount?`<span style="font-size:10px;color:var(--gold);margin-left:6px">★ ${mcCount}</span>`:''}
+                  <span class="badge badge--${statut==='validee'?'done':statut==='en_cours'?'active':statut==='bloquee'?'neutral':'neutral'}" style="margin-left:auto">${STATUTS[statut]}</span>
                 </div>
-                <div class="step-detail${isActive ? ' open' : ''}" id="step-detail-${num}">
+                <div class="step-detail${isActive?' open':''}" id="step-detail-${num}">
                   <div class="step-desc">${s.desc}</div>
                   <div class="step-notes-zone">
-                    <div class="field-label" style="margin-bottom:6px">Notes de séance</div>
-                    <textarea class="field-input" style="min-height:60px" placeholder="Observations, ce qui a émergé…" onchange="V.views.patient.saveStepNote(${num},'note_seance',this.value,'${id}')">${noteVal}</textarea>
+                    <div class="field-label" style="margin-bottom:5px">Notes praticienne (privées)</div>
+                    <textarea class="field-input" style="min-height:56px" placeholder="Observations, ce qui a émergé…" onchange="V.views.patient.saveStepNote(${num},'note_seance',this.value,'${id}')">${et.note_seance||''}</textarea>
                   </div>
                   <div class="step-defi-zone">
                     <div class="defi-label">Défi inter-séance</div>
-                    <div class="defi-text">${s.defi}</div>
+                    <div class="defi-text">${et.defi_actuel||s.defi}</div>
                     <div class="defi-check-row">
-                      <input type="checkbox" id="defi-check-${num}" ${defiFait?'checked':''} onchange="V.views.patient.saveStepNote(${num},'defi_fait',this.checked,'${id}')">
-                      <label class="defi-check-label" for="defi-check-${num}">Défi réalisé cette semaine</label>
+                      <input type="checkbox" id="dc-${num}" ${et.defi_fait?'checked':''} onchange="V.views.patient.saveStepNote(${num},'defi_fait',this.checked,'${id}')">
+                      <label class="defi-check-label" for="dc-${num}">Défi réalisé</label>
                     </div>
-                    <div class="field-label" style="margin-bottom:6px">Retour du patient sur le défi</div>
-                    <textarea class="field-input" style="min-height:52px" placeholder="Ce que le patient a vécu, découvert…" onchange="V.views.patient.saveStepNote(${num},'note_defi',this.value,'${id}')">${defiNote}</textarea>
-                    ${!done ? `<button class="btn btn--gold btn--full step-validate-btn" onclick="V.views.patient.validateStep(${num},'${id}')">✓ Valider l'étape ${s.l} → passer à ${VALEUR_STEPS[i+1]?VALEUR_STEPS[i+1].l:'la fin'}</button>` : `<button class="btn btn--ghost btn--full step-validate-btn" onclick="V.views.patient.unvalidateStep(${num},'${id}')">↩ Rouvrir cette étape</button>`}
+                    <div class="field-label" style="margin-bottom:5px">Retour du patient</div>
+                    <textarea class="field-input" style="min-height:48px" placeholder="Ce que le patient a vécu…" onchange="V.views.patient.saveStepNote(${num},'note_defi',this.value,'${id}')">${et.note_defi||''}</textarea>
+                    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+                      ${!done ? `<button class="btn btn--gold btn--sm btn--full" onclick="V.views.patient.validateStep(${num},'${id}')">✓ Valider ${s.l} → ${VALEUR_STEPS[i+1]?VALEUR_STEPS[i+1].l:'Fin'}</button>` : `<button class="btn btn--ghost btn--sm" onclick="V.views.patient.unvalidateStep(${num},'${id}')">↩ Rouvrir</button>`}
+                      <button class="btn btn--ghost btn--sm" onclick="V.views.patient.toggleBlocage(${num},'${id}')">⛔ ${statut==='bloquee'?'Débloquer':'Marquer bloqué'}</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -966,124 +1145,184 @@ const V = {
         html += '</div>';
         return html;
       },
-      _tabSuivi(d) {
-        const hist = d.spa_historique || [];
-        const lastSpa = hist.length ? hist[hist.length-1].valeur : (d.portrait?.spa || null);
-        return `
-          <div class="card" style="margin-bottom:14px">
-            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Ajouter une mesure SPA</div>
-            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
-              <div class="field-group" style="margin:0;flex:1;min-width:120px"><label class="field-label">Date</label><input class="field-input" id="spa-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
-              <div class="field-group" style="margin:0;width:100px"><label class="field-label">SPA %</label><input class="field-input" id="spa-val" type="number" min="0" max="100" placeholder="0–100"></div>
-              <div class="field-group" style="margin:0;flex:2;min-width:180px"><label class="field-label">Notes</label><input class="field-input" id="spa-notes" placeholder="Contexte séance…"></div>
-              <button class="btn btn--gold" onclick="V.views.patient.addSpaMesure()">＋ Ajouter</button>
+
+      // ── TAB HISTORIQUE ──────────────────────────────────────────────
+      _tabHistorique(d, id) {
+        const seances = [...(d.seances||[])].reverse();
+        const hist = d.spa_historique||[];
+        const mcs = d.moments_cles||[];
+        const col = d.portrait ? (MASK_COLORS[d.portrait.masque]||'var(--gold)') : 'var(--gold)';
+        const DIFF_LABEL = {fluide:'✓ Fluide',resistance:'⚡ Résistance',blocage:'⛔ Blocage'};
+        const DIFF_COLOR = {fluide:'#2D7A4F',resistance:'#B8930A',blocage:'#B5312A'};
+
+        // Mini courbe SPA (SVG simple)
+        let spaChart = '';
+        if(hist.length >= 2) {
+          const vals = hist.slice(-8);
+          const max = 100, w = 340, h = 60, pad = 8;
+          const pts = vals.map((v,i) => {
+            const x = pad + i/(vals.length-1)*(w-pad*2);
+            const y = h - pad - (v.valeur/max)*(h-pad*2);
+            return `${x},${y}`;
+          }).join(' ');
+          const lastVal = vals[vals.length-1].valeur;
+          const prevVal = vals[vals.length-2].valeur;
+          const trend = lastVal > prevVal ? `↑ +${lastVal-prevVal}%` : lastVal < prevVal ? `↓ ${lastVal-prevVal}%` : '= stable';
+          const trendCol = lastVal >= prevVal ? '#2D7A4F' : '#B5312A';
+          spaChart = `
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4)">Évolution SPA</div>
+                <div style="font-size:12px;font-weight:600;color:${trendCol}">${trend}</div>
+              </div>
+              <svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
+                <polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                ${vals.map((v,i) => {
+                  const x = pad + i/(vals.length-1)*(w-pad*2);
+                  const y = h - pad - (v.valeur/max)*(h-pad*2);
+                  return `<circle cx="${x}" cy="${y}" r="3" fill="${col}"/>
+                          <text x="${x}" y="${y-6}" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8C8278">${v.valeur}</text>`;
+                }).join('')}
+              </svg>
+              <div style="display:flex;justify-content:space-between;margin-top:4px">
+                ${vals.map(v=>`<span style="font-size:8px;color:var(--ink5)">${v.date.slice(5)}</span>`).join('')}
+              </div>
+            </div>`;
+        }
+
+        // Moments clés
+        const mcHtml = mcs.length ? `
+          <div class="card" style="margin-bottom:14px;background:rgba(168,135,58,.03);border-color:rgba(168,135,58,.15)">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">★ Moments clés du parcours</div>
+            ${[...mcs].reverse().map(m=>`
+              <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:flex-start">
+                <span style="font-size:10px;color:var(--ink5);flex-shrink:0;width:70px">${m.date}</span>
+                <span style="font-size:10px;color:var(--gold);flex-shrink:0;width:28px">Ét.${m.etape||'?'}</span>
+                <span style="font-size:13px;color:var(--ink3);line-height:1.6">${m.texte}</span>
+              </div>`).join('')}
+          </div>` : '';
+
+        // Séances
+        const seancesHtml = seances.length ? seances.map(s => {
+          const step = VALEUR_STEPS[s.etape-1];
+          const diffColor = s.difficulte ? DIFF_COLOR[s.difficulte] : 'var(--ink4)';
+          return `<div class="card" style="margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+              <span style="font-size:12px;font-weight:600;color:var(--ink)">${s.date}</span>
+              ${step?`<span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:${col};background:rgba(${col},.08);padding:2px 8px;border-radius:10px">${step.l} · ${step.name}</span>`:''}
+              ${s.spa?`<span class="badge badge--neutral">SPA ${s.spa}%</span>`:''}
+              ${s.difficulte?`<span style="font-size:11px;color:${diffColor};font-weight:600">${DIFF_LABEL[s.difficulte]||''}</span>`:''}
             </div>
-          </div>
-          <div class="card">
-            <div class="section-header"><span class="section-title">Historique SPA${lastSpa!==null?' — Dernière valeur : '+lastSpa+'%':''}</span></div>
-            <div class="spa-history" id="spa-history-list">
-              ${hist.length ? [...hist].reverse().map(e => `
-                <div class="spa-entry">
-                  <div class="spa-entry-date">${e.date}</div>
-                  <div class="spa-entry-bar"><div class="spa-entry-fill" style="width:${e.valeur}%"></div></div>
-                  <div class="spa-entry-val">${e.valeur}%</div>
-                  <div style="font-size:11px;color:var(--ink4);flex:1;margin-left:10px">${e.notes||''}</div>
-                </div>`).join('') : '<p style="font-size:12.5px;color:var(--ink4)">Aucune mesure enregistrée.</p>'}
-            </div>
+            ${s.note?`<div style="font-size:13px;color:var(--ink3);line-height:1.65;margin-bottom:6px">${s.note}</div>`:''}
+            ${s.defi_donne?`<div style="font-size:12px;color:var(--ink4);border-left:2px solid var(--line);padding-left:8px;margin-top:6px"><span style="font-weight:600">Défi donné :</span> ${s.defi_donne}</div>`:''}
           </div>`;
+        }).join('') : '<div class="card" style="text-align:center;padding:24px;color:var(--ink5)">Aucune séance enregistrée.</div>';
+
+        return spaChart + mcHtml + `
+          <div class="section-header" style="margin-bottom:10px">
+            <span class="section-title">Journal des séances</span>
+            <button class="btn btn--ghost btn--sm" onclick="V.views.patient.switchTab('seance','${id}')">+ Nouvelle séance</button>
+          </div>` + seancesHtml;
       },
-      _tabLivrets(d) {
+
+      // ── TAB OUTILS ──────────────────────────────────────────────────
+      _tabOutils(d, id) {
         const masque = d.portrait?.masque;
-        const elevated = masque && d.portrait?.scores ? MASKS.filter(m => (d.portrait.scores[m]||0) >= 65) : [];
-        const hasDyade = elevated.length >= 2;
+        const col = masque ? MASK_COLORS[masque] : 'var(--gold)';
         const wb = masque ? WORKBOOKS.find(w=>w.masque===masque) : null;
+        const lv = masque ? LIVRETS.find(l=>l.masque===masque) : null;
+        const elevated = masque && d.portrait?.scores ? MASKS.filter(m=>(d.portrait.scores[m]||0)>=65) : [];
+        const hasDyade = elevated.length >= 2;
+        const list = V.data.getPatients();
+        const p = list.find(x=>x.id===id)||{};
+        const ADMIN_PARAM = '?admin=VALEUR-ADMIN-2025';
+
         return `
-          ${wb ? `<div class="card" style="margin-bottom:14px;border-left:3px solid ${wb.color};background:rgba(168,135,58,.03)">
-            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">Workbook patient — Masque ${MASK_NAMES[masque]||masque}</div>
-            <p style="font-size:12.5px;color:var(--ink4);margin-bottom:12px;line-height:1.65">Document de travail avec portrait du masque, amplifications, protocole et 21 défis. À envoyer au patient ou imprimer en PDF.</p>
+          ${wb ? `<div class="card" style="margin-bottom:14px;border-left:3px solid ${col};background:rgba(168,135,58,.03)">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Workbook patient</div>
+            <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">${wb.label}</div>
+            <div style="font-size:12px;color:var(--ink4);margin-bottom:12px;font-style:italic">${wb.peur}</div>
             <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <a class="wb-btn wb-btn-open" href="${wb.file}" target="_blank">
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Ouvrir le workbook
-              </a>
-              <button class="wb-btn wb-btn-copy" onclick="V.views.workbooks.copyLink('https://cabinet.psyh.fr/${wb.file}','${wb.masque}','${p.prenom||''}')">
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><rect x="1" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 4V2.5A1.5 1.5 0 0 1 5.5 1H11.5A1.5 1.5 0 0 1 13 2.5V8.5A1.5 1.5 0 0 1 11.5 10H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                Copier le lien à envoyer
-              </button>
+              <a class="btn btn--ghost btn--sm" href="${wb.file}" target="_blank">↗ Ouvrir</a>
+              <button class="btn btn--gold btn--sm" onclick="V.views.workbooks.copyLink('https://cabinet.psyh.fr/${wb.file}','${wb.masque}','${p.prenom||''}')">⎘ Copier lien personnalisé</button>
             </div>
           </div>` : ''}
-          <div class="card" style="margin-bottom:14px">
-            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Livrets du patient</div>
-            <div class="livrets-grid">
-              ${masque ? `<a class="livret-card" href="${LIVRETS.find(l=>l.masque===masque)?.file||'#'}" target="_blank">
-                <div class="livret-card-stripe" style="background:${MASK_COLORS[masque]}"></div>
-                <div class="livret-card-name">⭐ ${MASK_NAMES[masque]}</div>
-                <div class="livret-card-sub">Masque dominant</div></a>` : ''}
-              ${hasDyade ? `<a class="livret-card" href="livret_dyades_triades.html" target="_blank">
-                <div class="livret-card-stripe" style="background:var(--gold)"></div>
-                <div class="livret-card-name">🔗 Dyades &amp; Triades</div>
-                <div class="livret-card-sub">${elevated.length >= 3 ? 'Triade' : 'Dyade'} active</div></a>` : ''}
-              <a class="livret-card" href="livret_psychoeducation.html" target="_blank">
-                <div class="livret-card-stripe" style="background:var(--ink4)"></div>
-                <div class="livret-card-name">🎓 Psychoéducation</div>
-                <div class="livret-card-sub">Introduction méthode</div></a>
-            </div>
-          </div>
+
+          ${lv ? `<div class="card" style="margin-bottom:14px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px">Livret masque dominant</div>
+            <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px">${lv.label}</div>
+            <a class="btn btn--ghost btn--sm" href="${lv.file}${ADMIN_PARAM}" target="_blank">↗ Ouvrir le livret</a>
+          </div>` : ''}
+
+          ${hasDyade ? `<div class="card" style="margin-bottom:14px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px">Livret Dyades &amp; Triades</div>
+            <div style="font-size:12px;color:var(--ink4);margin-bottom:10px">Config ${elevated.length>=3?'Triade':'Dyade'} détectée — ${elevated.map(m=>MASK_NAMES[m]).join(' + ')}</div>
+            <a class="btn btn--ghost btn--sm" href="livret_dyades_triades.html${ADMIN_PARAM}" target="_blank">↗ Ouvrir</a>
+          </div>` : ''}
+
           <div class="card">
-            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Tous les livrets</div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:12px">Tous les livrets</div>
             <div class="livrets-grid">
               ${LIVRETS.filter(l=>l.masque!=='psychoed'&&l.masque!=='dyades').map(l=>`
-                <a class="livret-card" href="${l.file}" target="_blank">
+                <a class="livret-card" href="${l.file}${ADMIN_PARAM}" target="_blank">
                   <div class="livret-card-stripe" style="background:${l.color}"></div>
-                  <div class="livret-card-name">${l.label}</div>
-                  ${masque===l.masque?'<div class="livret-card-sub" style="color:var(--gold)">★ Masque dominant</div>':''}
+                  <div class="livret-card-name" style="${masque===l.masque?`color:${l.color};font-weight:700`:''}">${l.label}</div>
+                  ${masque===l.masque?'<div class="livret-card-sub" style="color:var(--gold)">★ Dominant</div>':''}
                 </a>`).join('')}
+              <a class="livret-card" href="livret_psychoeducation.html${ADMIN_PARAM}" target="_blank">
+                <div class="livret-card-stripe" style="background:var(--ink4)"></div>
+                <div class="livret-card-name">Psychoéducation</div>
+              </a>
+              <a class="livret-card" href="manuel_valeur.html${ADMIN_PARAM}" target="_blank">
+                <div class="livret-card-stripe" style="background:var(--gold)"></div>
+                <div class="livret-card-name">Manuel V.A.L.E.U.R©</div>
+              </a>
             </div>
           </div>`;
       },
+
+      // ── HELPERS ─────────────────────────────────────────────────────
       toggleStep(num) {
         const el = document.getElementById('step-detail-'+num);
         if(el) el.classList.toggle('open');
       },
+      toggleBlocage(num, id) {
+        const d = V.data.getPatient(id)||V.data.newPatientData();
+        if(!d.protocole.etapes[num]) d.protocole.etapes[num]={};
+        const wasBloq = d.protocole.etapes[num].statut==='bloquee';
+        d.protocole.etapes[num].statut = wasBloq ? 'en_cours' : 'bloquee';
+        V.data.savePatient(id, d);
+        V.ui.toast(wasBloq ? 'Étape débloquée' : '⛔ Étape marquée bloquée');
+        V.views.patient.renderTab(id, 'protocole');
+      },
       saveStepNote(num, key, val, id) {
-        const d = V.data.getPatient(id) || V.data.newPatientData();
-        if(!d.protocole.etapes[num]) d.protocole.etapes[num] = {};
+        const d = V.data.getPatient(id)||V.data.newPatientData();
+        if(!d.protocole.etapes[num]) d.protocole.etapes[num]={};
         d.protocole.etapes[num][key] = val;
         V.data.savePatient(id, d);
       },
       validateStep(num, id) {
-        const d = V.data.getPatient(id) || V.data.newPatientData();
-        if(!d.protocole.etapes[num]) d.protocole.etapes[num] = {};
+        const d = V.data.getPatient(id)||V.data.newPatientData();
+        if(!d.protocole.etapes[num]) d.protocole.etapes[num]={};
         d.protocole.etapes[num].validee = true;
+        d.protocole.etapes[num].statut = 'validee';
         d.protocole.etapes[num].date_validation = new Date().toISOString().slice(0,10);
-        if(d.protocole.etape_courante === num && num < 6) d.protocole.etape_courante = num + 1;
+        if(d.protocole.etape_courante===num && num<6) d.protocole.etape_courante = num+1;
         V.data.savePatient(id, d);
         V.ui.toast(`✓ Étape ${VALEUR_STEPS[num-1].l} validée`);
-        V.views.patient.renderTab(id, 'protocole');
+        V.views.patient.renderTab(id, 'seance');
       },
       unvalidateStep(num, id) {
-        const d = V.data.getPatient(id) || V.data.newPatientData();
-        if(d.protocole.etapes[num]) d.protocole.etapes[num].validee = false;
+        const d = V.data.getPatient(id)||V.data.newPatientData();
+        if(d.protocole.etapes[num]) { d.protocole.etapes[num].validee=false; d.protocole.etapes[num].statut='en_cours'; }
         d.protocole.etape_courante = Math.min(d.protocole.etape_courante, num);
         V.data.savePatient(id, d);
         V.ui.toast('Étape rouverte');
         V.views.patient.renderTab(id, 'protocole');
       },
-      addSpaMesure() {
-        const date = document.getElementById('spa-date').value;
-        const val = parseInt(document.getElementById('spa-val').value);
-        const notes = document.getElementById('spa-notes').value.trim();
-        if(!date || isNaN(val) || val < 0 || val > 100) { V.ui.toast('Date et SPA requis (0–100)', true); return; }
-        const id = V.router._patientId;
-        const d = V.data.getPatient(id) || V.data.newPatientData();
-        d.spa_historique.push({ date, valeur: val, notes });
-        V.data.savePatient(id, d);
-        V.ui.toast('✓ Mesure SPA ajoutée');
-        V.views.patient.renderTab(id, 'suivi');
-      },
-      addSeance() {}, // alias kept
+      addSeance() {},
       confirmDelete(id) {
-        if(!confirm('Supprimer ce patient ? Cette action est irréversible.')) return;
+        if(!confirm('Supprimer ce patient\u00a0? Cette action est irréversible.')) return;
         V.data.deletePatient(id);
         V.ui.toast('Patient supprimé');
         V.router.go('patients');
