@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>V.A.L.E.U.R© — Votre Fiche Masque Dominant</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#060C18;--navy2:#0D1526;--navy3:#111D32;
+  --glass:rgba(255,255,255,.035);--gb:rgba(255,255,255,.07);
+  --text:#F0EAE1;--muted:#9BB0C8;
+  --gold:#C9A84C;--gold-l:#F0D080;
+  --MC:#38A169;--MC2:rgba(56,161,105,.1);
+  --font-d:'Cormorant Garamond',serif;--font-b:'Jost',sans-serif;
+  --r:16px;--r-s:10px;
+}
+body{background:var(--navy);color:var(--text);font-family:var(--font-b);line-height:1.8;-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes pulse-dot{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+@keyframes goldPulse{0%,100%{box-shadow:0 8px 40px rgba(201,168,76,.4)}50%{box-shadow:0 8px 50px rgba(201,168,76,.6)}}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.fu{opacity:0;animation:fadeUp .8s ease forwards}
+.fu:nth-child(1){animation-delay:.1s}
+.fu:nth-child(2){animation-delay:.2s}
+.fu:nth-child(3){animation-delay:.3s}
+.fu:nth-child(4){animation-delay:.4s}
+.fu:nth-child(5){animation-delay:.5s}
+.fu:nth-child(6){animation-delay:.6s}
+.fu:nth-child(7){animation-delay:.7s}
+.fu:nth-child(8){animation-delay:.8s}
+.fu:nth-child(9){animation-delay:.9s}
+
+/* TOP BAR */
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,12,24,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.05);padding:11px 24px;display:flex;align-items:center;justify-content:space-between}
+.tb-logo{font-family:var(--font-d);font-size:15px;font-weight:600;letter-spacing:2.5px;color:var(--gold)}
+.tb-right{font-size:10px;color:var(--muted);letter-spacing:.8px}
+.tb-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:4px 14px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:500}
+.tb-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse-dot 2s infinite}
+
+/* LAYOUT */
+.wrap{max-width:800px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1}
+.print-btn{position:fixed;bottom:24px;right:20px;z-index:200;display:flex;align-items:center;gap:8px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:11px 20px;border-radius:2px;cursor:pointer;transition:all .25s;backdrop-filter:blur(10px)}
+.print-btn:hover{background:rgba(201,168,76,.22);border-color:var(--gold)}
+
+/* HERO */
+.hero{padding:110px 0 36px;text-align:center}
+.hero-eyebrow{font-family:var(--font-d);font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.hero-title{font-family:var(--font-d);font-size:clamp(40px,9vw,72px);font-weight:300;line-height:.95;margin-bottom:10px}
+.hero-title em{font-style:italic}
+.hero-sub{font-family:var(--font-d);font-size:clamp(15px,2.5vw,20px);color:var(--gold);font-style:italic;margin-bottom:32px}
+.hero-name{font-size:13px;color:var(--muted);letter-spacing:1px}
+
+/* CARDS */
+.card{background:var(--glass);border:1px solid var(--gb);border-radius:var(--r);padding:36px 32px;margin:20px 0;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--MC2) 0%,transparent 60%);pointer-events:none}
+.card-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--MC);font-weight:600;margin-bottom:10px;display:block;position:relative;z-index:1}
+.card-title{font-family:var(--font-d);font-size:clamp(20px,3.5vw,26px);font-weight:600;color:var(--text);margin-bottom:18px;line-height:1.2;position:relative;z-index:1}
+.card-title em{color:var(--MC);font-style:italic}
+.card-body{font-size:15px;color:rgba(240,234,225,.82);line-height:1.85;position:relative;z-index:1}
+.card-gold{background:linear-gradient(135deg,rgba(201,168,76,.07) 0%,rgba(201,168,76,.02) 100%);border-color:rgba(201,168,76,.2)}
+.card-gold::before{background:linear-gradient(135deg,rgba(201,168,76,.06) 0%,transparent 60%)}
+.card-gold .card-label{color:var(--gold)}
+
+/* MÉCANISME */
+.meca-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;position:relative;z-index:1}
+.meca-item{padding:16px;background:rgba(255,255,255,.025);border-radius:var(--r-s);border-left:3px solid var(--MC)}
+.meca-item.red-border{border-left-color:#E53E3E}
+.meca-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px}
+.meca-text{font-size:13px;color:rgba(240,234,225,.78);line-height:1.65}
+
+/* PENSÉES */
+.thought{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-s);padding:14px 18px;position:relative;padding-left:32px;margin-bottom:8px}
+.thought::before{content:'"';position:absolute;left:12px;top:8px;font-family:var(--font-d);font-size:24px;color:var(--MC);opacity:.5;line-height:1}
+.thought-text{font-family:var(--font-d);font-size:15px;color:rgba(240,234,225,.85);font-style:italic;line-height:1.65}
+
+/* DÉCLENCHEURS */
+.trigger-list{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
+.trigger-item{display:flex;align-items:flex-start;gap:10px;padding:13px 16px;background:rgba(255,255,255,.025);border-radius:var(--r-s);font-size:14px;color:rgba(240,234,225,.8);line-height:1.65}
+.trigger-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+
+/* COÛTS */
+.cout-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1}
+.cout-item{padding:14px 16px;background:rgba(229,62,62,.06);border:1px solid rgba(229,62,62,.15);border-radius:var(--r-s)}
+.cout-num{font-family:var(--font-d);font-size:22px;font-weight:600;color:rgba(229,62,62,.6);margin-bottom:4px;line-height:1}
+.cout-text{font-size:12px;color:rgba(240,200,195,.7);line-height:1.5}
+
+/* ÉTAPES */
+.step-list{display:flex;flex-direction:column;gap:0;position:relative;z-index:1}
+.step-row{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.step-row:last-child{border-bottom:none}
+.step-row.highlight{background:rgba(56,161,105,.06);border-radius:var(--r-s);margin:4px -10px;padding:16px 10px;border-bottom-color:transparent}
+.step-circ{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:14px;font-weight:700;flex-shrink:0;border:2px solid}
+.step-name{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-bottom:3px}
+.step-desc{font-size:13px;color:rgba(185,210,230,.82);line-height:1.65}
+.step-note{font-size:12px;font-style:italic;margin-top:5px;line-height:1.5}
+
+/* 21 JOURS */
+.jours-intro{font-size:14px;color:rgba(240,234,225,.7);line-height:1.85;margin-bottom:20px;position:relative;z-index:1}
+.semaine{margin-bottom:24px;position:relative;z-index:1}
+.semaine-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.semaine-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+.defis-grid{display:flex;flex-direction:column;gap:7px}
+.defi-row{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;background:rgba(255,255,255,.02);border-radius:var(--r-s);border:1px solid rgba(255,255,255,.04)}
+.defi-day{font-family:var(--font-d);font-size:13px;font-weight:600;color:var(--MC);flex-shrink:0;min-width:44px}
+.defi-text{font-size:13px;color:rgba(240,234,225,.75);line-height:1.6}
+
+/* SIGNAUX */
+.signal-list{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
+.signal-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(56,161,105,.05);border-radius:var(--r-s);border:1px solid rgba(56,161,105,.12)}
+.signal-check{width:20px;height:20px;border-radius:50%;background:rgba(56,161,105,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--MC)}
+.signal-text{font-size:13px;color:rgba(200,235,215,.85);line-height:1.55}
+
+/* CTA */
+.cta-card{text-align:center;background:var(--MC2);border:1px solid color-mix(in srgb,var(--MC) 25%,transparent);border-radius:var(--r);padding:48px 32px;margin:20px 0;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.btn-gold{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,#C9A84C 0%,#F0D080 50%,#C9A84C 100%);background-size:200% 100%;color:#06090F;font-family:var(--font-b);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:18px 48px;border-radius:2px;text-decoration:none;border:none;cursor:pointer;position:relative;overflow:hidden;animation:goldPulse 3s ease infinite;transition:all .35s}
+.btn-gold::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(255,255,255,.25) 50%,transparent 70%);background-size:200% 100%;animation:shimmer 3s ease infinite}
+.btn-gold:hover{transform:translateY(-2px);background-position:100% 0}
+
+/* PRINT */
+@media print{
+  .top-bar,.print-btn,.cta-card .btn-gold{display:none!important}
+  body{background:#fff!important;color:#1a1a1a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0 16px}
+  .card{break-inside:avoid;border:1px solid rgba(0,0,0,.1)!important}
+  .hero{padding:16px 0 24px}
+}
+@media(max-width:600px){
+  .meca-grid,.cout-grid{grid-template-columns:1fr}
+  .card{padding:24px 18px}
+}
+
+/* ── PROGRAMME DÉFIS INTERACTIF ── */
+.prog-header{text-align:center;padding:96px 0 40px}
+.prog-eyebrow{font-family:var(--font-d);font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.prog-title{font-family:var(--font-d);font-size:clamp(38px,8vw,68px);font-weight:300;line-height:.95;margin-bottom:10px}
+.prog-sub{font-family:var(--font-d);font-size:clamp(15px,2.5vw,20px);color:var(--gold);font-style:italic}
+
+/* Progress global */
+.global-progress{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px 28px;margin:0 0 20px}
+.gp-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.gp-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.gp-count{font-family:var(--font-d);font-size:26px;font-weight:300;color:var(--gold)}
+.gp-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.gp-fill{height:100%;background:linear-gradient(90deg,var(--MC),var(--gold));border-radius:2px;transition:width .6s ease}
+
+/* Mode d'emploi */
+.mode-card{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);border-radius:var(--r);padding:28px 28px;margin:0 0 20px}
+.mode-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.mode-step{text-align:center;padding:16px 12px;background:rgba(255,255,255,.025);border-radius:var(--r-s)}
+.mode-step-icon{font-size:22px;margin-bottom:8px}
+.mode-step-title{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.mode-step-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* Préparation accordéon */
+.prep-toggle{width:100%;display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-s);cursor:pointer;transition:all .2s;text-align:left}
+.prep-toggle:hover{background:rgba(255,255,255,.04)}
+.prep-toggle-icon{font-size:14px;flex-shrink:0}
+.prep-toggle-txt{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);flex:1}
+.prep-toggle-chevron{font-size:12px;color:var(--muted);transition:transform .3s}
+.prep-body{display:none;padding:16px 18px 0;border:1px solid rgba(255,255,255,.05);border-top:none;border-radius:0 0 var(--r-s) var(--r-s);background:rgba(255,255,255,.015)}
+.prep-body.open{display:block}
+.prep-section{margin-bottom:14px}
+.prep-section-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.prep-instruction{font-size:13px;color:rgba(240,234,225,.75);line-height:1.75}
+.breath-steps{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.breath-step{padding:10px 12px;background:rgba(255,255,255,.025);border-radius:var(--r-s);text-align:center}
+.breath-num{font-family:var(--font-d);font-size:20px;font-weight:600;color:var(--MC);line-height:1}
+.breath-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.obs-quote{font-family:var(--font-d);font-size:14px;font-style:italic;color:rgba(240,234,225,.7);line-height:1.7;padding:10px 14px;border-left:2px solid rgba(201,168,76,.3);margin-top:8px}
+
+/* Semaine */
+.semaine-header{margin:28px 0 14px}
+.semaine-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:6px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.semaine-theme{font-family:var(--font-d);font-size:clamp(18px,3vw,24px);font-weight:300;color:var(--text);line-height:1.3}
+.semaine-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-top:6px}
+
+/* Carte défi */
+.defi-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:22px 22px 18px;margin-bottom:8px;transition:all .25s;position:relative}
+.defi-card.done{background:rgba(56,161,105,.04);border-color:rgba(56,161,105,.18)}
+.defi-card-top{display:flex;align-items:flex-start;gap:14px}
+.defi-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:14px;font-weight:600;color:var(--muted);flex-shrink:0;transition:all .3s}
+.defi-card.done .defi-num{background:rgba(56,161,105,.2);border-color:rgba(56,161,105,.4);color:#48BB78}
+.defi-content{flex:1}
+.defi-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.defi-card.done .defi-label{color:rgba(56,161,105,.7)}
+.defi-text{font-size:14px;color:rgba(240,234,225,.85);line-height:1.7}
+.defi-card.done .defi-text{color:rgba(240,234,225,.55);text-decoration:line-through;text-decoration-color:rgba(56,161,105,.3)}
+.defi-actions{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)}
+.defi-check-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:rgba(56,161,105,.08);border:1px solid rgba(56,161,105,.2);border-radius:2px;cursor:pointer;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(56,161,105,.8);transition:all .2s}
+.defi-check-btn:hover{background:rgba(56,161,105,.15);border-color:rgba(56,161,105,.35)}
+.defi-card.done .defi-check-btn{background:rgba(56,161,105,.15);border-color:rgba(56,161,105,.35);color:#48BB78}
+
+/* Encouragement */
+.encouragement{background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(201,168,76,.02));border:1px solid rgba(201,168,76,.18);border-radius:var(--r);padding:28px 28px;margin:20px 0;position:relative;overflow:hidden}
+.encouragement::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.enc-icon{font-size:28px;margin-bottom:10px}
+.enc-title{font-family:var(--font-d);font-size:clamp(16px,2.5vw,20px);font-weight:300;color:var(--text);line-height:1.35;margin-bottom:8px}
+.enc-body{font-size:13px;color:rgba(240,234,225,.62);line-height:1.8}
+
+/* Message final */
+.message-final{text-align:center;padding:40px 28px;background:linear-gradient(135deg,rgba(var(--MCr,56),var(--MCg,161),var(--MCb,105),.07),transparent);border:1px solid rgba(255,255,255,.07);border-radius:var(--r);margin:20px 0}
+.mf-quote{font-family:var(--font-d);font-size:clamp(18px,3vw,24px);font-style:italic;font-weight:300;color:var(--text);line-height:1.5;margin-bottom:14px}
+.mf-sig{font-size:12px;color:var(--muted);letter-spacing:1px}
+
+@media(max-width:600px){
+  .mode-steps{grid-template-columns:1fr}
+  .breath-steps{grid-template-columns:1fr 1fr}
+}
+</style>
+<style>
+@media print{
+  body::before{
+    content:attr(data-wm) " · Document confidentiel · Ne pas diffuser";
+    position:fixed;top:50%;left:50%;
+    transform:translate(-50%,-50%) rotate(-35deg);
+    font-size:16px;color:rgba(0,0,0,.07);white-space:nowrap;
+    pointer-events:none;z-index:9999;letter-spacing:2px;font-family:sans-serif;
+  }
+}
+</style>
+</head>
+<body>
+<script>
+/* ══ V.A.L.E.U.R© — CONTRÔLE D'ACCÈS SESSION ══ */
+(function(){
+  var params  = new URLSearchParams(location.search);
+  var admin   = params.get('admin') === 'VALEUR-ADMIN-2025';
+  if(admin) return;
+
+  var email   = (params.get('email')   || '').toLowerCase().trim();
+  var session = (params.get('session') || '').trim();
+
+  if(!email || !session || !session.startsWith('cs_')){
+    document.documentElement.style.visibility = 'hidden';
+    setTimeout(function(){
+      window.location.href =
+        'https://parcours.valeur.psyh.fr/portail_client.html?msg=acces_requis';
+    }, 100);
+    return;
+  }
+
+  /* Cache sessionStorage (par onglet — efface à la fermeture) */
+  var cacheKey = 'vl_' + session.slice(-12);
+  var cached   = sessionStorage.getItem(cacheKey);
+
+  if(cached === 'ok'){
+    applyWatermark(email);
+    return;
+  }
+  if(cached === 'no'){
+    document.documentElement.style.visibility = 'hidden';
+    window.location.href = 'https://parcours.valeur.psyh.fr/portail_client.html?msg=acces_requis';
+    return;
+  }
+
+  /* Validation API */
+  document.documentElement.style.visibility = 'hidden';
+  fetch(
+    'https://valeur-backend-api.vercel.app/api/check-access' +
+    '?email=' + encodeURIComponent(email) +
+    '&session=' + encodeURIComponent(session)
+  )
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(data.valid){
+        sessionStorage.setItem(cacheKey, 'ok');
+        document.documentElement.style.visibility = '';
+        applyWatermark(email);
+      } else {
+        sessionStorage.setItem(cacheKey, 'no');
+        window.location.href = 'https://parcours.valeur.psyh.fr/portail_client.html?msg=acces_requis';
+      }
+    })
+    .catch(function(){
+      /* API indisponible — dégrader gracieusement (ne pas bloquer un client payant) */
+      document.documentElement.style.visibility = '';
+      applyWatermark(email);
+    });
+
+  function applyWatermark(em){
+    document.addEventListener('DOMContentLoaded', function(){
+      if(!document.body) return;
+      var wm = document.createElement('div');
+      wm.setAttribute('aria-hidden','true');
+      wm.style.cssText = [
+        'position:fixed','inset:0','pointer-events:none','z-index:99999',
+        'display:flex','align-items:center','justify-content:center','overflow:hidden'
+      ].join(';');
+      wm.innerHTML = '<div style="transform:rotate(-35deg);font-size:12px;' +
+        'color:rgba(255,255,255,.025);white-space:nowrap;letter-spacing:3px;' +
+        'font-family:sans-serif;font-weight:300;-webkit-user-select:none;user-select:none">' +
+        em + ' · V.A.L.E.U.R© · Document personnel</div>';
+      document.body.appendChild(wm);
+      document.body.setAttribute('data-wm', em + ' · V.A.L.E.U.R©');
+    });
+  }
+})();
+</script>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+['selectstart','copy','cut'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;e.preventDefault()}));
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;if((e.ctrlKey||e.metaKey)&&'sacupy'.indexOf(e.key.toLowerCase())>=0)e.preventDefault()});
+</script>
+
+<header class="top-bar">
+  <span class="tb-logo">V.A.L.E.U.R©</span>
+  <span class="tb-badge"><span class="dot"></span>Fiche Personnalisée</span>
+  <span class="tb-right">© 2026 Céline Bourbon · Confidentiel</span>
+</header>
+
+<button class="print-btn" onclick="window.print()">
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  Imprimer ma fiche
+</button>
+
+<div class="wrap" id="page-wrap">
+  <div style="padding:120px 0 60px;text-align:center;color:var(--muted)">Chargement de votre fiche personnalisée…</div>
+</div>
+
+<script>
+const MASQUES_META = [
+  {key:'rouge', label:'Rouge', color:'#E53E3E', glow:'rgba(229,62,62,.5)', peur:'la peur de la maladie et de la mort'},
+  {key:'orange', label:'Orange', color:'#ED8936', glow:'rgba(237,137,54,.45)', peur:'la peur de la souffrance émotionnelle'},
+  {key:'jaune', label:'Jaune', color:'#D69E2E', glow:'rgba(214,158,46,.4)', peur:"la peur de l'inconnu et de l'incertitude"},
+  {key:'vert', label:'Vert', color:'#38A169', glow:'rgba(56,161,105,.5)', peur:"la peur du rejet et de l'abandon"},
+  {key:'bleu', label:'Bleu', color:'#3182CE', glow:'rgba(49,130,206,.45)', peur:"la peur de l'impuissance"},
+  {key:'indigo', label:'Indigo', color:'#6B46C1', glow:'rgba(107,70,193,.4)', peur:"la peur de l'échec et de l'inadéquation"},
+  {key:'violet', label:'Violet', color:'#9F7AEA', glow:'rgba(159,122,234,.4)', peur:'la peur de la perte d\'identité'}
+];
+
+function getMeta(k){return MASQUES_META.find(m=>m.key===k)||MASQUES_META[0]}
+
+const FICHE_DATA = {
+  rouge: {
+    descriptor: 'Hypervigilance · Corps et santé',
+    accroche: 'Votre corps surveille en permanence. Cette fiche vous apprend à lui faire confiance.',
+    mecanisme: 'Votre système nerveux a appris à interpréter les signaux corporels comme des signaux de danger — même quand il n\'en est rien. Ce réflexe de protection, très efficace à une époque, est devenu automatique. Il se déclenche maintenant sans votre accord.',
+    pensees: [
+      'Et si ce symptôme était le signe de quelque chose de grave ?',
+      'Je ferais mieux de vérifier — juste pour être sûr·e.',
+      'Si je ne fais pas attention, quelque chose pourrait m\'arriver.',
+      'La rassurance du médecin ne suffit jamais vraiment.'
+    ],
+    declencheurs: [
+      {icon:'🫀', text:'Une sensation corporelle inhabituelle (rythme cardiaque, douleur, fatigue)'},
+      {icon:'🔍', text:'La lecture d\'un article sur une maladie'},
+      {icon:'😔', text:'Un moment de stress ou de tension émotionnelle'},
+      {icon:'🌙', text:'La nuit, le calme — quand il n\'y a plus d\'activité pour distraire l\'attention'}
+    ],
+    couts: [
+      {num:'01', text:'Une fatigue chronique de la vigilance — invisible pour les autres'},
+      {num:'02', text:'Des consultations qui rassurent momentanément, sans régler le fond'},
+      {num:'03', text:'Un corps vécu comme une menace plutôt qu\'un allié'},
+      {num:'04', text:'De l\'énergie mobilisée pour surveiller — pas pour vivre'}
+    ],
+    step_key: 'L',
+    step_note: 'L\'étape LOCALISER est centrale pour votre profil : apprendre à revenir dans votre corps comme dans un espace sûr — pas comme un sujet de surveillance.',
+    defis: {
+      s1: ['Observer une sensation sans l\'interpréter — juste la nommer', 'Identifier l\'émotion présente au moment d\'un signal corporel', 'Traverser 5 minutes d\'incertitude corporelle sans vérifier', 'Reporter une vérification de 10 minutes — puis observer ce qui s\'est passé', 'Écrire : "Mon corps fait ça quand je ressens..."', 'Pratiquer la respiration abdominale 3 min au moment d\'une sensation', 'Finir la journée sans avoir vérifié un seul symptôme'],
+      s2: ['Aller dehors sans consulter les symptômes au retour', 'Décrire une sensation à quelqu\'un — sans catastrophisme', 'Tolérer une incertitude corporelle 30 min sans action', 'Choisir une activité physique pour le plaisir, pas pour surveiller', 'Écrire ce que vous feriez si vous n\'aviez pas peur de votre corps', 'Identifier 3 moments où votre corps vous a soutenu', 'Remplacer "Et si c\'était grave ?" par "Que ressens-je vraiment ?"'],
+      s3: ['Traverser un symptôme inhabituel sans recherche, ni consultation', 'Passer une journée sans penser à votre corps comme à un sujet de surveillance', 'Parler d\'un succès physique récent — même petit', 'Pratiquer quelque chose que vous évitiez par peur corporelle', 'Écrire : "Ce que je veux faire avec mon corps quand il est allié"', 'Imaginer votre relation à votre corps dans 1 an si rien ne change, puis dans 1 an avec ce travail', 'Identifier un signal que votre corps vous envoie sur vos besoins — et l\'écouter']
+    },
+    signaux: [
+      'Vous observez un signal corporel sans partir immédiatement en mode analyse',
+      'Vous attendez naturellement avant de chercher des informations médicales',
+      'Vous pouvez nommer l\'émotion derrière certains symptômes',
+      'Vous vous souvenez d\'une journée où vous avez simplement habité votre corps',
+      'La rassurance d\'un médecin tient plus longtemps qu\'avant'
+    ],
+    livret_key: 'rouge'
+  },
+  orange: {
+    descriptor: 'Évitement émotionnel · Distance intérieure',
+    accroche: 'Vous fonctionnez parfaitement. Cette fiche rouvre l\'accès à ce qui se passe vraiment en vous.',
+    mecanisme: 'Votre système intérieur a appris très tôt que certaines émotions étaient dangereuses ou inutiles — et il les a progressivement mises à distance. Ce mécanisme de protection vous a permis d\'avancer. Aujourd\'hui, il coupe aussi l\'accès aux émotions positives, à la satisfaction et au sens.',
+    pensees: [
+      'Je ne sais pas vraiment ce que je ressens — ou si je ressens quelque chose.',
+      'Les émotions, c\'est compliqué. Je préfère analyser.',
+      'Ça sert à quoi de ressentir si on ne peut rien y changer ?',
+      'Je gère tout très bien. Je ne comprends pas pourquoi je me sens vide.'
+    ],
+    declencheurs: [
+      {icon:'💬', text:'Une conversation qui devient trop personnelle ou intime'},
+      {icon:'🎉', text:'Un succès — vous attendez une joie qui ne vient pas'},
+      {icon:'😢', text:'Quelqu\'un qui pleure ou exprime une émotion forte devant vous'},
+      {icon:'🔇', text:'Le calme, les vacances — quand il n\'y a plus d\'activité pour occuper l\'espace'}
+    ],
+    couts: [
+      {num:'01', text:'Des relations qui manquent de profondeur malgré un investissement réel'},
+      {num:'02', text:'Une incapacité à savourer les réussites, les bons moments'},
+      {num:'03', text:'Un épuisement chronique sans signaux d\'alarme visibles'},
+      {num:'04', text:'Un vide diffus — difficile à nommer, impossible à ignorer'}
+    ],
+    step_key: 'A',
+    step_note: 'L\'étape ACCUEILLIR est centrale pour votre profil : elle ne vous demande pas de tout ressentir d\'un coup — elle vous invite à tolérer une émotion quelques secondes de plus avant de passer à autre chose.',
+    defis: {
+      s1: ['Nommer une émotion au moins une fois dans la journée — même vaguement', 'Observer ce qui se passe dans votre corps quand quelqu\'un vous parle de lui·elle', 'Terminer une phrase : "En ce moment, je ressens un peu..."', 'Écouter une musique qui vous touche — et rester avec ce que ça fait', 'Poser la question : "Qu\'est-ce que j\'ai vraiment envie de faire ce soir ?"', 'Identifier la dernière fois que vous avez ressenti quelque chose intensément', 'Écrire sans filtrer pendant 5 minutes ce qui passe dans votre tête'],
+      s2: ['Partager quelque chose de personnel avec quelqu\'un de confiance', 'Laisser une émotion durer 30 secondes sans la court-circuiter', 'Regarder un film ou lire quelque chose qui vous touche — rester avec ça', 'Identifier l\'émotion derrière une décision récente', 'Demander à quelqu\'un comment il·elle va — et vraiment écouter la réponse', 'Remarquer ce que vous ressentez quand quelqu\'un vous fait un compliment', 'Écrire : "Ce qui me donnerait envie de me lever demain matin, c\'est..."'],
+      s3: ['Exprimer un besoin clairement à quelqu\'un de proche', 'Traverser un moment difficile sans l\'intellectualiser immédiatement', 'Identifier une chose qui vous a procuré du plaisir cette semaine', 'Accepter du soutien sans le minimiser ou le gérer à la place de l\'autre', 'Écrire : "Ce que je voudrais vraiment que les autres sachent de moi"', 'Remarquer la différence entre gérer une émotion et la traverser', 'Identifier ce que vous ressentez quand vous aidez quelqu\'un — réellement']
+    },
+    signaux: [
+      'Vous nommez une émotion sans immédiatement passer à l\'analyse',
+      'Vous restez dans une conversation intime sans changer de sujet',
+      'Vous ressentez une satisfaction — même brève — après un succès',
+      'Le calme ne crée plus automatiquement un sentiment de vide',
+      'Vous pouvez dire ce que vous ressentez, même imparfaitement'
+    ],
+    livret_key: 'orange'
+  },
+  jaune: {
+    descriptor: 'Intolérance à l\'incertitude · Besoin de contrôle',
+    accroche: 'Votre cerveau ne s\'arrête jamais vraiment. Cette fiche lui apprend à faire confiance.',
+    mecanisme: 'Votre système nerveux a appris qu\'anticiper et planifier était la seule façon d\'être en sécurité. Ce réflexe de protection est devenu si automatique qu\'il tourne en permanence — même quand tout va bien. L\'incertitude n\'est plus une donnée neutre : c\'est une menace.',
+    pensees: [
+      'Et si ça se passait mal ? Il faut que j\'anticipe.',
+      'Je ne peux pas décider tant que je ne suis pas sûr·e.',
+      'Si je ne prévois pas tout, quelque chose va forcément rater.',
+      'L\'imprévu, c\'est ce que j\'essaie précisément d\'éviter.'
+    ],
+    declencheurs: [
+      {icon:'📅', text:'Un changement de plans ou une annulation de dernière minute'},
+      {icon:'❓', text:'Une décision à prendre sans toutes les informations nécessaires'},
+      {icon:'🗣️', text:'Une demande vague ou sans délai précis de la part de quelqu\'un'},
+      {icon:'🌀', text:'Une période de transition — changement de travail, de relation, de lieu'}
+    ],
+    couts: [
+      {num:'01', text:'Un épuisement cognitif permanent que personne ne voit'},
+      {num:'02', text:'Des proches parfois sous pression sans comprendre pourquoi'},
+      {num:'03', text:'Un temps considérable à planifier des choses qui ne se passeront jamais comme prévu'},
+      {num:'04', text:'L\'imprévu heureux demande un effort avant de pouvoir être vécu'}
+    ],
+    step_key: 'E',
+    step_note: 'L\'étape EXPLORER est centrale pour votre profil : identifier le conflit entre la part qui a besoin de tout contrôler et celle qui sait que tout ne peut pas l\'être — et trouver une troisième voix.',
+    defis: {
+      s1: ['Laisser une décision mineure au hasard (pile ou face)', 'Identifier une inquiétude et demander : "À quelle probabilité elle se réalise ?"', 'Terminer une journée avec une tâche non terminée — intentionnellement', 'Déléguer quelque chose de petit — sans vérifier le résultat', 'Partir quelque part sans avoir tout prévu', 'Observer ce qui se passe en vous quand un plan change', 'Écrire les 3 pires scénarios d\'une incertitude actuelle — puis les probabilités réelles'],
+      s2: ['Tolérer une conversation ambiguë sans demander de précisions immédiates', 'Prendre une décision avec 70% des informations — pas 100%', 'Laisser quelqu\'un d\'autre organiser quelque chose, sans intervenir', 'Identifier ce que vous contrôlez vraiment — et ce que vous ne contrôlez pas', 'Pratiquer l\'imprévu : changer de route, de restaurant, de film', 'Remarquer quand la planification devient de l\'évitement', 'Écrire : "Si je ne planifiais pas ça, ce qui se passerait probablement c\'est..."'],
+      s3: ['Traverser un imprévu sans plan B préparé — et constater ce qui s\'est passé', 'Prendre une décision importante sans la reporter davantage', 'Laisser quelqu\'un prendre en charge quelque chose d\'important pour vous', 'Identifier une chose agréable arrivée sans que vous l\'ayez planifiée', 'Écrire : "Ce que je perds à vouloir tout prévoir"', 'Pratiquer 10 minutes d\'activité totalement non planifiée chaque jour', 'Remarquer que l\'incertitude que vous avez tolérée ne s\'est pas transformée en catastrophe']
+    },
+    signaux: [
+      'Vous tolérez un plan ouvert sans le combler immédiatement',
+      'Un changement de programme vous demande moins d\'énergie qu\'avant',
+      'Vous prenez des décisions sans avoir toutes les garanties',
+      'Vous pouvez déléguer — et laisser faire',
+      'Un imprévu peut devenir une bonne surprise'
+    ],
+    livret_key: 'jaune'
+  },
+  vert: {
+    descriptor: 'Peur de l\'abandon et du rejet · Insécurité relationnelle',
+    accroche: 'Vous donnez énormément. Cette fiche vous apprend à vous donner à vous aussi.',
+    mecanisme: 'Votre système nerveux a appris que l\'amour devait se mériter — et que le rejeter était une menace réelle. Ce réflexe vous a rendu·e très attentif·ve aux autres. Aujourd\'hui, il pilote vos réactions relationnelles sans que vous l\'ayez décidé : adaptation automatique, radar permanent, rancœur accumulée en silence.',
+    pensees: [
+      'Et si cette réponse courte signifiait quelque chose ?',
+      'Si je dis non, il·elle va se distancer.',
+      'Mieux vaut m\'adapter — si je prends trop de place, je vais perdre ce lien.',
+      'Pourquoi est-ce que j\'ai toujours l\'impression de donner plus que je ne reçois ?'
+    ],
+    declencheurs: [
+      {icon:'📱', text:'Un message plus court que d\'habitude, sans emoji, ton neutre'},
+      {icon:'🔇', text:'Un silence inhabituel de quelqu\'un d\'important pour vous'},
+      {icon:'❌', text:'Quelqu\'un qui change ses plans ou annule un moment avec vous'},
+      {icon:'💬', text:'Une question directe sur ce que VOUS voulez, ce que VOUS ressentez'}
+    ],
+    couts: [
+      {num:'01', text:'Vous portez seul·e des tensions qui auraient dû être partagées'},
+      {num:'02', text:'Des relations asymétriques — vous donnez plus que vous ne recevez'},
+      {num:'03', text:'Une rancœur sourde qui s\'accumule — jusqu\'à l\'explosion soudaine'},
+      {num:'04', text:'Vous ne savez plus très bien qui vous êtes en dehors des besoins des autres'}
+    ],
+    step_key: 'E',
+    step_note: 'L\'étape EXPLORER est centrale pour votre profil : identifier le conflit entre la part qui a besoin des autres et celle qui a besoin d\'elle-même — sans sacrifier l\'une pour l\'autre.',
+    defis: {
+      s1: ['Exprimer une préférence quand quelqu\'un vous demande ce que vous voulez', 'Remarquer le moment où vous commencez à vous adapter automatiquement', 'Laisser un silence dans une conversation sans le remplir', 'Dire non à une demande mineure — sans s\'expliquer pendant dix minutes', 'Observer votre réaction quand quelqu\'un ne répond pas immédiatement', 'Écrire : "Ce que je veux vraiment dans mes relations, c\'est..."', 'Identifier un besoin que vous n\'avez pas formulé cette semaine — et le formuler'],
+      s2: ['Formuler un besoin dans une relation de confiance', 'Laisser l\'autre gérer son humeur sans que vous interveniez', 'Ne pas vérifier si quelqu\'un est fâché·e après un échange — laisser le temps passer', 'Traverser un moment de distance relationnelle sans l\'interpréter comme un rejet', 'Refuser une invitation — et noter ce qui se passe en vous', 'Remarquer quand vous vous adaptez pour maintenir la paix plutôt que par vraie envie', 'Écrire : "Ce que je permettrais si je savais que je ne serais pas rejeté·e"'],
+      s3: ['Initier une conversation difficile dans une relation importante', 'Exprimer une désaccord — doucement, mais clairement', 'Laisser une relation exister à son propre rythme, sans la surveiller', 'Identifier une chose que vous voulez — et la vouloir sans justification', 'Recevoir un compliment sans le minimiser', 'Passer du temps seul·e par choix — et trouver ça nourrissant', 'Écrire : "Qui suis-je en dehors des besoins des autres ?"']
+    },
+    signaux: [
+      'Dire non déclenche moins de culpabilité qu\'avant',
+      'Vous formulez un besoin sans vous excuser d\'en avoir un',
+      'Un silence ne déclenche pas automatiquement l\'inquiétude',
+      'Vous savez ce que vous voulez — et vous pouvez le dire',
+      'Vous vous sentez vous-même dans vos relations, pas seulement adapté·e'
+    ],
+    livret_key: 'vert'
+  },
+  bleu: {
+    descriptor: 'Peur de l\'impuissance · Besoin de maîtrise',
+    accroche: 'Vous tenez tout. Cette fiche vous montre que votre force n\'a pas besoin du contrôle.',
+    mecanisme: 'Votre système nerveux a appris que contrôler l\'environnement était la seule façon de se sentir en sécurité. Ce mécanisme de protection vous a rendu·e très efficace et compétent·e. Aujourd\'hui, il crée des tensions relationnelles, de la résistance chez les autres — et une fatigue que vous ne pouvez pas tout à fait expliquer.',
+    pensees: [
+      'Si je ne le fais pas moi-même, ça ne sera pas fait comme il faut.',
+      'Je ne peux pas me permettre de perdre la main sur ça.',
+      'Lâcher prise, c\'est prendre le risque que tout parte en vrille.',
+      'Pourquoi les autres ne font-ils pas les choses correctement ?'
+    ],
+    declencheurs: [
+      {icon:'🔄', text:'Quelqu\'un qui fait les choses différemment de vous — même bien'},
+      {icon:'📋', text:'Une décision prise sans vous consulter'},
+      {icon:'⏳', text:'Une situation où vous n\'avez pas d\'information sur ce qui se passe'},
+      {icon:'🆘', text:'Une demande d\'aide — recevoir du soutien vous est plus difficile qu\'en donner'}
+    ],
+    couts: [
+      {num:'01', text:'Des proches qui se sentent contrôlés ou incompétents à vos côtés'},
+      {num:'02', text:'Une solitude au sommet — difficile d\'être vraiment accompagné·e'},
+      {num:'03', text:'Un épuisement lié à l\'effort permanent de tout tenir'},
+      {num:'04', text:'Des opportunités manquées parce que vous n\'avez pas pu déléguer'}
+    ],
+    step_key: 'U',
+    step_note: 'L\'étape UNIFIER est centrale pour votre profil : réconcilier la part qui a besoin de maîtrise pour se sentir en sécurité avec celle qui sait que la force authentique n\'a pas besoin de tout contrôler.',
+    defis: {
+      s1: ['Confier une tâche mineure à quelqu\'un — sans vérifier le résultat', 'Observer ce que vous ressentez quand vous ne contrôlez pas quelque chose', 'Laisser quelqu\'un d\'autre décider de quelque chose de petit', 'Identifier un domaine où vous pourriez lâcher sans risque réel', 'Remarquer quand vous reprenez quelque chose que vous aviez confié', 'Écrire : "Si quelqu\'un d\'autre s\'en occupait, ce qui arriverait probablement c\'est..."', 'Pratiquer une activité où vous êtes débutant·e — sans vouloir maîtriser rapidement'],
+      s2: ['Déléguer quelque chose d\'important — et laisser faire', 'Demander de l\'aide dans un domaine où vous vous débrouillez habituellement seul·e', 'Laisser une conversation se diriger sans que vous la guidiez', 'Accepter un résultat imparfait sans le corriger', 'Observer la différence entre contrôle utile et contrôle défensif', 'Identifier quelqu\'un qui fait bien — différemment de vous — et le reconnaître', 'Écrire : "Ce que j\'aurais envie de faire si je ne devais pas tout tenir"'],
+      s3: ['Passer une journée entière sans vérifier, reprendre ou corriger', 'Laisser quelqu\'un d\'autre diriger un projet important pour vous', 'Recevoir de l\'aide — pleinement, sans minimiser ni gérer la personne qui aide', 'Identifier une chose que vous contrôlez qui ne vous nourrit plus', 'Remarquer ce que vous ressentez quand quelqu\'un fait bien sans vous', 'Écrire : "Ce que ça serait de faire confiance à..."', 'Pratiquer le silence dans un groupe — laisser les autres décider']
+    },
+    signaux: [
+      'Vous déléguez et laissez faire — sans vérifier systématiquement',
+      'Vous pouvez recevoir de l\'aide sans la gérer',
+      'Un résultat différent du vôtre vous semble acceptable',
+      'Vous vous reposez sans liste de choses à faire',
+      'La force que vous ressentez ne dépend plus de tout tenir'
+    ],
+    livret_key: 'bleu'
+  },
+  indigo: {
+    descriptor: 'Perfectionnisme · Syndrome de l\'imposteur',
+    accroche: 'Vous n\'êtes jamais assez à la hauteur. Cette fiche change le sol depuis lequel vous vous évaluez.',
+    mecanisme: 'Votre système intérieur a appris que votre valeur dépendait de vos performances. Ce mécanisme vous a rendu·e très exigeant·e et compétent·e. Aujourd\'hui, il génère une voix critique permanente, une impossibilité à vous reconnaître de la valeur inconditionnelle — et un épuisement de fond que l\'excellence ne comble jamais.',
+    pensees: [
+      'Ce que j\'ai fait n\'était pas vraiment bien — j\'aurais pu faire mieux.',
+      'Si les autres savaient vraiment, ils verraient que je ne suis pas si bon·ne.',
+      'Je dois être parfait·e avant de me montrer.',
+      'Mon succès est dû à la chance, pas à moi.'
+    ],
+    declencheurs: [
+      {icon:'👁️', text:'Une évaluation, une présentation, un jugement — même bienveillant'},
+      {icon:'🚫', text:'Une erreur, même mineure'},
+      {icon:'🏆', text:'Un succès — immédiatement suivi de "oui mais..."'},
+      {icon:'📣', text:'Un compliment — que vous minimisez automatiquement'}
+    ],
+    couts: [
+      {num:'01', text:'Une voix critique active en permanence — qui ne vous laisse jamais vraiment vous reposer'},
+      {num:'02', text:'Des succès qui ne nourrissent pas — la barre se déplace dès que vous l\'atteignez'},
+      {num:'03', text:'Des projets reportés parce qu\'ils ne sont pas encore parfaits'},
+      {num:'04', text:'Une fatigue existentielle d\'essayer d\'être quelqu\'un à la hauteur'}
+    ],
+    step_key: 'R',
+    step_note: 'L\'étape RENFORCER est centrale pour votre profil : ancrer de tout petits comportements depuis votre valeur inconditionnelle — pas depuis la peur du jugement. Chaque défi est une preuve que vous existez en dehors de vos performances.',
+    defis: {
+      s1: ['Recevoir un compliment sans le minimiser — juste dire merci', 'Identifier une chose que vous avez bien faite aujourd\'hui', 'Livrer quelque chose d\'imparfait intentionnellement', 'Remarquer la voix critique — et lui donner un nom ridicule', 'Écrire 3 qualités qui n\'ont rien à voir avec vos performances', 'Observer la différence entre exigence utile et punition automatique', 'Faire quelque chose pour le plaisir — pas pour être bon·ne'],
+      s2: ['Montrer un travail en cours — sans attendre qu\'il soit fini', 'Identifier une règle de votre voix critique — et la questionner', 'Raconter un succès à quelqu\'un sans le dévaluer', 'Faire une erreur mineure — et la laisser être ce qu\'elle est', 'Écrire : "Ma valeur inconditionnelle, c\'est..."', 'Remarquer quand vous cherchez la validation externe — et ce que ça dit', 'Identifier quelque chose qui vous rend fier·e — sans condition'],
+      s3: ['Prendre une décision importante en ayant 70% de certitudes — pas 100%', 'Lancer quelque chose que vous reportez depuis longtemps', 'Arrêter de travailler à l\'heure prévue — même si ce n\'est pas parfait', 'Lire à voix haute 3 réussites de votre semaine — vraiment', 'Écrire : "Ce que je vaux indépendamment de ce que je produis"', 'Faire quelque chose de nouveau en acceptant d\'être débutant·e', 'Identifier ce que vous voudriez que les autres sachent de vous — au-delà des performances']
+    },
+    signaux: [
+      'Vous recevez un compliment sans l\'immédiatement minimiser',
+      'Vous livrez quelque chose avant qu\'il soit parfait',
+      'Vos succès tiennent quelques instants — avant que la barre ne remonte',
+      'La voix critique est moins automatique, moins forte',
+      'Vous vous reconnaissez de la valeur en dehors de ce que vous produisez'
+    ],
+    livret_key: 'indigo'
+  },
+  violet: {
+    descriptor: 'Angoisse existentielle · Identité instable',
+    accroche: 'Vous jouez des rôles depuis si longtemps. Cette fiche vous aide à trouver qui est là derrière.',
+    mecanisme: 'Votre système intérieur a appris que s\'adapter aux attentes était plus sûr qu\'être soi-même. Ce mécanisme vous a rendu·e très flexible et attentif·ve aux autres. Aujourd\'hui, il crée une identité floue, un sentiment de vivre sa vie comme un spectateur·rice — et une difficulté à répondre simplement à la question : qui suis-je vraiment ?',
+    pensees: [
+      'Je m\'adapte tellement à tout le monde que je ne sais plus ce que je veux.',
+      'Parfois j\'ai l\'impression d\'observer ma propre vie de l\'extérieur.',
+      'Qui suis-je vraiment en dehors de mes rôles ?',
+      'J\'ai l\'impression de jouer un personnage — et de ne plus savoir qui joue.'
+    ],
+    declencheurs: [
+      {icon:'🔄', text:'Une période de transition importante (fin d\'une relation, changement de travail)'},
+      {icon:'🔇', text:'Le calme — quand les rôles s\'éteignent et qu\'il ne reste que vous'},
+      {icon:'❓', text:'Une question directe : "Qu\'est-ce que tu veux ? Qui es-tu ?"'},
+      {icon:'🪞', text:'Une confrontation à une image de vous qui ne vous ressemble pas'}
+    ],
+    couts: [
+      {num:'01', text:'Un sentiment diffus de passer à côté de votre propre vie'},
+      {num:'02', text:'Des routines maintenues non par plaisir mais pour maintenir un semblant de repère'},
+      {num:'03', text:'Des passions anciennes abandonnées sans vraiment savoir pourquoi'},
+      {num:'04', text:'Une difficulté à exprimer des préférences authentiques — "peu importe" est votre réflexe'}
+    ],
+    step_key: 'R',
+    step_note: 'L\'étape RENFORCER est centrale pour votre profil : ancrer de tout petits comportements authentiques — des choix réels, faits depuis vous-même — pour construire progressivement une identité incarnée.',
+    defis: {
+      s1: ['Exprimer une préférence réelle — même petite : film, restaurant, activité', 'Identifier une valeur personnelle qui n\'a rien à voir avec les attentes des autres', 'Remarquer un moment où vous dites "peu importe" — et chercher ce que vous voulez vraiment', 'Écrire : "3 choses qui me font me sentir vraiment moi·même"', 'Observer quand vous changez de comportement selon les personnes présentes', 'Trouver une activité que vous faites pour vous — sans utilité pour les autres', 'Terminer la phrase : "Sans mes rôles, je suis quelqu\'un qui..."'],
+      s2: ['Partager une opinion personnelle — même si vous n\'êtes pas sûr·e que l\'autre sera d\'accord', 'Renouer avec quelque chose que vous aimiez avant — une passion ancienne', 'Passer du temps seul·e dans un endroit qui vous appartient vraiment', 'Identifier une décision que vous avez prise pour vous — pas pour quelqu\'un', 'Remarquer la différence entre ce que vous ressentez et ce que vous montrez', 'Écrire votre propre description — pas selon vos rôles, mais selon qui vous êtes', 'Identifier un refus récent que vous n\'avez pas osé formuler — et l\'écrire'],
+      s3: ['Prendre une décision importante en fonction de qui vous voulez être — pas des attentes', 'Renoncer à un rôle qui ne vous nourrit plus', 'Dire clairement ce que vous voulez dans une situation importante', 'Passer une journée en faisant uniquement ce que vous avez choisi', 'Écrire : "Ce que je veux que ma vie ressemble dans 3 ans — vraiment"', 'Identifier une chose qui vous appartient en propre — et la nommer à voix haute', 'Reconnaître un moment cette semaine où vous étiez vraiment vous-même']
+    },
+    signaux: [
+      'Vous exprimez des préférences sans vous excuser d\'en avoir',
+      'Les moments de calme créent moins d\'inconfort existentiel',
+      'Vous faites des choix alignés avec ce que vous voulez — pas ce qu\'on attend',
+      'Vous reconnaissez quelque chose de stable en vous, indépendamment des rôles',
+      'Vous pouvez répondre à "qui êtes-vous ?" sans passer uniquement par vos fonctions'
+    ],
+    livret_key: 'violet'
+  }
+};
+
+const ETAPES = [
+  {l:'V',name:'VOIR',desc:'Reconnaître la pensée du masque au moment où elle s\'active.',color:'#4A90D9',bg:'rgba(74,144,217,.12)'},
+  {l:'A',name:'ACCUEILLIR',desc:'Recevoir l\'émotion sans la fuir ni la minimiser.',color:'#E53E3E',bg:'rgba(229,62,62,.12)'},
+  {l:'L',name:'LOCALISER',desc:'Revenir au corps — là où le masque se manifeste physiquement.',color:'#ED8936',bg:'rgba(237,137,54,.12)'},
+  {l:'E',name:'EXPLORER',desc:'Identifier le conflit entre la protection et ce qui compte vraiment.',color:'#D69E2E',bg:'rgba(214,158,46,.12)'},
+  {l:'U',name:'UNIFIER',desc:'Trouver une voie qui honore à la fois la sécurité et la liberté.',color:'#38A169',bg:'rgba(56,161,105,.12)'},
+  {l:'R',name:'RENFORCER',desc:'Ancrer un nouveau comportement — choisi, pas subi.',color:'#C9A84C',bg:'rgba(201,168,76,.12)'}
+];
+
+function loadData(){
+  const url = new URLSearchParams(window.location.search);
+  const isAdmin = url.get('admin') === 'VALEUR-ADMIN-2025';
+
+  // Mode preview ou admin — bypass
+  if(url.get('preview') || isAdmin){
+    const key = url.get('preview') || url.get('masque') || 'vert';
+    return { dominant:key, prenom:'Sophie', session:null };
+  }
+
+  // PRIORITÉ 1 : masque depuis URL ?masque=... (nouveau système session)
+  const masqueUrl  = url.get('masque');
+  const prenomLS   = localStorage.getItem('valeur_prenom') || '';
+  const sessionUrl = url.get('session') || '';
+
+  if(masqueUrl && ['rouge','orange','jaune','vert','bleu','indigo','violet'].includes(masqueUrl)){
+    return { dominant:masqueUrl, prenom:prenomLS, session:sessionUrl };
+  }
+
+  // PRIORITÉ 2 : localStorage (ancien système)
+  const s = localStorage.getItem('valeur_scores');
+  if(s){
+    const scores = JSON.parse(s);
+    const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+    return { dominant:sorted[0][0], prenom:prenomLS, session:sessionUrl };
+  }
+
+  return null;
+}
+
+/* ── Sauvegarde des défis accomplis ── */
+function getProgress(dominant){
+  try{ return JSON.parse(sessionStorage.getItem('defis_'+dominant)||'{}'); }catch(e){ return {}; }
+}
+function saveProgress(dominant, day, done){
+  const p = getProgress(dominant);
+  p[day] = done;
+  try{ sessionStorage.setItem('defis_'+dominant, JSON.stringify(p)); }catch(e){}
+}
+function countDone(dominant){
+  return Object.values(getProgress(dominant)).filter(Boolean).length;
+}
+
+function togglePrep(id){
+  const body = document.getElementById('prep-body-'+id);
+  const chev = document.getElementById('prep-chev-'+id);
+  if(!body) return;
+  const open = body.classList.toggle('open');
+  if(chev) chev.textContent = open ? '▲' : '▼';
+}
+
+function toggleDefi(dominant, day){
+  const p   = getProgress(dominant);
+  const was = p[day] || false;
+  saveProgress(dominant, day, !was);
+  // Mettre à jour la carte
+  const card = document.getElementById('defi-card-'+day);
+  if(card) card.classList.toggle('done', !was);
+  const btn  = document.getElementById('defi-btn-'+day);
+  if(btn)  btn.textContent = !was ? '✓ Accompli' : 'Marquer comme fait';
+  const num  = document.getElementById('defi-num-'+day);
+  if(num)  num.textContent = !was ? '✓' : day;
+  // Mettre à jour la barre globale
+  updateGlobalBar(dominant);
+}
+
+function updateGlobalBar(dominant){
+  const done  = countDone(dominant);
+  const total = 21;
+  const fill  = document.getElementById('gp-fill');
+  const count = document.getElementById('gp-count');
+  if(fill)  fill.style.width  = Math.round(done/total*100)+'%';
+  if(count) count.textContent = done+' / '+total;
+}
+
+/* ── Blocs préparation ── */
+function prepBlock(id){
+  return `
+<div style="margin-top:14px">
+  <button class="prep-toggle" onclick="togglePrep('${id}')">
+    <span class="prep-toggle-icon">🌬</span>
+    <span class="prep-toggle-txt">Préparation avant le défi (2 min)</span>
+    <span class="prep-toggle-chevron" id="prep-chev-${id}">▼</span>
+  </button>
+  <div class="prep-body" id="prep-body-${id}">
+    <div class="prep-section">
+      <div class="prep-section-title">1 · Cohérence cardiaque — 5 cycles</div>
+      <div class="prep-instruction">Respirez lentement, régulièrement, en suivant ce rythme :</div>
+      <div class="breath-steps">
+        <div class="breath-step">
+          <div class="breath-num">5 s</div>
+          <div class="breath-label">Inspirer — par le nez</div>
+        </div>
+        <div class="breath-step">
+          <div class="breath-num">5 s</div>
+          <div class="breath-label">Expirer — par la bouche</div>
+        </div>
+      </div>
+      <div class="prep-instruction" style="margin-top:8px;font-size:12px;color:rgba(240,234,225,.45)">Répétez 5 fois. Laissez le souffle ralentir votre système nerveux.</div>
+    </div>
+    <div class="prep-section">
+      <div class="prep-section-title">2 · Conscience observatrice</div>
+      <div class="prep-instruction">Posez une main sur votre cœur. Fermez les yeux quelques secondes. Dites intérieurement :</div>
+      <div class="obs-quote">"Je remarque ce qui se passe en moi — sans m'y identifier.<br>Mon masque est là pour me protéger.<br>Je peux le voir sans lui obéir."</div>
+    </div>
+    <div class="prep-section" style="margin-bottom:4px">
+      <div class="prep-section-title">3 · Ancrage</div>
+      <div class="prep-instruction">Ouvrez les yeux. Nommez silencieusement <strong style="color:rgba(240,234,225,.75)">3 choses que vous voyez</strong>. Sentez vos pieds sur le sol. Vous êtes prêt·e.</div>
+    </div>
+  </div>
+</div>`;
+}
+
+/* ── Construction des semaines ── */
+function buildSemaine(dominant, semaine, num, theme, desc, defis, r, g, b){
+  const progress = getProgress(dominant);
+  const ENCOURAGEMENTS_MID = [
+    `<div class="encouragement">
+      <div class="enc-icon">✦</div>
+      <div class="enc-title">Vous avez fait le plus difficile — <em>commencer.</em></div>
+      <div class="enc-body">Ce que vous avez observé cette semaine n'est pas un jugement. C'est une information. Votre masque a fonctionné pendant des années parce qu'il vous protégeait. Ces 7 jours ont commencé à montrer qu'une autre façon d'être est possible. Continuez à votre rythme.</div>
+    </div>`,
+    `<div class="encouragement">
+      <div class="enc-icon">◈</div>
+      <div class="enc-title">La deuxième semaine est souvent celle de la <em>résistance.</em></div>
+      <div class="enc-body">Si vous avez senti de l'inconfort, c'est le signe que quelque chose se transforme vraiment. Le masque ne lâche pas facilement — il a mis des années à se construire. La résistance que vous ressentez est la preuve que vous touchez à quelque chose de réel. Continuez.</div>
+    </div>`
+  ];
+
+  const defisHTML = defis.map((defi, i) => {
+    const day    = (semaine-1)*7 + i + 1;
+    const done   = progress[day] || false;
+    const dayNum = String(day).padStart(2,'0');
+    return `
+    <div class="defi-card${done?' done':''}" id="defi-card-${day}">
+      <div class="defi-card-top">
+        <div class="defi-num" id="defi-num-${day}">${done?'✓':day}</div>
+        <div class="defi-content">
+          <div class="defi-label">Jour ${dayNum}</div>
+          <div class="defi-text">${defi}</div>
+          ${prepBlock('d'+day)}
+        </div>
+      </div>
+      <div class="defi-actions">
+        <button class="defi-check-btn" id="defi-btn-${day}" onclick="toggleDefi('${dominant}',${day})">
+          ${done ? '✓ Accompli' : 'Marquer comme fait'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const encouragement = semaine < 3 ? ENCOURAGEMENTS_MID[semaine-1] : '';
+
+  return `
+  <div class="semaine-header">
+    <div class="semaine-badge">Semaine ${num} · Jours ${(semaine-1)*7+1}–${semaine*7}</div>
+    <div class="semaine-theme">${theme}</div>
+    <div class="semaine-desc">${desc}</div>
+  </div>
+  <div class="defis-grid">${defisHTML}</div>
+  ${encouragement}`;
+}
+
+const SEMAINES_META = {
+  s1: {
+    rouge:  {theme:'Observer sans réagir',    desc:'Cette semaine, vous apprenez à remarquer votre masque au moment où il s\'active — sans vous y soumettre automatiquement.'},
+    orange: {theme:'Ouvrir la porte',          desc:'Cette semaine, vous faites de petits gestes vers ce que vous ressentez — sans vous y noyer.'},
+    jaune:  {theme:'Tolérer l\'imprévu',        desc:'Cette semaine, vous pratiquez de petites doses d\'incertitude — sans chercher à tout résoudre immédiatement.'},
+    vert:   {theme:'Dire qui vous êtes',        desc:'Cette semaine, vous pratiquez de petits gestes d\'existence — être là, vouloir quelque chose, le dire.'},
+    bleu:   {theme:'Lâcher une prise',          desc:'Cette semaine, vous pratiquez de petits moments de non-contrôle — et vous observez ce qui se passe.'},
+    indigo: {theme:'Accueillir sans juger',     desc:'Cette semaine, vous apprenez à recevoir — un compliment, une réussite, un moment imparfait — sans le corriger immédiatement.'},
+    violet: {theme:'Avoir une préférence',      desc:'Cette semaine, vous pratiquez l\'acte simple et radical d\'exprimer ce que vous voulez — même de petites choses.'},
+  },
+  s2: {
+    rouge:  {theme:'Habiter le corps autrement',desc:'Cette semaine, vous construisez une relation différente avec votre corps — fondée sur la confiance plutôt que la vigilance.'},
+    orange: {theme:'Nommer ce qui se passe',   desc:'Cette semaine, vous allez plus loin : nommer ce que vous ressentez dans des situations relationnelles.'},
+    jaune:  {theme:'Décider sans garantie',     desc:'Cette semaine, vous prenez de petites décisions sans avoir toutes les informations — et vous observez ce qui arrive vraiment.'},
+    vert:   {theme:'Exprimer un besoin',        desc:'Cette semaine, vous allez plus loin : formuler ce dont vous avez besoin dans vos relations importantes.'},
+    bleu:   {theme:'Déléguer vraiment',         desc:'Cette semaine, vous allez plus loin : confier quelque chose d\'important — et laisser faire.'},
+    indigo: {theme:'Montrer le travail en cours',desc:'Cette semaine, vous vous montrez avant d\'être prêt·e — et vous observez que le monde ne s\'effondre pas.'},
+    violet: {theme:'Habiter vos choix',         desc:'Cette semaine, vous prenez des décisions depuis ce que vous voulez — pas ce qu\'on attend de vous.'},
+  },
+  s3: {
+    rouge:  {theme:'Faire confiance',           desc:'Cette semaine, vous ancrez une posture nouvelle face à votre corps — ni surveillance ni indifférence, mais présence.'},
+    orange: {theme:'Être pleinement là',        desc:'Cette semaine, vous ancrez la capacité à être ému·e, touché·e, présent·e — sans fuite ni débordement.'},
+    jaune:  {theme:'Agir depuis l\'incertitude',desc:'Cette semaine, vous agissez dans des situations importantes sans attendre la certitude — et vous découvrez que vous y survivez.'},
+    vert:   {theme:'Exister dans vos relations',desc:'Cette semaine, vous ancrez une présence à vous-même dans vos relations — être là pour vous, pas seulement pour les autres.'},
+    bleu:   {theme:'Recevoir vraiment',         desc:'Cette semaine, vous ancrez la capacité à être accompagné·e — sans gérer, reprendre ou minimiser ce qu\'on vous offre.'},
+    indigo: {theme:'Valeur inconditionnelle',   desc:'Cette semaine, vous ancrez votre valeur en dehors de vos performances — par des comportements choisis, pas subis.'},
+    violet: {theme:'Être soi — vraiment',       desc:'Cette semaine, vous ancrez des comportements authentiques — des moments où vous êtes clairement vous-même, sans rôle.'},
+  }
+};
+
+function buildPage(){
+  const wrap = document.getElementById('page-wrap');
+  const data = loadData();
+
+  if(!data){
+    wrap.innerHTML = `
+      <div style="padding:120px 20px;text-align:center">
+        <p style="font-family:var(--font-d);font-size:24px;color:var(--text);margin-bottom:16px">Accès requis</p>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:28px">Ce document fait partie de votre parcours V.A.L.E.U.R©. Retrouvez vos accès via l'email reçu après votre achat.</p>
+      </div>`;
+    return;
+  }
+
+  const {dominant, prenom, session} = data;
+  const meta  = getMeta(dominant);
+  const fiche = FICHE_DATA[dominant];
+  if(!fiche){ wrap.innerHTML='<p style="padding:120px 20px;text-align:center;color:var(--muted)">Données non trouvées.</p>'; return; }
+
+  const r=parseInt(meta.color.slice(1,3),16), g=parseInt(meta.color.slice(3,5),16), b=parseInt(meta.color.slice(5,7),16);
+  document.documentElement.style.setProperty('--MC', meta.color);
+  document.documentElement.style.setProperty('--MC2', `rgba(${r},${g},${b},.1)`);
+  document.documentElement.style.setProperty('--MCr', r);
+  document.documentElement.style.setProperty('--MCg', g);
+  document.documentElement.style.setProperty('--MCb', b);
+
+  const enc       = encodeURIComponent(localStorage.getItem('valeur_email') || '');
+  const sessParam = session ? '&session='+session : '';
+  const livretURL = `https://parcours.valeur.psyh.fr/livret_masque_${dominant}_COMPLET.html${enc?'?email='+enc+sessParam:''}`;
+
+  const s1 = SEMAINES_META.s1[dominant] || {theme:'Semaine 1',desc:''};
+  const s2 = SEMAINES_META.s2[dominant] || {theme:'Semaine 2',desc:''};
+  const s3 = SEMAINES_META.s3[dominant] || {theme:'Semaine 3',desc:''};
+
+  wrap.innerHTML = `
+
+  <!-- HERO -->
+  <div class="prog-header fu">
+    <div class="prog-eyebrow">Programme 21 jours · Masque ${meta.label}</div>
+    <h1 class="prog-title" style="color:${meta.color}">21 Défis</h1>
+    <p class="prog-sub">${fiche.descriptor}</p>
+    ${prenom ? `<p style="font-size:13px;color:var(--muted);margin-top:8px;letter-spacing:1px">Établi pour ${prenom} · Méthode V.A.L.E.U.R© · © Céline Bourbon</p>` : ''}
+  </div>
+
+  <!-- PROGRESSION GLOBALE -->
+  <div class="global-progress fu">
+    <div class="gp-top">
+      <span class="gp-label">Votre progression</span>
+      <span class="gp-count" id="gp-count">0 / 21</span>
+    </div>
+    <div class="gp-bar"><div class="gp-fill" id="gp-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- MODE D'EMPLOI -->
+  <div class="mode-card fu">
+    <span class="card-label" style="color:var(--gold)">Comment utiliser ce programme</span>
+    <p style="font-size:14px;color:rgba(240,234,225,.72);line-height:1.85;margin-bottom:14px">${fiche.accroche}</p>
+    <div class="mode-steps">
+      <div class="mode-step">
+        <div class="mode-step-icon">🌬</div>
+        <div class="mode-step-title">Préparez-vous</div>
+        <div class="mode-step-desc">Ouvrez le bloc "Préparation" avant chaque défi — 2 minutes de respiration et d'ancrage</div>
+      </div>
+      <div class="mode-step">
+        <div class="mode-step-icon">🎯</div>
+        <div class="mode-step-title">Faites le défi</div>
+        <div class="mode-step-desc">Un seul défi par jour. Ne cherchez pas la perfection — l'observation suffit</div>
+      </div>
+      <div class="mode-step">
+        <div class="mode-step-icon">✓</div>
+        <div class="mode-step-title">Cochez et observez</div>
+        <div class="mode-step-desc">Marquez le défi accompli. Notez ce que vous avez ressenti — même brièvement</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEMAINE 1 -->
+  ${buildSemaine(dominant, 1, 'I', s1.theme, s1.desc, fiche.defis.s1, r, g, b)}
+
+  <!-- SEMAINE 2 -->
+  ${buildSemaine(dominant, 2, 'II', s2.theme, s2.desc, fiche.defis.s2, r, g, b)}
+
+  <!-- SEMAINE 3 -->
+  ${buildSemaine(dominant, 3, 'III', s3.theme, s3.desc, fiche.defis.s3, r, g, b)}
+
+  <!-- MESSAGE FINAL -->
+  <div class="message-final fu">
+    <div class="enc-icon" style="font-size:32px;margin-bottom:14px">✦</div>
+    <div class="mf-quote">"Ces 21 jours ne sont pas une performance.<br>Ils sont une exploration. Ce que vous emportez<br>vous appartient — à vie."</div>
+    <div class="mf-sig">Céline Bourbon · Méthode V.A.L.E.U.R©</div>
+  </div>
+
+  <!-- SIGNAUX DE PROGRÈS -->
+  <div class="card fu" style="background:linear-gradient(135deg,rgba(56,161,105,.06) 0%,transparent 100%);border-color:rgba(56,161,105,.2)">
+    <span class="card-label" style="color:#38A169">Les signaux que vous progressez</span>
+    <h2 class="card-title" style="margin-bottom:16px">Ce qui change<br><em style="color:#48BB78">quand le masque desserre son emprise</em></h2>
+    <div class="signal-list">
+      ${fiche.signaux.map(s=>`
+        <div class="signal-item">
+          <div class="signal-check">✓</div>
+          <div class="signal-text">${s}</div>
+        </div>`).join('')}
+    </div>
+    <p style="margin-top:18px;font-size:13px;font-style:italic;color:rgba(56,161,105,.6);position:relative;z-index:1">Ces signaux n'arrivent pas du jour au lendemain. Ils arrivent progressivement — et de façon irréversible.</p>
+  </div>
+
+  <!-- CTA LIVRET -->
+  <div class="cta-card fu">
+    <p style="font-family:var(--font-d);font-size:clamp(14px,2.2vw,18px);font-weight:300;font-style:italic;color:rgba(240,234,225,.6);margin-bottom:14px;line-height:1.6">« Ce programme est le point de départ.<br>Le Livret est le chemin complet. »</p>
+    <h2 style="font-family:var(--font-d);font-size:clamp(24px,5vw,38px);font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.05">Approfondir avec<br><em style="color:var(--MC)">le Livret Masque ${meta.label}</em></h2>
+    <p style="font-size:14px;color:var(--muted);margin:0 auto 28px;line-height:1.7;max-width:480px">7 modules complets, exercices guidés, progression sur 12 semaines.<br>La méthode complète appliquée à votre masque dominant.</p>
+    <a href="${livretURL}" class="btn-gold">
+      Accéder au Livret Masque ${meta.label} →
+    </a>
+    <p style="margin-top:18px;font-size:11px;color:rgba(201,168,76,.3);font-style:italic">© 2026 Céline Bourbon · Méthode V.A.L.E.U.R© · Usage strictement personnel</p>
+  </div>
+
+  `;
+
+  // Initialiser la barre de progression
+  updateGlobalBar(dominant);
+}
+
+buildPage();
+</script>
+</body>
+</html>
