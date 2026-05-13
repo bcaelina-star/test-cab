@@ -752,19 +752,22 @@ const V = {
             </div>
           </div>`;
       },
-      copyLink(url, masque) {
-        navigator.clipboard.writeText(url).then(() => {
-          V.ui.toast(`✓ Lien workbook ${masque} copié`);
-        }).catch(() => {
-          // Fallback
+      copyLink(url, masque, prenom) {
+        // Ajouter le prénom dans l'URL → filigrane personnalisé côté patient
+        const finalUrl = prenom ? (url + '?prenom=' + encodeURIComponent(prenom)) : url;
+        const copy = (text) => {
+          if(navigator.clipboard) {
+            navigator.clipboard.writeText(text).catch(() => fallback(text));
+          } else { fallback(text); }
+        };
+        const fallback = (text) => {
           const el = document.createElement('textarea');
-          el.value = url;
-          document.body.appendChild(el);
-          el.select();
-          document.execCommand('copy');
+          el.value = text; document.body.appendChild(el);
+          el.select(); document.execCommand('copy');
           document.body.removeChild(el);
-          V.ui.toast(`✓ Lien workbook ${masque} copié`);
-        });
+        };
+        copy(finalUrl);
+        V.ui.toast(prenom ? `✓ Lien workbook ${masque} copié — filigrane : ${prenom}` : `✓ Lien workbook ${masque} copié`);
       }
     },
 
@@ -1003,7 +1006,7 @@ const V = {
                 <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Ouvrir le workbook
               </a>
-              <button class="wb-btn wb-btn-copy" onclick="V.views.workbooks.copyLink('https://cabinet.psyh.fr/${wb.file}','${wb.masque}')">
+              <button class="wb-btn wb-btn-copy" onclick="V.views.workbooks.copyLink('https://cabinet.psyh.fr/${wb.file}','${wb.masque}','${p.prenom||''}')">
                 <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><rect x="1" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 4V2.5A1.5 1.5 0 0 1 5.5 1H11.5A1.5 1.5 0 0 1 13 2.5V8.5A1.5 1.5 0 0 1 11.5 10H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 Copier le lien à envoyer
               </button>
