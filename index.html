@@ -99,7 +99,7 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
 .toast.err{background:#B5312A}
 
 /* ── DASHBOARD ── */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;text-align:center;box-shadow:var(--shadow)}
 .stat-value{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--ink);line-height:1}
 .stat-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-top:4px}
@@ -174,6 +174,19 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
 .spa-entry-val{font-size:12px;font-weight:600;color:var(--ink);width:36px;text-align:right}
 .spa-add-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:16px}
 
+/* ── WORKBOOKS ── */
+.workbooks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:16px}
+.workbook-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.workbook-stripe{height:3px;border-radius:2px;margin-bottom:2px}
+.workbook-name{font-size:13px;font-weight:600;color:var(--ink)}
+.workbook-peur{font-size:11px;color:var(--ink4);font-style:italic}
+.workbook-actions{display:flex;gap:6px;flex-wrap:wrap}
+.wb-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r-sm);font-size:10.5px;font-weight:600;letter-spacing:.3px;cursor:pointer;border:1px solid;transition:all .15s;text-decoration:none}
+.wb-btn-open{background:transparent;color:var(--ink3);border-color:var(--line)}
+.wb-btn-open:hover{background:var(--bg2)}
+.wb-btn-copy{background:transparent;color:var(--gold);border-color:rgba(168,135,58,.3)}
+.wb-btn-copy:hover{background:rgba(168,135,58,.06)}
+
 /* ── LIVRETS ── */
 .livrets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
 .livret-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;transition:box-shadow .15s;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -231,6 +244,9 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
     </button>
     <div class="sb-divider"></div>
     <div class="sb-section">Outils</div>
+    <button class="nav-item" id="nav-workbooks" onclick="V.router.go('workbooks')">
+      <span class="nav-icon">📝</span><span>Workbooks patients</span>
+    </button>
     <a class="nav-item" href="livret_psychoeducation.html" target="_blank">
       <span class="nav-icon">🎓</span><span>Psychoéducation</span>
     </a>
@@ -364,6 +380,16 @@ const MASKS = ['rouge','orange','jaune','vert','bleu','indigo','violet'];
 const MASK_COLORS = {rouge:'#B5312A',orange:'#C4581F',jaune:'#B8930A',vert:'#2D7A4F',bleu:'#1D5F8A',indigo:'#5C3280',violet:'#7A3594'};
 const MASK_NAMES  = {rouge:'Masque Rouge',orange:'Masque Orange',jaune:'Masque Jaune',vert:'Masque Vert',bleu:'Masque Bleu',indigo:'Masque Indigo',violet:'Masque Violet'};
 const MASK_PEURS  = {rouge:'Peur de la maladie / disparition',orange:'Peur de souffrir',jaune:'Peur de l\'incertitude',vert:'Peur du rejet',bleu:'Peur du chaos',indigo:'Peur de l\'échec',violet:'Peur de se perdre'};
+const WORKBOOKS = [
+  {masque:'rouge', file:'workbook_rouge.html',  label:'Workbook Rouge',  color:'#B5312A', peur:'Peur de la maladie'},
+  {masque:'orange',file:'workbook_orange.html', label:'Workbook Orange', color:'#C4581F', peur:'Peur de souffrir'},
+  {masque:'jaune', file:'workbook_jaune.html',  label:'Workbook Jaune',  color:'#B8930A', peur:"Peur de l'incertitude"},
+  {masque:'vert',  file:'workbook_vert.html',   label:'Workbook Vert',   color:'#2D7A4F', peur:'Peur du rejet'},
+  {masque:'bleu',  file:'workbook_bleu.html',   label:'Workbook Bleu',   color:'#1D5F8A', peur:'Peur du chaos'},
+  {masque:'indigo',file:'workbook_indigo.html', label:'Workbook Indigo', color:'#5C3280', peur:"Peur de l'échec"},
+  {masque:'violet',file:'workbook_violet.html', label:'Workbook Violet', color:'#7A3594', peur:'Peur de se perdre'},
+];
+
 const LIVRETS = [
   {masque:'rouge',file:'livret_rouge.html',label:'Masque Rouge',color:'#B5312A'},
   {masque:'orange',file:'livret_orange.html',label:'Masque Orange',color:'#C4581F'},
@@ -536,6 +562,10 @@ const V = {
         bc.innerHTML = '<span class="bc-active">Mes patients</span>';
         V.views.patients.render();
         document.getElementById('nav-patients').classList.add('active');
+      } else if(view === 'workbooks') {
+        bc.innerHTML = '<span class="bc-active">Workbooks patients</span>';
+        V.views.workbooks.render();
+        document.getElementById('nav-workbooks').classList.add('active');
       } else if(view === 'patient' && patientId) {
         const list = V.data.getPatients();
         const p = list.find(x => x.id === patientId);
@@ -592,6 +622,7 @@ const V = {
             <div class="stats-grid">
               <div class="stat-card"><div class="stat-value">${patients.length}</div><div class="stat-label">Patients</div></div>
               <div class="stat-card"><div class="stat-value">${avecPortrait.length}</div><div class="stat-label">Portraits importés</div></div>
+              <div class="stat-card" style="cursor:pointer" onclick="V.router.go('workbooks')"><div class="stat-value">7</div><div class="stat-label" style="color:var(--gold)">Workbooks ↗</div></div>
               <div class="stat-card"><div class="stat-value">${spaMoy}${spaCount?'%':''}</div><div class="stat-label">SPA moyen</div></div>
             </div>
             <div class="card">
@@ -674,6 +705,66 @@ const V = {
         V.ui.closeModal('modal-patient');
         V.ui.toast('✓ Patient enregistré');
         V.router.go('patients');
+      }
+    },
+
+    workbooks: {
+      render() {
+        const BASE = 'https://cabinet.psyh.fr/';
+        document.getElementById('app-content').innerHTML = `
+          <div class="view-wrap">
+            <div class="view-header">
+              <h1 class="view-title">Workbooks patients</h1>
+            </div>
+            <div class="card" style="margin-bottom:16px">
+              <div class="section-title" style="margin-bottom:4px">Comment utiliser les workbooks</div>
+              <p style="font-size:13px;color:var(--ink4);line-height:1.7;margin-top:6px">
+                Chaque workbook est un document de travail personnalisé pour votre patient. Il contient le portrait de son masque, les amplifications possibles, le rappel du protocole V.A.L.E.U.R© et les 21 défis.<br>
+                <strong>Deux façons de l'utiliser :</strong> envoyer le lien en ligne (le patient ouvre sur son téléphone ou ordinateur) ou imprimer en PDF depuis le bouton dans le document.
+              </p>
+            </div>
+            <div class="workbooks-grid">
+              ${WORKBOOKS.map(w => `
+                <div class="workbook-card">
+                  <div class="workbook-stripe" style="background:${w.color}"></div>
+                  <div class="workbook-name">${w.label}</div>
+                  <div class="workbook-peur">${w.peur}</div>
+                  <div class="workbook-actions">
+                    <a class="wb-btn wb-btn-open" href="${w.file}" target="_blank">
+                      <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      Ouvrir
+                    </a>
+                    <button class="wb-btn wb-btn-copy" onclick="V.views.workbooks.copyLink('${BASE}${w.file}','${w.masque}')">
+                      <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><rect x="1" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 4V2.5A1.5 1.5 0 0 1 5.5 1H11.5A1.5 1.5 0 0 1 13 2.5V8.5A1.5 1.5 0 0 1 11.5 10H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      Copier le lien
+                    </button>
+                  </div>
+                </div>`).join('')}
+            </div>
+            <div class="card" style="background:rgba(168,135,58,.04);border-color:rgba(168,135,58,.15)">
+              <div class="section-title" style="margin-bottom:8px;color:var(--gold)">Envoyer le bon workbook à votre patient</div>
+              <p style="font-size:13px;color:var(--ink3);line-height:1.75">
+                1. Identifiez le masque dominant de votre patient (visible dans sa fiche)<br>
+                2. Cliquez "Copier le lien" du workbook correspondant<br>
+                3. Envoyez ce lien par email, SMS ou WhatsApp<br>
+                4. Le patient peut lire en ligne ou imprimer son workbook en PDF depuis le bouton de la page
+              </p>
+            </div>
+          </div>`;
+      },
+      copyLink(url, masque) {
+        navigator.clipboard.writeText(url).then(() => {
+          V.ui.toast(`✓ Lien workbook ${masque} copié`);
+        }).catch(() => {
+          // Fallback
+          const el = document.createElement('textarea');
+          el.value = url;
+          document.body.appendChild(el);
+          el.select();
+          document.execCommand('copy');
+          document.body.removeChild(el);
+          V.ui.toast(`✓ Lien workbook ${masque} copié`);
+        });
       }
     },
 
@@ -902,7 +993,22 @@ const V = {
         const masque = d.portrait?.masque;
         const elevated = masque && d.portrait?.scores ? MASKS.filter(m => (d.portrait.scores[m]||0) >= 65) : [];
         const hasDyade = elevated.length >= 2;
+        const wb = masque ? WORKBOOKS.find(w=>w.masque===masque) : null;
         return `
+          ${wb ? `<div class="card" style="margin-bottom:14px;border-left:3px solid ${wb.color};background:rgba(168,135,58,.03)">
+            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">Workbook patient — Masque ${MASK_NAMES[masque]||masque}</div>
+            <p style="font-size:12.5px;color:var(--ink4);margin-bottom:12px;line-height:1.65">Document de travail avec portrait du masque, amplifications, protocole et 21 défis. À envoyer au patient ou imprimer en PDF.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <a class="wb-btn wb-btn-open" href="${wb.file}" target="_blank">
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Ouvrir le workbook
+              </a>
+              <button class="wb-btn wb-btn-copy" onclick="V.views.workbooks.copyLink('https://cabinet.psyh.fr/${wb.file}','${wb.masque}')">
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><rect x="1" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 4V2.5A1.5 1.5 0 0 1 5.5 1H11.5A1.5 1.5 0 0 1 13 2.5V8.5A1.5 1.5 0 0 1 11.5 10H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Copier le lien à envoyer
+              </button>
+            </div>
+          </div>` : ''}
           <div class="card" style="margin-bottom:14px">
             <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Livrets du patient</div>
             <div class="livrets-grid">
