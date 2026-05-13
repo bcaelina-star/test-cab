@@ -4,367 +4,1078 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>V.A.L.E.U.R© — Cabinet Praticien</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>V.A.L.E.U.R© — Cabinet</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --gold:#A8873A;--gold-lt:#C9A84C;
   --ink:#1A1814;--ink2:#3A342E;--ink3:#5A534A;--ink4:#8C8278;--ink5:#B8B0A5;
   --bg:#F7F4EE;--bg2:#F0EBE1;--surface:#fff;
   --line:rgba(26,24,20,.1);--r:10px;--r-sm:6px;
   --shadow:0 2px 12px rgba(0,0,0,.07);--shadow-md:0 4px 24px rgba(0,0,0,.12);
-  --sb-w:256px;--top-h:56px;
+  --sb-w:240px;--top-h:54px;
+  --rouge:#B5312A;--orange:#C4581F;--jaune:#B8930A;
+  --vert:#2D7A4F;--bleu:#1D5F8A;--indigo:#5C3280;--violet:#7A3594;
 }
 html{font-size:16px;scroll-behavior:smooth}
 body{font-family:'DM Sans',system-ui,sans-serif;font-weight:400;line-height:1.6;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+/* ── AUTH ── */
+#auth-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
+.auth-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:44px 40px;width:360px;text-align:center;box-shadow:var(--shadow-md)}
+.auth-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.auth-sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:28px}
+.auth-input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;font-family:inherit;font-size:14px;color:var(--ink);outline:none;text-align:center;letter-spacing:3px;transition:border-color .15s;margin-bottom:12px}
+.auth-input:focus{border-color:var(--gold)}
+.auth-btn{width:100%;background:var(--gold);color:#fff;border:none;border-radius:var(--r-sm);padding:13px;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .15s}
+.auth-btn:hover{opacity:.88}
+.auth-err{font-size:12px;color:#B5312A;margin-top:8px;display:none}
+
+/* ── LAYOUT ── */
+#app{display:none;min-height:100vh}
 .app-layout{display:flex;min-height:100vh}
-.sidebar{width:var(--sb-w);flex-shrink:0;background:#141210;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent}
-.sb-logo{padding:22px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer}
-.sb-logo:hover{opacity:.85}
-.sb-brand{font-family:'Cormorant Garamond',Georgia,serif;font-size:13px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
+.sidebar{width:var(--sb-w);flex-shrink:0;background:#141210;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-logo{padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-brand{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
 .sb-brand sup{font-size:8px;vertical-align:super}
 .sb-tagline{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(168,135,58,.3);margin-top:2px}
-.sb-section{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.18);padding:16px 20px 6px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:12.5px;color:rgba(255,255,255,.4);text-decoration:none;cursor:pointer;border:none;background:none;width:100%;text-align:left;border-left:2px solid transparent;transition:all .15s}
+.sb-section{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.18);padding:14px 18px 5px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;font-size:12.5px;color:rgba(255,255,255,.4);text-decoration:none;cursor:pointer;border:none;background:none;width:100%;text-align:left;border-left:2px solid transparent;transition:all .15s}
 .nav-item:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.75)}
-.nav-item--active{background:rgba(168,135,58,.1);color:var(--gold);border-left-color:var(--gold)}
+.nav-item.active{background:rgba(168,135,58,.1);color:var(--gold);border-left-color:var(--gold)}
 .nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
-.sb-divider{height:1px;background:rgba(255,255,255,.05);margin:8px 0}
-.sb-footer{margin-top:auto;padding:14px 20px;border-top:1px solid rgba(255,255,255,.05);font-size:9px;color:rgba(255,255,255,.15);line-height:1.7}
+.sb-divider{height:1px;background:rgba(255,255,255,.05);margin:6px 0}
+.sb-footer{margin-top:auto;padding:12px 18px;border-top:1px solid rgba(255,255,255,.05);font-size:9px;color:rgba(255,255,255,.15);line-height:1.7}
 .main-area{flex:1;display:flex;flex-direction:column;min-width:0}
-.topbar{height:var(--top-h);background:rgba(247,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:40}
-.topbar-spectrum{display:flex;height:2px;width:60px;border-radius:1px;overflow:hidden;flex-shrink:0}
+.topbar{height:var(--top-h);background:rgba(247,244,238,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 24px;gap:10px;position:sticky;top:0;z-index:40}
+.topbar-spectrum{display:flex;height:2px;width:56px;border-radius:1px;overflow:hidden;flex-shrink:0}
 .topbar-spectrum div{flex:1}
 #breadcrumb{flex:1;display:flex;align-items:center;gap:6px;font-size:13px}
 .bc-link{color:var(--gold);text-decoration:none;cursor:pointer}
 .bc-link:hover{text-decoration:underline}
 .bc-sep{color:var(--ink5)}
 .bc-active{color:var(--ink2);font-weight:500}
-.topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto}
-#app{flex:1;padding:28px;overflow-y:auto}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:9999;transition:transform .25s,opacity .25s;opacity:0;pointer-events:none;white-space:nowrap}
-.toast--visible{transform:translateX(-50%) translateY(0);opacity:1}
-.toast--error{background:#B5312A}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:var(--r-sm);font-family:inherit;font-size:12px;font-weight:600;letter-spacing:.5px;cursor:pointer;border:1px solid transparent;transition:all .15s;white-space:nowrap;min-height:36px}
+#app-content{flex:1;padding:24px;overflow-y:auto}
+
+/* ── UTILS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:var(--r-sm);font-family:inherit;font-size:12px;font-weight:600;letter-spacing:.4px;cursor:pointer;border:1px solid transparent;transition:all .15s;white-space:nowrap;min-height:34px}
 .btn--primary{background:var(--ink);color:#fff}.btn--primary:hover{background:var(--ink2)}
 .btn--ghost{background:transparent;border-color:var(--line);color:var(--ink3)}.btn--ghost:hover{background:var(--bg2);color:var(--ink)}
-.btn--gold{background:var(--gold);color:#fff;border-color:var(--gold)}.btn--gold:hover{background:var(--gold-lt)}
+.btn--gold{background:var(--gold);color:#fff}.btn--gold:hover{background:var(--gold-lt)}
 .btn--danger{background:transparent;border-color:#B5312A30;color:#B5312A}.btn--danger:hover{background:#B5312A10}
-.btn--sm{padding:6px 12px;font-size:11px;min-height:30px}
+.btn--sm{padding:5px 10px;font-size:11px;min-height:28px}
 .btn--full{width:100%}
-.btn-text{background:none;border:none;color:var(--gold);cursor:pointer;font-size:inherit;text-decoration:underline}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
-.card--sm{padding:14px 16px}
-.field-group{margin-bottom:16px}
-.field-label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:6px}
-.required{color:#B5312A}
-.field-input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 13px;font-family:inherit;font-size:13.5px;color:var(--ink);outline:none;transition:border-color .15s}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+.field-group{margin-bottom:14px}
+.field-label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:5px}
+.field-input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 12px;font-family:inherit;font-size:13px;color:var(--ink);outline:none;transition:border-color .15s}
 .field-input:focus{border-color:var(--gold)}
-textarea.field-input{resize:vertical;min-height:80px}
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600}
+textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600}
 .badge--neutral{background:var(--bg2);color:var(--ink4);border:1px solid var(--line)}
 .badge--done{background:#2D7A4F15;color:#2D7A4F;border:1px solid #2D7A4F30}
 .badge--active{background:#A8873A15;color:#A8873A;border:1px solid #A8873A30}
-.badge--step{background:#1D5F8A15;color:#1D5F8A;border:1px solid #1D5F8A30}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
-.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;text-align:center}
-.stat-value{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--ink);line-height:1}
-.stat-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-top:4px}
-.view-wrap{max-width:960px}
-.view-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.view-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--ink)}
-.count-badge{font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg2);color:var(--ink4);padding:2px 8px;border-radius:12px;vertical-align:middle}
-.section{margin-bottom:32px}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.section-title{font-size:14px;font-weight:600;color:var(--ink2)}
-.section-meta{font-size:12px;color:var(--ink4)}
-.link-all{font-size:12px;color:var(--gold);text-decoration:none;cursor:pointer}
-.toolbar{margin-bottom:16px}
-.search-input{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:9px 16px;font-family:inherit;font-size:13px;color:var(--ink);outline:none}
-.search-input:focus{border-color:var(--gold)}
-.filter-bar{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.filter-btn{padding:6px 14px;border:1px solid var(--line);border-radius:20px;background:var(--surface);font-family:inherit;font-size:12px;color:var(--ink3);cursor:pointer;transition:all .15s;white-space:nowrap}
-.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
-.filter-btn--active{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
-.filter-count{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:700;background:rgba(255,255,255,.25);margin-left:4px}
-.patient-list{display:flex;flex-direction:column;gap:6px}
-.patient-row{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;transition:box-shadow .15s}
-.patient-row:hover{box-shadow:var(--shadow)}
-.patient-avatar{width:40px;height:40px;border-radius:50%;background:var(--bg2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
-.patient-name{font-size:14px;font-weight:500;color:var(--ink)}
-.patient-meta{font-size:11.5px;color:var(--ink4);margin-top:1px}
-.patient-badges{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
-.patient-actions{display:flex;gap:4px;flex-shrink:0}
-.progress-bar-wrap{height:3px;background:var(--bg2);border-radius:2px;margin-top:6px;max-width:200px}
-.progress-bar{height:100%;border-radius:2px}
-.send-quest-label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink3);cursor:pointer;margin-top:8px;padding:10px 12px;background:var(--bg);border-radius:var(--r-sm);border:1px solid var(--line)}
-.send-quest-label input[type=checkbox]{accent-color:var(--gold);width:16px;height:16px}
-.patient-page{max-width:960px}
-.patient-bandeau{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-bottom:20px;box-shadow:var(--shadow);gap:16px;flex-wrap:wrap}
-.pb-left{display:flex;align-items:center;gap:14px}
-.pb-avatar{width:52px;height:52px;border-radius:50%;background:var(--bg2);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
-.pb-name{font-size:18px;font-weight:600;color:var(--ink)}
-.pb-meta{display:flex;gap:10px;font-size:12px;color:var(--ink4);margin-top:2px;flex-wrap:wrap}
-.pb-masque{display:flex;align-items:center;gap:8px;margin-top:6px}
-.pb-spa{font-size:12px;color:var(--ink4)}
-.pb-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap}
-.tabs-bar{display:flex;border-bottom:2px solid var(--line);margin-bottom:24px;overflow-x:auto}
-.tab{padding:10px 20px;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--ink4);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;transition:all .15s;white-space:nowrap}
-.tab:hover{color:var(--ink)}
-.tab--active{color:var(--gold);border-bottom-color:var(--gold)}
-.tab-panel{max-width:800px}
-.tab-actions{display:flex;justify-content:flex-end;margin-bottom:16px}
-.bilan-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:12px}
-.bilan-card--latest{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
-.bilan-card-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
-.bilan-date{font-size:12px;color:var(--ink4)}
-.bilan-masque{display:flex;align-items:center;gap:6px;margin-top:4px}
-.bilan-spa-big{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--ink);line-height:1;margin-left:auto;white-space:nowrap}
-.bilan-spa-unit{font-size:14px}
-.bilan-actions{display:flex;gap:4px}
-.bilan-notes{font-size:12px;color:var(--ink3);background:var(--bg);border-radius:var(--r-sm);padding:10px 12px;margin-top:10px}
-.scores-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.score-row{display:flex;align-items:center;gap:8px}
-.score-label{width:52px;font-size:11px;font-weight:600;flex-shrink:0}
-.score-track{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
-.score-fill{height:100%;border-radius:3px;transition:width .3s}
-.score-value{width:34px;text-align:right;font-size:11px;color:var(--ink4);flex-shrink:0}
-.sliders-grid{display:grid;gap:10px;margin:12px 0}
-.slider-row{display:flex;align-items:center;gap:10px}
-.slider-label{width:80px;font-size:12px;font-weight:600;flex-shrink:0}
-.slider{flex:1;height:4px;accent-color:var(--gold)}
-.slider-val{width:36px;text-align:right;font-size:12px;font-weight:600;color:var(--ink);flex-shrink:0}
-.proto-context-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--bg2);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:var(--r);padding:14px 18px;margin-bottom:16px;flex-wrap:wrap}
-.proto-context-step{font-size:14px;font-weight:600;color:var(--ink)}
-.proto-context-meta{font-size:11.5px;color:var(--ink4);margin-top:3px}
-.proto-context-actions{display:flex;gap:6px}
-.proto-header{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;margin-bottom:20px}
-.proto-progress{font-size:13px;color:var(--ink3);margin-bottom:8px}
-.proto-bar{height:4px;background:var(--bg2);border-radius:2px}
-.proto-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .5s}
-.modules-list{display:flex;flex-direction:column;gap:10px}
-.module-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.module-card--active{border-color:var(--gold)}
-.module-card--done{opacity:.7}
-.module-card--locked{opacity:.45}
-.module-header{display:flex;align-items:center;gap:12px;padding:14px 16px}
-.module-icon{font-size:20px;width:28px;text-align:center;flex-shrink:0}
-.module-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
-.module-titre{font-size:14px;font-weight:500;color:var(--ink)}
-.module-status{margin-left:auto}
-.module-body{padding:14px 16px 16px;border-top:1px solid var(--line)}
-.module-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:10px}
-.seances-list{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
-.seance-row{font-size:11.5px;color:var(--ink4);padding:4px 0}
-.seances-today{display:flex;flex-direction:column;gap:8px}
-.seance-today-row{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;cursor:pointer;transition:box-shadow .15s}
-.seance-today-row:hover{box-shadow:var(--shadow)}
-.seance-today-name{font-size:14px;font-weight:500;color:var(--ink)}
-.seance-today-meta{font-size:11.5px;color:var(--ink4);margin-top:2px}
-.quick-access-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.quick-access-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 12px;font-size:12px;font-weight:500;color:var(--ink3);border-radius:var(--r);border:1px solid var(--line)!important;cursor:pointer;background:var(--surface);transition:all .15s}
-.quick-access-btn:hover{color:var(--ink);background:var(--bg2)}
-.qa-icon{font-size:20px;line-height:1}
-.livrets-bundle{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
-.livret-row{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
-.livret-stripe{width:4px;height:40px;border-radius:2px;flex-shrink:0}
-.livret-name{font-size:13.5px;font-weight:500;color:var(--ink);flex:1}
-.livret-actions{display:flex;gap:5px;flex-shrink:0}
-.livrets-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
-.livret-mini{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);cursor:pointer;font-size:11px;font-weight:600;color:var(--ink3);transition:box-shadow .15s}
-.livret-mini:hover{box-shadow:var(--shadow)}
-.evo-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;margin-top:12px}
-.evo-spa-list{margin-top:20px;display:flex;flex-direction:column;gap:8px}
-.evo-row{display:flex;align-items:center;gap:14px}
-.evo-date{font-size:12px;color:var(--ink4);width:90px;flex-shrink:0}
-.spa-pill{background:var(--gold);height:22px;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:600;color:#fff}
-.modal{position:fixed;inset:0;background:rgba(26,24,20,.6);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
-.modal--open{display:flex}
-.modal-card{background:var(--surface);border-radius:var(--r);width:100%;max-width:460px;max-height:92vh;overflow-y:auto;box-shadow:var(--shadow-md)}
-.modal-card--wide{max-width:600px}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
-.modal-title{font-size:16px;font-weight:600;color:var(--ink)}
-.modal-close{background:none;border:none;font-size:20px;color:var(--ink4);cursor:pointer;line-height:1}
+.view-wrap{max-width:920px}
+.view-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.view-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--ink)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-size:13px;font-weight:600;color:var(--ink2)}
+
+/* ── MODAL ── */
+.modal{position:fixed;inset:0;background:rgba(26,24,20,.45);display:none;align-items:center;justify-content:center;z-index:800;padding:16px}
+.modal.open{display:flex}
+.modal-card{background:var(--surface);border-radius:14px;width:100%;max-width:480px;box-shadow:var(--shadow-md);overflow:hidden}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.modal-title{font-size:15px;font-weight:600;color:var(--ink)}
+.modal-close{background:none;border:none;font-size:20px;color:var(--ink4);cursor:pointer;line-height:1;padding:2px 6px}
+.modal-close:hover{color:var(--ink)}
 .modal-body{padding:20px}
-.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--line)}
-.login-wrap{position:fixed;inset:0;background:#141210;display:flex;align-items:center;justify-content:center;z-index:999}
-.login-card{width:100%;max-width:340px;padding:0 24px}
-.login-spectrum{height:2px;margin-bottom:44px;border-radius:1px;background:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594)}
-.login-brand{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:4px}
-.login-brand sup{font-size:9px;vertical-align:super}
-.login-sub{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(168,135,58,.35);text-align:center;margin-bottom:36px}
-.login-error{font-size:11px;color:#B5312A;text-align:center;margin-top:10px;min-height:16px}
-.login-wrap .field-label{color:rgba(255,255,255,.3)}
-.login-wrap .field-input{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:#fff}
-.login-wrap .field-input:focus{border-color:rgba(168,135,58,.5)}
-.login-wrap .field-input::placeholder{color:rgba(255,255,255,.2)}
-.empty-state{padding:40px;text-align:center;color:var(--ink4);font-size:13.5px}
-.loading{padding:20px;text-align:center;color:var(--ink4);font-size:12px}
-.back-to-top{position:fixed;bottom:28px;right:28px;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;border:none;font-size:16px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.2);opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s;pointer-events:none;z-index:100;display:flex;align-items:center;justify-content:center}
-.back-to-top--visible{opacity:1;transform:translateY(0);pointer-events:auto}
-.back-to-top:hover{background:var(--ink2)}
-@media(max-width:900px){
-  :root{--sb-w:56px}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;padding:14px 20px;border-top:1px solid var(--line)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:9px 18px;border-radius:24px;font-size:12.5px;font-weight:500;z-index:9999;transition:transform .22s,opacity .22s;opacity:0;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.err{background:#B5312A}
+
+/* ── DASHBOARD ── */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;text-align:center;box-shadow:var(--shadow)}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--ink);line-height:1}
+.stat-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-top:4px}
+.recent-list{display:flex;flex-direction:column;gap:6px}
+
+/* ── PATIENTS LIST ── */
+.patient-list{display:flex;flex-direction:column;gap:6px}
+.patient-row{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:box-shadow .15s}
+.patient-row:hover{box-shadow:var(--shadow)}
+.patient-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;color:#fff}
+.patient-name{font-size:14px;font-weight:500;color:var(--ink)}
+.patient-meta{font-size:11px;color:var(--ink4);margin-top:1px}
+.patient-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.masque-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── PATIENT DETAIL ── */
+.patient-bandeau{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:18px;box-shadow:var(--shadow);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.pb-left{flex:1;min-width:200px}
+.pb-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ink);margin-bottom:4px}
+.pb-masque-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pb-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:20px}
+.tab{padding:9px 16px;font-size:12.5px;font-weight:500;color:var(--ink4);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── PORTRAIT SCORES ── */
+.scores-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.score-row{display:flex;align-items:center;gap:8px}
+.score-label{width:54px;font-size:11px;font-weight:600;flex-shrink:0}
+.score-track{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.score-value{width:32px;text-align:right;font-size:11px;color:var(--ink4);flex-shrink:0}
+.config-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid;margin-top:8px}
+.spa-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.spa-ring-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4)}
+
+/* ── PROTOCOLE ── */
+.protocole-timeline{display:flex;flex-direction:column;gap:0}
+.step-item{display:flex;gap:0;position:relative}
+.step-connector{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px}
+.step-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;flex-shrink:0;border:2px solid;transition:all .2s;z-index:1}
+.step-line{flex:1;width:2px;background:var(--line);min-height:12px}
+.step-body{flex:1;padding:0 0 24px 14px}
+.step-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer}
+.step-letter{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.step-name{font-size:14px;font-weight:600;color:var(--ink)}
+.step-tag{font-size:10px;color:var(--ink4);font-style:italic;flex:1}
+.step-toggle{margin-left:auto;font-size:12px;color:var(--ink5);transition:transform .15s}
+.step-detail{display:none;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:4px}
+.step-detail.open{display:block}
+.step-desc{font-size:13px;color:var(--ink3);line-height:1.75;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+.step-notes-zone{padding:14px 16px;border-bottom:1px solid var(--line)}
+.step-defi-zone{padding:14px 16px;background:rgba(168,135,58,.03)}
+.defi-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.defi-text{font-size:12.5px;color:var(--ink3);line-height:1.7;margin-bottom:10px;padding:10px 12px;background:rgba(168,135,58,.06);border-left:2px solid var(--gold);border-radius:0 6px 6px 0}
+.defi-check-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.defi-check-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold);cursor:pointer}
+.defi-check-label{font-size:12px;font-weight:500;color:var(--ink3)}
+.step-validate-btn{width:100%;margin-top:12px}
+
+/* ── SPA SUIVI ── */
+.spa-history{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.spa-entry{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm)}
+.spa-entry-date{font-size:11px;color:var(--ink4);width:80px;flex-shrink:0}
+.spa-entry-bar{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.spa-entry-fill{height:100%;background:var(--gold);border-radius:3px}
+.spa-entry-val{font-size:12px;font-weight:600;color:var(--ink);width:36px;text-align:right}
+.spa-add-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:16px}
+
+/* ── LIVRETS ── */
+.livrets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.livret-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;transition:box-shadow .15s;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:6px}
+.livret-card:hover{box-shadow:var(--shadow)}
+.livret-card-stripe{width:100%;height:4px;border-radius:2px;margin-bottom:4px}
+.livret-card-name{font-size:12.5px;font-weight:600;color:var(--ink)}
+.livret-card-sub{font-size:10.5px;color:var(--ink4)}
+
+/* ── IMPORT MODAL ── */
+.import-tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:16px}
+.import-tab{padding:8px 14px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--ink4);border-bottom:2px solid transparent;margin-bottom:-1px}
+.import-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.import-pane{display:none}
+.import-pane.active{display:block}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .sidebar{width:52px}
   .sb-brand,.sb-tagline,.sb-section,.nav-item span:not(.nav-icon),.sb-footer{display:none!important}
   .nav-item{padding:12px;justify-content:center}
-  .sb-logo{padding:14px 8px;text-align:center}
-  #app{padding:16px}
   .stats-grid{grid-template-columns:1fr 1fr}
   .scores-grid{grid-template-columns:1fr}
-  .quick-access-grid{grid-template-columns:repeat(2,1fr)}
-  .livrets-grid{grid-template-columns:repeat(2,1fr)}
-  .proto-context-bar{flex-direction:column;align-items:flex-start}
 }
-@media(max-width:600px){
-  .patient-bandeau{flex-direction:column;align-items:flex-start}
-  .modal-card{margin:0;max-height:96vh}
-}
-/* ── Mots de passe / Accès ─────────────────────────────────────────────── */
-.cred-row { display:flex; align-items:center; gap:12px; padding:8px 12px; border-radius:var(--r-sm); border:1px solid var(--line); background:var(--surface); margin-bottom:6px; flex-wrap:wrap; }
-.cred-label { font-size:12px; font-weight:600; color:var(--ink); width:180px; flex-shrink:0; }
-.cred-detail { display:flex; align-items:center; gap:8px; flex:1; flex-wrap:wrap; }
-.cred-val { font-family:'DM Mono',monospace,sans-serif; font-size:12px; background:var(--bg2); border:1px solid var(--line); border-radius:4px; padding:3px 8px; color:var(--ink2); }
-.cred-copy { background:none; border:none; cursor:pointer; font-size:14px; padding:2px 4px; border-radius:4px; transition:background .15s; }
-.cred-copy:hover { background:var(--bg2); }
-.cred-note { font-size:10.5px; color:var(--ink4); font-style:italic; }
-
 </style>
 </head>
 <body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="auth-sub">Espace praticien</div>
+    <input class="auth-input" id="auth-input" type="password" placeholder="••••••••••••" autocomplete="current-password">
+    <button class="auth-btn" onclick="V.auth.login()">Accéder au cabinet</button>
+    <div class="auth-err" id="auth-err">Code incorrect</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
 <div class="app-layout">
-  <aside class="sidebar" id="sidebar">
-    <div class="sb-logo" onclick="V.router.go('/dashboard')">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
       <div class="sb-brand">V.A.L.E.U.R<sup>©</sup></div>
-      <div class="sb-tagline">Cabinet Praticien</div>
+      <div class="sb-tagline">Cabinet praticien</div>
     </div>
-    <nav>
-      <div class="sb-section">Navigation</div>
-      <button class="nav-item" data-view="dashboard" onclick="V.router.go('/dashboard')">
-        <span class="nav-icon">◈</span><span>Tableau de bord</span>
-      </button>
-      <button class="nav-item" data-view="patients" onclick="V.router.go('/patients')">
-        <span class="nav-icon">◎</span><span>Mes patients</span>
-      </button>
-      <div class="sb-divider"></div>
-      <div class="sb-section">Outils</div>
-      <a class="nav-item" href="/protocole_valeur.html?admin=VALEUR-ADMIN-2025" target="_blank">
-        <span class="nav-icon">📋</span><span>Guide de séance</span>
-      </a>
-      <a class="nav-item" href="/manuel_valeur.html" target="_blank">
-        <span class="nav-icon">📖</span><span>Manuel V.A.L.E.U.R©</span>
-      </a>
-      <a class="nav-item" href="/livret_psychoeducation.html" target="_blank">
-        <span class="nav-icon">🎓</span><span>Psychoéducation</span>
-      </a>
-      <a class="nav-item" href="/livret_dyades_triades.html" target="_blank">
-        <span class="nav-icon">🔗</span><span>Dyades &amp; Triades</span>
-      </a>
-      <div class="sb-divider"></div>
-      <div class="sb-section">Cabinet</div>
-      <button class="nav-item" onclick="V.data.exportJSON()">
-        <span class="nav-icon">↓</span><span>Sauvegarder</span>
-      </button>
-      <label class="nav-item" style="cursor:pointer">
-        <span class="nav-icon">↑</span><span>Restaurer</span>
-        <input type="file" accept=".json" style="display:none" onchange="V.data.importJSON(this)">
-      </label>
-      <button class="nav-item" onclick="V.auth.logout()">
-        <span class="nav-icon">→</span><span>Déconnexion</span>
-      </button>
-    </nav>
-    <div class="sb-footer">cabinet.psyh.fr · Usage exclusif<br>© Céline Bourbon — V.A.L.E.U.R©</div>
+    <div class="sb-section">Navigation</div>
+    <button class="nav-item" id="nav-dashboard" onclick="V.router.go('dashboard')">
+      <span class="nav-icon">◈</span><span>Tableau de bord</span>
+    </button>
+    <button class="nav-item" id="nav-patients" onclick="V.router.go('patients')">
+      <span class="nav-icon">◎</span><span>Mes patients</span>
+    </button>
+    <div class="sb-divider"></div>
+    <div class="sb-section">Outils</div>
+    <a class="nav-item" href="livret_psychoeducation.html" target="_blank">
+      <span class="nav-icon">🎓</span><span>Psychoéducation</span>
+    </a>
+    <a class="nav-item" href="livret_dyades_triades.html" target="_blank">
+      <span class="nav-icon">🔗</span><span>Dyades &amp; Triades</span>
+    </a>
+    <a class="nav-item" href="manuel_valeur.html" target="_blank">
+      <span class="nav-icon">📖</span><span>Manuel V.A.L.E.U.R©</span>
+    </a>
+    <a class="nav-item" href="protocole_valeur.html?admin=VALEUR-ADMIN-2025" target="_blank">
+      <span class="nav-icon">📋</span><span>Guide de séance</span>
+    </a>
+    <div class="sb-divider"></div>
+    <div class="sb-section">Cabinet</div>
+    <button class="nav-item" onclick="V.data.exportJSON()">
+      <span class="nav-icon">↓</span><span>Sauvegarder</span>
+    </button>
+    <label class="nav-item" style="cursor:pointer">
+      <span class="nav-icon">↑</span><span>Restaurer</span>
+      <input type="file" accept=".json" style="display:none" onchange="V.data.importJSON(event)">
+    </label>
+    <button class="nav-item" onclick="V.auth.logout()">
+      <span class="nav-icon">→</span><span>Déconnexion</span>
+    </button>
+    <div class="sb-footer">V.A.L.E.U.R© · Cabinet<br>© Céline Bourbon</div>
   </aside>
+
+  <!-- MAIN -->
   <div class="main-area">
-    <header class="topbar">
+    <div class="topbar">
       <div class="topbar-spectrum">
         <div style="background:#B5312A"></div><div style="background:#C4581F"></div>
         <div style="background:#B8930A"></div><div style="background:#2D7A4F"></div>
         <div style="background:#1D5F8A"></div><div style="background:#5C3280"></div>
         <div style="background:#7A3594"></div>
       </div>
-      <nav id="breadcrumb"></nav>
-      <div class="topbar-right">
-        <button class="btn btn--sm btn--primary" onclick="V.views.patients.openModal(null)">＋ Patient</button>
-      </div>
-    </header>
-    <main id="app"></main>
+      <div id="breadcrumb"><span class="bc-active">Cabinet</span></div>
+    </div>
+    <div id="app-content"></div>
   </div>
 </div>
-<div class="toast" id="toast"></div>
-<button class="back-to-top" id="back-to-top" onclick="document.getElementById('app').scrollTo({top:0,behavior:'smooth'})">↑</button>
-<div class="modal" id="modal-patient"><div class="modal-card">
-  <div class="modal-header"><h3 class="modal-title" id="modal-patient-title">Nouveau patient</h3><button class="modal-close" onclick="V.ui.closeModal('modal-patient')">×</button></div>
-  <div class="modal-body">
-    <input type="hidden" id="patient-id">
-    <div class="field-group"><label class="field-label">Prénom <span class="required">*</span></label><input class="field-input" id="patient-prenom" type="text" placeholder="Marie"></div>
-    <div class="field-group"><label class="field-label">Nom</label><input class="field-input" id="patient-nom" type="text" placeholder="Dupont"></div>
-    <div class="field-group"><label class="field-label">Email</label><input class="field-input" id="patient-email" type="email" placeholder="marie@exemple.fr"></div>
-    <div class="field-group"><label class="field-label">Téléphone</label><input class="field-input" id="patient-tel" type="tel" placeholder="06 00 00 00 00"></div>
-    <div class="field-group"><label class="field-label">Notes</label><textarea class="field-input" id="patient-notes" rows="3" placeholder="Contexte, motif…"></textarea></div>
-    <label class="send-quest-label" id="send-quest-wrap"><input type="checkbox" id="send-quest-check" checked><span>📤 Copier le lien questionnaire après création</span></label>
-  </div>
-  <div class="modal-footer"><button class="btn btn--ghost" onclick="V.ui.closeModal('modal-patient')">Annuler</button><button class="btn btn--primary" onclick="V.views.patients.savePatient()">Enregistrer</button></div>
-</div></div>
-<div class="modal" id="modal-bilan"><div class="modal-card modal-card--wide">
-  <div class="modal-header"><h3 class="modal-title">Saisie du bilan</h3><button class="modal-close" onclick="V.ui.closeModal('modal-bilan')">×</button></div>
-  <div class="modal-body">
-    <input type="hidden" id="bilan-id"><input type="hidden" id="bilan-patient-id">
-    <div class="field-group"><label class="field-label">Date</label><input class="field-input" type="date" id="bilan-date"></div>
-    <div class="sliders-grid" id="sliders-grid"></div>
-    <div class="field-group"><label class="field-label">Notes</label><textarea class="field-input" id="bilan-notes" rows="2"></textarea></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn--ghost" onclick="V.ui.closeModal('modal-bilan')">Annuler</button><button class="btn btn--primary" onclick="V.views.patient.saveBilan()">Enregistrer</button></div>
-</div></div>
-<div class="modal" id="modal-seance"><div class="modal-card">
-  <div class="modal-header"><h3 class="modal-title">Nouvelle séance</h3><button class="modal-close" onclick="V.ui.closeModal('modal-seance')">×</button></div>
-  <div class="modal-body">
-    <input type="hidden" id="seance-module">
-    <div class="field-group"><label class="field-label">Date</label><input class="field-input" type="date" id="seance-date"></div>
-    <div class="field-group"><label class="field-label">Durée (min)</label><input class="field-input" type="number" id="seance-duree" value="60" min="15" max="240"></div>
-    <div class="field-group"><label class="field-label">Notes</label><textarea class="field-input" id="seance-notes" rows="2"></textarea></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn--ghost" onclick="V.ui.closeModal('modal-seance')">Annuler</button><button class="btn btn--primary" onclick="V.views.patient.saveSeance()">Ajouter</button></div>
-</div></div>
-<script src="app.js" defer></script>
+</div>
 
-<div class="modal" id="modal-seance-live"><div class="modal-card" style="max-width:480px">
-  <div class="modal-header">
-    <h3 class="modal-title">📲 Questionnaire en séance</h3>
-    <button class="modal-close" onclick="V.cabinet.stopPolling();V.ui.closeModal('modal-seance-live')">×</button>
-  </div>
-  <div class="modal-body" style="text-align:center">
-    <p style="font-size:13px;color:var(--ink3);margin-bottom:16px">Le patient scanne ce QR code ou ouvre le lien sur son appareil.</p>
-    <div id="qr-code-wrap" style="margin:0 auto 16px;width:200px;height:200px;background:var(--bg2);border-radius:var(--r);display:flex;align-items:center;justify-content:center">
-      <span style="font-size:12px;color:var(--ink4)">Chargement…</span>
-    </div>
-    <div id="quest-url-display" style="font-size:11px;color:var(--ink4);word-break:break-all;margin-bottom:16px"></div>
-    <div id="polling-status" style="font-size:13px;font-weight:600;color:var(--gold)">⏳ En attente des résultats…</div>
-    <div id="polling-sub" style="font-size:11px;color:var(--ink4);margin-top:4px">Vérification toutes les 15 secondes</div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn--ghost" onclick="V.cabinet.stopPolling();V.ui.closeModal('modal-seance-live')">Fermer</button>
-    <button class="btn btn--gold" onclick="V.cabinet.copyQuestLink()">🔗 Copier le lien</button>
-  </div>
-</div></div>
-
-<!-- Modal : choisir un patient pour le questionnaire en séance -->
-<div class="modal" id="modal-pick-patient">
-  <div class="modal-card" style="max-width:380px">
+<!-- MODAL : Patient -->
+<div class="modal" id="modal-patient">
+  <div class="modal-card">
     <div class="modal-header">
-      <h3 class="modal-title">📲 Questionnaire en séance</h3>
-      <button class="modal-close" onclick="V.ui.closeModal('modal-pick-patient')">×</button>
+      <h3 class="modal-title" id="modal-patient-title">Nouveau patient</h3>
+      <button class="modal-close" onclick="V.ui.closeModal('modal-patient')">×</button>
     </div>
     <div class="modal-body">
-      <label class="field-label">Choisir le patient</label>
-      <select class="field-input" id="pick-patient-select" size="6" style="height:auto;padding:8px"></select>
+      <input type="hidden" id="patient-id">
+      <div class="field-group"><label class="field-label">Prénom *</label><input class="field-input" id="patient-prenom" placeholder="Marie"></div>
+      <div class="field-group"><label class="field-label">Nom</label><input class="field-input" id="patient-nom" placeholder="Dupont"></div>
+      <div class="field-group"><label class="field-label">Email</label><input class="field-input" id="patient-email" type="email" placeholder="marie@exemple.fr"></div>
+      <div class="field-group"><label class="field-label">Téléphone</label><input class="field-input" id="patient-tel" placeholder="06 00 00 00 00"></div>
+      <div class="field-group"><label class="field-label">Notes</label><textarea class="field-input" id="patient-notes" rows="2" placeholder="Contexte, motif de consultation…"></textarea></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn--ghost" onclick="V.ui.closeModal('modal-pick-patient')">Annuler</button>
-      <button class="btn btn--gold" onclick="V.cabinet.launchSessionForSelected()">📲 Lancer le questionnaire</button>
+      <button class="btn btn--ghost" onclick="V.ui.closeModal('modal-patient')">Annuler</button>
+      <button class="btn btn--primary" onclick="V.views.patients.save()">Enregistrer</button>
     </div>
   </div>
 </div>
+
+<!-- MODAL : Import portrait -->
+<div class="modal" id="modal-import">
+  <div class="modal-card" style="max-width:520px">
+    <div class="modal-header">
+      <h3 class="modal-title">Importer le portrait</h3>
+      <button class="modal-close" onclick="V.ui.closeModal('modal-import')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="import-tabs">
+        <button class="import-tab active" onclick="V.ui.switchImportTab('email')">📧 Par email</button>
+        <button class="import-tab" onclick="V.ui.switchImportTab('manual')">✏️ Saisie manuelle</button>
+      </div>
+      <!-- Pane email -->
+      <div class="import-pane active" id="import-pane-email">
+        <p style="font-size:12.5px;color:var(--ink4);margin-bottom:12px;line-height:1.7">Entrez l'email utilisé lors du questionnaire pour récupérer automatiquement les scores.</p>
+        <div class="field-group"><label class="field-label">Email du patient</label><input class="field-input" id="import-email" type="email" placeholder="marie@exemple.fr"></div>
+        <button class="btn btn--gold btn--full" id="import-fetch-btn" onclick="V.portrait.fetchByEmail()">Récupérer les scores →</button>
+        <div id="import-fetch-msg" style="font-size:12px;margin-top:8px;display:none"></div>
+      </div>
+      <!-- Pane manual -->
+      <div class="import-pane" id="import-pane-manual">
+        <p style="font-size:12.5px;color:var(--ink4);margin-bottom:12px">Saisir les scores (0–100%) pour chaque masque.</p>
+        <div class="scores-grid" style="margin-bottom:12px">
+          <div class="field-group" style="margin:0"><label class="field-label" style="color:#B5312A">Rouge</label><input class="field-input" id="s-rouge" type="number" min="0" max="100" placeholder="0"></div>
+          <div class="field-group" style="margin:0"><label class="field-label" style="color:#C4581F">Orange</label><input class="field-input" id="s-orange" type="number" min="0" max="100" placeholder="0"></div>
+          <div class="field-group" style="margin:0"><label class="field-label" style="color:#B8930A">Jaune</label><input class="field-input" id="s-jaune" type="number" min="0" max="100" placeholder="0"></div>
+          <div class="field-group" style="margin:0"><label class="field-label" style="color:#2D7A4F">Vert</label><input class="field-input" id="s-vert" type="number" min="0" max="100" placeholder="0"></div>
+          <div class="field-group" style="margin:0"><label class="field-label" style="color:#1D5F8A">Bleu</label><input class="field-input" id="s-bleu" type="number" min="0" max="100" placeholder="0"></div>
+          <div class="field-group" style="margin:0"><label class="field-label" style="color:#5C3280">Indigo</label><input class="field-input" id="s-indigo" type="number" min="0" max="100" placeholder="0"></div>
+          <div class="field-group" style="margin:0"><label class="field-label" style="color:#7A3594">Violet</label><input class="field-input" id="s-violet" type="number" min="0" max="100" placeholder="0"></div>
+        </div>
+        <div class="field-group"><label class="field-label">SPA %</label><input class="field-input" id="s-spa" type="number" min="0" max="100" placeholder="0"></div>
+        <button class="btn btn--primary btn--full" onclick="V.portrait.saveManual()">Enregistrer le portrait</button>
+      </div>
+      <div id="import-scores-preview" style="display:none;margin-top:16px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL : Séance SPA -->
+<div class="modal" id="modal-seance">
+  <div class="modal-card" style="max-width:420px">
+    <div class="modal-header">
+      <h3 class="modal-title">Ajouter une séance</h3>
+      <button class="modal-close" onclick="V.ui.closeModal('modal-seance')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group"><label class="field-label">Date</label><input class="field-input" id="seance-date" type="date"></div>
+      <div class="field-group"><label class="field-label">SPA mesuré (%)</label><input class="field-input" id="seance-spa" type="number" min="0" max="100" placeholder="ex: 42"></div>
+      <div class="field-group"><label class="field-label">Notes de séance</label><textarea class="field-input" id="seance-notes" rows="3" placeholder="Observations, points clés…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn--ghost" onclick="V.ui.closeModal('modal-seance')">Annuler</button>
+      <button class="btn btn--primary" onclick="V.views.patient.addSeance()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const ADMIN_PWD = 'VALEUR-ADMIN-2025';
+const API = 'https://valeur-backend-api.vercel.app/api';
+const MASKS = ['rouge','orange','jaune','vert','bleu','indigo','violet'];
+const MASK_COLORS = {rouge:'#B5312A',orange:'#C4581F',jaune:'#B8930A',vert:'#2D7A4F',bleu:'#1D5F8A',indigo:'#5C3280',violet:'#7A3594'};
+const MASK_NAMES  = {rouge:'Masque Rouge',orange:'Masque Orange',jaune:'Masque Jaune',vert:'Masque Vert',bleu:'Masque Bleu',indigo:'Masque Indigo',violet:'Masque Violet'};
+const MASK_PEURS  = {rouge:'Peur de la maladie / disparition',orange:'Peur de souffrir',jaune:'Peur de l\'incertitude',vert:'Peur du rejet',bleu:'Peur du chaos',indigo:'Peur de l\'échec',violet:'Peur de se perdre'};
+const LIVRETS = [
+  {masque:'rouge',file:'livret_rouge.html',label:'Masque Rouge',color:'#B5312A'},
+  {masque:'orange',file:'livret_orange.html',label:'Masque Orange',color:'#C4581F'},
+  {masque:'jaune',file:'livret_jaune.html',label:'Masque Jaune',color:'#B8930A'},
+  {masque:'vert',file:'livret_vert.html',label:'Masque Vert',color:'#2D7A4F'},
+  {masque:'bleu',file:'livret_bleu.html',label:'Masque Bleu',color:'#1D5F8A'},
+  {masque:'indigo',file:'livret_indigo.html',label:'Masque Indigo',color:'#5C3280'},
+  {masque:'violet',file:'livret_violet.html',label:'Masque Violet',color:'#7A3594'},
+  {masque:'dyades',file:'livret_dyades_triades.html',label:'Dyades & Triades',color:'#A8873A'},
+  {masque:'psychoed',file:'livret_psychoeducation.html',label:'Psychoéducation',color:'#8C8278'},
+];
+const VALEUR_STEPS = [
+  {l:'V',name:'VOIR',title:'Nommer le déclencheur',
+   desc:'Développer la conscience observatrice — identifier le moment précis où le masque prend le contrôle avant qu\'il ne soit trop tard.',
+   defi:'Cette semaine : noter 1 déclencheur par jour (heure, contexte, intensité /10). Sans jugement — juste observer et nommer.'},
+  {l:'A',name:'ACCUEILLIR',title:'Recevoir la sensation',
+   desc:'Le protocole ACCUEILLIR en 4 temps : Nommer · Localiser · Respirer · Laisser passer. Transformer le rapport à la montée de peur.',
+   defi:'Lors d\'une montée de peur cette semaine, pratiquer le protocole ACCUEILLIR. Décrire par écrit ce qui s\'est passé en 5 phrases.'},
+  {l:'L',name:'LOCALISER',title:'Body Scan V.A.L.E.U.R©',
+   desc:'Cartographier les zones corporelles de vigilance. La Thermographie du Masque. Réapprendre à habiter le corps comme lieu de vie.',
+   defi:'Body Scan de 5 minutes chaque matin. Noter 3 zones de tension et leur évolution sur la semaine dans un carnet.'},
+  {l:'E',name:'EXPLORER',title:'La Météo émotionnelle',
+   desc:'Explorer le conflit intérieur entre la part protectrice et la part qui veut vivre librement. Donner un langage précis aux émotions.',
+   defi:'La Météo émotionnelle : chaque soir, 1 phrase par émotion ressentie. Identifier l\'émotion exacte cachée sous la peur dominante.'},
+  {l:'U',name:'UNIFIER',title:'Le Cycle Invisible',
+   desc:'Nommer la boucle comportementale répétée et identifier la sortie possible. Trouver la voie qui honore le besoin profond sans le masque.',
+   defi:'Identifier 1 cycle répété cette semaine : déclencheur → réaction automatique → conséquence → alternative choisie possible.'},
+  {l:'R',name:'RENFORCER',title:'La Lettre au Masque',
+   desc:'Ancrer la transformation. Créer des comportements nouveaux nés de la confiance plutôt que de la peur. Marquer la transition.',
+   defi:'Écrire la Lettre au Masque : ce que vous avez compris, ce que vous choisissez maintenant, ce que vous libérez définitivement.'}
+];
+
+// ── Préambules masques — portraits condensés pour le protocole ──────────
+const MASK_PREAMBULE = {
+  rouge: {
+    peur: 'Peur de la maladie et de la disparition',
+    origine: `À un moment de votre histoire, votre corps a signalé un danger. Votre système nerveux a alors pris une décision logique : surveiller en permanence, ne jamais relâcher l'attention. Ce n'était pas une réaction excessive. C'était la seule réponse possible face à quelque chose qui vous dépassait.`,
+    masque: `Ce masque monte la garde vingt-quatre heures sur vingt-quatre. Il scrute chaque sensation, chaque signal, chaque variation. Vous êtes devenu·e votre propre veilleur de nuit — même quand tout va bien, même après un bilan médical parfait.`,
+    nature: `Sous ce masque vit quelqu'un qui possède une capacité extraordinaire de connexion à son corps, une finesse sensorielle rare. Quand ce masque s'assouplira, votre corps redeviendra un allié — pas un ennemi à surveiller.`
+  },
+  orange: {
+    peur: 'Peur de souffrir et d\'être submergé·e',
+    origine: `À un moment, la vie émotionnelle est devenue trop intense, trop imprévisible. Votre système a appris à couper l'accès direct aux émotions pour ne pas être submergé·e. Ce n'était pas un choix conscient — c'était une protection construite dans l'urgence.`,
+    masque: `Ce masque crée une distance entre vous et vos émotions. Vous les observez de loin, comme derrière une vitre. L'énergie qui devrait circuler librement se fige — et finit par s'exprimer autrement : irritabilité soudaine, sensations physiques inexpliquées, sentiment diffus de vide.`,
+    nature: `Sous ce masque vit une intelligence émotionnelle d'une richesse exceptionnelle. Quand ce masque s'assouplira, vous naviguerez dans vos émotions avec grâce — elles deviendront une source d'information, pas une menace.`
+  },
+  jaune: {
+    peur: 'Peur de l\'incertitude et de l\'imprévu',
+    origine: `À un moment, l'imprévu a été vécu comme une menace réelle. Votre intelligence a alors développé une stratégie redoutable : anticiper tout, prévoir tous les scénarios, ne jamais laisser le futur vous surprendre. Une réponse brillante — qui finit par épuiser.`,
+    masque: `Ce masque construit des plans de secours pour les plans de secours. Il calcule, anticipe, prépare. Chaque situation inconnue déclenche un processus d'analyse intense. Le problème : le futur ne peut jamais être entièrement maîtrisé — et la certitude que vous cherchez n'arrive jamais vraiment.`,
+    nature: `Sous ce masque vit une capacité d'analyse et de vision stratégique exceptionnelle. Quand ce masque s'assouplira, cette intelligence deviendra une force d'action confiante — avancer sans garanties, porté·e par votre propre élan.`
+  },
+  vert: {
+    peur: 'Peur du rejet et de la perte d\'amour',
+    origine: `À un moment, vous avez appris que l'amour pouvait être conditionnel. Qu'il fallait mériter la présence des autres. Votre système a alors développé une stratégie de survie relationnelle : s'adapter, donner, anticiper les besoins, ne jamais décevoir.`,
+    masque: `Ce masque surveille en permanence le lien avec les autres. Il ajuste, cède, s'efface. Il préfère taire ses propres besoins plutôt que de risquer le conflit ou le retrait affectif. L'amour est vécu comme quelque chose à gagner — jamais acquis.`,
+    nature: `Sous ce masque vit une capacité d'amour et d'empathie d'une profondeur rare. Quand ce masque s'assouplira, cet amour se donnera librement, sans s'épuiser — ancré en vous, non dépendant du regard de l'autre.`
+  },
+  bleu: {
+    peur: 'Peur du chaos et de la perte de contrôle',
+    origine: `À un moment, le monde a semblé imprévisible et peu fiable. Votre système a développé une réponse adaptée : prendre les commandes, maîtriser l'environnement, structurer ce qui peut l'être. Une stratégie efficace — qui finit par peser sur tout.`,
+    masque: `Ce masque gère, organise, dirige. Il a du mal à déléguer — parce que déléguer, c'est accepter que les choses soient faites autrement. Il surveille les détails, corrige, reprend. La maîtrise est constante, même dans les espaces qui devraient être libres.`,
+    nature: `Sous ce masque vit une autorité naturelle et une capacité de structuration d'une réelle puissance. Quand ce masque s'assouplira, cette force deviendra une parole juste et inspirante — un leadership qui élève au lieu de contrôler.`
+  },
+  indigo: {
+    peur: 'Peur de l\'échec et du regard des autres',
+    origine: `À un moment, une évaluation extérieure a eu un poids décisif. Votre système a appris qu'être regardé·e comportait un risque — celui de ne pas être à la hauteur. La réponse : viser l'excellence, ne rien laisser au hasard, ne jamais montrer ce qui pourrait être jugé.`,
+    masque: `Ce masque perfectionne, relit, reporte. Il compare en permanence — à un idéal intérieur, à ce qu'il perçoit chez les autres. La procrastination n'est pas de la paresse : c'est la peur de soumettre quelque chose d'imparfait au jugement du monde.`,
+    nature: `Sous ce masque vit une vision claire et une intuition affûtée d'une rare précision. Quand ce masque s'assouplira, votre intelligence deviendra un outil de discernement — la peur de l'erreur se transformera en sagesse profonde.`
+  },
+  violet: {
+    peur: 'Peur de se perdre et de perdre le sens',
+    origine: `À un moment, une rupture de sens a été vécue comme une menace existentielle. Qui suis-je vraiment ? Où est ma place ? Votre système a développé une quête permanente d'identité et de signification — pour ne jamais se retrouver face au vide.`,
+    masque: `Ce masque cherche, questionne, explore — sans jamais s'arrêter longtemps. Il accumule les expériences, les lectures, les chemins. Il a peur que choisir une voie signifie fermer toutes les autres. L'identité reste fluide, parfois insaisissable, même pour vous.`,
+    nature: `Sous ce masque vit une capacité de connexion au sens et à la profondeur d'existence exceptionnelle. Quand ce masque s'assouplira, vous n'aurez plus besoin de chercher qui vous êtes — vous l'incarnerez, pleinement, dans chaque choix.`
+  }
+};
+
+// ── DATA ──────────────────────────────────────────────────────────────
+const V = {
+
+  auth: {
+    login() {
+      const v = document.getElementById('auth-input').value.trim();
+      if(v === ADMIN_PWD) {
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        V.router.go('dashboard');
+      } else {
+        document.getElementById('auth-err').style.display = 'block';
+        document.getElementById('auth-input').value = '';
+      }
+    },
+    logout() {
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('auth-screen').style.display = 'flex';
+      document.getElementById('auth-input').value = '';
+    }
+  },
+
+  data: {
+    getPatients() {
+      try { return JSON.parse(localStorage.getItem('cab_patients')||'[]'); } catch(e){ return []; }
+    },
+    savePatients(list) {
+      localStorage.setItem('cab_patients', JSON.stringify(list));
+    },
+    getPatient(id) {
+      try { return JSON.parse(localStorage.getItem('cab_patient_'+id)||'null'); } catch(e){ return null; }
+    },
+    savePatient(id, data) {
+      localStorage.setItem('cab_patient_'+id, JSON.stringify(data));
+    },
+    deletePatient(id) {
+      const list = V.data.getPatients().filter(p => p.id !== id);
+      V.data.savePatients(list);
+      localStorage.removeItem('cab_patient_'+id);
+    },
+    newPatientData() {
+      return {
+        portrait: null,
+        protocole: { etape_courante: 1, etapes: {} },
+        seances: [],
+        spa_historique: []
+      };
+    },
+    exportJSON() {
+      const patients = V.data.getPatients();
+      const full = { patients, details: {} };
+      patients.forEach(p => { full.details[p.id] = V.data.getPatient(p.id); });
+      const blob = new Blob([JSON.stringify(full, null, 2)], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'valeur_cabinet_' + new Date().toISOString().slice(0,10) + '.json';
+      a.click();
+      V.ui.toast('✓ Sauvegarde téléchargée');
+    },
+    importJSON(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const full = JSON.parse(ev.target.result);
+          if(!full.patients) throw new Error();
+          V.data.savePatients(full.patients);
+          Object.keys(full.details||{}).forEach(id => V.data.savePatient(id, full.details[id]));
+          V.ui.toast('✓ Données restaurées');
+          V.router.go('patients');
+        } catch(err) { V.ui.toast('Fichier invalide', true); }
+      };
+      reader.readAsText(file);
+    }
+  },
+
+  router: {
+    _current: null,
+    _patientId: null,
+    go(view, patientId) {
+      this._current = view;
+      this._patientId = patientId || null;
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const nav = document.getElementById('nav-'+view);
+      if(nav) nav.classList.add('active');
+      const bc = document.getElementById('breadcrumb');
+      if(view === 'dashboard') {
+        bc.innerHTML = '<span class="bc-active">Tableau de bord</span>';
+        V.views.dashboard.render();
+      } else if(view === 'patients') {
+        bc.innerHTML = '<span class="bc-active">Mes patients</span>';
+        V.views.patients.render();
+        document.getElementById('nav-patients').classList.add('active');
+      } else if(view === 'patient' && patientId) {
+        const list = V.data.getPatients();
+        const p = list.find(x => x.id === patientId);
+        bc.innerHTML = `<span class="bc-link" onclick="V.router.go('patients')">Mes patients</span><span class="bc-sep"> › </span><span class="bc-active">${p ? p.prenom : '…'}</span>`;
+        V.views.patient.render(patientId);
+        document.getElementById('nav-patients').classList.add('active');
+      }
+    }
+  },
+
+  ui: {
+    toast(msg, err) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast' + (err ? ' err' : '') + ' show';
+      setTimeout(() => t.className = 'toast', 2400);
+    },
+    openModal(id) { document.getElementById(id).classList.add('open'); },
+    closeModal(id) { document.getElementById(id).classList.remove('open'); },
+    switchImportTab(tab) {
+      document.querySelectorAll('.import-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.import-pane').forEach(p => p.classList.remove('active'));
+      document.querySelector(`.import-tab[onclick*="${tab}"]`).classList.add('active');
+      document.getElementById('import-pane-'+tab).classList.add('active');
+    }
+  },
+
+  // ── VIEWS ────────────────────────────────────────────────────────────
+  views: {
+
+    dashboard: {
+      render() {
+        const patients = V.data.getPatients();
+        const active = patients.filter(p => {
+          const d = V.data.getPatient(p.id);
+          return d && d.portrait;
+        });
+        const avecPortrait = patients.filter(p => V.data.getPatient(p.id)?.portrait);
+        // SPA moyen
+        let spaSum = 0, spaCount = 0;
+        patients.forEach(p => {
+          const d = V.data.getPatient(p.id);
+          if(d?.portrait?.spa) { spaSum += d.portrait.spa; spaCount++; }
+        });
+        const spaMoy = spaCount ? Math.round(spaSum/spaCount) : '—';
+        // Recents
+        const recents = [...patients].slice(-4).reverse();
+        document.getElementById('app-content').innerHTML = `
+          <div class="view-wrap">
+            <div class="view-header">
+              <h1 class="view-title">Tableau de bord</h1>
+              <button class="btn btn--gold" onclick="V.views.patients.openModal(null)">＋ Nouveau patient</button>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-card"><div class="stat-value">${patients.length}</div><div class="stat-label">Patients</div></div>
+              <div class="stat-card"><div class="stat-value">${avecPortrait.length}</div><div class="stat-label">Portraits importés</div></div>
+              <div class="stat-card"><div class="stat-value">${spaMoy}${spaCount?'%':''}</div><div class="stat-label">SPA moyen</div></div>
+            </div>
+            <div class="card">
+              <div class="section-header"><span class="section-title">Patients récents</span></div>
+              <div class="recent-list">
+                ${recents.length ? recents.map(p => V.views.patients._rowHTML(p)).join('') : '<p style="font-size:13px;color:var(--ink4)">Aucun patient encore.</p>'}
+              </div>
+            </div>
+          </div>`;
+      }
+    },
+
+    patients: {
+      render() {
+        const patients = V.data.getPatients();
+        document.getElementById('app-content').innerHTML = `
+          <div class="view-wrap">
+            <div class="view-header">
+              <h1 class="view-title">Mes patients <span style="font-family:'DM Sans';font-size:16px;color:var(--ink4)">(${patients.length})</span></h1>
+              <button class="btn btn--gold" onclick="V.views.patients.openModal(null)">＋ Patient</button>
+            </div>
+            <div class="patient-list">
+              ${patients.length ? patients.map(p => V.views.patients._rowHTML(p)).join('') : `<div class="card" style="text-align:center;padding:40px"><p style="font-size:14px;color:var(--ink4);margin-bottom:16px">Aucun patient encore.</p><button class="btn btn--gold" onclick="V.views.patients.openModal(null)">Ajouter le premier patient</button></div>`}
+            </div>
+          </div>`;
+      },
+      _rowHTML(p) {
+        const d = V.data.getPatient(p.id);
+        const masque = d?.portrait?.masque;
+        const col = masque ? MASK_COLORS[masque] : 'var(--ink4)';
+        const initiale = (p.prenom||'?')[0].toUpperCase();
+        const config = d?.portrait?.config || '';
+        const etape = d?.protocole?.etape_courante || 1;
+        return `<div class="patient-row" onclick="V.router.go('patient','${p.id}')">
+          <div class="patient-avatar" style="background:${col}">${initiale}</div>
+          <div>
+            <div class="patient-name">${p.prenom} ${p.nom||''}</div>
+            <div class="patient-meta">${masque ? MASK_NAMES[masque] + (config && config!=='mono' ? ' · '+config : '') + ' · Étape '+etape+'/6' : 'Portrait non importé'}</div>
+          </div>
+          <div class="patient-right">
+            ${masque ? `<div class="masque-dot" style="background:${col}"></div>` : ''}
+            ${d?.portrait?.spa !== undefined ? `<span class="badge badge--neutral">SPA ${d.portrait.spa}%</span>` : ''}
+          </div>
+        </div>`;
+      },
+      openModal(id) {
+        document.getElementById('modal-patient-title').textContent = id ? 'Modifier le patient' : 'Nouveau patient';
+        document.getElementById('patient-id').value = id || '';
+        if(id) {
+          const list = V.data.getPatients();
+          const p = list.find(x => x.id === id);
+          if(p) {
+            document.getElementById('patient-prenom').value = p.prenom||'';
+            document.getElementById('patient-nom').value = p.nom||'';
+            document.getElementById('patient-email').value = p.email||'';
+            document.getElementById('patient-tel').value = p.tel||'';
+            document.getElementById('patient-notes').value = p.notes||'';
+          }
+        } else {
+          ['patient-prenom','patient-nom','patient-email','patient-tel','patient-notes'].forEach(f => document.getElementById(f).value='');
+        }
+        V.ui.openModal('modal-patient');
+      },
+      save() {
+        const prenom = document.getElementById('patient-prenom').value.trim();
+        if(!prenom) { V.ui.toast('Prénom requis', true); return; }
+        const id = document.getElementById('patient-id').value || Date.now().toString(36);
+        const list = V.data.getPatients();
+        const idx = list.findIndex(p => p.id === id);
+        const obj = { id, prenom,
+          nom: document.getElementById('patient-nom').value.trim(),
+          email: document.getElementById('patient-email').value.trim(),
+          tel: document.getElementById('patient-tel').value.trim(),
+          notes: document.getElementById('patient-notes').value.trim(),
+          createdAt: idx >= 0 ? list[idx].createdAt : new Date().toISOString()
+        };
+        if(idx >= 0) list[idx] = obj; else list.push(obj);
+        V.data.savePatients(list);
+        if(idx < 0) V.data.savePatient(id, V.data.newPatientData());
+        V.ui.closeModal('modal-patient');
+        V.ui.toast('✓ Patient enregistré');
+        V.router.go('patients');
+      }
+    },
+
+    patient: {
+      _id: null,
+      _tab: 'portrait',
+      render(id) {
+        this._id = id;
+        const list = V.data.getPatients();
+        const p = list.find(x => x.id === id);
+        if(!p) { V.router.go('patients'); return; }
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        const masque = d.portrait?.masque;
+        const col = masque ? MASK_COLORS[masque] : 'var(--gold)';
+
+        document.getElementById('app-content').innerHTML = `
+          <div class="patient-page" style="max-width:900px">
+            <div class="patient-bandeau">
+              <div class="pb-left">
+                <div class="pb-name">${p.prenom} ${p.nom||''}</div>
+                <div class="pb-masque-row">
+                  ${masque ? `<div class="masque-dot" style="background:${col}"></div><span style="font-size:12px;font-weight:600;color:${col}">${MASK_NAMES[masque]}</span>` : '<span style="font-size:12px;color:var(--ink4)">Portrait non importé</span>'}
+                  ${d.portrait?.config && d.portrait.config!=='mono' ? `<span class="badge badge--active" style="margin-left:4px">${d.portrait.config}</span>` : ''}
+                  ${d.portrait?.spa !== undefined ? `<span class="badge badge--neutral">SPA ${d.portrait.spa}%</span>` : ''}
+                </div>
+              </div>
+              <div class="pb-actions">
+                <button class="btn btn--ghost btn--sm" onclick="V.views.patients.openModal('${id}')">✏️ Modifier</button>
+                <button class="btn btn--gold btn--sm" onclick="V.portrait.openImport('${id}')">📊 ${masque ? 'Mettre à jour' : 'Importer portrait'}</button>
+                <button class="btn btn--danger btn--sm" onclick="V.views.patient.confirmDelete('${id}')">🗑</button>
+              </div>
+            </div>
+            <div class="tabs">
+              <button class="tab ${this._tab==='portrait'?'active':''}" onclick="V.views.patient.switchTab('portrait')">Portrait</button>
+              <button class="tab ${this._tab==='protocole'?'active':''}" onclick="V.views.patient.switchTab('protocole')">Protocole V→R</button>
+              <button class="tab ${this._tab==='suivi'?'active':''}" onclick="V.views.patient.switchTab('suivi')">Suivi SPA</button>
+              <button class="tab ${this._tab==='livrets'?'active':''}" onclick="V.views.patient.switchTab('livrets')">Livrets</button>
+            </div>
+            <div id="tab-body"></div>
+          </div>`;
+        this.renderTab(id, this._tab);
+      },
+      switchTab(tab) {
+        this._tab = tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        this.renderTab(this._id, tab);
+      },
+      renderTab(id, tab) {
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        const el = document.getElementById('tab-body');
+        if(tab === 'portrait') el.innerHTML = V.views.patient._tabPortrait(d);
+        else if(tab === 'protocole') el.innerHTML = V.views.patient._tabProtocole(d, id);
+        else if(tab === 'suivi') el.innerHTML = V.views.patient._tabSuivi(d);
+        else if(tab === 'livrets') el.innerHTML = V.views.patient._tabLivrets(d);
+        // Animate bars
+        if(tab === 'portrait' && d.portrait) {
+          setTimeout(() => {
+            MASKS.forEach(m => {
+              const el = document.getElementById('bar-'+m);
+              if(el) el.style.width = (d.portrait.scores[m]||0) + '%';
+            });
+          }, 50);
+        }
+      },
+      _tabPortrait(d) {
+        if(!d.portrait) return `<div class="card" style="text-align:center;padding:36px"><p style="font-size:14px;color:var(--ink4);margin-bottom:16px">Aucun portrait importé.</p><p style="font-size:12px;color:var(--ink5)">Cliquez sur "Importer portrait" pour commencer.</p></div>`;
+        const sc = d.portrait.scores || {};
+        const masque = d.portrait.masque;
+        const col = MASK_COLORS[masque]||'var(--gold)';
+        const sorted = [...MASKS].sort((a,b)=>(sc[b]||0)-(sc[a]||0));
+        // Config
+        const elevated = MASKS.filter(m => (sc[m]||0) >= 65);
+        let configLabel = 'Dominance unique';
+        if(elevated.length >= 3) configLabel = 'Triade : '+elevated.slice(0,3).map(m=>MASK_NAMES[m]).join(' + ');
+        else if(elevated.length === 2) configLabel = 'Dyade : '+elevated.map(m=>MASK_NAMES[m]).join(' + ');
+        const spaVal = d.portrait.spa || 0;
+        const spaCirc = Math.round(spaVal / 100 * 251);
+        return `
+          <div style="display:grid;grid-template-columns:1fr 220px;gap:16px">
+            <div class="card">
+              <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Scores par masque</div>
+              <div class="scores-grid" style="grid-template-columns:1fr">
+                ${sorted.map(m => `
+                  <div class="score-row">
+                    <div class="score-label" style="color:${MASK_COLORS[m]}">${m.charAt(0).toUpperCase()+m.slice(1)}</div>
+                    <div class="score-track"><div class="score-fill" id="bar-${m}" style="width:0;background:${MASK_COLORS[m]}"></div></div>
+                    <div class="score-value">${sc[m]||0}%</div>
+                  </div>`).join('')}
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="card" style="text-align:center">
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:10px">Score de Présence Authentique</div>
+                <svg width="110" height="110" viewBox="0 0 110 110">
+                  <circle cx="55" cy="55" r="40" fill="none" stroke="var(--bg2)" stroke-width="8"/>
+                  <circle cx="55" cy="55" r="40" fill="none" stroke="${col}" stroke-width="8"
+                    stroke-dasharray="${spaCirc} 251" stroke-linecap="round"
+                    transform="rotate(-90 55 55)" stroke-dashoffset="0"/>
+                  <text x="55" y="52" text-anchor="middle" font-family="Cormorant Garamond" font-size="22" fill="${col}" font-weight="300">${spaVal}</text>
+                  <text x="55" y="65" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#8C8278">%</text>
+                </svg>
+                <div style="font-size:11px;font-weight:600;color:${col};margin-top:4px">SPA</div>
+              </div>
+              <div class="card">
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px">Configuration</div>
+                <div style="font-size:12px;font-weight:600;color:${col};line-height:1.5">${configLabel}</div>
+                <div style="font-size:11px;color:var(--ink4);margin-top:6px">${MASK_PEURS[masque]||''}</div>
+              </div>
+            </div>
+          </div>`;
+      },
+      _tabProtocole(d, id) {
+        const etapeCourante = d.protocole?.etape_courante || 1;
+        const etapes = d.protocole?.etapes || {};
+        const masque = d.portrait?.masque;
+        const col = masque ? (MASK_COLORS[masque]||'var(--gold)') : 'var(--gold)';
+        const pre = masque && MASK_PREAMBULE[masque];
+        let html = '';
+
+        // ── Préambule masque ──
+        if(pre) {
+          html += `<div class="card" style="margin-bottom:18px;border-left:3px solid ${col}">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <div style="width:10px;height:10px;border-radius:50%;background:${col};flex-shrink:0"></div>
+              <span style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col}">${MASK_NAMES[masque]||masque} — Portrait de travail</span>
+            </div>
+            <div style="margin-bottom:10px">
+              <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Peur centrale</div>
+              <div style="font-size:13px;font-weight:500;color:${col};font-style:italic">${pre.peur}</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+              <div style="background:var(--bg);border-radius:var(--r-sm);padding:12px">
+                <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:6px">Origine</div>
+                <div style="font-size:12px;color:var(--ink3);line-height:1.75">${pre.origine}</div>
+              </div>
+              <div style="background:var(--bg);border-radius:var(--r-sm);padding:12px">
+                <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:6px">Ce que fait le masque</div>
+                <div style="font-size:12px;color:var(--ink3);line-height:1.75">${pre.masque}</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;background:rgba(${col.includes('#')?'168,135,58':'168,135,58'},.06);border-radius:var(--r-sm);padding:12px;border:1px solid rgba(168,135,58,.15)">
+              <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Nature authentique sous-jacente</div>
+              <div style="font-size:12px;color:var(--ink3);line-height:1.75;font-style:italic">${pre.nature}</div>
+            </div>
+          </div>`;
+        }
+
+        html += `<div class="protocole-timeline">`;
+        VALEUR_STEPS.forEach((s, i) => {
+          const num = i + 1;
+          const done = etapes[num]?.validee;
+          const isActive = num === etapeCourante;
+          const locked = num > etapeCourante;
+          const circBg = done ? col : isActive ? '#fff' : 'var(--bg2)';
+          const circBorder = done || isActive ? col : 'var(--line)';
+          const circColor = done ? '#fff' : isActive ? col : 'var(--ink4)';
+          const noteVal = etapes[num]?.note_seance || '';
+          const defiNote = etapes[num]?.note_defi || '';
+          const defiFait = etapes[num]?.defi_fait || false;
+          html += `
+            <div class="step-item">
+              <div class="step-connector">
+                <div class="step-circle" style="background:${circBg};border-color:${circBorder};color:${circColor};cursor:${locked?'default':'pointer'}" onclick="${!locked?`V.views.patient.toggleStep(${num})`:''}">
+                  ${done ? '✓' : s.l}
+                </div>
+                ${num < 6 ? '<div class="step-line"></div>' : ''}
+              </div>
+              <div class="step-body">
+                <div class="step-header" onclick="${!locked?`V.views.patient.toggleStep(${num})`:''}">
+                  <span class="step-letter" style="color:${locked?'var(--ink5)':col}">${s.l} · ${s.name}</span>
+                  <span class="step-name" style="color:${locked?'var(--ink5)':'var(--ink)'}">${s.title}</span>
+                  ${done ? '<span class="badge badge--done" style="margin-left:auto">✓ Validée</span>' : isActive ? '<span class="badge badge--active" style="margin-left:auto">En cours</span>' : locked ? '<span class="badge badge--neutral" style="margin-left:auto">Verrouillée</span>' : ''}
+                </div>
+                <div class="step-detail${isActive ? ' open' : ''}" id="step-detail-${num}">
+                  <div class="step-desc">${s.desc}</div>
+                  <div class="step-notes-zone">
+                    <div class="field-label" style="margin-bottom:6px">Notes de séance</div>
+                    <textarea class="field-input" style="min-height:60px" placeholder="Observations, ce qui a émergé…" onchange="V.views.patient.saveStepNote(${num},'note_seance',this.value,'${id}')">${noteVal}</textarea>
+                  </div>
+                  <div class="step-defi-zone">
+                    <div class="defi-label">Défi inter-séance</div>
+                    <div class="defi-text">${s.defi}</div>
+                    <div class="defi-check-row">
+                      <input type="checkbox" id="defi-check-${num}" ${defiFait?'checked':''} onchange="V.views.patient.saveStepNote(${num},'defi_fait',this.checked,'${id}')">
+                      <label class="defi-check-label" for="defi-check-${num}">Défi réalisé cette semaine</label>
+                    </div>
+                    <div class="field-label" style="margin-bottom:6px">Retour du patient sur le défi</div>
+                    <textarea class="field-input" style="min-height:52px" placeholder="Ce que le patient a vécu, découvert…" onchange="V.views.patient.saveStepNote(${num},'note_defi',this.value,'${id}')">${defiNote}</textarea>
+                    ${!done ? `<button class="btn btn--gold btn--full step-validate-btn" onclick="V.views.patient.validateStep(${num},'${id}')">✓ Valider l'étape ${s.l} → passer à ${VALEUR_STEPS[i+1]?VALEUR_STEPS[i+1].l:'la fin'}</button>` : `<button class="btn btn--ghost btn--full step-validate-btn" onclick="V.views.patient.unvalidateStep(${num},'${id}')">↩ Rouvrir cette étape</button>`}
+                  </div>
+                </div>
+              </div>
+            </div>`;
+        });
+        html += '</div>';
+        return html;
+      },
+      _tabSuivi(d) {
+        const hist = d.spa_historique || [];
+        const lastSpa = hist.length ? hist[hist.length-1].valeur : (d.portrait?.spa || null);
+        return `
+          <div class="card" style="margin-bottom:14px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Ajouter une mesure SPA</div>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+              <div class="field-group" style="margin:0;flex:1;min-width:120px"><label class="field-label">Date</label><input class="field-input" id="spa-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+              <div class="field-group" style="margin:0;width:100px"><label class="field-label">SPA %</label><input class="field-input" id="spa-val" type="number" min="0" max="100" placeholder="0–100"></div>
+              <div class="field-group" style="margin:0;flex:2;min-width:180px"><label class="field-label">Notes</label><input class="field-input" id="spa-notes" placeholder="Contexte séance…"></div>
+              <button class="btn btn--gold" onclick="V.views.patient.addSpaMesure()">＋ Ajouter</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-header"><span class="section-title">Historique SPA${lastSpa!==null?' — Dernière valeur : '+lastSpa+'%':''}</span></div>
+            <div class="spa-history" id="spa-history-list">
+              ${hist.length ? [...hist].reverse().map(e => `
+                <div class="spa-entry">
+                  <div class="spa-entry-date">${e.date}</div>
+                  <div class="spa-entry-bar"><div class="spa-entry-fill" style="width:${e.valeur}%"></div></div>
+                  <div class="spa-entry-val">${e.valeur}%</div>
+                  <div style="font-size:11px;color:var(--ink4);flex:1;margin-left:10px">${e.notes||''}</div>
+                </div>`).join('') : '<p style="font-size:12.5px;color:var(--ink4)">Aucune mesure enregistrée.</p>'}
+            </div>
+          </div>`;
+      },
+      _tabLivrets(d) {
+        const masque = d.portrait?.masque;
+        const elevated = masque && d.portrait?.scores ? MASKS.filter(m => (d.portrait.scores[m]||0) >= 65) : [];
+        const hasDyade = elevated.length >= 2;
+        return `
+          <div class="card" style="margin-bottom:14px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Livrets du patient</div>
+            <div class="livrets-grid">
+              ${masque ? `<a class="livret-card" href="${LIVRETS.find(l=>l.masque===masque)?.file||'#'}" target="_blank">
+                <div class="livret-card-stripe" style="background:${MASK_COLORS[masque]}"></div>
+                <div class="livret-card-name">⭐ ${MASK_NAMES[masque]}</div>
+                <div class="livret-card-sub">Masque dominant</div></a>` : ''}
+              ${hasDyade ? `<a class="livret-card" href="livret_dyades_triades.html" target="_blank">
+                <div class="livret-card-stripe" style="background:var(--gold)"></div>
+                <div class="livret-card-name">🔗 Dyades &amp; Triades</div>
+                <div class="livret-card-sub">${elevated.length >= 3 ? 'Triade' : 'Dyade'} active</div></a>` : ''}
+              <a class="livret-card" href="livret_psychoeducation.html" target="_blank">
+                <div class="livret-card-stripe" style="background:var(--ink4)"></div>
+                <div class="livret-card-name">🎓 Psychoéducation</div>
+                <div class="livret-card-sub">Introduction méthode</div></a>
+            </div>
+          </div>
+          <div class="card">
+            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Tous les livrets</div>
+            <div class="livrets-grid">
+              ${LIVRETS.filter(l=>l.masque!=='psychoed'&&l.masque!=='dyades').map(l=>`
+                <a class="livret-card" href="${l.file}" target="_blank">
+                  <div class="livret-card-stripe" style="background:${l.color}"></div>
+                  <div class="livret-card-name">${l.label}</div>
+                  ${masque===l.masque?'<div class="livret-card-sub" style="color:var(--gold)">★ Masque dominant</div>':''}
+                </a>`).join('')}
+            </div>
+          </div>`;
+      },
+      toggleStep(num) {
+        const el = document.getElementById('step-detail-'+num);
+        if(el) el.classList.toggle('open');
+      },
+      saveStepNote(num, key, val, id) {
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(!d.protocole.etapes[num]) d.protocole.etapes[num] = {};
+        d.protocole.etapes[num][key] = val;
+        V.data.savePatient(id, d);
+      },
+      validateStep(num, id) {
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(!d.protocole.etapes[num]) d.protocole.etapes[num] = {};
+        d.protocole.etapes[num].validee = true;
+        d.protocole.etapes[num].date_validation = new Date().toISOString().slice(0,10);
+        if(d.protocole.etape_courante === num && num < 6) d.protocole.etape_courante = num + 1;
+        V.data.savePatient(id, d);
+        V.ui.toast(`✓ Étape ${VALEUR_STEPS[num-1].l} validée`);
+        V.views.patient.renderTab(id, 'protocole');
+      },
+      unvalidateStep(num, id) {
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(d.protocole.etapes[num]) d.protocole.etapes[num].validee = false;
+        d.protocole.etape_courante = Math.min(d.protocole.etape_courante, num);
+        V.data.savePatient(id, d);
+        V.ui.toast('Étape rouverte');
+        V.views.patient.renderTab(id, 'protocole');
+      },
+      addSpaMesure() {
+        const date = document.getElementById('spa-date').value;
+        const val = parseInt(document.getElementById('spa-val').value);
+        const notes = document.getElementById('spa-notes').value.trim();
+        if(!date || isNaN(val) || val < 0 || val > 100) { V.ui.toast('Date et SPA requis (0–100)', true); return; }
+        const id = V.router._patientId;
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        d.spa_historique.push({ date, valeur: val, notes });
+        V.data.savePatient(id, d);
+        V.ui.toast('✓ Mesure SPA ajoutée');
+        V.views.patient.renderTab(id, 'suivi');
+      },
+      addSeance() {}, // alias kept
+      confirmDelete(id) {
+        if(!confirm('Supprimer ce patient ? Cette action est irréversible.')) return;
+        V.data.deletePatient(id);
+        V.ui.toast('Patient supprimé');
+        V.router.go('patients');
+      }
+    }
+  },
+
+  // ── PORTRAIT IMPORT ───────────────────────────────────────────────────
+  portrait: {
+    _pid: null,
+    openImport(patientId) {
+      this._pid = patientId;
+      document.getElementById('import-email').value = '';
+      document.getElementById('import-fetch-msg').style.display = 'none';
+      document.getElementById('import-scores-preview').style.display = 'none';
+      MASKS.forEach(m => document.getElementById('s-'+m).value = '');
+      document.getElementById('s-spa').value = '';
+      // Pré-remplir email si dispo
+      const list = V.data.getPatients();
+      const p = list.find(x => x.id === patientId);
+      if(p?.email) document.getElementById('import-email').value = p.email;
+      V.ui.openModal('modal-import');
+    },
+    async fetchByEmail() {
+      const email = document.getElementById('import-email').value.trim();
+      if(!email) { V.ui.toast('Email requis', true); return; }
+      const btn = document.getElementById('import-fetch-btn');
+      const msg = document.getElementById('import-fetch-msg');
+      btn.textContent = 'Récupération…'; btn.disabled = true;
+      msg.style.display = 'none';
+      try {
+        const r = await fetch(API + '/get-scores-by-email?email=' + encodeURIComponent(email), {
+          headers: { 'x-cabinet-secret': ADMIN_PWD }
+        });
+        const data = await r.json();
+        if(!data.found || !data.scores) throw new Error('Non trouvé');
+        btn.textContent = 'Récupérer les scores →'; btn.disabled = false;
+        this._applyScores(data.scores, data.prenom, data.spa, data.dominant);
+        msg.style.display = 'block';
+        msg.style.color = 'var(--vert,#2D7A4F)';
+        msg.textContent = '✓ Scores récupérés — portrait enregistré.';
+      } catch(e) {
+        btn.textContent = 'Récupérer les scores →'; btn.disabled = false;
+        msg.style.display = 'block';
+        msg.style.color = '#B5312A';
+        msg.textContent = 'Aucun résultat trouvé pour cet email.';
+      }
+    },
+    saveManual() {
+      const scores = {};
+      MASKS.forEach(m => { scores[m] = parseInt(document.getElementById('s-'+m).value)||0; });
+      const spa = parseInt(document.getElementById('s-spa').value)||0;
+      this._applyScores(scores, null, spa);
+    },
+    _applyScores(scores, prenom, spaOverride, dominantOverride) {
+      const sorted = [...MASKS].sort((a,b) => (scores[b]||0) - (scores[a]||0));
+      const masque = dominantOverride || sorted[0];
+      const elevated = MASKS.filter(m => (scores[m]||0) >= 65);
+      let config = 'mono';
+      if(elevated.length >= 3) config = 'Triade';
+      else if(elevated.length === 2) config = 'Dyade';
+      const spa = (spaOverride !== undefined && spaOverride !== null) ? spaOverride : Math.round(100 - (scores[masque]||0));
+      const id = this._pid;
+      const d = V.data.getPatient(id) || V.data.newPatientData();
+      d.portrait = { masque, scores, spa, config, masks: elevated, importedAt: new Date().toISOString() };
+      // Ajouter 1re mesure SPA dans l'historique si pas encore de données
+      if(!d.spa_historique.length) d.spa_historique.push({ date: new Date().toISOString().slice(0,10), valeur: spa, notes: 'Import initial' });
+      V.data.savePatient(id, d);
+      // Mettre à jour masque dans la liste patients
+      const list = V.data.getPatients();
+      const idx = list.findIndex(p => p.id === id);
+      if(idx >= 0) { list[idx].masque = masque; V.data.savePatients(list); }
+      V.ui.closeModal('modal-import');
+      V.ui.toast('✓ Portrait importé — ' + (config !== 'mono' ? config : 'Masque dominant : ' + MASK_NAMES[masque]));
+      V.router.go('patient', id);
+    }
+  }
+};
+
+// ── INIT ─────────────────────────────────────────────────────────────
+document.getElementById('auth-input').addEventListener('keydown', e => { if(e.key==='Enter') V.auth.login(); });
+
+// Auth auto si session active (optionnel : basé sur sessionStorage)
+if(sessionStorage.getItem('cab_auth') === ADMIN_PWD) {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  V.router.go('dashboard');
+}
+// Mémoriser auth dans sessionStorage
+const _origLogin = V.auth.login.bind(V.auth);
+V.auth.login = function() {
+  const v = document.getElementById('auth-input').value.trim();
+  if(v === ADMIN_PWD) sessionStorage.setItem('cab_auth', ADMIN_PWD);
+  _origLogin();
+};
+V.auth.logout = function() {
+  sessionStorage.removeItem('cab_auth');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('auth-input').value = '';
+};
+</script>
 </body>
 </html>
