@@ -800,7 +800,7 @@ const V = {
 
     patient: {
       _id: null,
-      _tab: 'seance',
+      _tab: 'parcours',
 
       render(id) {
         this._id = id;
@@ -811,8 +811,8 @@ const V = {
         const masque = d.portrait?.masque;
         const col = masque ? MASK_COLORS[masque] : 'var(--gold)';
         const etapeNum = d.protocole?.etape_courante || 1;
-        const etape = VALEUR_STEPS[etapeNum-1];
-        const spaActuel = d.portrait?.spa !== undefined ? d.portrait.spa : null;
+        const etape = VALEUR_STEPS[etapeNum - 1];
+        const spaLast = d.spa_historique?.length ? d.spa_historique[d.spa_historique.length-1].valeur : d.portrait?.spa;
 
         document.getElementById('app-content').innerHTML = `
           <div class="patient-page" style="max-width:900px">
@@ -820,24 +820,23 @@ const V = {
             <div class="patient-bandeau">
               <div class="pb-left">
                 <div class="pb-name">${p.prenom} ${p.nom||''}</div>
-                <div class="pb-masque-row" style="margin-top:4px;flex-wrap:wrap;gap:6px">
+                <div class="pb-masque-row" style="margin-top:4px;gap:6px;flex-wrap:wrap">
                   ${masque ? `<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:${col}"><span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block"></span>${MASK_NAMES[masque]}</span>` : '<span style="font-size:12px;color:var(--ink4)">Portrait non importé</span>'}
                   ${d.portrait?.config && d.portrait.config!=='mono' ? `<span class="badge badge--active">${d.portrait.config}</span>` : ''}
-                  ${spaActuel !== null ? `<span class="badge badge--neutral">SPA ${spaActuel}%</span>` : ''}
-                  ${masque ? `<span class="badge badge--neutral" style="color:var(--gold);border-color:rgba(168,135,58,.3)">${etape?.l||'?'} · ${etape?.name||''}</span>` : ''}
+                  ${spaLast !== undefined && spaLast !== null ? `<span class="badge badge--neutral">SPA ${spaLast}%</span>` : ''}
+                  ${masque && etape ? `<span class="badge badge--active" style="background:rgba(168,135,58,.1);color:var(--gold);border-color:rgba(168,135,58,.3)">${etape.l} · ${etape.name}</span>` : ''}
                 </div>
               </div>
               <div class="pb-actions">
                 <button class="btn btn--ghost btn--sm" onclick="V.views.patients.openModal('${id}')">✏️</button>
-                <button class="btn btn--gold btn--sm" onclick="V.portrait.openImport('${id}')">📊 ${masque ? 'MAJ portrait' : 'Importer portrait'}</button>
+                <button class="btn btn--gold btn--sm" onclick="V.portrait.openImport('${id}')">📊 ${masque ? 'MAJ' : 'Portrait'}</button>
                 <button class="btn btn--danger btn--sm" onclick="V.views.patient.confirmDelete('${id}')">🗑</button>
               </div>
             </div>
             <!-- TABS -->
             <div class="tabs">
-              <button class="tab ${this._tab==='seance'?'active':''}" onclick="V.views.patient.switchTab('seance','${id}')">🗓 Séance</button>
+              <button class="tab ${this._tab==='parcours'?'active':''}" onclick="V.views.patient.switchTab('parcours','${id}')">🗺 Parcours</button>
               <button class="tab ${this._tab==='portrait'?'active':''}" onclick="V.views.patient.switchTab('portrait','${id}')">Portrait</button>
-              <button class="tab ${this._tab==='protocole'?'active':''}" onclick="V.views.patient.switchTab('protocole','${id}')">Protocole</button>
               <button class="tab ${this._tab==='historique'?'active':''}" onclick="V.views.patient.switchTab('historique','${id}')">Historique</button>
               <button class="tab ${this._tab==='outils'?'active':''}" onclick="V.views.patient.switchTab('outils','${id}')">Outils</button>
             </div>
@@ -857,11 +856,10 @@ const V = {
         const d = V.data.getPatient(id) || V.data.newPatientData();
         const el = document.getElementById('tab-body');
         if(!el) return;
-        if(tab==='seance')     el.innerHTML = V.views.patient._tabSeance(d, id);
-        else if(tab==='portrait')   { el.innerHTML = V.views.patient._tabPortrait(d); V.views.patient._animBars(d); }
-        else if(tab==='protocole')  el.innerHTML = V.views.patient._tabProtocole(d, id);
-        else if(tab==='historique') el.innerHTML = V.views.patient._tabHistorique(d, id);
-        else if(tab==='outils')     el.innerHTML = V.views.patient._tabOutils(d, id);
+        if(tab === 'parcours')    el.innerHTML = V.views.patient._tabParcours(d, id);
+        else if(tab === 'portrait')   { el.innerHTML = V.views.patient._tabPortrait(d); V.views.patient._animBars(d); }
+        else if(tab === 'historique') el.innerHTML = V.views.patient._tabHistorique(d, id);
+        else if(tab === 'outils')     el.innerHTML = V.views.patient._tabOutils(d, id);
       },
 
       _animBars(d) {
@@ -874,185 +872,194 @@ const V = {
         }, 50);
       },
 
-      // ── TAB SÉANCE ──────────────────────────────────────────────────
-      _tabSeance(d, id) {
+      // ── TAB PARCOURS ─────────────────────────────────────────────────────
+      _tabParcours(d, id) {
         const etapeNum = d.protocole?.etape_courante || 1;
-        const etapes = d.protocole?.etapes || {};
-        const s = VALEUR_STEPS[etapeNum-1];
+        const etapes   = d.protocole?.etapes || {};
         const col = d.portrait ? (MASK_COLORS[d.portrait.masque]||'var(--gold)') : 'var(--gold)';
+        const s   = VALEUR_STEPS[etapeNum - 1];
         const seances = d.seances || [];
         const lastSeance = seances.length ? seances[seances.length-1] : null;
-        const etapeCourante = etapes[etapeNum] || {};
-        const defiActuel = etapeCourante.defi_actuel || (s ? s.defi : '');
         const masque = d.portrait?.masque;
+        const defisDisponibles = masque && V._defis[masque] ? V._defis[masque] : (s ? [s.defi] : []);
+        const fiche = FICHES.find(f => f.step === (s?.l||''));
 
-        // Défis disponibles pour ce masque
-        const defisDisponibles = masque && V._defis[masque]
-          ? V._defis[masque]
-          : (s ? [s.defi] : []);
-
-        return `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-
-          <!-- RAPPEL SÉANCE PRÉCÉDENTE -->
-          <div class="card" style="border-left:3px solid ${col}">
-            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:10px">Rappel · Séance précédente</div>
-            ${lastSeance ? `
-              <div style="font-size:11px;color:var(--ink5);margin-bottom:6px">${lastSeance.date}</div>
-              <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${col};margin-bottom:4px">Défi donné</div>
-              <div style="font-size:13px;color:var(--ink3);line-height:1.65;padding:8px 10px;background:var(--bg);border-radius:var(--r-sm);margin-bottom:8px">${lastSeance.defi_donne || '—'}</div>
-              <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Retour noté</div>
-              <div style="font-size:13px;color:var(--ink4);line-height:1.65">${lastSeance.note || '—'}</div>
-            ` : `<div style="font-size:13px;color:var(--ink5);font-style:italic">Première séance</div>`}
+        // ── CAPTURE RAPIDE ───────────────────────────────────────────────
+        let html = `
+        <div class="card" style="margin-bottom:18px;border:1px solid ${col};background:var(--surface)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+            <div>
+              <div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:${col};margin-bottom:2px">Séance du jour</div>
+              ${s ? `<div style="font-size:15px;font-weight:600;color:var(--ink)">Étape ${s.l} · ${s.name} — ${s.title}</div>` : ''}
+            </div>
+            ${lastSeance ? `<div style="font-size:11px;color:var(--ink5)">Dernière séance : ${lastSeance.date} · SPA ${lastSeance.spa||'—'}%</div>` : ''}
           </div>
 
-          <!-- ÉTAPE EN COURS -->
-          <div class="card">
-            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:10px">Protocole · Étape en cours</div>
-            ${s ? `
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-                <div style="width:34px;height:34px;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:#fff;flex-shrink:0">${s.l}</div>
-                <div>
-                  <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:${col}">${s.name}</div>
-                  <div style="font-size:12.5px;color:var(--ink3)">${s.title}</div>
-                </div>
-              </div>
-              <div style="font-size:12px;color:var(--ink4);line-height:1.65;border-left:2px solid rgba(168,135,58,.2);padding-left:10px">${s.desc}</div>
-            ` : '<div style="font-size:13px;color:var(--ink5)">Protocole non démarré</div>'}
-          </div>
-        </div>
+          ${lastSeance ? `
+          <div style="background:var(--bg);border-radius:var(--r-sm);padding:11px 14px;margin-bottom:14px;border-left:2px solid ${col}">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Défi donné · Retour</div>
+            <div style="font-size:13px;color:var(--ink3);margin-bottom:${lastSeance.note?'6px':'0'}">${lastSeance.defi_donne||'—'}</div>
+            ${lastSeance.note ? `<div style="font-size:12px;color:var(--ink4);border-top:1px solid var(--line);padding-top:5px;margin-top:5px">${lastSeance.note}</div>` : ''}
+          </div>` : ''}
 
-        <!-- SAISIE SÉANCE DU JOUR -->
-        <div class="card" style="margin-top:14px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Séance du jour</div>
-          <div style="display:grid;grid-template-columns:140px 1fr;gap:12px;margin-bottom:12px">
+          <div style="display:grid;grid-template-columns:120px 1fr;gap:10px;margin-bottom:12px">
             <div class="field-group" style="margin:0">
               <label class="field-label">Date</label>
               <input class="field-input" id="sj-date" type="date" value="${new Date().toISOString().slice(0,10)}">
             </div>
             <div class="field-group" style="margin:0">
               <label class="field-label">SPA mesuré (%)</label>
-              <input class="field-input" id="sj-spa" type="number" min="0" max="100" placeholder="Ex: 42">
+              <input class="field-input" id="sj-spa" type="number" min="0" max="100" placeholder="0–100">
             </div>
           </div>
+
           <div class="field-group" style="margin-bottom:12px">
-            <label class="field-label">Ce qui a émergé · Observations</label>
-            <textarea class="field-input" id="sj-emerge" rows="3" placeholder="Prises de conscience, résistances, moments clés…"></textarea>
+            <label class="field-label">Ce qui a émergé · Observations de séance</label>
+            <textarea class="field-input" id="sj-emerge" rows="3" placeholder="Prises de conscience, résistances, moments clés, ce qui a bougé…"></textarea>
           </div>
-          <div class="field-group" style="margin-bottom:12px">
+
+          <div style="margin-bottom:12px">
+            <div class="field-label" style="margin-bottom:6px">Difficulté signalée</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="diff-btn" id="diff-fluide"     onclick="V.views.patient.setDiff('fluide','${id}')"     style="background:rgba(45,122,79,.07);border:1px solid rgba(45,122,79,.3);color:#2D7A4F">✓ Fluide</button>
+              <button class="diff-btn" id="diff-resistance" onclick="V.views.patient.setDiff('resistance','${id}')" style="background:rgba(184,147,10,.07);border:1px solid rgba(184,147,10,.3);color:#B8930A">⚡ Résistance</button>
+              <button class="diff-btn" id="diff-blocage"    onclick="V.views.patient.setDiff('blocage','${id}')"    style="background:rgba(181,49,42,.07);border:1px solid rgba(181,49,42,.3);color:#B5312A">⛔ Blocage</button>
+            </div>
+          </div>
+
+          <div class="field-group" style="margin-bottom:14px">
             <label class="field-label">Défi pour la prochaine séance</label>
-            <select class="field-input" id="sj-defi-select" onchange="document.getElementById('sj-defi-custom').value=this.value">
-              <option value="">— Sélectionner dans le workbook —</option>
-              ${defisDisponibles.map((d,i) => `<option value="${d.replace(/"/g,'&quot;')}">${i+1}. ${d.length>60?d.slice(0,60)+'…':d}</option>`).join('')}
-              <option value="__custom">Défi personnalisé…</option>
+            <select class="field-input" id="sj-defi-select" style="margin-bottom:5px" onchange="if(this.value!=='__custom')document.getElementById('sj-defi-custom').value=this.value">
+              <option value="">— Choisir dans les défis du masque —</option>
+              ${defisDisponibles.map((df,i)=>`<option value="${df.replace(/"/g,'&quot;')}">${i+1}. ${df.length>55?df.slice(0,55)+'…':df}</option>`).join('')}
+              <option value="__custom">✏️ Défi personnalisé…</option>
             </select>
-            <textarea class="field-input" id="sj-defi-custom" rows="2" placeholder="Ou saisissez un défi personnalisé…" style="margin-top:6px">${defiActuel}</textarea>
+            <textarea class="field-input" id="sj-defi-custom" rows="2" placeholder="Défi inter-séance pour ce patient…">${etapes[etapeNum]?.defi_actuel||''}</textarea>
           </div>
-          <div class="field-group" style="margin-bottom:16px">
-            <label class="field-label">Difficulté signalée par le patient</label>
-            <div style="display:flex;gap:8px;margin-top:4px">
-              <button class="diff-btn" id="diff-fluide" onclick="V.views.patient.setDiff('fluide','${id}')" style="background:rgba(45,122,79,.08);border:1px solid rgba(45,122,79,.3);color:#2D7A4F">✓ Fluide</button>
-              <button class="diff-btn" id="diff-resistance" onclick="V.views.patient.setDiff('resistance','${id}')" style="background:rgba(184,147,10,.08);border:1px solid rgba(184,147,10,.3);color:#B8930A">⚡ Résistance</button>
-              <button class="diff-btn" id="diff-blocage" onclick="V.views.patient.setDiff('blocage','${id}')" style="background:rgba(181,49,42,.08);border:1px solid rgba(181,49,42,.3);color:#B5312A">⛔ Blocage</button>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
             <button class="btn btn--primary" onclick="V.views.patient.saveSeance('${id}')">Enregistrer la séance</button>
-            <button class="btn btn--ghost" onclick="V.views.patient.addMomentCle('${id}')">★ Moment clé</button>
-            ${s && etapeNum <= 6 ? `<button class="btn btn--gold" onclick="V.views.patient.validateStep(${etapeNum},'${id}')">✓ Valider étape ${s.l} →</button>` : ''}
+            <button class="btn btn--ghost"   onclick="V.views.patient.addMomentCle('${id}')">★ Moment clé</button>
+            ${fiche ? `<button class="btn btn--ghost" onclick="V.views.patient.copyFiche('${fiche.file}','${fiche.step}','${id}')" style="color:${fiche.color};border-color:${fiche.color}30">📄 Fiche ${fiche.step}</button>` : ''}
+            ${s && etapeNum <= 6 ? `<button class="btn btn--gold" onclick="V.views.patient.validateStep(${etapeNum},'${id}')">✓ Valider ${s.l} →</button>` : ''}
           </div>
         </div>
 
-        <!-- FICHE DE L'ÉTAPE -->
-        ${(()=>{
-          const fiche = FICHES.find(f=>f.step===(s?s.l:''));
-          const list2 = V.data.getPatients();
-          const p2 = list2.find(x=>x.id===id)||{};
-          if(!fiche) return '';
-          return `<div class="card" style="margin-top:14px;border-left:3px solid ${fiche.color};display:flex;align-items:center;gap:14px;padding:14px 18px">
-            <div style="width:36px;height:36px;border-radius:50%;background:${fiche.color};display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:#fff;flex-shrink:0">${fiche.step}</div>
-            <div style="flex:1;min-width:0">
-              <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${fiche.color};margin-bottom:2px">Fiche d'exercice · Étape ${fiche.step}</div>
-              <div style="font-size:13px;font-weight:600;color:var(--ink)">${fiche.desc}</div>
-              <div style="font-size:11px;color:var(--ink4)">À transmettre au patient pour travailler entre les séances</div>
+        <!-- ── TIMELINE V→R ── -->
+        <div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:12px">Protocole V.A.L.E.U.R©</div>
+        <div class="protocole-timeline">`;
+
+        VALEUR_STEPS.forEach((step, i) => {
+          const num = i + 1;
+          const et = etapes[num] || {};
+          const done = et.validee;
+          const isActive = num === etapeNum;
+          const locked = num > etapeNum;
+          const statut = done ? 'validee' : et.statut==='bloquee' ? 'bloquee' : isActive ? 'en_cours' : 'a_venir';
+          const circBg = done ? col : isActive ? '#fff' : 'var(--bg2)';
+          const circBorder = done||isActive ? col : 'var(--line)';
+          const circColor = done ? '#fff' : isActive ? col : 'var(--ink4)';
+          const SLBL = {validee:'✓ Validée', en_cours:'En cours', bloquee:'⛔ Bloquée', a_venir:'À venir'};
+          const SBADGE = {validee:'done', en_cours:'active', bloquee:'neutral', a_venir:'neutral'};
+          const DIFF_COL = {fluide:'#2D7A4F', resistance:'#B8930A', blocage:'#B5312A'};
+          const DIFF_LBL = {fluide:'✓ Fluide', resistance:'⚡ Résistance', blocage:'⛔ Blocage'};
+          const mcCount = (d.moments_cles||[]).filter(m=>m.etape===num).length;
+          const stepFiche = FICHES.find(f=>f.step===step.l);
+
+          // Séances de cette étape
+          const stepSeances = seances.filter(s=>s.etape===num);
+
+          html += `
+          <div class="step-item">
+            <div class="step-connector">
+              <div class="step-circle" style="background:${circBg};border-color:${circBorder};color:${circColor};cursor:${locked?'default':'pointer'}" onclick="${!locked?`V.views.patient.toggleStep(${num})`:''}">
+                ${done ? '✓' : step.l}
+              </div>
+              ${num < 6 ? '<div class="step-line"></div>' : ''}
             </div>
-            <div style="display:flex;gap:6px;flex-shrink:0">
-              <a class="btn btn--ghost btn--sm" href="${fiche.file}" target="_blank">↗ Voir</a>
-              <button class="btn btn--gold btn--sm" onclick="V.views.patient.copyFiche('${fiche.file}','${fiche.step}','${id}')">⎘ Envoyer</button>
+            <div class="step-body">
+              <div class="step-header" onclick="${!locked?`V.views.patient.toggleStep(${num})`:''}">
+                <span class="step-letter" style="color:${locked?'var(--ink5)':col}">${step.l} · ${step.name}</span>
+                <span class="step-name" style="color:${locked?'var(--ink5)':'var(--ink)'}">${step.title}</span>
+                ${et.difficulte ? `<span style="font-size:10px;color:${DIFF_COL[et.difficulte]||'var(--ink4)'};margin-left:4px">· ${DIFF_LBL[et.difficulte]||''}</span>` : ''}
+                ${mcCount ? `<span style="font-size:10px;color:var(--gold);margin-left:4px">★${mcCount}</span>` : ''}
+                ${stepSeances.length ? `<span style="font-size:10px;color:var(--ink5);margin-left:4px">${stepSeances.length} séance${stepSeances.length>1?'s':''}</span>` : ''}
+                <span class="badge badge--${SBADGE[statut]}" style="margin-left:auto">${SLBL[statut]}</span>
+              </div>
+
+              <div class="step-detail${isActive?' open':''}" id="step-detail-${num}">
+
+                ${/* DESCRIPTION */
+                `<div class="step-desc">${step.desc}</div>`}
+
+                ${/* FICHE */
+                stepFiche ? `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(${stepFiche.color},.04);border-bottom:1px solid var(--line)">
+                  <div style="width:26px;height:26px;border-radius:50%;background:${stepFiche.color};display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;color:#fff;flex-shrink:0">${stepFiche.step}</div>
+                  <div style="flex:1"><div style="font-size:11px;font-weight:600;color:${stepFiche.color}">${stepFiche.desc}</div><div style="font-size:10px;color:var(--ink5)">Fiche d'exercice · ${step.name}</div></div>
+                  <a class="btn btn--ghost btn--sm" href="${stepFiche.file}" target="_blank">↗ Ouvrir</a>
+                  <button class="btn btn--sm" style="color:${stepFiche.color};background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.1)" onclick="V.views.patient.copyFiche('${stepFiche.file}','${stepFiche.step}','${id}')">⎘ Envoyer</button>
+                </div>` : ''}
+
+                ${/* NOTES + DÉFI */
+                `<div class="step-notes-zone">
+                  <div class="field-label" style="margin-bottom:5px">Notes praticienne</div>
+                  <textarea class="field-input" style="min-height:52px" placeholder="Observations, prises de conscience, ce qui a bougé…" onchange="V.views.patient.saveStepNote(${num},'note_seance',this.value,'${id}')">${et.note_seance||''}</textarea>
+                </div>
+                <div class="step-defi-zone">
+                  <div class="defi-label">Défi inter-séance actuel</div>
+                  <div class="defi-text" style="margin-bottom:10px">${et.defi_actuel||step.defi}</div>
+                  <div class="defi-check-row">
+                    <input type="checkbox" id="dc-${num}" ${et.defi_fait?'checked':''} onchange="V.views.patient.saveStepNote(${num},'defi_fait',this.checked,'${id}')">
+                    <label class="defi-check-label" for="dc-${num}">Défi réalisé entre les séances</label>
+                  </div>
+                  <div class="field-label" style="margin-bottom:5px;margin-top:8px">Retour du patient sur le défi</div>
+                  <textarea class="field-input" style="min-height:44px" placeholder="Ce que le patient a vécu, découvert…" onchange="V.views.patient.saveStepNote(${num},'note_defi',this.value,'${id}')">${et.note_defi||''}</textarea>
+                </div>`}
+
+                ${/* SÉANCES PASSÉES DANS CETTE ÉTAPE */
+                stepSeances.length ? `
+                <div style="padding:10px 14px;border-top:1px solid var(--line);background:var(--bg)">
+                  <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:8px">Séances — étape ${step.l} (${stepSeances.length})</div>
+                  ${[...stepSeances].reverse().map(ss=>`
+                    <div style="padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start">
+                      <div style="min-width:72px;font-size:11px;color:var(--ink5)">${ss.date}</div>
+                      ${ss.spa!==undefined&&ss.spa!==null?`<span class="badge badge--neutral" style="flex-shrink:0">SPA ${ss.spa}%</span>`:''}
+                      ${ss.difficulte?`<span style="font-size:10px;color:${DIFF_COL[ss.difficulte]||'var(--ink4)'};font-weight:600;flex-shrink:0">${DIFF_LBL[ss.difficulte]||''}</span>`:''}
+                      <div style="flex:1;font-size:12px;color:var(--ink3);line-height:1.6">${ss.note||''}</div>
+                    </div>
+                    ${ss.defi_donne?`<div style="font-size:11px;color:var(--ink4);padding:4px 0 8px 82px;border-bottom:1px solid var(--line)">Défi : ${ss.defi_donne}</div>`:''}
+                  `).join('')}
+                </div>` : ''}
+
+                ${/* ACTIONS */
+                `<div style="display:flex;gap:6px;padding:12px 14px;flex-wrap:wrap">
+                  ${!done ? `<button class="btn btn--gold btn--sm btn--full" onclick="V.views.patient.validateStep(${num},'${id}')">✓ Valider ${step.l} → ${VALEUR_STEPS[i+1]?VALEUR_STEPS[i+1].l:'Fin'}</button>` : `<button class="btn btn--ghost btn--sm" onclick="V.views.patient.unvalidateStep(${num},'${id}')">↩ Rouvrir</button>`}
+                  <button class="btn btn--ghost btn--sm" onclick="V.views.patient.toggleBlocage(${num},'${id}')">⛔ ${statut==='bloquee'?'Débloquer':'Bloquer'}</button>
+                </div>`}
+              </div>
             </div>
           </div>`;
-        })()}
-        </div>
-
-        <!-- MOMENTS CLÉS RÉCENTS -->
-        ${(d.moments_cles||[]).length ? `
-        <div class="card" style="margin-top:14px;background:rgba(168,135,58,.03);border-color:rgba(168,135,58,.15)">
-          <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">★ Moments clés</div>
-          ${[...(d.moments_cles||[])].reverse().slice(0,3).map(m => `
-            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)">
-              <span style="font-size:11px;color:var(--ink5);flex-shrink:0;min-width:70px">${m.date}</span>
-              <span style="font-size:13px;color:var(--ink3);line-height:1.6">${m.texte}</span>
-            </div>`).join('')}
-        </div>` : ''}`;
-      },
-
-      setDiff(val, id) {
-        document.querySelectorAll('.diff-btn').forEach(b => b.style.fontWeight = '400');
-        const el = document.getElementById('diff-'+val);
-        if(el) el.style.fontWeight = '700';
-        V.views.patient._diffCurrent = val;
-      },
-      _diffCurrent: '',
-
-      saveSeance(id) {
-        const date   = document.getElementById('sj-date')?.value;
-        const spa    = parseInt(document.getElementById('sj-spa')?.value)||null;
-        const emerge = document.getElementById('sj-emerge')?.value.trim();
-        const defi   = document.getElementById('sj-defi-custom')?.value.trim();
-        const diff   = V.views.patient._diffCurrent || '';
-        if(!date) { V.ui.toast('Date requise', true); return; }
-
-        const d = V.data.getPatient(id) || V.data.newPatientData();
-        const etapeNum = d.protocole?.etape_courante || 1;
-
-        // Enregistrer la séance
-        if(!d.seances) d.seances = [];
-        d.seances.push({
-          id: Date.now().toString(36),
-          date, etape: etapeNum, spa,
-          note: emerge, defi_donne: defi, difficulte: diff
         });
 
-        // Mettre à jour SPA dans l'historique
-        if(spa !== null) {
-          if(!d.spa_historique) d.spa_historique = [];
-          d.spa_historique.push({ date, valeur: spa, notes: emerge ? emerge.slice(0,80) : '' });
+        html += '</div>';
+
+        // Moments clés récents
+        if((d.moments_cles||[]).length) {
+          html += `<div class="card" style="margin-top:14px;background:rgba(168,135,58,.03);border-color:rgba(168,135,58,.15)">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">★ Moments clés</div>
+            ${[...(d.moments_cles||[])].reverse().slice(0,5).map(m=>`
+              <div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);align-items:flex-start">
+                <span style="font-size:10px;color:var(--ink5);flex-shrink:0;min-width:68px">${m.date}</span>
+                <span style="font-size:10px;color:var(--gold);flex-shrink:0">Ét.${m.etape||'?'}</span>
+                <span style="font-size:12.5px;color:var(--ink3);line-height:1.6">${m.texte}</span>
+              </div>`).join('')}
+          </div>`;
         }
 
-        // Sauvegarder le défi actuel dans l'étape
-        if(!d.protocole.etapes[etapeNum]) d.protocole.etapes[etapeNum] = {};
-        d.protocole.etapes[etapeNum].defi_actuel = defi;
-        d.protocole.etapes[etapeNum].difficulte = diff;
-
-        V.data.savePatient(id, d);
-        V.views.patient._diffCurrent = '';
-        V.ui.toast('✓ Séance enregistrée');
-        V.views.patient.renderTab(id, 'seance');
+        return html;
       },
 
-      addMomentCle(id) {
-        const emerge = document.getElementById('sj-emerge')?.value.trim();
-        const texte = emerge || prompt('Moment clé à noter :');
-        if(!texte) return;
-        const d = V.data.getPatient(id) || V.data.newPatientData();
-        if(!d.moments_cles) d.moments_cles = [];
-        d.moments_cles.push({ date: new Date().toISOString().slice(0,10), texte, etape: d.protocole?.etape_courante||1 });
-        V.data.savePatient(id, d);
-        V.ui.toast('★ Moment clé enregistré');
-        V.views.patient.renderTab(id, 'seance');
-      },
-
-      // ── TAB PORTRAIT ────────────────────────────────────────────────
+      // ── TAB PORTRAIT ─────────────────────────────────────────────────────
       _tabPortrait(d) {
         if(!d.portrait) return `<div class="card" style="text-align:center;padding:36px"><p style="font-size:14px;color:var(--ink4);margin-bottom:12px">Aucun portrait importé.</p></div>`;
         const sc = d.portrait.scores||{};
@@ -1061,21 +1068,15 @@ const V = {
         const sorted = [...MASKS].sort((a,b)=>(sc[b]||0)-(sc[a]||0));
         const elevated = MASKS.filter(m=>(sc[m]||0)>=65);
         let configLabel = 'Dominance unique', configDesc = '';
-        if(elevated.length>=3) {
-          configLabel = 'Triade : '+elevated.slice(0,3).map(m=>MASK_NAMES[m]).join(' + ');
-          configDesc = 'Trois masques actifs se renforcent mutuellement. Le travail doit adresser la dynamique commune.';
-        } else if(elevated.length===2) {
-          configLabel = 'Dyade : '+elevated.map(m=>MASK_NAMES[m]).join(' + ');
-          configDesc = 'Deux masques en amplification mutuelle. Identifier le cycle de renforcement est prioritaire.';
-        }
-        const spaVal = d.portrait.spa||0;
-        const spaCirc = Math.round(spaVal/100*251);
-        const pre = MASK_PREAMBULE[masque];
+        if(elevated.length>=3){ configLabel='Triade : '+elevated.slice(0,3).map(m=>MASK_NAMES[m]).join(' + '); configDesc='Trois masques actifs en amplification mutuelle.'; }
+        else if(elevated.length===2){ configLabel='Dyade : '+elevated.map(m=>MASK_NAMES[m]).join(' + '); configDesc='Deux masques en renforcement mutuel — adresser la dynamique commune.'; }
+        const spaVal=d.portrait.spa||0, spaCirc=Math.round(spaVal/100*251);
+        const pre=MASK_PREAMBULE[masque];
         return `
           <div style="display:grid;grid-template-columns:1fr 200px;gap:14px;margin-bottom:14px">
             <div class="card">
               <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:12px">Scores par masque</div>
-              ${sorted.map(m=>`<div class="score-row" style="margin-bottom:6px">
+              ${sorted.map(m=>`<div class="score-row" style="margin-bottom:7px">
                 <div class="score-label" style="color:${MASK_COLORS[m]}">${m[0].toUpperCase()+m.slice(1)}</div>
                 <div class="score-track"><div class="score-fill" id="bar-${m}" style="width:0;background:${MASK_COLORS[m]}"></div></div>
                 <div class="score-value">${sc[m]||0}%</div>
@@ -1094,14 +1095,14 @@ const V = {
               <div class="card">
                 <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:6px">Config</div>
                 <div style="font-size:12px;font-weight:600;color:${col};line-height:1.5;margin-bottom:4px">${configLabel}</div>
-                ${configDesc ? `<div style="font-size:11px;color:var(--ink4);line-height:1.55">${configDesc}</div>` : `<div style="font-size:11px;color:var(--ink4)">${MASK_PEURS[masque]||''}</div>`}
+                <div style="font-size:11px;color:var(--ink4)">${configDesc||MASK_PEURS[masque]||''}</div>
               </div>
             </div>
           </div>
           ${pre ? `<div class="card" style="border-left:3px solid ${col}">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
               <div><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Peur centrale</div><div style="font-size:13px;color:${col};font-style:italic;font-family:'Cormorant Garamond',serif">${pre.peur}</div></div>
-              <div><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Origine</div><div style="font-size:12px;color:var(--ink3);line-height:1.65">${pre.origine.slice(0,180)}…</div></div>
+              <div><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink5);margin-bottom:4px">Origine</div><div style="font-size:12px;color:var(--ink3);line-height:1.65">${pre.origine.slice(0,160)}…</div></div>
             </div>
             <div style="background:rgba(168,135,58,.05);border:1px solid rgba(168,135,58,.15);border-radius:var(--r-sm);padding:12px">
               <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px">Nature authentique</div>
@@ -1110,153 +1111,76 @@ const V = {
           </div>` : ''}`;
       },
 
-      // ── TAB PROTOCOLE ───────────────────────────────────────────────
-      _tabProtocole(d, id) {
-        const etapeCourante = d.protocole?.etape_courante||1;
-        const etapes = d.protocole?.etapes||{};
-        const col = d.portrait ? (MASK_COLORS[d.portrait.masque]||'var(--gold)') : 'var(--gold)';
-        const STATUTS = {a_venir:'À venir',en_cours:'En cours',validee:'✓ Validée',bloquee:'⛔ Bloquée'};
-        const DIFF_STYLE = {fluide:'color:#2D7A4F', resistance:'color:#B8930A', blocage:'color:#B5312A'};
-
-        let html = `<div class="protocole-timeline">`;
-        VALEUR_STEPS.forEach((s,i) => {
-          const num = i+1;
-          const et = etapes[num]||{};
-          const done = et.validee;
-          const isActive = num===etapeCourante;
-          const locked = num>etapeCourante;
-          const statut = done?'validee': et.statut==='bloquee'?'bloquee': isActive?'en_cours':'a_venir';
-          const circBg = done?col : isActive?'#fff' : 'var(--bg2)';
-          const circBorder = done||isActive ? col : 'var(--line)';
-          const circColor = done?'#fff' : isActive?col : 'var(--ink4)';
-          const diffBadge = et.difficulte ? `<span style="font-size:10px;margin-left:6px;${DIFF_STYLE[et.difficulte]||''}">· ${et.difficulte==='fluide'?'✓ Fluide':et.difficulte==='resistance'?'⚡ Résistance':'⛔ Blocage'}</span>` : '';
-          const mcCount = (d.moments_cles||[]).filter(m=>m.etape===num).length;
-
-          html += `
-            <div class="step-item">
-              <div class="step-connector">
-                <div class="step-circle" style="background:${circBg};border-color:${circBorder};color:${circColor};cursor:${locked?'default':'pointer'}" onclick="${!locked?`V.views.patient.toggleStep(${num})`:''}">
-                  ${done?'✓':s.l}
-                </div>
-                ${num<6?'<div class="step-line"></div>':''}
-              </div>
-              <div class="step-body">
-                <div class="step-header" onclick="${!locked?`V.views.patient.toggleStep(${num})`:''}">
-                  <span class="step-letter" style="color:${locked?'var(--ink5)':col}">${s.l} · ${s.name}</span>
-                  <span class="step-name" style="color:${locked?'var(--ink5)':'var(--ink)'}">${s.title}</span>
-                  ${diffBadge}
-                  ${mcCount?`<span style="font-size:10px;color:var(--gold);margin-left:6px">★ ${mcCount}</span>`:''}
-                  <span class="badge badge--${statut==='validee'?'done':statut==='en_cours'?'active':statut==='bloquee'?'neutral':'neutral'}" style="margin-left:auto">${STATUTS[statut]}</span>
-                  <button onclick="event.stopPropagation();V.views.patient.copyFiche(FICHES.find(f=>f.step===s.l)?.file||'',s.l,'${id}')" style="margin-left:8px;padding:2px 8px;font-size:10px;font-weight:600;color:${col};background:rgba(${col},.06);border:1px solid rgba(${col},.2);border-radius:10px;cursor:pointer;white-space:nowrap">📄 Fiche</button>
-                </div>
-                <div class="step-detail${isActive?' open':''}" id="step-detail-${num}">
-                  <div class="step-desc">${s.desc}</div>
-                  <div class="step-notes-zone">
-                    <div class="field-label" style="margin-bottom:5px">Notes praticienne (privées)</div>
-                    <textarea class="field-input" style="min-height:56px" placeholder="Observations, ce qui a émergé…" onchange="V.views.patient.saveStepNote(${num},'note_seance',this.value,'${id}')">${et.note_seance||''}</textarea>
-                  </div>
-                  <div class="step-defi-zone">
-                    <div class="defi-label">Défi inter-séance</div>
-                    <div class="defi-text">${et.defi_actuel||s.defi}</div>
-                    <div class="defi-check-row">
-                      <input type="checkbox" id="dc-${num}" ${et.defi_fait?'checked':''} onchange="V.views.patient.saveStepNote(${num},'defi_fait',this.checked,'${id}')">
-                      <label class="defi-check-label" for="dc-${num}">Défi réalisé</label>
-                    </div>
-                    <div class="field-label" style="margin-bottom:5px">Retour du patient</div>
-                    <textarea class="field-input" style="min-height:48px" placeholder="Ce que le patient a vécu…" onchange="V.views.patient.saveStepNote(${num},'note_defi',this.value,'${id}')">${et.note_defi||''}</textarea>
-                    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-                      ${!done ? `<button class="btn btn--gold btn--sm btn--full" onclick="V.views.patient.validateStep(${num},'${id}')">✓ Valider ${s.l} → ${VALEUR_STEPS[i+1]?VALEUR_STEPS[i+1].l:'Fin'}</button>` : `<button class="btn btn--ghost btn--sm" onclick="V.views.patient.unvalidateStep(${num},'${id}')">↩ Rouvrir</button>`}
-                      <button class="btn btn--ghost btn--sm" onclick="V.views.patient.toggleBlocage(${num},'${id}')">⛔ ${statut==='bloquee'?'Débloquer':'Marquer bloqué'}</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>`;
-        });
-        html += '</div>';
-        return html;
-      },
-
-      // ── TAB HISTORIQUE ──────────────────────────────────────────────
+      // ── TAB HISTORIQUE ───────────────────────────────────────────────────
       _tabHistorique(d, id) {
         const seances = [...(d.seances||[])].reverse();
         const hist = d.spa_historique||[];
         const mcs = d.moments_cles||[];
         const col = d.portrait ? (MASK_COLORS[d.portrait.masque]||'var(--gold)') : 'var(--gold)';
-        const DIFF_LABEL = {fluide:'✓ Fluide',resistance:'⚡ Résistance',blocage:'⛔ Blocage'};
-        const DIFF_COLOR = {fluide:'#2D7A4F',resistance:'#B8930A',blocage:'#B5312A'};
+        const DIFF_COL = {fluide:'#2D7A4F',resistance:'#B8930A',blocage:'#B5312A'};
+        const DIFF_LBL = {fluide:'✓ Fluide',resistance:'⚡ Résistance',blocage:'⛔ Blocage'};
 
-        // Mini courbe SPA (SVG simple)
         let spaChart = '';
         if(hist.length >= 2) {
           const vals = hist.slice(-8);
-          const max = 100, w = 340, h = 60, pad = 8;
-          const pts = vals.map((v,i) => {
-            const x = pad + i/(vals.length-1)*(w-pad*2);
-            const y = h - pad - (v.valeur/max)*(h-pad*2);
+          const w=340,h=64,pad=10;
+          const pts = vals.map((v,i)=>{
+            const x=pad+i/(vals.length-1)*(w-pad*2);
+            const y=h-pad-(v.valeur/100)*(h-pad*2);
             return `${x},${y}`;
           }).join(' ');
-          const lastVal = vals[vals.length-1].valeur;
-          const prevVal = vals[vals.length-2].valeur;
-          const trend = lastVal > prevVal ? `↑ +${lastVal-prevVal}%` : lastVal < prevVal ? `↓ ${lastVal-prevVal}%` : '= stable';
-          const trendCol = lastVal >= prevVal ? '#2D7A4F' : '#B5312A';
-          spaChart = `
-            <div class="card" style="margin-bottom:14px">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4)">Évolution SPA</div>
-                <div style="font-size:12px;font-weight:600;color:${trendCol}">${trend}</div>
-              </div>
-              <svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
-                <polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                ${vals.map((v,i) => {
-                  const x = pad + i/(vals.length-1)*(w-pad*2);
-                  const y = h - pad - (v.valeur/max)*(h-pad*2);
-                  return `<circle cx="${x}" cy="${y}" r="3" fill="${col}"/>
-                          <text x="${x}" y="${y-6}" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8C8278">${v.valeur}</text>`;
-                }).join('')}
-              </svg>
-              <div style="display:flex;justify-content:space-between;margin-top:4px">
-                ${vals.map(v=>`<span style="font-size:8px;color:var(--ink5)">${v.date.slice(5)}</span>`).join('')}
-              </div>
-            </div>`;
+          const last=vals[vals.length-1].valeur, prev=vals[vals.length-2].valeur;
+          const trend=last>prev?`↑ +${last-prev}%`:last<prev?`↓ ${last-prev}%`:'stable';
+          const tc=last>=prev?'#2D7A4F':'#B5312A';
+          spaChart=`<div class="card" style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4)">Évolution SPA</div>
+              <div style="font-size:12px;font-weight:600;color:${tc}">${trend}</div>
+            </div>
+            <svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
+              <polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              ${vals.map((v,i)=>{
+                const x=pad+i/(vals.length-1)*(w-pad*2),y=h-pad-(v.valeur/100)*(h-pad*2);
+                return `<circle cx="${x}" cy="${y}" r="3" fill="${col}"/>
+                <text x="${x}" y="${y-6}" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8C8278">${v.valeur}</text>`;
+              }).join('')}
+            </svg>
+            <div style="display:flex;justify-content:space-between;margin-top:4px">
+              ${vals.map(v=>`<span style="font-size:8px;color:var(--ink5)">${v.date.slice(5)}</span>`).join('')}
+            </div>
+          </div>`;
         }
 
-        // Moments clés
-        const mcHtml = mcs.length ? `
-          <div class="card" style="margin-bottom:14px;background:rgba(168,135,58,.03);border-color:rgba(168,135,58,.15)">
-            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">★ Moments clés du parcours</div>
-            ${[...mcs].reverse().map(m=>`
-              <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:flex-start">
-                <span style="font-size:10px;color:var(--ink5);flex-shrink:0;width:70px">${m.date}</span>
-                <span style="font-size:10px;color:var(--gold);flex-shrink:0;width:28px">Ét.${m.etape||'?'}</span>
-                <span style="font-size:13px;color:var(--ink3);line-height:1.6">${m.texte}</span>
-              </div>`).join('')}
-          </div>` : '';
+        const mcHtml = mcs.length ? `<div class="card" style="margin-bottom:14px;background:rgba(168,135,58,.03);border-color:rgba(168,135,58,.15)">
+          <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">★ Moments clés</div>
+          ${[...mcs].reverse().map(m=>`<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);align-items:flex-start">
+            <span style="font-size:10px;color:var(--ink5);flex-shrink:0;width:70px">${m.date}</span>
+            <span style="font-size:10px;color:var(--gold);flex-shrink:0;width:28px">Ét.${m.etape||'?'}</span>
+            <span style="font-size:12.5px;color:var(--ink3);line-height:1.6">${m.texte}</span>
+          </div>`).join('')}
+        </div>` : '';
 
-        // Séances
-        const seancesHtml = seances.length ? seances.map(s => {
-          const step = VALEUR_STEPS[s.etape-1];
-          const diffColor = s.difficulte ? DIFF_COLOR[s.difficulte] : 'var(--ink4)';
+        const seancesHtml = seances.length ? seances.map(s=>{
+          const step=VALEUR_STEPS[s.etape-1];
           return `<div class="card" style="margin-bottom:8px">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
               <span style="font-size:12px;font-weight:600;color:var(--ink)">${s.date}</span>
-              ${step?`<span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:${col};background:rgba(${col},.08);padding:2px 8px;border-radius:10px">${step.l} · ${step.name}</span>`:''}
-              ${s.spa?`<span class="badge badge--neutral">SPA ${s.spa}%</span>`:''}
-              ${s.difficulte?`<span style="font-size:11px;color:${diffColor};font-weight:600">${DIFF_LABEL[s.difficulte]||''}</span>`:''}
+              ${step?`<span style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:${col};background:rgba(168,135,58,.08);padding:2px 8px;border-radius:10px">${step.l} · ${step.name}</span>`:''}
+              ${s.spa!=null?`<span class="badge badge--neutral">SPA ${s.spa}%</span>`:''}
+              ${s.difficulte?`<span style="font-size:11px;color:${DIFF_COL[s.difficulte]||'var(--ink4)'};font-weight:600">${DIFF_LBL[s.difficulte]||''}</span>`:''}
             </div>
             ${s.note?`<div style="font-size:13px;color:var(--ink3);line-height:1.65;margin-bottom:6px">${s.note}</div>`:''}
-            ${s.defi_donne?`<div style="font-size:12px;color:var(--ink4);border-left:2px solid var(--line);padding-left:8px;margin-top:6px"><span style="font-weight:600">Défi donné :</span> ${s.defi_donne}</div>`:''}
+            ${s.defi_donne?`<div style="font-size:12px;color:var(--ink4);border-left:2px solid var(--line);padding-left:8px"><span style="font-weight:600">Défi donné :</span> ${s.defi_donne}</div>`:''}
           </div>`;
-        }).join('') : '<div class="card" style="text-align:center;padding:24px;color:var(--ink5)">Aucune séance enregistrée.</div>';
+        }).join('') : `<div class="card" style="text-align:center;padding:24px;color:var(--ink5)">Aucune séance enregistrée.</div>`;
 
-        return spaChart + mcHtml + `
-          <div class="section-header" style="margin-bottom:10px">
-            <span class="section-title">Journal des séances</span>
-            <button class="btn btn--ghost btn--sm" onclick="V.views.patient.switchTab('seance','${id}')">+ Nouvelle séance</button>
-          </div>` + seancesHtml;
+        return spaChart + mcHtml + `<div class="section-header" style="margin-bottom:10px">
+          <span class="section-title">Journal des séances (${seances.length})</span>
+          <button class="btn btn--ghost btn--sm" onclick="V.views.patient.switchTab('parcours','${id}')">+ Nouvelle séance</button>
+        </div>` + seancesHtml;
       },
 
-      // ── TAB OUTILS ──────────────────────────────────────────────────
+      // ── TAB OUTILS ───────────────────────────────────────────────────────
       _tabOutils(d, id) {
         const masque = d.portrait?.masque;
         const col = masque ? MASK_COLORS[masque] : 'var(--gold)';
@@ -1266,100 +1190,57 @@ const V = {
         const hasDyade = elevated.length >= 2;
         const list = V.data.getPatients();
         const p = list.find(x=>x.id===id)||{};
-        const ADMIN_PARAM = '?admin=VALEUR-ADMIN-2025';
+        const AP = '?admin=VALEUR-ADMIN-2025';
 
         return `
+          <!-- FICHES D'EXERCICES -->
           <div class="card" style="margin-bottom:14px">
-            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Fiches d'exercices V.A.L.E.U.R©</div>
-            <p style="font-size:12px;color:var(--ink4);margin-bottom:12px;line-height:1.65">Une fiche par étape — à transmettre au patient pour travailler entre les séances. Contient la psychoéducation, le protocole détaillé et les espaces de réflexion.</p>
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:10px">Fiches d'exercices V.A.L.E.U.R©</div>
+            <p style="font-size:12px;color:var(--ink4);margin-bottom:12px;line-height:1.65">Une fiche par étape — psychoéducation + protocole + espaces de réflexion. À transmettre entre les séances.</p>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
               ${V.views.patient._fichesGrid(d, id)}
             </div>
           </div>
 
+          <!-- WORKBOOK -->
           ${wb ? `<div class="card" style="margin-bottom:14px;border-left:3px solid ${col};background:rgba(168,135,58,.03)">
-            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Workbook patient</div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Workbook patient — 21 défis</div>
             <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">${wb.label}</div>
             <div style="font-size:12px;color:var(--ink4);margin-bottom:12px;font-style:italic">${wb.peur}</div>
             <div style="display:flex;gap:8px;flex-wrap:wrap">
               <a class="btn btn--ghost btn--sm" href="${wb.file}" target="_blank">↗ Ouvrir</a>
-              <button class="btn btn--gold btn--sm" onclick="V.views.workbooks.copyLink('https://cabinet.psyh.fr/${wb.file}','${wb.masque}','${p.prenom||''}')">⎘ Copier lien personnalisé</button>
+              <button class="btn btn--gold btn--sm" onclick="V.views.workbooks.copyLink('https://cabinet.psyh.fr/${wb.file}','${wb.masque}','${p.prenom||''}')">⎘ Copier lien</button>
             </div>
           </div>` : ''}
 
-          ${lv ? `<div class="card" style="margin-bottom:14px">
-            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px">Livret masque dominant</div>
-            <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px">${lv.label}</div>
-            <a class="btn btn--ghost btn--sm" href="${lv.file}${ADMIN_PARAM}" target="_blank">↗ Ouvrir le livret</a>
-          </div>` : ''}
-
-          ${hasDyade ? `<div class="card" style="margin-bottom:14px">
-            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px">Livret Dyades &amp; Triades</div>
-            <div style="font-size:12px;color:var(--ink4);margin-bottom:10px">Config ${elevated.length>=3?'Triade':'Dyade'} détectée — ${elevated.map(m=>MASK_NAMES[m]).join(' + ')}</div>
-            <a class="btn btn--ghost btn--sm" href="livret_dyades_triades.html${ADMIN_PARAM}" target="_blank">↗ Ouvrir</a>
-          </div>` : ''}
-
+          <!-- LIVRETS -->
           <div class="card">
-            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:12px">Tous les livrets</div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:12px">Livrets</div>
             <div class="livrets-grid">
-              ${LIVRETS.filter(l=>l.masque!=='psychoed'&&l.masque!=='dyades').map(l=>`
-                <a class="livret-card" href="${l.file}${ADMIN_PARAM}" target="_blank">
-                  <div class="livret-card-stripe" style="background:${l.color}"></div>
-                  <div class="livret-card-name" style="${masque===l.masque?`color:${l.color};font-weight:700`:''}">${l.label}</div>
-                  ${masque===l.masque?'<div class="livret-card-sub" style="color:var(--gold)">★ Dominant</div>':''}
-                </a>`).join('')}
-              <a class="livret-card" href="livret_psychoeducation.html${ADMIN_PARAM}" target="_blank">
-                <div class="livret-card-stripe" style="background:var(--ink4)"></div>
-                <div class="livret-card-name">Psychoéducation</div>
-              </a>
-              <a class="livret-card" href="manuel_valeur.html${ADMIN_PARAM}" target="_blank">
+              ${lv ? `<a class="livret-card" href="${lv.file}${AP}" target="_blank" style="border-color:${col}">
+                <div class="livret-card-stripe" style="background:${col}"></div>
+                <div class="livret-card-name" style="color:${col}">⭐ ${lv.label}</div>
+                <div class="livret-card-sub" style="color:var(--gold)">Dominant</div></a>` : ''}
+              ${hasDyade ? `<a class="livret-card" href="livret_dyades_triades.html${AP}" target="_blank">
                 <div class="livret-card-stripe" style="background:var(--gold)"></div>
-                <div class="livret-card-name">Manuel V.A.L.E.U.R©</div>
-              </a>
+                <div class="livret-card-name">🔗 Dyades & Triades</div>
+                <div class="livret-card-sub">${elevated.length>=3?'Triade':'Dyade'} détectée</div></a>` : ''}
+              ${LIVRETS.filter(l=>l.masque!=='psychoed'&&l.masque!=='dyades'&&l.masque!==masque).slice(0,4).map(l=>`
+                <a class="livret-card" href="${l.file}${AP}" target="_blank">
+                  <div class="livret-card-stripe" style="background:${l.color}"></div>
+                  <div class="livret-card-name">${l.label}</div>
+                </a>`).join('')}
+              <a class="livret-card" href="livret_psychoeducation.html${AP}" target="_blank">
+                <div class="livret-card-stripe" style="background:var(--ink4)"></div>
+                <div class="livret-card-name">Psychoéducation</div></a>
+              <a class="livret-card" href="manuel_valeur.html${AP}" target="_blank">
+                <div class="livret-card-stripe" style="background:var(--gold)"></div>
+                <div class="livret-card-name">Manuel V.A.L.E.U.R©</div></a>
             </div>
           </div>`;
       },
 
-      // ── HELPERS ─────────────────────────────────────────────────────
-      toggleStep(num) {
-        const el = document.getElementById('step-detail-'+num);
-        if(el) el.classList.toggle('open');
-      },
-      toggleBlocage(num, id) {
-        const d = V.data.getPatient(id)||V.data.newPatientData();
-        if(!d.protocole.etapes[num]) d.protocole.etapes[num]={};
-        const wasBloq = d.protocole.etapes[num].statut==='bloquee';
-        d.protocole.etapes[num].statut = wasBloq ? 'en_cours' : 'bloquee';
-        V.data.savePatient(id, d);
-        V.ui.toast(wasBloq ? 'Étape débloquée' : '⛔ Étape marquée bloquée');
-        V.views.patient.renderTab(id, 'protocole');
-      },
-      saveStepNote(num, key, val, id) {
-        const d = V.data.getPatient(id)||V.data.newPatientData();
-        if(!d.protocole.etapes[num]) d.protocole.etapes[num]={};
-        d.protocole.etapes[num][key] = val;
-        V.data.savePatient(id, d);
-      },
-      validateStep(num, id) {
-        const d = V.data.getPatient(id)||V.data.newPatientData();
-        if(!d.protocole.etapes[num]) d.protocole.etapes[num]={};
-        d.protocole.etapes[num].validee = true;
-        d.protocole.etapes[num].statut = 'validee';
-        d.protocole.etapes[num].date_validation = new Date().toISOString().slice(0,10);
-        if(d.protocole.etape_courante===num && num<6) d.protocole.etape_courante = num+1;
-        V.data.savePatient(id, d);
-        V.ui.toast(`✓ Étape ${VALEUR_STEPS[num-1].l} validée`);
-        V.views.patient.renderTab(id, 'seance');
-      },
-      unvalidateStep(num, id) {
-        const d = V.data.getPatient(id)||V.data.newPatientData();
-        if(d.protocole.etapes[num]) { d.protocole.etapes[num].validee=false; d.protocole.etapes[num].statut='en_cours'; }
-        d.protocole.etape_courante = Math.min(d.protocole.etape_courante, num);
-        V.data.savePatient(id, d);
-        V.ui.toast('Étape rouverte');
-        V.views.patient.renderTab(id, 'protocole');
-      },
-      addSeance() {},
+      // ── HELPERS ──────────────────────────────────────────────────────────
       _fichesGrid(d, id) {
         const currentL = VALEUR_STEPS[(d.protocole?.etape_courante||1)-1]?.l;
         return FICHES.map(fi => {
@@ -1379,6 +1260,92 @@ const V = {
         }).join('');
       },
 
+      toggleStep(num) {
+        const el = document.getElementById('step-detail-'+num);
+        if(el) el.classList.toggle('open');
+      },
+      setDiff(val, id) {
+        document.querySelectorAll('.diff-btn').forEach(b => b.style.fontWeight = '400');
+        const el = document.getElementById('diff-'+val);
+        if(el) el.style.fontWeight = '700';
+        V.views.patient._diffCurrent = val;
+      },
+      _diffCurrent: '',
+
+      saveSeance(id) {
+        const date   = document.getElementById('sj-date')?.value;
+        const spa    = parseInt(document.getElementById('sj-spa')?.value);
+        const emerge = document.getElementById('sj-emerge')?.value.trim();
+        const defi   = document.getElementById('sj-defi-custom')?.value.trim();
+        const diff   = V.views.patient._diffCurrent || '';
+        if(!date) { V.ui.toast('Date requise', true); return; }
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        const etapeNum = d.protocole?.etape_courante || 1;
+        if(!d.seances) d.seances = [];
+        d.seances.push({ id: Date.now().toString(36), date, etape: etapeNum, spa: isNaN(spa)?null:spa, note: emerge, defi_donne: defi, difficulte: diff });
+        if(!isNaN(spa) && spa >= 0) {
+          if(!d.spa_historique) d.spa_historique = [];
+          d.spa_historique.push({ date, valeur: spa, notes: emerge ? emerge.slice(0,80) : '' });
+        }
+        if(!d.protocole.etapes[etapeNum]) d.protocole.etapes[etapeNum] = {};
+        if(defi) d.protocole.etapes[etapeNum].defi_actuel = defi;
+        if(diff) d.protocole.etapes[etapeNum].difficulte = diff;
+        V.data.savePatient(id, d);
+        V.views.patient._diffCurrent = '';
+        V.ui.toast('✓ Séance enregistrée');
+        V.views.patient.renderTab(id, 'parcours');
+      },
+
+      addMomentCle(id) {
+        const emerge = document.getElementById('sj-emerge')?.value.trim();
+        const texte = emerge || prompt('Moment clé à noter :');
+        if(!texte) return;
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(!d.moments_cles) d.moments_cles = [];
+        d.moments_cles.push({ date: new Date().toISOString().slice(0,10), texte, etape: d.protocole?.etape_courante||1 });
+        V.data.savePatient(id, d);
+        V.ui.toast('★ Moment clé enregistré');
+        V.views.patient.renderTab(id, 'parcours');
+      },
+
+      saveStepNote(num, key, val, id) {
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(!d.protocole.etapes[num]) d.protocole.etapes[num] = {};
+        d.protocole.etapes[num][key] = val;
+        V.data.savePatient(id, d);
+      },
+
+      validateStep(num, id) {
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(!d.protocole.etapes[num]) d.protocole.etapes[num] = {};
+        d.protocole.etapes[num].validee = true;
+        d.protocole.etapes[num].statut = 'validee';
+        d.protocole.etapes[num].date_validation = new Date().toISOString().slice(0,10);
+        if(d.protocole.etape_courante===num && num<6) d.protocole.etape_courante = num+1;
+        V.data.savePatient(id, d);
+        V.ui.toast(`✓ Étape ${VALEUR_STEPS[num-1].l} validée`);
+        V.views.patient.renderTab(id, 'parcours');
+      },
+
+      unvalidateStep(num, id) {
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(d.protocole.etapes[num]) { d.protocole.etapes[num].validee=false; d.protocole.etapes[num].statut='en_cours'; }
+        d.protocole.etape_courante = Math.min(d.protocole.etape_courante, num);
+        V.data.savePatient(id, d);
+        V.ui.toast('Étape rouverte');
+        V.views.patient.renderTab(id, 'parcours');
+      },
+
+      toggleBlocage(num, id) {
+        const d = V.data.getPatient(id) || V.data.newPatientData();
+        if(!d.protocole.etapes[num]) d.protocole.etapes[num] = {};
+        const was = d.protocole.etapes[num].statut === 'bloquee';
+        d.protocole.etapes[num].statut = was ? 'en_cours' : 'bloquee';
+        V.data.savePatient(id, d);
+        V.ui.toast(was ? 'Étape débloquée' : '⛔ Bloquée');
+        V.views.patient.renderTab(id, 'parcours');
+      },
+
       copyFiche(file, step, id) {
         if(!file) return;
         const list = V.data.getPatients();
@@ -1386,20 +1353,13 @@ const V = {
         const prenom = p.prenom||'';
         const base = 'https://cabinet.psyh.fr/';
         const url = base + file + (prenom ? '?prenom='+encodeURIComponent(prenom) : '');
-        const copy = t => {
-          if(navigator.clipboard) navigator.clipboard.writeText(t).catch(()=>fallback(t));
-          else fallback(t);
-        };
-        const fallback = t => {
-          const el = document.createElement('textarea');
-          el.value = t; document.body.appendChild(el);
-          el.select(); document.execCommand('copy');
-          document.body.removeChild(el);
-        };
+        const copy = t => navigator.clipboard ? navigator.clipboard.writeText(t).catch(()=>fallback(t)) : fallback(t);
+        const fallback = t => { const el=document.createElement('textarea'); el.value=t; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); };
         copy(url);
-        V.ui.toast(prenom ? `✓ Fiche ${step} copiée — personnalisée pour ${prenom}` : `✓ Lien fiche ${step} copié`);
+        V.ui.toast(prenom ? `✓ Fiche ${step} copiée — pour ${prenom}` : `✓ Fiche ${step} copiée`);
       },
 
+      addSeance() {},
       confirmDelete(id) {
         if(!confirm('Supprimer ce patient\u00a0? Cette action est irréversible.')) return;
         V.data.deletePatient(id);
