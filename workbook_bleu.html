@@ -4,212 +4,1254 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>V.A.L.E.U.R© — Workbook Masque Bleu</title>
+<title>V.A.L.E.U.R© — Workbook Masque Bleu · 21 Défis</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-@media print {
-  body::before {
-    content: attr(data-wm) ' · Document confidentiel · Ne pas diffuser';
-    position: fixed; top: 50%; left: 50%;
-    transform: translate(-50%,-50%) rotate(-35deg);
-    font-size: 15px; color: rgba(0,0,0,.06); white-space: nowrap;
-    pointer-events: none; z-index: 9999; letter-spacing: 2px; font-family: sans-serif;
-  }
-  .print-btn { display: none !important }
-  body { background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact }
-  .wrap { max-width: none; padding: 0 16px }
-  .section { break-inside: avoid; border: 1px solid rgba(0,0,0,.08) !important }
-  .semaine-block { break-inside: avoid }
-  .doc-header { break-after: page }
-  @page { margin: 14mm 12mm }
+@media print{
+  body::before{content:attr(data-wm) ' · Ne pas diffuser';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:14px;color:rgba(0,0,0,.05);white-space:nowrap;pointer-events:none;z-index:9999;letter-spacing:2px;font-family:sans-serif}
+  .no-print{display:none!important}
+  body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0 12mm}
+  .defi-card,.semaine-block,.intro-block,.science-block{break-inside:avoid}
+  .doc-header{break-after:page}
+  .semaine-header{break-after:avoid}
+  @page{margin:12mm;size:A4}
 }
-</style>
-<style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--mc:#3B82C4;--mc-rgb:59,130,196;--ink:#1A1814;--ink2:#3A342E;--ink3:#5A534A;--ink4:#8C8278;--ink5:#B8B0A5;--bg:#F7F4EE;--bg2:#EDE8DF;--surface:#FFFFFF;--gold:#A8873A;--line:rgba(26,24,20,.1);--r:10px;--r-sm:6px}
-body{font-family:'DM Sans',system-ui,sans-serif;font-weight:400;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
-.wrap{max-width:760px;margin:0 auto;padding:0 24px 80px}
-.doc-header{background:var(--ink);color:#F7F4EE;padding:32px;border-radius:var(--r);margin-bottom:20px;position:relative;overflow:hidden}
-.doc-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#3B82C4}
-.doc-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(247,244,238,.3);margin-bottom:8px}
-.doc-title{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;line-height:1;color:#3B82C4;margin-bottom:6px}
-.doc-subtitle{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:rgba(247,244,238,.5)}
-.doc-patient{font-size:10px;letter-spacing:1px;color:rgba(247,244,238,.25);margin-top:12px}
-.print-btn{position:fixed;bottom:24px;right:24px;z-index:100;display:flex;align-items:center;gap:8px;background:#3B82C4;color:#fff;border:none;border-radius:24px;padding:11px 20px;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,196,.35);transition:opacity .15s}
-.print-btn:hover{opacity:.9}
-.section{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;margin-bottom:14px}
-.section-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#3B82C4;margin-bottom:10px}
-.section-title{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:var(--ink);margin-bottom:12px;line-height:1.2}
-.peur-centrale{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#3B82C4;border-left:3px solid #3B82C4;padding:10px 16px;margin-bottom:16px;background:rgba(59,130,196,.04);border-radius:0 var(--r-sm) var(--r-sm) 0}
-.portrait-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.portrait-block{background:var(--bg);border-radius:var(--r-sm);padding:14px}
-.portrait-block-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:6px}
-.portrait-block-text{font-size:13px;color:var(--ink3);line-height:1.75}
-.nature-block{background:rgba(168,135,58,.05);border:1px solid rgba(168,135,58,.18);border-radius:var(--r-sm);padding:14px 16px;margin-top:12px}
-.nature-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.nature-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--ink2);line-height:1.75}
-.thought{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--ink3);padding:8px 12px 8px 18px;border-left:2px solid rgba(59,130,196,.3);margin-bottom:6px;background:rgba(59,130,196,.03);border-radius:0 var(--r-sm) var(--r-sm) 0;line-height:1.65}
-.dyades-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.dyade-card{background:var(--bg);border-radius:var(--r-sm);padding:14px;border-top:2px solid #3B82C4}
-.dyade-masques{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#3B82C4;margin-bottom:4px}
-.dyade-nom{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px}
-.dyade-desc{font-size:12px;color:var(--ink4);line-height:1.65}
-.dyade-note{font-size:12px;font-style:italic;color:var(--ink5);margin-top:12px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-sm);text-align:center}
-.etape-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
-.etape-row:last-child{border-bottom:none}
-.etape-key{background:rgba(59,130,196,.04);border-radius:var(--r-sm);margin:4px -8px;padding:12px 8px;border-bottom:none!important}
-.etape-circ{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;flex-shrink:0;border:2px solid}
-.etape-name{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px}
-.etape-desc{font-size:12.5px;color:var(--ink3)}
-.etape-note{font-size:12px;font-style:italic;color:#3B82C4;margin-top:5px;line-height:1.6}
-.semaine-block{margin-bottom:18px}
-.semaine-badge{display:inline-flex;align-items:center;background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:3px 12px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#3B82C4;margin-bottom:6px}
-.semaine-theme{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:4px}
-.semaine-desc{font-size:12.5px;color:var(--ink4);margin-bottom:12px;line-height:1.65}
-.defis-list{display:flex;flex-direction:column;gap:4px}
-.defi-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm)}
-.defi-check{flex-shrink:0;margin-top:2px}
-.defi-check input[type=checkbox]{width:16px;height:16px;accent-color:#3B82C4;cursor:pointer}
-.defi-num{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:#3B82C4;flex-shrink:0;width:22px}
-.defi-text{font-size:13px;color:var(--ink3);line-height:1.65}
-.signal-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:rgba(59,130,196,.04);border-radius:var(--r-sm);border:1px solid rgba(59,130,196,.1);margin-bottom:5px;font-size:13px;color:var(--ink3)}
-.signal-check{font-size:12px;color:#3B82C4;font-weight:700;flex-shrink:0;margin-top:1px}
-.doc-footer{text-align:center;font-size:10px;color:var(--ink5);padding:20px 0;letter-spacing:.5px}
-@media(max-width:600px){.portrait-grid,.dyades-grid{grid-template-columns:1fr}}
+:root{
+  --mc:#1D5F8A;--mc-rgb:29,95,138;
+  --ink:#1A1814;--ink2:#2E2820;--ink3:#4A4038;--ink4:#7A6E64;--ink5:#B0A89A;
+  --bg:#F8F5EE;--bg2:#EDE8DF;--surface:#FFFFFF;
+  --gold:#A8873A;--line:rgba(26,24,20,.08);--r:8px;--r-sm:5px;
+}
+html{font-size:15px}
+body{font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none;line-height:1.7}
+.wrap{max-width:740px;margin:0 auto;padding:0 20px 60px}
+
+.print-btn{position:fixed;bottom:20px;right:20px;z-index:100;display:flex;align-items:center;gap:7px;background:#1D5F8A;color:#fff;border:none;border-radius:20px;padding:9px 16px;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 14px rgba(29,95,138,.35);-webkit-user-select:none}
+.print-btn:hover{opacity:.88}
+
+.doc-header{margin:0 -20px 24px;padding:34px 28px 30px;background:var(--ink);position:relative;overflow:hidden}
+.doc-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#1D5F8A}
+.doc-header::after{content:'B';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:130px;font-weight:300;color:rgba(29,95,138,.07);line-height:1;pointer-events:none}
+.doc-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(248,245,238,.25);margin-bottom:6px}
+.doc-step{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1D5F8A;margin-bottom:10px}
+.doc-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:#F8F5EE;line-height:1.1;margin-bottom:5px}
+.doc-sous{font-size:13px;color:rgba(248,245,238,.45);margin-bottom:18px}
+.doc-patient{font-size:10px;color:rgba(248,245,238,.2)}
+.doc-quote{border-left:2px solid rgba(29,95,138,.4);padding:12px 16px;margin-top:16px;background:rgba(29,95,138,.06);border-radius:0 var(--r) var(--r) 0}
+.doc-quote-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:rgba(248,245,238,.7);line-height:1.6;margin-bottom:4px}
+.doc-quote-src{font-size:9px;color:rgba(248,245,238,.3)}
+
+.intro-block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:12px}
+.intro-title{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#1D5F8A;margin-bottom:10px}
+.intro-text{font-size:13px;color:var(--ink3);line-height:1.85}
+.intro-text p{margin-bottom:11px}.intro-text p:last-child{margin-bottom:0}
+
+.science-block{background:rgba(29,95,138,.04);border:1px solid rgba(29,95,138,.15);border-radius:var(--r);padding:14px 18px;margin-bottom:18px}
+.science-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#1D5F8A;margin-bottom:7px}
+.science-text{font-size:12.5px;color:var(--ink3);line-height:1.8}
+
+.semaine-block{margin-bottom:22px}
+.semaine-header{padding:14px 18px;background:var(--surface);border-radius:var(--r);margin-bottom:12px;border:1px solid var(--line)}
+.semaine-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.semaine-titre{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:var(--ink);margin-bottom:3px}
+.semaine-sous{font-size:12.5px;color:var(--ink4);font-style:italic}
+
+.defis-container{display:flex;flex-direction:column;gap:10px}
+
+.defi-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.defi-header{display:flex;align-items:flex-start;gap:11px;padding:13px 16px 11px;border-bottom:1px solid var(--line)}
+.defi-num-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.defi-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.35}
+
+.defi-why{display:flex;gap:9px;padding:10px 14px;background:rgba(29,95,138,.03);border-bottom:1px solid var(--line)}
+.defi-why-icon{font-size:13px;flex-shrink:0;margin-top:1px}
+.defi-why-text{font-size:12px;color:var(--ink3);line-height:1.75}
+
+.defi-temoin{display:flex;gap:9px;padding:9px 14px;background:rgba(168,135,58,.04);border-bottom:1px solid var(--line)}
+.defi-temoin-icon{font-size:13px;flex-shrink:0;margin-top:1px}
+.defi-temoin-text{font-size:12px;color:var(--ink4);line-height:1.7}
+
+.defi-action{margin:12px 14px;padding:11px 14px;border-radius:var(--r-sm);background:rgba(29,95,138,.04)}
+.defi-action-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#1D5F8A;margin-bottom:5px}
+.defi-action-text{font-size:13px;color:var(--ink2);line-height:1.75}
+
+.defi-observation{padding:12px 14px;background:var(--bg);border-top:1px solid var(--line)}
+.defi-obs-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:10px}
+.defi-diff-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.defi-diff-label{font-size:11px;color:var(--ink4);flex-shrink:0}
+.defi-stars{display:flex;gap:8px}
+.defi-stars label{cursor:pointer;font-size:12px;color:var(--ink4);display:flex;align-items:center;gap:3px}
+.defi-stars input[type=radio]{width:14px;height:14px;accent-color:#1D5F8A}
+
+.write-field{margin-bottom:9px}
+.write-field-label{font-size:11px;font-weight:600;color:var(--ink4);margin-bottom:4px}
+.write-field-lines{height:48px;background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:var(--r-sm);background-image:repeating-linear-gradient(transparent,transparent 23px,rgba(26,24,20,.06) 23px,rgba(26,24,20,.06) 24px);background-size:100% 24px}
+
+.doc-footer{text-align:center;font-size:10px;color:var(--ink5);padding:16px 0;letter-spacing:.5px;border-top:1px solid var(--line);margin-top:18px}
 </style>
 </head>
 <body>
-
 <script>
-/* ── SÉCURITÉ : anti-copie + filigrane patient ── */
 (function(){
-  // Anti-copie
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  ['selectstart','copy','cut'].forEach(ev => document.addEventListener(ev, e => {
-    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  ['selectstart','copy','cut'].forEach(ev=>document.addEventListener(ev,e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
     e.preventDefault();
   }));
-  document.addEventListener('keydown', e => {
-    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
-    if((e.ctrlKey||e.metaKey) && 'sacupxy'.indexOf(e.key.toLowerCase()) >= 0) e.preventDefault();
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+    if((e.ctrlKey||e.metaKey)&&'sacupxy'.indexOf(e.key.toLowerCase())>=0)e.preventDefault();
   });
-
-  // Filigrane dynamique depuis ?prenom= dans l'URL
-  var prenom = new URLSearchParams(location.search).get('prenom') || '';
-  var wm_text = prenom
-    ? (prenom + ' · V.A.L.E.U.R© · Document personnel · Ne pas diffuser')
-    : 'V.A.L.E.U.R© · Document confidentiel · Ne pas diffuser';
-
-  // Filigrane écran
-  var wm = document.createElement('div');
-  wm.setAttribute('aria-hidden','true');
-  wm.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:99999;display:flex;align-items:center;justify-content:center;overflow:hidden';
-  wm.innerHTML = '<div style="transform:rotate(-35deg);font-size:13px;color:rgba(26,24,20,.045);white-space:nowrap;letter-spacing:2px;font-family:sans-serif;font-weight:400;-webkit-user-select:none;user-select:none">' + wm_text + '</div>';
-  document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(wm); });
-
-  // Filigrane impression (via data-wm)
-  document.documentElement.setAttribute('data-wm', wm_text);
-
-  // Afficher le prénom dans le header si présent
-  if(prenom) {
-    document.addEventListener('DOMContentLoaded', function(){
-      var el = document.getElementById('patient-prenom-display');
-      if(el) el.textContent = 'Établi pour ' + prenom + ' · ';
-    });
-  }
+  var prenom=new URLSearchParams(location.search).get('prenom')||'';
+  var wm=prenom?prenom+' · V.A.L.E.U.R© · Document personnel · Ne pas diffuser':'V.A.L.E.U.R© · Document confidentiel · Ne pas diffuser';
+  var d=document.createElement('div');
+  d.setAttribute('aria-hidden','true');
+  d.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:99999;display:flex;align-items:center;justify-content:center;overflow:hidden';
+  d.innerHTML='<div style="transform:rotate(-35deg);font-size:13px;color:rgba(26,24,20,.04);white-space:nowrap;letter-spacing:2px;font-family:sans-serif;-webkit-user-select:none;user-select:none">'+wm+'</div>';
+  document.documentElement.setAttribute('data-wm',wm);
+  document.addEventListener('DOMContentLoaded',function(){
+    document.body.appendChild(d);
+    if(prenom){var el=document.getElementById('patient-prenom');if(el)el.textContent='Pour '+prenom+' · ';}
+  });
 })();
 </script>
-<button class="print-btn" onclick="window.print()">
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-  Imprimer / PDF
+
+<button class="print-btn no-print" onclick="window.print()">
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  Imprimer · PDF
 </button>
+
 <div class="wrap">
+
   <div class="doc-header">
-    <div class="doc-eyebrow">V.A.L.E.U.R© · Workbook · © Céline Bourbon</div>
-    <div class="doc-title">Masque Bleu</div>
-    <div class="doc-subtitle">Peur de l'impuissance · Besoin de maîtrise</div>
-    <div class="doc-patient"><span id="patient-prenom-display"></span>Méthode V.A.L.E.U.R© · Programme 21 défis</div>
-  </div>
-  <div class="section">
-    <div class="section-label">1 · Portrait de votre masque</div>
-    <div class="peur-centrale">Peur centrale : la peur du chaos, de perdre le contrôle, d'être à la merci des autres</div>
-    <div class="portrait-grid">
-      <div class="portrait-block"><div class="portrait-block-label">Origine</div><div class="portrait-block-text">Votre système nerveux a appris que contrôler l'environnement était la seule façon de se sentir en sécurité. Ce mécanisme vous a rendu·e très efficace et compétent·e. Aujourd'hui, il crée des tensions relationnelles, de la résistance chez les autres — et une fatigue que vous ne pouvez pas tout à fait expliquer.</div></div>
-      <div class="portrait-block"><div class="portrait-block-label">Ce que fait le masque</div><div class="portrait-block-text">Ce masque gère, organise, dirige. Il a du mal à déléguer — parce que déléguer, c'est accepter que les choses soient faites autrement. Il surveille les détails, corrige, reprend. La maîtrise est constante, même dans les espaces qui devraient être libres.</div></div>
+    <div class="doc-eyebrow">V.A.L.E.U.R© · Workbook patient · 21 défis · © Céline Bourbon</div>
+    <div class="doc-step">Masque Bleu</div>
+    <div class="doc-title">Hypercontrôle relationnel · Peur du chaos</div>
+    <div class="doc-sous">Peur de perdre le contrôle, de l'impuissance</div>
+    <div class="doc-patient"><span id="patient-prenom"></span>Programme d'exposition graduée · 21 jours</div>
+    <div class="doc-quote">
+      <div class="doc-quote-text">Ce masque n'est pas vous. Il est une adaptation intelligente qui a perdu la notion du temps. Ce que vous êtes a toujours été là — simplement recouvert.</div>
+      <div class="doc-quote-src">Céline Bourbon — De la peur à la joie d'être soi · L'Harmattan</div>
     </div>
-    <div class="section-label" style="margin-bottom:8px">Pensées types</div>
-    <div class="thought">« Si je ne le fais pas moi-même, ça ne sera pas fait comme il faut. »</div>
-<div class="thought">« Je ne peux pas me permettre de perdre la main sur ça. »</div>
-<div class="thought">« Lâcher prise, c'est prendre le risque que tout parte en vrille. »</div>
-    <div class="nature-block"><div class="nature-label">Nature authentique sous-jacente</div><div class="nature-text">Sous ce masque vit une autorité naturelle et une capacité de structuration d'une réelle puissance. Quand ce masque s'assouplira, cette force deviendra une parole juste et inspirante — un leadership qui élève au lieu de contrôler.</div></div>
   </div>
-  <div class="section">
-    <div class="section-label">2 · Amplifications possibles</div>
-    <div class="section-title">Quand deux masques s'activent ensemble</div>
-    <p style="font-size:13px;color:var(--ink4);margin-bottom:14px;line-height:1.7">Certains masques se renforcent mutuellement. Si vous vous reconnaissez dans l'une de ces combinaisons, mentionnez-le à votre praticienne.</p>
-    <div class="dyades-grid"><div class="dyade-card"><div class="dyade-masques">Bleu + Jaune</div><div class="dyade-nom">Maîtrise absolue</div><div class="dyade-desc">Le besoin de contrôle (Bleu) fusionne avec le besoin de certitude (Jaune). La planification devient totale — chaque imprévu est vécu comme une menace à neutraliser.</div></div><div class="dyade-card"><div class="dyade-masques">Bleu + Indigo</div><div class="dyade-nom">Perfectionnisme au pouvoir</div><div class="dyade-desc">La peur du chaos (Bleu) rencontre la peur de l'échec (Indigo). Tout doit être parfait ET sous contrôle. L'exigence envers soi et les autres devient une source d'épuisement chronique.</div></div></div>
-    <div class="dyade-note">Si vous reconnaissez plusieurs masques actifs simultanément, parlez-en à votre praticienne.</div>
+
+  <div class="intro-block">
+    <div class="intro-title">Comprendre votre masque</div>
+    <div class="intro-text"><p>Votre masque bleu s'est formé à un moment où tout semblait imprévisible, peu fiable, ou menaçant. Votre système nerveux a trouvé une solution brillante : si je maîtrise tout, rien ne peut m'échapper. Si je prends le contrôle, je reste en sécurité.</p><p>Cette capacité à structurer, organiser et diriger vous a rendu·e très efficace. Elle a sauvé quelque chose d'essentiel.</p><p>Mais aujourd'hui, ce besoin de maîtrise crée des tensions dans les relations, de la résistance chez les autres, et une fatigue que vous n'arrivez pas tout à fait à expliquer.</p><p>Ces 21 défis suivent la hiérarchie d'exposition au lâcher prise (Rotter, 1966) : vous allez apprendre à déléguer, à accepter, et finalement à trouver la force dans la confiance plutôt que dans le contrôle.</p></div>
   </div>
-  <div class="section">
-    <div class="section-label">3 · Protocole V.A.L.E.U.R©</div>
-    <div class="section-title">Les 6 étapes du travail</div>
-    <p style="font-size:13px;color:var(--ink4);margin-bottom:14px;line-height:1.7">L'étape mise en évidence est celle qui correspond à votre masque dominant.</p>
-    <div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#4A90D9;color:#4A90D9;">V</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#4A90D9">VOIR</div>
-            <div class="etape-desc">Reconnaître la pensée du masque au moment où elle s'active.</div>
-            
-          </div>
-        </div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#E05252;color:#E05252;">A</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#E05252">ACCUEILLIR</div>
-            <div class="etape-desc">Recevoir l'émotion sans la fuir ni la minimiser.</div>
-            
-          </div>
-        </div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#E8863A;color:#E8863A;">L</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#E8863A">LOCALISER</div>
-            <div class="etape-desc">Revenir au corps — là où le masque se manifeste physiquement.</div>
-            
-          </div>
-        </div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#D4A017;color:#D4A017;">E</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#D4A017">EXPLORER</div>
-            <div class="etape-desc">Identifier le conflit entre la protection et ce qui compte vraiment.</div>
-            
-          </div>
-        </div><div class="etape-row  etape-key">
-          <div class="etape-circ" style="border-color:#3AAA6F;color:#3AAA6F;background:rgba(59,130,196,.1)">U</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#3AAA6F">UNIFIER</div>
-            <div class="etape-desc">Trouver une voie qui honore à la fois la sécurité et la liberté.</div>
-            <div class="etape-note">L'étape UNIFIER est clé pour vous : réconcilier la part qui a besoin de maîtrise pour se sentir en sécurité avec celle qui sait que la force authentique n'a pas besoin de tout contrôler.</div>
-          </div>
-        </div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#C9A84C;color:#C9A84C;">R</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#C9A84C">RENFORCER</div>
-            <div class="etape-desc">Ancrer un nouveau comportement — choisi, pas subi.</div>
-            
-          </div>
-        </div></div>
+
+  <div class="science-block">
+    <div class="science-label">Ce que la recherche dit</div>
+    <div class="science-text">Le besoin de contrôle (locus of control externe perçu comme menace, Rotter, 1966) est documenté comme source majeure d'épuisement. Les recherches en leadership montrent qu'un style de contrôle excessif réduit la performance des équipes et isole le leader (Yukl, 2013). La force authentique ne vient pas du contrôle — elle vient de la confiance.</div>
   </div>
-  <div class="section">
-    <div class="section-label">4 · Programme 21 défis</div>
-    <div class="section-title">Un défi par jour — trois semaines</div>
-    <p style="font-size:13px;color:var(--ink4);margin-bottom:18px;line-height:1.7">Vous tenez tout. Ce workbook vous montre que votre force n'a pas besoin du contrôle.<br><br>Avant chaque défi : 3 respirations lentes. Après : cochez et notez ce que vous avez observé.</p>
-    <div class="semaine-block"><div class="semaine-badge">Semaine I · Jours 1–7</div><div class="semaine-theme">Lâcher une prise</div><div class="semaine-desc">Cette semaine, vous pratiquez de petits moments de non-contrôle — et vous observez ce qui se passe.</div><div class="defis-list"><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d1"><label for="d1"></label></div><div class="defi-num">1</div><div class="defi-text">Confier une tâche mineure à quelqu'un — sans vérifier le résultat</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d2"><label for="d2"></label></div><div class="defi-num">2</div><div class="defi-text">Observer ce que vous ressentez quand vous ne contrôlez pas quelque chose</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d3"><label for="d3"></label></div><div class="defi-num">3</div><div class="defi-text">Laisser quelqu'un d'autre décider de quelque chose de petit</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d4"><label for="d4"></label></div><div class="defi-num">4</div><div class="defi-text">Identifier un domaine où vous pourriez lâcher sans risque réel</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d5"><label for="d5"></label></div><div class="defi-num">5</div><div class="defi-text">Remarquer quand vous reprenez quelque chose que vous aviez confié</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d6"><label for="d6"></label></div><div class="defi-num">6</div><div class="defi-text">Écrire : « Si quelqu'un d'autre s'en occupait, ce qui arriverait probablement c'est… »</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d7"><label for="d7"></label></div><div class="defi-num">7</div><div class="defi-text">Pratiquer une activité où vous êtes débutant·e — sans vouloir maîtriser rapidement</div></div></div></div><div class="semaine-block"><div class="semaine-badge">Semaine II · Jours 8–14</div><div class="semaine-theme">Déléguer vraiment</div><div class="semaine-desc">Cette semaine, vous allez plus loin : confier quelque chose d'important — et laisser faire.</div><div class="defis-list"><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d8"><label for="d8"></label></div><div class="defi-num">8</div><div class="defi-text">Déléguer quelque chose d'important — et laisser faire</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d9"><label for="d9"></label></div><div class="defi-num">9</div><div class="defi-text">Demander de l'aide dans un domaine où vous vous débrouillez habituellement seul·e</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d10"><label for="d10"></label></div><div class="defi-num">10</div><div class="defi-text">Laisser une conversation se diriger sans que vous la guidiez</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d11"><label for="d11"></label></div><div class="defi-num">11</div><div class="defi-text">Accepter un résultat imparfait sans le corriger</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d12"><label for="d12"></label></div><div class="defi-num">12</div><div class="defi-text">Observer la différence entre contrôle utile et contrôle défensif</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d13"><label for="d13"></label></div><div class="defi-num">13</div><div class="defi-text">Identifier quelqu'un qui fait bien — différemment de vous — et le reconnaître</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d14"><label for="d14"></label></div><div class="defi-num">14</div><div class="defi-text">Écrire : « Ce que j'aurais envie de faire si je ne devais pas tout tenir »</div></div></div></div><div class="semaine-block"><div class="semaine-badge">Semaine III · Jours 15–21</div><div class="semaine-theme">Recevoir vraiment</div><div class="semaine-desc">Cette semaine, vous ancrez la capacité à être accompagné·e — sans gérer, reprendre ou minimiser ce qu'on vous offre.</div><div class="defis-list"><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d15"><label for="d15"></label></div><div class="defi-num">15</div><div class="defi-text">Passer une journée entière sans vérifier, reprendre ou corriger</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d16"><label for="d16"></label></div><div class="defi-num">16</div><div class="defi-text">Laisser quelqu'un d'autre diriger un projet important pour vous</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d17"><label for="d17"></label></div><div class="defi-num">17</div><div class="defi-text">Recevoir de l'aide — pleinement, sans minimiser ni gérer la personne qui aide</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d18"><label for="d18"></label></div><div class="defi-num">18</div><div class="defi-text">Identifier une chose que vous contrôlez qui ne vous nourrit plus</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d19"><label for="d19"></label></div><div class="defi-num">19</div><div class="defi-text">Remarquer ce que vous ressentez quand quelqu'un fait bien sans vous</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d20"><label for="d20"></label></div><div class="defi-num">20</div><div class="defi-text">Écrire : « Ce que ça serait de faire confiance à… »</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d21"><label for="d21"></label></div><div class="defi-num">21</div><div class="defi-text">Pratiquer le silence dans un groupe — laisser les autres décider</div></div></div></div>
-  </div>
-  <div class="section">
-    <div class="section-label">5 · Signaux que vous progressez</div>
-    <div style="margin-top:10px"><div class="signal-item"><span class="signal-check">✓</span><span>Vous déléguez et laissez faire — sans vérifier systématiquement</span></div><div class="signal-item"><span class="signal-check">✓</span><span>Vous pouvez recevoir de l'aide sans la gérer</span></div><div class="signal-item"><span class="signal-check">✓</span><span>Un résultat différent du vôtre vous semble acceptable</span></div><div class="signal-item"><span class="signal-check">✓</span><span>La force que vous ressentez ne dépend plus de tout tenir</span></div></div>
-    <p style="margin-top:12px;font-size:12px;font-style:italic;color:var(--ink5)">Ces signaux arrivent progressivement — et de façon irréversible.</p>
-  </div>
+
+  
+          <div class="semaine-block">
+            <div class="semaine-header" style="border-left:4px solid #1D5F8A">
+              <div class="semaine-badge" style="background:rgba(29,95,138,.1);color:#1D5F8A;border:1px solid rgba(29,95,138,.25)">Semaine I · Jours 1–7</div>
+              <div class="semaine-titre">Observer le masque bleu en action</div>
+              <div class="semaine-sous">Cette semaine, vous cartographiez où et comment le masque bleu opère — sans changer.</div>
+            </div>
+            <div class="defis-container">
+              
+            <div class="defi-card" id="d1">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">1</div>
+                <div class="defi-title">Cartographier vos zones de contrôle aujourd'hui</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Voir clairement ce que vous contrôlez — et ce que vous tentez de contrôler sans pouvoir — est la première étape de la thérapie du besoin de maîtrise (Rotter, 1966).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque contrôle partout — même là où c'est épuisant. Le Témoin regarde le coût honnêtement.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Faites la liste de tout ce que vous avez tenté de contrôler aujourd'hui. Puis cochez ce qui était réellement nécessaire. Qu'est-ce que vous voyez ?</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d1" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d1" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d1" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d1" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d1" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d2">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">2</div>
+                <div class="defi-title">Observer votre réaction quand quelque chose ne va pas comme prévu</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La réaction émotionnelle au manque de contrôle est souvent automatique et disproportionnée. La nommer sans s'y identifier est le premier pas de la régulation (Gross, 2002).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque réagit. Le Témoin observe la réaction — sans la combattre.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">La prochaine fois que quelque chose ne se passe pas comme vous l'aviez prévu, notez votre réaction automatique (corps, pensées, comportement). Sans changer. Juste observer.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d2" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d2" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d2" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d2" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d2" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d3">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">3</div>
+                <div class="defi-title">Confier une petite tâche sans vérifier le processus</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'exposition graduée à la délégation commence par de petites tâches à faible enjeu (Wolpe, 1958). Chaque délégation réussie réécrit progressivement la croyance "je dois tout contrôler".</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque pense que déléguer, c'est risquer. Le Témoin peut observer que d'autres façons de faire fonctionnent aussi.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Confiez une tâche mineure à quelqu'un. Engagez-vous à ne pas vérifier le processus — seulement le résultat final. Notez votre niveau d'anxiété pendant et ce qui s'est passé réellement.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d3" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d3" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d3" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d3" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d3" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d4">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">4</div>
+                <div class="defi-title">Accepter un résultat différent du vôtre sans corriger</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Corriger systématiquement le travail des autres maintient l'idée que seule votre méthode est valide. L'exposer au maintien d'un résultat "différent mais acceptable" entraîne la tolérance à la diversité.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque corrige parce qu'il croit qu'une seule façon est correcte. Le Témoin peut découvrir que différent n'est pas forcément moins bien.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Quand quelqu'un réalise une tâche différemment de vous, ne corrigez pas. Laissez le résultat tel quel — s'il remplit l'objectif principal. Notez votre niveau de tolérance.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d4" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d4" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d4" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d4" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d4" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d5">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">5</div>
+                <div class="defi-title">Laisser quelqu'un d'autre prendre une décision vous concernant</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Cédé le contrôle décisionnel même ponctuellement développe la confiance en la capacité décisionnelle des autres — et en sa propre résilience face au résultat (Bandura, 1977).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque dirige. Le Témoin peut suivre — et observer que ça fonctionne aussi.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Laissez quelqu'un choisir pour vous dans une situation du quotidien (restaurant, activité, trajet…). Suivez sans commentaire. Notez ce qui s'est passé réellement.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d5" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d5" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d5" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d5" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d5" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d6">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">6</div>
+                <div class="defi-title">Observer la tension dans le corps quand vous perdez le contrôle</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La tension corporelle associée à la perte de contrôle est un signal du système nerveux sympathique (LeDoux, 1996). La nommer, c'est commencer à la réguler.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le corps du masque se tend quand le contrôle échappe. Le Témoin peut respirer dans cette tension — sans en faire une urgence.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">La prochaine fois qu'une situation échappe à votre contrôle, portez attention à votre corps : où se loge la tension ? Appliquez la respiration vagale (4-8). Notez l'évolution de la tension.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d6" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d6" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d6" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d6" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d6" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d7">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">7</div>
+                <div class="defi-title">Identifier le coût du contrôle</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Voir le coût réel du besoin de contrôle — en énergie, en relations, en plaisir — est souvent le déclencheur de la motivation au changement (Prochaska & DiClemente, 1983).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque ne voit pas son coût — il est trop occupé à contrôler. Le Témoin peut faire le bilan.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Listez les coûts concrets de votre besoin de contrôle : énergie dépensée, tensions relationnelles, plaisirs manqués, délégations impossibles… Qu'est-ce que vous voyez ?</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d7" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d7" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d7" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d7" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d7" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+          <div class="semaine-block">
+            <div class="semaine-header" style="border-left:4px solid #1D5F8A">
+              <div class="semaine-badge" style="background:rgba(29,95,138,.1);color:#1D5F8A;border:1px solid rgba(29,95,138,.25)">Semaine II · Jours 8–14</div>
+              <div class="semaine-titre">Lâcher prise — progressivement</div>
+              <div class="semaine-sous">Cette semaine, vous vous entraînez à relâcher le contrôle dans des situations progressivement plus importantes.</div>
+            </div>
+            <div class="defis-container">
+              
+            <div class="defi-card" id="d8">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">8</div>
+                <div class="defi-title">Déléguer quelque chose de plus important sans superviser</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La délégation progressive est la technique centrale de l'exposition pour le besoin de contrôle (Barlow, 2002). Chaque niveau de délégation entraîne la tolérance au niveau suivant.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque supervise même quand il délègue. Le Témoin délègue et fait confiance au résultat.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Déléguez quelque chose de plus important que la semaine passée. Engagez-vous à ne pas vérifier pendant le processus. Notez ce qui s'est passé.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d8" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d8" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d8" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d8" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d8" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d9">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">9</div>
+                <div class="defi-title">Demander de l'aide dans un domaine où vous maîtrisez habituellement</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Demander de l'aide dans un domaine de compétence personnel est l'une des formes les plus difficiles de lâcher prise pour le masque bleu — car cela signifie accepter d'être accompagné·e là où on se croyait seul nécessaire.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque fait seul pour rester indispensable. Le Témoin peut recevoir de l'aide — même là où il excelle.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Demandez de l'aide sur quelque chose que vous maîtrisez habituellement seul·e. Acceptez l'aide reçue sans la corriger ni la guider. Notez ce que cela a généré en vous.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d9" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d9" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d9" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d9" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d9" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d10">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">10</div>
+                <div class="defi-title">Admettre "je ne sais pas" dans un contexte professionnel ou social</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'aveu d'incertitude est perçu comme une faiblesse par le masque bleu. Les recherches en leadership montrent l'inverse : l'humilité renforce l'autorité (Owens & Hekman, 2012).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque dit "je sais" pour rester en contrôle. Le Témoin peut dire "je ne sais pas" — et découvrir que son autorité reste intacte.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Dans une situation où vous êtes tenté·e de faire semblant de savoir, admettez que vous ne savez pas et demandez. Notez la réaction des autres et ce que vous avez ressenti.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d10" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d10" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d10" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d10" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d10" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d11">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">11</div>
+                <div class="defi-title">Laisser une conversation se diriger sans vous</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Contrôler le cours des conversations est une forme de maîtrise relationnelle. Laisser une conversation se diriger librement entraîne la confiance en la dynamique naturelle de l'échange.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque guide la conversation. Le Témoin peut la laisser trouver son propre chemin.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Dans une conversation, ne guidez pas. Ne redirigez pas. Laissez l'autre amener ce qu'il·elle veut amener. Notez ce qui s'est passé.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d11" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d11" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d11" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d11" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d11" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d12">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">12</div>
+                <div class="defi-title">Accepter un résultat imparfait sur quelque chose d'important</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'exposition à des résultats imparfaits sur des sujets importants est le niveau intermédiaire de la thérapie d'exposition pour le besoin de contrôle (Barlow, 2002).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque corrige les résultats imparfaits. Le Témoin peut laisser l'imparfait être — et constater que le monde continue.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Laissez un résultat imparfait sur quelque chose d'important tel quel — sans le reprendre, sans le corriger. Notez votre niveau de tolérance et ce qui s'est passé réellement.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d12" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d12" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d12" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d12" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d12" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d13">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">13</div>
+                <div class="defi-title">Recevoir de l'aide sans gérer la personne qui aide</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Gérer la personne qui aide est une forme de contrôle masqué. Recevoir de l'aide vraiment — sans instructions, sans correction — requiert une confiance profonde (Bowlby, 1969).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque gère même quand on l'aide. Le Témoin peut recevoir — pleinement, sans interférer.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Demandez de l'aide sur quelque chose de significatif. Laissez la personne faire à sa façon, sans commentaire ni correction. Notez ce qui s'est passé.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d13" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d13" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d13" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d13" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d13" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d14">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">14</div>
+                <div class="defi-title">Pratiquer le silence dans un groupe — laisser les autres décider</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Le silence volontaire dans un groupe est l'une des expositions les plus difficiles pour le masque bleu. Il requiert de faire confiance à la dynamique collective sans l'influencer.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque dirige le groupe. Le Témoin peut s'asseoir et observer — et découvrir que le groupe fonctionne.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Dans un contexte collectif (réunion, repas, activité…), pratiquez le silence volontaire. Ne dirigez pas, ne proposez pas, ne corrigez pas. Notez ce qui s'est passé sans vous.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d14" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d14" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d14" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d14" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d14" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+          <div class="semaine-block">
+            <div class="semaine-header" style="border-left:4px solid #1D5F8A">
+              <div class="semaine-badge" style="background:rgba(29,95,138,.1);color:#1D5F8A;border:1px solid rgba(29,95,138,.25)">Semaine III · Jours 15–21</div>
+              <div class="semaine-titre">Ancrer — confiance et autorité authentique</div>
+              <div class="semaine-sous">Cette semaine, vous découvrez que votre force ne vient pas du contrôle — mais de la confiance.</div>
+            </div>
+            <div class="defis-container">
+              
+            <div class="defi-card" id="d15">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">15</div>
+                <div class="defi-title">Passer une journée complète sans corriger, reprendre ou contrôler</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Une journée sans comportements de contrôle est l'exposition de plus haute intensité pour le masque bleu. Elle démontre que le monde continue — et souvent mieux — sans votre contrôle constant.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Cette journée n'est pas un risque. C'est une expérience. Le Témoin observe ce qui se passe vraiment.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Pendant 24 heures, supprimez tous les comportements de contrôle non vitaux. Notez heure par heure si nécessaire. Qu'est-ce qui s'est passé ?</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d15" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d15" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d15" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d15" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d15" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d16">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">16</div>
+                <div class="defi-title">Laisser quelqu'un diriger un projet important</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Céder la direction d'un projet important est l'exposition de haute intensité centrale pour le besoin de maîtrise. Elle requiert de faire confiance aux compétences de l'autre — et à votre propre résilience face au résultat.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque croit être indispensable. Le Témoin peut découvrir que quelqu'un d'autre peut aussi porter quelque chose d'important.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Confiez un projet important à quelqu'un d'autre. Ne supervisez pas. Laissez-le·la diriger. Notez ce qui s'est passé.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d16" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d16" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d16" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d16" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d16" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d17">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">17</div>
+                <div class="defi-title">Identifier où votre contrôle est devenu de la méfiance</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Le besoin de contrôle est souvent de la méfiance déguisée — méfiance en les autres, en les processus, en la vie elle-même (Bowlby, 1969). Voir cela, c'est commencer à choisir la confiance.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque contrôle parce qu'il ne fait pas confiance. Le Témoin peut choisir de faire confiance — à doses mesurées.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Identifiez 3 relations ou situations où votre contrôle cache de la méfiance. Pour chacune, demandez-vous : que se passerait-il si je faisais confiance ? Notez ce que vous voyez.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d17" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d17" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d17" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d17" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d17" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d18">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">18</div>
+                <div class="defi-title">Exercer votre autorité par l'inspiration plutôt que le contrôle</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'autorité authentique — qui inspire plutôt que contrôle — génère plus d'engagement et de résultats (Yukl, 2013). C'est le passage du pouvoir sur aux pouvoir avec.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque dirige par le contrôle. Le Témoin peut diriger par la confiance et l'exemple.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Dans une situation de leadership, choisissez d'inspirer plutôt que de diriger. Posez une question au lieu de donner une directive. Faites confiance à l'intelligence collective. Notez l'effet.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d18" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d18" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d18" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d18" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d18" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d19">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">19</div>
+                <div class="defi-title">Trouver la sérénité dans ce qui échappe au contrôle</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La prière de la sérénité de Niebuhr (1951) — changer ce qui peut l'être, accepter ce qui ne peut pas — est une compétence entraînable. La pratique de l'acceptation réduit le stress perçu.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Il y a des choses que le masque ne peut pas contrôler. Le Témoin peut les accepter — et libérer l'énergie pour ce qui compte.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Identifiez une situation importante qui échappe à votre contrôle. Pratiquez l'acceptation consciente : "Je ne contrôle pas ceci. Je peux influencer cela. Je choisit de lâcher ce que je ne contrôle pas." Notez l'effet sur votre niveau d'énergie.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d19" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d19" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d19" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d19" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d19" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d20">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">20</div>
+                <div class="defi-title">Célébrer un succès qui n'est pas le vôtre</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La capacité à célébrer le succès des autres sans le minimiser ni s'y comparer est un signe de sécurité interne développée (Deci & Ryan, 2000). Elle dit : la réussite des autres ne diminue pas la mienne.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque compare. Le Témoin peut célébrer — sans que ça lui coûte quoi que ce soit.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Quelqu'un dans votre entourage réussit quelque chose. Célébrez ce succès sincèrement et complètement — sans le relativiser, sans y ajouter votre propre contribution. Notez ce qui s'est passé.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d20" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d20" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d20" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d20" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d20" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d21">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#1D5F8A;color:#fff">21</div>
+                <div class="defi-title">La Lettre au Masque Bleu</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La reconsolidation mémorielle (Ecker et al., 2012) permet de transformer une croyance au moment de sa réactivation. Écrire au masque bleu crée cette fenêtre de transformation.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Vous n'êtes pas votre besoin de maîtrise. Vous êtes celui ou celle qui découvre que la vraie force est dans la confiance.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #1D5F8A">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Écrivez à votre masque bleu : 1) Merci — voici ce que tu as protégé. 2) Voici ce que tu m'as coûté. 3) Voici ce que je choisis maintenant. Lisez à voix haute.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d21" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d21" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d21" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d21" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d21" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
   <div class="doc-footer">© 2026 Céline Bourbon · Méthode V.A.L.E.U.R© · Document personnel — ne pas diffuser</div>
+
 </div>
 </body>
 </html>

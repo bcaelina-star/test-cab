@@ -4,212 +4,1254 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>V.A.L.E.U.R© — Workbook Masque Orange</title>
+<title>V.A.L.E.U.R© — Workbook Masque Orange · 21 Défis</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-@media print {
-  body::before {
-    content: attr(data-wm) ' · Document confidentiel · Ne pas diffuser';
-    position: fixed; top: 50%; left: 50%;
-    transform: translate(-50%,-50%) rotate(-35deg);
-    font-size: 15px; color: rgba(0,0,0,.06); white-space: nowrap;
-    pointer-events: none; z-index: 9999; letter-spacing: 2px; font-family: sans-serif;
-  }
-  .print-btn { display: none !important }
-  body { background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact }
-  .wrap { max-width: none; padding: 0 16px }
-  .section { break-inside: avoid; border: 1px solid rgba(0,0,0,.08) !important }
-  .semaine-block { break-inside: avoid }
-  .doc-header { break-after: page }
-  @page { margin: 14mm 12mm }
+@media print{
+  body::before{content:attr(data-wm) ' · Ne pas diffuser';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:14px;color:rgba(0,0,0,.05);white-space:nowrap;pointer-events:none;z-index:9999;letter-spacing:2px;font-family:sans-serif}
+  .no-print{display:none!important}
+  body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0 12mm}
+  .defi-card,.semaine-block,.intro-block,.science-block{break-inside:avoid}
+  .doc-header{break-after:page}
+  .semaine-header{break-after:avoid}
+  @page{margin:12mm;size:A4}
 }
-</style>
-<style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--mc:#E8863A;--mc-rgb:232,134,58;--ink:#1A1814;--ink2:#3A342E;--ink3:#5A534A;--ink4:#8C8278;--ink5:#B8B0A5;--bg:#F7F4EE;--bg2:#EDE8DF;--surface:#FFFFFF;--gold:#A8873A;--line:rgba(26,24,20,.1);--r:10px;--r-sm:6px}
-body{font-family:'DM Sans',system-ui,sans-serif;font-weight:400;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
-.wrap{max-width:760px;margin:0 auto;padding:0 24px 80px}
-.doc-header{background:var(--ink);color:#F7F4EE;padding:32px;border-radius:var(--r);margin-bottom:20px;position:relative;overflow:hidden}
-.doc-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#E8863A}
-.doc-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(247,244,238,.3);margin-bottom:8px}
-.doc-title{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;line-height:1;color:#E8863A;margin-bottom:6px}
-.doc-subtitle{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:rgba(247,244,238,.5)}
-.doc-patient{font-size:10px;letter-spacing:1px;color:rgba(247,244,238,.25);margin-top:12px}
-.print-btn{position:fixed;bottom:24px;right:24px;z-index:100;display:flex;align-items:center;gap:8px;background:#E8863A;color:#fff;border:none;border-radius:24px;padding:11px 20px;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 16px rgba(232,134,58,.35);transition:opacity .15s}
-.print-btn:hover{opacity:.9}
-.section{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;margin-bottom:14px}
-.section-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#E8863A;margin-bottom:10px}
-.section-title{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:var(--ink);margin-bottom:12px;line-height:1.2}
-.peur-centrale{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#E8863A;border-left:3px solid #E8863A;padding:10px 16px;margin-bottom:16px;background:rgba(232,134,58,.04);border-radius:0 var(--r-sm) var(--r-sm) 0}
-.portrait-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.portrait-block{background:var(--bg);border-radius:var(--r-sm);padding:14px}
-.portrait-block-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:6px}
-.portrait-block-text{font-size:13px;color:var(--ink3);line-height:1.75}
-.nature-block{background:rgba(168,135,58,.05);border:1px solid rgba(168,135,58,.18);border-radius:var(--r-sm);padding:14px 16px;margin-top:12px}
-.nature-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.nature-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--ink2);line-height:1.75}
-.thought{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--ink3);padding:8px 12px 8px 18px;border-left:2px solid rgba(232,134,58,.3);margin-bottom:6px;background:rgba(232,134,58,.03);border-radius:0 var(--r-sm) var(--r-sm) 0;line-height:1.65}
-.dyades-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.dyade-card{background:var(--bg);border-radius:var(--r-sm);padding:14px;border-top:2px solid #E8863A}
-.dyade-masques{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#E8863A;margin-bottom:4px}
-.dyade-nom{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px}
-.dyade-desc{font-size:12px;color:var(--ink4);line-height:1.65}
-.dyade-note{font-size:12px;font-style:italic;color:var(--ink5);margin-top:12px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-sm);text-align:center}
-.etape-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
-.etape-row:last-child{border-bottom:none}
-.etape-key{background:rgba(232,134,58,.04);border-radius:var(--r-sm);margin:4px -8px;padding:12px 8px;border-bottom:none!important}
-.etape-circ{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;flex-shrink:0;border:2px solid}
-.etape-name{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px}
-.etape-desc{font-size:12.5px;color:var(--ink3)}
-.etape-note{font-size:12px;font-style:italic;color:#E8863A;margin-top:5px;line-height:1.6}
-.semaine-block{margin-bottom:18px}
-.semaine-badge{display:inline-flex;align-items:center;background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:3px 12px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#E8863A;margin-bottom:6px}
-.semaine-theme{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:4px}
-.semaine-desc{font-size:12.5px;color:var(--ink4);margin-bottom:12px;line-height:1.65}
-.defis-list{display:flex;flex-direction:column;gap:4px}
-.defi-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm)}
-.defi-check{flex-shrink:0;margin-top:2px}
-.defi-check input[type=checkbox]{width:16px;height:16px;accent-color:#E8863A;cursor:pointer}
-.defi-num{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:#E8863A;flex-shrink:0;width:22px}
-.defi-text{font-size:13px;color:var(--ink3);line-height:1.65}
-.signal-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:rgba(232,134,58,.04);border-radius:var(--r-sm);border:1px solid rgba(232,134,58,.1);margin-bottom:5px;font-size:13px;color:var(--ink3)}
-.signal-check{font-size:12px;color:#E8863A;font-weight:700;flex-shrink:0;margin-top:1px}
-.doc-footer{text-align:center;font-size:10px;color:var(--ink5);padding:20px 0;letter-spacing:.5px}
-@media(max-width:600px){.portrait-grid,.dyades-grid{grid-template-columns:1fr}}
+:root{
+  --mc:#D4651F;--mc-rgb:212,101,31;
+  --ink:#1A1814;--ink2:#2E2820;--ink3:#4A4038;--ink4:#7A6E64;--ink5:#B0A89A;
+  --bg:#F8F5EE;--bg2:#EDE8DF;--surface:#FFFFFF;
+  --gold:#A8873A;--line:rgba(26,24,20,.08);--r:8px;--r-sm:5px;
+}
+html{font-size:15px}
+body{font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none;line-height:1.7}
+.wrap{max-width:740px;margin:0 auto;padding:0 20px 60px}
+
+.print-btn{position:fixed;bottom:20px;right:20px;z-index:100;display:flex;align-items:center;gap:7px;background:#D4651F;color:#fff;border:none;border-radius:20px;padding:9px 16px;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 14px rgba(212,101,31,.35);-webkit-user-select:none}
+.print-btn:hover{opacity:.88}
+
+.doc-header{margin:0 -20px 24px;padding:34px 28px 30px;background:var(--ink);position:relative;overflow:hidden}
+.doc-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#D4651F}
+.doc-header::after{content:'O';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:130px;font-weight:300;color:rgba(212,101,31,.07);line-height:1;pointer-events:none}
+.doc-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(248,245,238,.25);margin-bottom:6px}
+.doc-step{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#D4651F;margin-bottom:10px}
+.doc-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:#F8F5EE;line-height:1.1;margin-bottom:5px}
+.doc-sous{font-size:13px;color:rgba(248,245,238,.45);margin-bottom:18px}
+.doc-patient{font-size:10px;color:rgba(248,245,238,.2)}
+.doc-quote{border-left:2px solid rgba(212,101,31,.4);padding:12px 16px;margin-top:16px;background:rgba(212,101,31,.06);border-radius:0 var(--r) var(--r) 0}
+.doc-quote-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:rgba(248,245,238,.7);line-height:1.6;margin-bottom:4px}
+.doc-quote-src{font-size:9px;color:rgba(248,245,238,.3)}
+
+.intro-block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:12px}
+.intro-title{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#D4651F;margin-bottom:10px}
+.intro-text{font-size:13px;color:var(--ink3);line-height:1.85}
+.intro-text p{margin-bottom:11px}.intro-text p:last-child{margin-bottom:0}
+
+.science-block{background:rgba(212,101,31,.04);border:1px solid rgba(212,101,31,.15);border-radius:var(--r);padding:14px 18px;margin-bottom:18px}
+.science-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D4651F;margin-bottom:7px}
+.science-text{font-size:12.5px;color:var(--ink3);line-height:1.8}
+
+.semaine-block{margin-bottom:22px}
+.semaine-header{padding:14px 18px;background:var(--surface);border-radius:var(--r);margin-bottom:12px;border:1px solid var(--line)}
+.semaine-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.semaine-titre{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:var(--ink);margin-bottom:3px}
+.semaine-sous{font-size:12.5px;color:var(--ink4);font-style:italic}
+
+.defis-container{display:flex;flex-direction:column;gap:10px}
+
+.defi-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.defi-header{display:flex;align-items:flex-start;gap:11px;padding:13px 16px 11px;border-bottom:1px solid var(--line)}
+.defi-num-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.defi-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.35}
+
+.defi-why{display:flex;gap:9px;padding:10px 14px;background:rgba(212,101,31,.03);border-bottom:1px solid var(--line)}
+.defi-why-icon{font-size:13px;flex-shrink:0;margin-top:1px}
+.defi-why-text{font-size:12px;color:var(--ink3);line-height:1.75}
+
+.defi-temoin{display:flex;gap:9px;padding:9px 14px;background:rgba(168,135,58,.04);border-bottom:1px solid var(--line)}
+.defi-temoin-icon{font-size:13px;flex-shrink:0;margin-top:1px}
+.defi-temoin-text{font-size:12px;color:var(--ink4);line-height:1.7}
+
+.defi-action{margin:12px 14px;padding:11px 14px;border-radius:var(--r-sm);background:rgba(212,101,31,.04)}
+.defi-action-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D4651F;margin-bottom:5px}
+.defi-action-text{font-size:13px;color:var(--ink2);line-height:1.75}
+
+.defi-observation{padding:12px 14px;background:var(--bg);border-top:1px solid var(--line)}
+.defi-obs-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:10px}
+.defi-diff-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.defi-diff-label{font-size:11px;color:var(--ink4);flex-shrink:0}
+.defi-stars{display:flex;gap:8px}
+.defi-stars label{cursor:pointer;font-size:12px;color:var(--ink4);display:flex;align-items:center;gap:3px}
+.defi-stars input[type=radio]{width:14px;height:14px;accent-color:#D4651F}
+
+.write-field{margin-bottom:9px}
+.write-field-label{font-size:11px;font-weight:600;color:var(--ink4);margin-bottom:4px}
+.write-field-lines{height:48px;background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:var(--r-sm);background-image:repeating-linear-gradient(transparent,transparent 23px,rgba(26,24,20,.06) 23px,rgba(26,24,20,.06) 24px);background-size:100% 24px}
+
+.doc-footer{text-align:center;font-size:10px;color:var(--ink5);padding:16px 0;letter-spacing:.5px;border-top:1px solid var(--line);margin-top:18px}
 </style>
 </head>
 <body>
-
 <script>
-/* ── SÉCURITÉ : anti-copie + filigrane patient ── */
 (function(){
-  // Anti-copie
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  ['selectstart','copy','cut'].forEach(ev => document.addEventListener(ev, e => {
-    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  ['selectstart','copy','cut'].forEach(ev=>document.addEventListener(ev,e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
     e.preventDefault();
   }));
-  document.addEventListener('keydown', e => {
-    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
-    if((e.ctrlKey||e.metaKey) && 'sacupxy'.indexOf(e.key.toLowerCase()) >= 0) e.preventDefault();
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+    if((e.ctrlKey||e.metaKey)&&'sacupxy'.indexOf(e.key.toLowerCase())>=0)e.preventDefault();
   });
-
-  // Filigrane dynamique depuis ?prenom= dans l'URL
-  var prenom = new URLSearchParams(location.search).get('prenom') || '';
-  var wm_text = prenom
-    ? (prenom + ' · V.A.L.E.U.R© · Document personnel · Ne pas diffuser')
-    : 'V.A.L.E.U.R© · Document confidentiel · Ne pas diffuser';
-
-  // Filigrane écran
-  var wm = document.createElement('div');
-  wm.setAttribute('aria-hidden','true');
-  wm.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:99999;display:flex;align-items:center;justify-content:center;overflow:hidden';
-  wm.innerHTML = '<div style="transform:rotate(-35deg);font-size:13px;color:rgba(26,24,20,.045);white-space:nowrap;letter-spacing:2px;font-family:sans-serif;font-weight:400;-webkit-user-select:none;user-select:none">' + wm_text + '</div>';
-  document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(wm); });
-
-  // Filigrane impression (via data-wm)
-  document.documentElement.setAttribute('data-wm', wm_text);
-
-  // Afficher le prénom dans le header si présent
-  if(prenom) {
-    document.addEventListener('DOMContentLoaded', function(){
-      var el = document.getElementById('patient-prenom-display');
-      if(el) el.textContent = 'Établi pour ' + prenom + ' · ';
-    });
-  }
+  var prenom=new URLSearchParams(location.search).get('prenom')||'';
+  var wm=prenom?prenom+' · V.A.L.E.U.R© · Document personnel · Ne pas diffuser':'V.A.L.E.U.R© · Document confidentiel · Ne pas diffuser';
+  var d=document.createElement('div');
+  d.setAttribute('aria-hidden','true');
+  d.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:99999;display:flex;align-items:center;justify-content:center;overflow:hidden';
+  d.innerHTML='<div style="transform:rotate(-35deg);font-size:13px;color:rgba(26,24,20,.04);white-space:nowrap;letter-spacing:2px;font-family:sans-serif;-webkit-user-select:none;user-select:none">'+wm+'</div>';
+  document.documentElement.setAttribute('data-wm',wm);
+  document.addEventListener('DOMContentLoaded',function(){
+    document.body.appendChild(d);
+    if(prenom){var el=document.getElementById('patient-prenom');if(el)el.textContent='Pour '+prenom+' · ';}
+  });
 })();
 </script>
-<button class="print-btn" onclick="window.print()">
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-  Imprimer / PDF
+
+<button class="print-btn no-print" onclick="window.print()">
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  Imprimer · PDF
 </button>
+
 <div class="wrap">
+
   <div class="doc-header">
-    <div class="doc-eyebrow">V.A.L.E.U.R© · Workbook · © Céline Bourbon</div>
-    <div class="doc-title">Masque Orange</div>
-    <div class="doc-subtitle">Distance intérieure · Évitement émotionnel</div>
-    <div class="doc-patient"><span id="patient-prenom-display"></span>Méthode V.A.L.E.U.R© · Programme 21 défis</div>
-  </div>
-  <div class="section">
-    <div class="section-label">1 · Portrait de votre masque</div>
-    <div class="peur-centrale">Peur centrale : la peur de souffrir, d'être submergé·e par les émotions</div>
-    <div class="portrait-grid">
-      <div class="portrait-block"><div class="portrait-block-label">Origine</div><div class="portrait-block-text">Votre système intérieur a appris très tôt que certaines émotions étaient dangereuses ou inutiles — et il les a progressivement mises à distance. Ce mécanisme vous a permis d'avancer. Aujourd'hui, il coupe aussi l'accès aux émotions positives, à la satisfaction et au sens.</div></div>
-      <div class="portrait-block"><div class="portrait-block-label">Ce que fait le masque</div><div class="portrait-block-text">Ce masque crée une distance entre vous et vos émotions. Vous les observez de loin, comme derrière une vitre. L'énergie qui devrait circuler librement se fige — et finit par s'exprimer autrement : irritabilité, sensations physiques inexpliquées, sentiment diffus de vide.</div></div>
+    <div class="doc-eyebrow">V.A.L.E.U.R© · Workbook patient · 21 défis · © Céline Bourbon</div>
+    <div class="doc-step">Masque Orange</div>
+    <div class="doc-title">Évitement émotionnel · Peur de souffrir</div>
+    <div class="doc-sous">Peur de souffrir, d'être submergé·e par les émotions</div>
+    <div class="doc-patient"><span id="patient-prenom"></span>Programme d'exposition graduée · 21 jours</div>
+    <div class="doc-quote">
+      <div class="doc-quote-text">Ce masque n'est pas vous. Il est une adaptation intelligente qui a perdu la notion du temps. Ce que vous êtes a toujours été là — simplement recouvert.</div>
+      <div class="doc-quote-src">Céline Bourbon — De la peur à la joie d'être soi · L'Harmattan</div>
     </div>
-    <div class="section-label" style="margin-bottom:8px">Pensées types</div>
-    <div class="thought">« Je ne sais pas vraiment ce que je ressens — ou si je ressens quelque chose. »</div>
-<div class="thought">« Les émotions, c'est compliqué. Je préfère analyser. »</div>
-<div class="thought">« Je gère tout très bien. Je ne comprends pas pourquoi je me sens vide. »</div>
-    <div class="nature-block"><div class="nature-label">Nature authentique sous-jacente</div><div class="nature-text">Sous ce masque vit une intelligence émotionnelle d'une richesse exceptionnelle. Quand ce masque s'assouplira, vous naviguerez dans vos émotions avec grâce — elles deviendront une source d'information, pas une menace.</div></div>
   </div>
-  <div class="section">
-    <div class="section-label">2 · Amplifications possibles</div>
-    <div class="section-title">Quand deux masques s'activent ensemble</div>
-    <p style="font-size:13px;color:var(--ink4);margin-bottom:14px;line-height:1.7">Certains masques se renforcent mutuellement. Si vous vous reconnaissez dans l'une de ces combinaisons, mentionnez-le à votre praticienne.</p>
-    <div class="dyades-grid"><div class="dyade-card"><div class="dyade-masques">Orange + Vert</div><div class="dyade-nom">Vide relationnel</div><div class="dyade-desc">La coupure émotionnelle (Orange) rencontre la peur du rejet (Vert). Les relations sont investies sans être vraiment ressenties. L'attachement est fort mais l'accès à l'intimité reste bloqué.</div></div><div class="dyade-card"><div class="dyade-masques">Orange + Rouge</div><div class="dyade-nom">Somatisation dissociée</div><div class="dyade-desc">L'émotion coupée (Orange) se déplace dans le corps (Rouge). Les sensations physiques deviennent le seul langage disponible pour une souffrance qui n'a pas d'autre sortie.</div></div></div>
-    <div class="dyade-note">Si vous reconnaissez plusieurs masques actifs simultanément, parlez-en à votre praticienne.</div>
+
+  <div class="intro-block">
+    <div class="intro-title">Comprendre votre masque</div>
+    <div class="intro-text"><p>Votre masque orange s'est formé à un moment où ressentir était trop. L'émotion débordait — et votre système nerveux a trouvé une solution brillante : créer de la distance. Mettre une vitre entre vous et ce que vous ressentez.</p><p>Ce mécanisme vous a permis de survivre, de fonctionner, d'avancer. Il a fait son travail.</p><p>Mais aujourd'hui, cette vitre coupe aussi l'accès à la joie, au sens, à la connexion. Vous fonctionnez — parfois très bien — mais quelque chose manque. Ce n'est pas vous qui êtes « plat » ou « insensible ». C'est le masque qui a mis le volume au minimum.</p><p>Ces 21 défis suivent une exposition graduée aux émotions (Hayes et al., 1996) : vous allez apprendre à accueillir, traverser, puis exprimer ce que le masque orange cherche à anesthésier.</p></div>
   </div>
-  <div class="section">
-    <div class="section-label">3 · Protocole V.A.L.E.U.R©</div>
-    <div class="section-title">Les 6 étapes du travail</div>
-    <p style="font-size:13px;color:var(--ink4);margin-bottom:14px;line-height:1.7">L'étape mise en évidence est celle qui correspond à votre masque dominant.</p>
-    <div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#4A90D9;color:#4A90D9;">V</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#4A90D9">VOIR</div>
-            <div class="etape-desc">Reconnaître la pensée du masque au moment où elle s'active.</div>
-            
-          </div>
-        </div><div class="etape-row  etape-key">
-          <div class="etape-circ" style="border-color:#E05252;color:#E05252;background:rgba(232,134,58,.1)">A</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#E05252">ACCUEILLIR</div>
-            <div class="etape-desc">Recevoir l'émotion sans la fuir ni la minimiser.</div>
-            <div class="etape-note">L'étape ACCUEILLIR est clé pour vous : elle ne vous demande pas de tout ressentir d'un coup — elle vous invite à tolérer une émotion quelques secondes de plus avant de passer à autre chose.</div>
-          </div>
-        </div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#E8863A;color:#E8863A;">L</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#E8863A">LOCALISER</div>
-            <div class="etape-desc">Revenir au corps — là où le masque se manifeste physiquement.</div>
-            
-          </div>
-        </div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#D4A017;color:#D4A017;">E</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#D4A017">EXPLORER</div>
-            <div class="etape-desc">Identifier le conflit entre la protection et ce qui compte vraiment.</div>
-            
-          </div>
-        </div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#3AAA6F;color:#3AAA6F;">U</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#3AAA6F">UNIFIER</div>
-            <div class="etape-desc">Trouver une voie qui honore à la fois la sécurité et la liberté.</div>
-            
-          </div>
-        </div><div class="etape-row">
-          <div class="etape-circ" style="border-color:#C9A84C;color:#C9A84C;">R</div>
-          <div class="etape-body">
-            <div class="etape-name" style="color:#C9A84C">RENFORCER</div>
-            <div class="etape-desc">Ancrer un nouveau comportement — choisi, pas subi.</div>
-            
-          </div>
-        </div></div>
+
+  <div class="science-block">
+    <div class="science-label">Ce que la recherche dit</div>
+    <div class="science-text">L'évitement expérientiel est documenté comme facteur transdiagnostique : il prédit l'anxiété, la dépression et les addictions (Hayes et al., 1996). Gross (2002) a montré que la suppression émotionnelle chronique augmente l'activité cardiovasculaire et diminue le bien-être. Ce n'est pas une faille — c'est une adaptation qui a coûté trop cher.</div>
   </div>
-  <div class="section">
-    <div class="section-label">4 · Programme 21 défis</div>
-    <div class="section-title">Un défi par jour — trois semaines</div>
-    <p style="font-size:13px;color:var(--ink4);margin-bottom:18px;line-height:1.7">Vous fonctionnez parfaitement. Ce workbook rouvre l'accès à ce qui se passe vraiment en vous.<br><br>Avant chaque défi : 3 respirations lentes. Après : cochez et notez ce que vous avez observé.</p>
-    <div class="semaine-block"><div class="semaine-badge">Semaine I · Jours 1–7</div><div class="semaine-theme">Ouvrir la porte</div><div class="semaine-desc">Cette semaine, vous faites de petits gestes vers ce que vous ressentez — sans vous y noyer.</div><div class="defis-list"><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d1"><label for="d1"></label></div><div class="defi-num">1</div><div class="defi-text">Nommer une émotion au moins une fois dans la journée — même vaguement</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d2"><label for="d2"></label></div><div class="defi-num">2</div><div class="defi-text">Observer ce qui se passe dans votre corps quand quelqu'un vous parle de lui·elle</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d3"><label for="d3"></label></div><div class="defi-num">3</div><div class="defi-text">Terminer une phrase : « En ce moment, je ressens un peu… »</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d4"><label for="d4"></label></div><div class="defi-num">4</div><div class="defi-text">Écouter une musique qui vous touche — et rester avec ce que ça fait</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d5"><label for="d5"></label></div><div class="defi-num">5</div><div class="defi-text">Poser la question : « Qu'est-ce que j'ai vraiment envie de faire ce soir ?»</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d6"><label for="d6"></label></div><div class="defi-num">6</div><div class="defi-text">Identifier la dernière fois que vous avez ressenti quelque chose intensément</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d7"><label for="d7"></label></div><div class="defi-num">7</div><div class="defi-text">Écrire sans filtrer pendant 5 minutes ce qui passe dans votre tête</div></div></div></div><div class="semaine-block"><div class="semaine-badge">Semaine II · Jours 8–14</div><div class="semaine-theme">Nommer ce qui se passe</div><div class="semaine-desc">Cette semaine, vous allez plus loin : nommer ce que vous ressentez dans des situations relationnelles.</div><div class="defis-list"><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d8"><label for="d8"></label></div><div class="defi-num">8</div><div class="defi-text">Partager quelque chose de personnel avec quelqu'un de confiance</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d9"><label for="d9"></label></div><div class="defi-num">9</div><div class="defi-text">Laisser une émotion durer 30 secondes sans la court-circuiter</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d10"><label for="d10"></label></div><div class="defi-num">10</div><div class="defi-text">Regarder un film qui vous touche — rester avec ce que ça fait</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d11"><label for="d11"></label></div><div class="defi-num">11</div><div class="defi-text">Identifier l'émotion derrière une décision récente</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d12"><label for="d12"></label></div><div class="defi-num">12</div><div class="defi-text">Demander à quelqu'un comment il·elle va — et vraiment écouter la réponse</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d13"><label for="d13"></label></div><div class="defi-num">13</div><div class="defi-text">Remarquer ce que vous ressentez quand quelqu'un vous fait un compliment</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d14"><label for="d14"></label></div><div class="defi-num">14</div><div class="defi-text">Écrire : « Ce qui me donnerait envie de me lever demain matin, c'est… »</div></div></div></div><div class="semaine-block"><div class="semaine-badge">Semaine III · Jours 15–21</div><div class="semaine-theme">Être pleinement là</div><div class="semaine-desc">Cette semaine, vous ancrez la capacité à être ému·e, touché·e, présent·e — sans fuite ni débordement.</div><div class="defis-list"><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d15"><label for="d15"></label></div><div class="defi-num">15</div><div class="defi-text">Exprimer un besoin clairement à quelqu'un de proche</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d16"><label for="d16"></label></div><div class="defi-num">16</div><div class="defi-text">Traverser un moment difficile sans l'intellectualiser immédiatement</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d17"><label for="d17"></label></div><div class="defi-num">17</div><div class="defi-text">Identifier une chose qui vous a procuré du plaisir cette semaine</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d18"><label for="d18"></label></div><div class="defi-num">18</div><div class="defi-text">Accepter du soutien sans le minimiser ou le gérer à la place de l'autre</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d19"><label for="d19"></label></div><div class="defi-num">19</div><div class="defi-text">Écrire : « Ce que je voudrais vraiment que les autres sachent de moi »</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d20"><label for="d20"></label></div><div class="defi-num">20</div><div class="defi-text">Remarquer la différence entre gérer une émotion et la traverser</div></div><div class="defi-row"><div class="defi-check"><input type="checkbox" id="d21"><label for="d21"></label></div><div class="defi-num">21</div><div class="defi-text">Identifier ce que vous ressentez quand vous aidez quelqu'un — réellement</div></div></div></div>
-  </div>
-  <div class="section">
-    <div class="section-label">5 · Signaux que vous progressez</div>
-    <div style="margin-top:10px"><div class="signal-item"><span class="signal-check">✓</span><span>Vous nommez une émotion sans immédiatement passer à l'analyse</span></div><div class="signal-item"><span class="signal-check">✓</span><span>Vous ressentez une satisfaction — même brève — après un succès</span></div><div class="signal-item"><span class="signal-check">✓</span><span>Le calme ne crée plus automatiquement un sentiment de vide</span></div><div class="signal-item"><span class="signal-check">✓</span><span>Vous pouvez dire ce que vous ressentez, même imparfaitement</span></div></div>
-    <p style="margin-top:12px;font-size:12px;font-style:italic;color:var(--ink5)">Ces signaux arrivent progressivement — et de façon irréversible.</p>
-  </div>
+
+  
+          <div class="semaine-block">
+            <div class="semaine-header" style="border-left:4px solid #D4651F">
+              <div class="semaine-badge" style="background:rgba(212,101,31,.1);color:#D4651F;border:1px solid rgba(212,101,31,.25)">Semaine I · Jours 1–7</div>
+              <div class="semaine-titre">Nommer ce qui est là</div>
+              <div class="semaine-sous">Cette semaine, vous n'avez pas à ressentir plus. Vous apprenez à nommer ce qui est déjà là.</div>
+            </div>
+            <div class="defis-container">
+              
+            <div class="defi-card" id="d1">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">1</div>
+                <div class="defi-title">Nommer une émotion à voix haute</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La labellisation émotionnelle (affect labeling) active le cortex préfrontal ventrolatéral et réduit l'activité de l'amygdale (Lieberman et al., 2007). Nommer, c'est réguler — sans avoir à changer quoi que ce soit.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque préfère que tu ne nommes pas — car nommer, c'est reconnaître que quelque chose est là. Le Témoin peut nommer sans être submergé.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Quand une émotion quelconque émerge dans la journée — même légère, même floue — nommez-la à voix haute ou par écrit. Pas "je me sens mal" : quelque chose de plus précis. "Légèrement irrité·e." "Un peu nostalgique." "Soulagé·e mais inquiet·e." Juste nommer.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d1" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d1" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d1" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d1" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d1" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d2">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">2</div>
+                <div class="defi-title">Observer l'émotion sans la fuir pendant 2 minutes</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'émotion non résistée dure en moyenne 90 secondes (Bolte Taylor, 2008). Ce qui dure plus longtemps, c'est la résistance à l'émotion. 2 minutes d'observation sans fuite est un premier pas concret.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>L'émotion est une vague. Elle monte, elle culmine, elle redescend — toujours. Le Témoin peut regarder la vague sans être emporté.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Quand une émotion inconfortable arrive, choisissez délibérément de ne pas la fuir pendant 2 minutes exactes. Observez : où dans votre corps ? Quelle forme ? Quelle couleur si elle en avait une ? Notez ce qui se passe à la 2e minute.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d2" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d2" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d2" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d2" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d2" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d3">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">3</div>
+                <div class="defi-title">Identifier l'émotion cachée derrière « ça ne va pas »</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La granularité émotionnelle — la précision avec laquelle on nomme ses émotions — prédit directement la santé psychologique (Barrett, 2017). Passer de "ça ne va pas" à "je ressens de la honte mêlée de solitude" est déjà thérapeutique.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque se cache derrière le flou. Le Témoin cherche le mot juste. Pas pour se faire mal — pour se comprendre.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Prenez un moment de la journée où vous sentez vaguement que "ça ne va pas". Cherchez l'émotion précise en dessous. Testez différents mots : tristesse, honte, solitude, colère, peur, deuil, nostalgie… Laquelle sonne juste ?</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d3" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d3" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d3" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d3" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d3" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d4">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">4</div>
+                <div class="defi-title">Observer ce que vous ressentez pendant un film</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Les émotions esthétiques (via l'art, la musique, le cinéma) sont souvent les premières accessibles pour les profils à évitement émotionnel — car elles sont "à distance" et donc moins menaçantes.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Regarder un film qui vous touche, c'est entraîner votre système à tolérer d'être ému·e. Le Témoin regarde — sans juger ce qui monte.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Regardez un film ou une scène que vous savez émouvante. Laissez l'émotion être là — ne l'essuyez pas, ne l'expliquez pas. Notez ce qui se passe dans votre corps et vos pensées.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d4" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d4" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d4" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d4" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d4" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d5">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">5</div>
+                <div class="defi-title">Écrire ce que vous ressentez en ce moment — sans filtre</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'écriture expressive (Pennebaker, 1997) réduit l'anxiété, améliore le système immunitaire et facilite l'intégration émotionnelle. Même 5 minutes par jour ont un effet mesurable.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque filtre, édite, contrôle. Le Témoin peut écrire sans censure — car écrire n'est pas agir.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Prenez 5 minutes. Écrivez ce que vous ressentez en ce moment, exactement tel que c'est — sans chercher à bien écrire, à être logique, ou à vous justifier. Personne ne lira cela. Juste écrire.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d5" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d5" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d5" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d5" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d5" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d6">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">6</div>
+                <div class="defi-title">Rester avec une émotion difficile après une nouvelle</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'habituation émotionnelle — rester exposé à l'émotion jusqu'à ce qu'elle diminue naturellement — est le mécanisme de base de toute thérapie d'exposition (Foa & Kozak, 1986).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque veut passer à autre chose. Le Témoin peut rester encore 5 minutes. L'émotion ne durera pas indéfiniment.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">La prochaine fois qu'une nouvelle difficile arrive (petite ou grande), restez avec l'émotion qu'elle génère pendant 10 minutes sans la noyer dans l'action, l'écran ou la nourriture. Juste rester. Notez ce qui se passe.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d6" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d6" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d6" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d6" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d6" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d7">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">7</div>
+                <div class="defi-title">Demander à quelqu'un comment il·elle va — vraiment</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'évitement émotionnel rend souvent les relations superficielles — car entendre les émotions des autres résonne avec les siennes (empathie affective, Singer & Lamm, 2009). S'intéresser vraiment aux émotions d'un autre, c'est commencer à s'autoriser les siennes.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque préfère la conversation légère. Le Témoin peut aller plus loin — en restant protégé par l'intérêt sincère pour l'autre.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Demandez à quelqu'un de proche comment il·elle va vraiment — et écoutez sans changer de sujet, sans minimiser, sans proposer des solutions. Restez avec ce que l'autre ressent. Notez ce que cela a généré en vous.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d7" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d7" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d7" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d7" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d7" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+          <div class="semaine-block">
+            <div class="semaine-header" style="border-left:4px solid #D4651F">
+              <div class="semaine-badge" style="background:rgba(212,101,31,.1);color:#D4651F;border:1px solid rgba(212,101,31,.25)">Semaine II · Jours 8–14</div>
+              <div class="semaine-titre">Traverser l'émotion — s'autoriser</div>
+              <div class="semaine-sous">Cette semaine, vous allez plus loin : vous autorisez des émotions que le masque orange préfère garder fermées.</div>
+            </div>
+            <div class="defis-container">
+              
+            <div class="defi-card" id="d8">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">8</div>
+                <div class="defi-title">Partager une déception authentiquement</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La vulnérabilité partagée active les circuits de la connexion sociale (Eisenberger et al., 2003). Partager une déception sans la minimiser ni l'intellectualiser est l'un des défis centraux de l'évitement émotionnel.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque préfère que tu gardes la déception pour toi. Le Témoin sait que la partager la divise — et crée du lien.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Choisissez une déception récente et partagez-la authentiquement avec un proche : "J'ai été déçu·e quand…" Sans minimiser ("c'est pas grave"), sans intellectualiser ("au fond c'est logique"), sans retourner au positif immédiatement. Juste partager.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d8" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d8" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d8" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d8" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d8" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d9">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">9</div>
+                <div class="defi-title">Laisser les larmes venir — et rester avec elles</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Les larmes émotionnelles contiennent des hormones de stress (ACTH, leucine-enképhaline) — pleurer est physiologiquement régulateur (Frey, 1985). Retenir les larmes maintient la tension. Les laisser venir complète le cycle.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque retient les larmes car il croit qu'elles sont une faiblesse. Le Témoin sait qu'elles sont une libération biologique.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Regardez quelque chose de touchant (film, musique, souvenir). Si des larmes montent, laissez-les venir sans les essuyer immédiatement. Restez avec elles. Notez ce que vous avez ressenti après.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d9" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d9" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d9" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d9" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d9" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d10">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">10</div>
+                <div class="defi-title">Exprimer votre colère — de façon sécurisée</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La répression de la colère est documentée comme facteur de troubles somatiques et cardiovasculaires (Gross & Levenson, 1997). Exprimer la colère de façon sécurisée (par écrit, dans un coussin…) est une décharge physiologique nécessaire.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque a appris que la colère était dangereuse. Le Témoin sait qu'exprimée de façon sécurisée, elle nettoie.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Écrivez une lettre de colère à quelqu'un ou quelque chose qui vous a blessé·e — sans l'envoyer. Laissez sortir toute la colère, sans filtre, sans politesse. Puis brûlez-la ou effacez-la. Notez ce que vous avez ressenti après.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d10" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d10" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d10" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d10" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d10" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d11">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">11</div>
+                <div class="defi-title">Exprimer un besoin clairement</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Les besoins non exprimés s'accumulent et alimentent l'évitement émotionnel (Young et al., 2003). Formuler un besoin ("j'ai besoin de…") active la conscience de soi et la capacité de connection authentique.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque tait les besoins pour ne pas risquer le conflit. Le Témoin sait qu'un besoin exprimé a une chance d'être entendu — un besoin tu n'en a aucune.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Identifiez un besoin non exprimé dans une relation actuelle (besoin d'écoute, d'aide, de temps, d'espace…). Formulez-le clairement à la personne concernée : "J'ai besoin de…" — sans explication excessive. Notez ce qui s'est passé.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d11" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d11" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d11" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d11" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d11" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d12">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">12</div>
+                <div class="defi-title">Rester dans une conversation difficile sans fuir</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'évitement des conflits maintient l'anxiété émotionnelle par renforcement négatif : fuir soulage à court terme et renforce l'évitement à long terme (Hayes et al., 1996). Rester dans le difficile entraîne la tolérance.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque veut sortir de là, changer de sujet, faire de l'humour. Le Témoin peut rester — même quand c'est inconfortable.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Dans une conversation qui devient difficile (tension, émotion, désaccord), restez présent·e au lieu de dévier. Si vous déviez, revenez. Notez ce qui vous a été difficile à tolérer.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d12" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d12" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d12" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d12" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d12" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d13">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">13</div>
+                <div class="defi-title">Accueillir la tristesse — sans la résoudre</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La tristesse est une émotion adaptative signalant une perte — elle a une fonction de traitement et d'intégration (Bonanno, 2004). Vouloir la "résoudre" immédiatement interrompt ce processus naturel.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque veut réparer la tristesse. Le Témoin peut simplement rester avec elle — sans la réparer.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Choisissez un souvenir ou une situation qui génère de la tristesse. Restez avec cette tristesse pendant 10 minutes, sans chercher à vous consoler, à vous distraire, ou à trouver le positif. Juste être triste. Notez ce qui s'est passé.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d13" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d13" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d13" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d13" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d13" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d14">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">14</div>
+                <div class="defi-title">Partager quelque chose de difficile que vous gardez seul·e</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">Brené Brown (2010) a documenté que la honte prospère dans le secret et diminue dans la connexion. Partager ce qu'on porte seul, même partiellement, est un acte de guérison documenté.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque garde le douloureux enfermé. Le Témoin sait que la parole libère — pas parce qu'elle résout, mais parce qu'elle rompt la solitude.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Choisissez quelque chose que vous portez seul·e (une honte, une peur, un regret) et partagez-le avec une personne de confiance — même une seule phrase. Notez ce qui s'est passé avant, pendant et après.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d14" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d14" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d14" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d14" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d14" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+          <div class="semaine-block">
+            <div class="semaine-header" style="border-left:4px solid #D4651F">
+              <div class="semaine-badge" style="background:rgba(212,101,31,.1);color:#D4651F;border:1px solid rgba(212,101,31,.25)">Semaine III · Jours 15–21</div>
+              <div class="semaine-titre">Ancrer — vivre la richesse émotionnelle</div>
+              <div class="semaine-sous">Cette semaine, vous intégrez les émotions comme source d'information et de vie, pas comme menaces.</div>
+            </div>
+            <div class="defis-container">
+              
+            <div class="defi-card" id="d15">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">15</div>
+                <div class="defi-title">Météo émotionnelle quotidienne — 7 jours</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La pratique régulière de nommage émotionnel améliore la régulation sur 4 semaines (Torre & Lieberman, 2018). 7 jours de météo émotionnelle quotidienne construisent un vocabulaire intérieur solide.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Chaque soir, le Témoin fait le point : qu'est-ce qui s'est passé aujourd'hui, intérieurement ?</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Chaque soir cette semaine : notez 2 à 3 émotions ressenties dans la journée avec le plus de précision possible. Pas "bien/mal" — des émotions précises. Après 7 jours, relisez tout. Qu'est-ce que vous voyez ?</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d15" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d15" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d15" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d15" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d15" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d16">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">16</div>
+                <div class="defi-title">Identifier l'émotion sous l'irritabilité</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'irritabilité est souvent une émotion secondaire — elle cache une émotion primaire plus vulnérable (tristesse, peur, honte). Identifier la primaire permet de traiter la cause, pas le symptôme (Greenberg, 2002).</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Quand le masque s'irrite, le Témoin se demande : quelle est la vraie émotion en dessous ?</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">La prochaine fois que vous vous sentez irrité·e, cherchez l'émotion sous l'irritabilité. Posez-vous : "Qu'est-ce que je ressentirais si je ne pouvais pas être en colère ?" Notez ce que vous trouvez.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d16" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d16" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d16" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d16" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d16" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d17">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">17</div>
+                <div class="defi-title">Choisir d'être ému·e volontairement</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">S'exposer volontairement à des stimuli émouvants pour "s'entraîner" à tolérer l'émotion est une forme d'exposition intéroceptive efficace (Barlow & Craske, 2007). Le muscle émotionnel se développe par la pratique.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Vous choisissez d'être ému·e. Ce n'est pas une faiblesse — c'est une capacité que vous cultivez.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Choisissez volontairement quelque chose qui vous touche (musique, texte, souvenir, film) et laissez l'émotion venir complètement. Restez avec elle le temps qu'elle dure. Notez ce que vous avez vécu.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d17" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d17" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d17" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d17" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d17" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d18">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">18</div>
+                <div class="defi-title">Exprimer de la gratitude à quelqu'un en face de lui/elle</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'expression directe de gratitude active les circuits de connexion sociale et réduit l'évitement relationnel (Algoe et al., 2010). C'est une émotion positive mais vulnérable — souvent difficile pour le masque orange.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Exprimer ce que quelqu'un représente pour vous, c'est risquer d'être vu·e vraiment. Le Témoin peut prendre ce risque.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Dites directement à quelqu'un ce qu'il·elle vous apporte — pas dans un message : en face à face, les yeux dans les yeux. "Tu comptes pour moi parce que…" Notez ce que vous avez ressenti.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d18" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d18" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d18" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d18" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d18" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d19">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">19</div>
+                <div class="defi-title">Identifier ce qui vous nourrit vraiment</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">L'évitement émotionnel coupe l'accès aux besoins profonds et aux sources de sens (Deci & Ryan, 2000). Se reconnecter à ce qui nourrit vraiment est un acte de guérison.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque s'occupe. Le Témoin se nourrit. Ce ne sont pas les mêmes choses.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Faites la liste de ce qui vous nourrit vraiment (pas ce qui vous distrait — ce qui vous remplit). Puis choisissez-en une et faites-la cette semaine, uniquement pour vous. Notez comment vous vous êtes senti·e.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d19" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d19" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d19" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d19" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d19" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d20">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">20</div>
+                <div class="defi-title">Avoir une conversation profonde — sans détourner</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La profondeur relationnelle prédit le bien-être psychologique (Mehl et al., 2010). Le masque orange maintient les conversations en surface pour éviter l'émotion. Aller en profondeur, c'est choisir la vraie connexion.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Le masque reste en surface. Le Témoin peut aller plus loin — et en revenir.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Engagez une conversation authentiquement profonde avec quelqu'un de confiance : ce qui compte vraiment pour vous en ce moment, ce que vous traversez, ce que vous espérez. Sans détourner vers du léger. Notez ce qui s'est passé.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d20" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d20" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d20" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d20" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d20" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="defi-card" id="d21">
+              <div class="defi-header">
+                <div class="defi-num-badge" style="background:#D4651F;color:#fff">21</div>
+                <div class="defi-title">La Lettre au Masque Orange</div>
+              </div>
+
+              <div class="defi-why">
+                <span class="defi-why-icon">📖</span>
+                <div class="defi-why-text">La reconsolidation mémorielle (Ecker et al., 2012) permet de réécrire une croyance au moment de sa réactivation. Écrire au masque orange crée cette fenêtre de transformation.</div>
+              </div>
+
+              <div class="defi-temoin">
+                <span class="defi-temoin-icon">🧿</span>
+                <div class="defi-temoin-text"><em>Vous n'êtes pas votre évitement. Vous êtes celui ou celle qui choisit maintenant de traverser.</em></div>
+              </div>
+
+              <div class="defi-action" style="border-left:3px solid #D4651F">
+                <div class="defi-action-label">▸ Le défi</div>
+                <div class="defi-action-text">Écrivez à votre masque orange : 1) Merci — voici ce que tu as protégé. 2) Voici ce que tu m'as coûté. 3) Voici ce que je choisis maintenant. Lisez à voix haute. Notez ce que vous ressentez après.</div>
+              </div>
+
+              <div class="defi-observation">
+                <div class="defi-obs-label">📝 Mon observation</div>
+                <div class="defi-diff-row">
+                  <span class="defi-diff-label">Difficulté ressentie :</span>
+                  <div class="defi-stars">
+                    <label><input type="radio" name="diff-d21" value="1"><span>○1</span></label>
+                    <label><input type="radio" name="diff-d21" value="2"><span>○2</span></label>
+                    <label><input type="radio" name="diff-d21" value="3"><span>○3</span></label>
+                    <label><input type="radio" name="diff-d21" value="4"><span>○4</span></label>
+                    <label><input type="radio" name="diff-d21" value="5"><span>○5</span></label>
+                  </div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai fait :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le masque a dit :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que le Témoin a observé :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+                <div class="write-field">
+                  <div class="write-field-label">Ce que j'ai appris :</div>
+                  <div class="write-field-lines"></div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
   <div class="doc-footer">© 2026 Céline Bourbon · Méthode V.A.L.E.U.R© · Document personnel — ne pas diffuser</div>
+
 </div>
 </body>
 </html>
