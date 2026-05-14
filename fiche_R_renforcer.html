@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr" data-wm="V.A.L.E.U.R©">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>V.A.L.E.U.R© — Étape R · RENFORCER · La Lettre au Masque</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@media print{
+  body::before{content:attr(data-wm) ' · Ne pas diffuser';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:14px;color:rgba(0,0,0,.05);white-space:nowrap;pointer-events:none;z-index:9999;letter-spacing:2px;font-family:sans-serif}
+  .no-print{display:none!important}
+  body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0 12mm}
+  .step-block,.science-box,.complementaire-block,.question-block{break-inside:avoid}
+  .header-block{break-after:avoid}
+  @page{margin:12mm 12mm;size:A4}
+}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --mc:#C9A84C;--mc-rgb:201,168,76;
+  --ink:#1A1814;--ink2:#2E2820;--ink3:#4A4038;--ink4:#7A6E64;--ink5:#B0A89A;
+  --bg:#F8F5EE;--bg2:#EDE8DF;--surface:#FFFFFF;
+  --gold:#A8873A;--gold-lt:#C9A84C;
+  --line:rgba(26,24,20,.08);--r:8px;--r-sm:5px;
+}
+html{font-size:16px}
+body{font-family:'DM Sans',system-ui,sans-serif;font-weight:400;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
+.wrap{max-width:720px;margin:0 auto;padding:0 24px 60px}
+
+/* ── PRINT BTN ── */
+.print-btn{position:fixed;bottom:22px;right:22px;z-index:100;display:flex;align-items:center;gap:8px;background:#C9A84C;color:#fff;border:none;border-radius:22px;padding:10px 18px;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 16px rgba(201,168,76,.35);transition:opacity .15s;-webkit-user-select:none}
+.print-btn:hover{opacity:.88}
+
+/* ── HEADER ── */
+.header-block{margin:0 -24px 28px;padding:36px 32px 32px;background:var(--ink);position:relative;overflow:hidden}
+.header-block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#C9A84C}
+.header-block::after{content:'R';position:absolute;right:32px;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:140px;font-weight:300;color:rgba(201,168,76,.06);line-height:1;pointer-events:none;-webkit-user-select:none}
+.header-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(248,245,238,.25);margin-bottom:6px}
+.header-step{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;margin-bottom:12px}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:#F8F5EE;line-height:1.1;margin-bottom:6px}
+.header-sous{font-size:13px;color:rgba(248,245,238,.45);margin-bottom:20px}
+.header-patient{font-size:10px;color:rgba(248,245,238,.2);letter-spacing:.5px}
+.quote-block{border-left:2px solid rgba(201,168,76,.4);padding:14px 18px;background:rgba(201,168,76,.06);border-radius:0 var(--r) var(--r) 0;margin-top:18px}
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:rgba(248,245,238,.75);line-height:1.6;margin-bottom:6px}
+.quote-src{font-size:10px;color:rgba(248,245,238,.3);letter-spacing:.5px}
+
+/* ── SECTIONS ── */
+.section{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;margin-bottom:14px}
+.section-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#C9A84C;margin-bottom:10px}
+.section-body{font-size:13.5px;color:var(--ink3);line-height:1.85}
+.section-body p{margin-bottom:12px}
+.section-body p:last-child{margin-bottom:0}
+.formula-callout{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:#C9A84C;text-align:center;padding:14px 0;letter-spacing:4px;margin:12px 0}
+
+/* ── SCIENCE BOX ── */
+.science-box{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);border-radius:var(--r);padding:18px 20px;margin-bottom:14px}
+.science-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#C9A84C;margin-bottom:8px}
+.science-text{font-size:12.5px;color:var(--ink3);line-height:1.8}
+
+/* ── PROTOCOLE ── */
+.protocole-intro{font-size:13px;color:var(--ink4);line-height:1.75;margin-bottom:16px;font-style:italic;padding:12px 16px;background:var(--bg);border-radius:var(--r-sm);border-left:2px solid var(--gold)}
+.step-block{display:flex;gap:14px;margin-bottom:14px;break-inside:avoid}
+.step-num-wrap{flex-shrink:0;padding-top:2px}
+.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.step-content{flex:1}
+.step-titre{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:5px;letter-spacing:.2px}
+.step-desc{font-size:13px;color:var(--ink3);line-height:1.75;margin-bottom:8px}
+.write-zone{background:rgba(201,168,76,.03);border:1px solid rgba(201,168,76,.12);border-radius:var(--r-sm);padding:12px 14px;font-size:12px;color:var(--ink4);line-height:2;min-height:60px}
+
+/* ── COMPLEMENTAIRE ── */
+.complementaire-block{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-bottom:14px}
+.compl-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:6px}
+.compl-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.compl-text{font-size:13px;color:var(--ink4);line-height:1.75}
+
+/* ── QUESTION ── */
+.question-block{background:rgba(168,135,58,.05);border:1px solid rgba(168,135,58,.18);border-radius:var(--r);padding:18px 20px;margin-bottom:14px}
+.question-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.question-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--ink2);line-height:1.65;margin-bottom:14px}
+.question-zone{background:rgba(168,135,58,.04);border:1px solid rgba(168,135,58,.12);border-radius:var(--r-sm);padding:14px;min-height:80px;font-size:12px;color:var(--ink5);line-height:2}
+
+/* ── FOOTER ── */
+.doc-footer{text-align:center;font-size:10px;color:var(--ink5);padding:18px 0;letter-spacing:.5px;border-top:1px solid var(--line);margin-top:20px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .header-block{margin:0 -24px 22px;padding:28px 22px 24px}
+  .header-title{font-size:32px}
+}
+</style>
+</head>
+<body>
+<script>
+(function(){
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  ['selectstart','copy','cut'].forEach(ev=>document.addEventListener(ev,e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+    e.preventDefault();
+  }));
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+    if((e.ctrlKey||e.metaKey)&&'sacupxy'.indexOf(e.key.toLowerCase())>=0)e.preventDefault();
+  });
+  var prenom=new URLSearchParams(location.search).get('prenom')||'';
+  var masque=new URLSearchParams(location.search).get('masque')||'';
+  var wm=prenom?prenom+' · V.A.L.E.U.R© · Document personnel · Ne pas diffuser':'V.A.L.E.U.R© · Document confidentiel · Ne pas diffuser';
+  var d=document.createElement('div');
+  d.setAttribute('aria-hidden','true');
+  d.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:99999;display:flex;align-items:center;justify-content:center;overflow:hidden';
+  d.innerHTML='<div style="transform:rotate(-35deg);font-size:13px;color:rgba(26,24,20,.04);white-space:nowrap;letter-spacing:2px;font-family:sans-serif;-webkit-user-select:none;user-select:none">'+wm+'</div>';
+  document.documentElement.setAttribute('data-wm',wm);
+  document.addEventListener('DOMContentLoaded',function(){
+    document.body.appendChild(d);
+    if(prenom){
+      var el=document.getElementById('patient-prenom');
+      if(el)el.textContent='Pour '+prenom+' · ';
+    }
+  });
+})();
+</script>
+
+<button class="print-btn no-print" onclick="window.print()">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  Imprimer · PDF
+</button>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header-block">
+    <div class="header-eyebrow">V.A.L.E.U.R© · Fiche d’exercice · © Céline Bourbon</div>
+    <div class="header-step">Étape R · RENFORCER</div>
+    <div class="header-title">La Lettre au Masque</div>
+    <div class="header-sous">Ancrer la transformation — choisir depuis la confiance</div>
+    <div class="header-patient"><span id="patient-prenom"></span>Méthode V.A.L.E.U.R©</div>
+    <div class="quote-block">
+      <div class="quote-text">« On ne change pas son passé. On change son présent — et cela change tout ce qui vient après. »</div>
+      <div class="quote-src">Céline Bourbon — De la peur à la joie d'être soi</div>
+    </div>
+  </div>
+
+  <!-- COMPRENDRE -->
+  <div class="section">
+    <div class="section-label">Ce qui se passe en vous</div>
+    <div class="section-body"><p>Vous êtes arrivé·e à l'étape la plus exigeante — et la plus libératrice.</p><p>Dans les cinq étapes précédentes, vous avez appris à voir le masque, à traverser ce qu'il déclenche, à habiter votre corps, à comprendre le conflit intérieur, à identifier le besoin réel.</p><p>Maintenant vient quelque chose de différent. Non plus comprendre — mais choisir.</p><p>La plasticité cérébrale est réelle et documentée : chaque nouveau comportement, répété, crée une nouvelle connexion neuronale. Norman Doidge (2007) l'appelle « le cerveau qui se transforme lui-même ». Mais cette transformation ne vient pas de la force de volonté — elle vient d'un choix ancré dans une compréhension profonde.</p><p>Cet exercice crée cet ancrage. La Lettre au Masque est un acte ritualisé de reconnaissance et de libération.</p></div>
+  </div>
+
+  <!-- SCIENCE -->
+  <div class="science-box">
+    <div class="science-label">La reconsolidation mémorielle</div>
+    <div class="science-text">Bruce Ecker, Robin Ticic & Laurel Hulley (2012) ont documenté un mécanisme neurologique fondamental : quand un souvenir ou une croyance est réactivé·e, il·elle entre dans une fenêtre de « reconsolidation » pendant laquelle une nouvelle expérience peut en modifier le contenu. Écrire la Lettre au Masque réactive précisément la structure de défense — puis y insère une vérité plus large. Ce n'est pas de la pensée positive. C'est de la biologie mémorielle.</div>
+  </div>
+
+  <!-- PROTOCOLE -->
+  <div class="section">
+    <div class="section-label">Le protocole — étape par étape</div>
+    <div class="protocole-intro">Prenez le temps qu'il faut — 20 minutes au moins. Trouvez un endroit où vous ne serez pas interrompu·e. Écrivez à la main si possible. Cette lettre est un acte — pas un exercice.</div>
+    
+        <div class="step-block">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:#C9A84C;color:#fff">1</div>
+          </div>
+          <div class="step-content">
+            <div class="step-titre">Partie 1 — La reconnaissance</div>
+            <div class="step-desc">Commencez par : « Je comprends maintenant pourquoi tu es là… »<br><br>Racontez ce que vous avez compris : à quel moment ce masque a été créé, à quoi il répondait, comment il vous a protégé·e. Sans jugement. Avec gratitude si c'est possible.</div>
+            <div class="write-zone">Écrivez la partie 1 ici ou sur une feuille séparée :<br><br><br><br><br><br><br><br></div>
+          </div>
+        </div>
+        <div class="step-block">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:#C9A84C;color:#fff">2</div>
+          </div>
+          <div class="step-content">
+            <div class="step-titre">Partie 2 — La lucidité</div>
+            <div class="step-desc">Continuez par : « Ce que tu m'as coûté, c'est… »<br><br>Nommez clairement ce que ce masque vous a coûté — dans vos relations, votre énergie, votre rapport à vous-même. Pas pour vous condamner. Pour voir avec précision.</div>
+            <div class="write-zone">Écrivez la partie 2 :<br><br><br><br><br><br><br><br></div>
+          </div>
+        </div>
+        <div class="step-block">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:#C9A84C;color:#fff">3</div>
+          </div>
+          <div class="step-content">
+            <div class="step-titre">Partie 3 — L'engagement</div>
+            <div class="step-desc">Terminez par : « Ce que je choisis maintenant, c'est… »<br><br>Un comportement concret. Une seule chose. Choisie depuis la confiance, pas depuis la peur. Ce n'est pas un vœu — c'est un engagement que vous êtes prêt·e à tenir.</div>
+            <div class="write-zone">Écrivez la partie 3 :<br><br><br><br><br><br><br><br></div>
+          </div>
+        </div>
+  </div>
+
+  <!-- COMPLÉMENTAIRE -->
+  <div class="complementaire-block">
+    <div class="compl-label">Pour aller plus loin</div>
+    <div class="compl-title">Exercice complémentaire — Le Journal des Victoires</div>
+    <div class="compl-text">Chaque soir cette semaine, notez une seule chose : un comportement de la journée qui est venu de la confiance plutôt que de la peur. Pas une performance — une direction. « Aujourd'hui, j'ai dit ce dont j'avais besoin ». « Aujourd'hui, j'ai laissé quelqu'un m'aider ». Ces petites victoires, accumulées, réécrivent le cerveau.</div>
+  </div>
+
+  <!-- QUESTION SÉANCE -->
+  <div class="question-block">
+    <div class="question-label">À apporter en séance</div>
+    <div class="question-text">Qu'avez-vous écrit dans l'engagement (partie 3) ? Et qu'est-ce que cette phrase dit de qui vous voulez être ?</div>
+    <div class="question-zone">Ma réponse :<br><br><br><br></div>
+  </div>
+
+  <div class="doc-footer">© 2026 Céline Bourbon · Méthode V.A.L.E.U.R© · Document personnel — ne pas diffuser</div>
+
+</div>
+</body>
+</html>
