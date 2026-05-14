@@ -395,6 +395,15 @@ const MASKS = ['rouge','orange','jaune','vert','bleu','indigo','violet'];
 const MASK_COLORS = {rouge:'#B5312A',orange:'#C4581F',jaune:'#B8930A',vert:'#2D7A4F',bleu:'#1D5F8A',indigo:'#5C3280',violet:'#7A3594'};
 const MASK_NAMES  = {rouge:'Masque Rouge',orange:'Masque Orange',jaune:'Masque Jaune',vert:'Masque Vert',bleu:'Masque Bleu',indigo:'Masque Indigo',violet:'Masque Violet'};
 const MASK_PEURS  = {rouge:'Peur de la maladie / disparition',orange:'Peur de souffrir',jaune:'Peur de l\'incertitude',vert:'Peur du rejet',bleu:'Peur du chaos',indigo:'Peur de l\'échec',violet:'Peur de se perdre'};
+const FICHES = [
+  {step:'V', name:'VOIR',       file:'fiche_V_voir.html',        color:'#4A90D9', desc:'Le Témoin Intérieur'},
+  {step:'A', name:'ACCUEILLIR', file:'fiche_A_accueillir.html',  color:'#E05252', desc:'La Vague'},
+  {step:'L', name:'LOCALISER',  file:'fiche_L_localiser.html',   color:'#E8863A', desc:'La Thermographie du Masque'},
+  {step:'E', name:'EXPLORER',   file:'fiche_E_explorer.html',    color:'#D4A017', desc:'Le Dialogue des Deux Parties'},
+  {step:'U', name:'UNIFIER',    file:'fiche_U_unifier.html',     color:'#3AAA6F', desc:'La Boussole des Besoins'},
+  {step:'R', name:'RENFORCER',  file:'fiche_R_renforcer.html',   color:'#C9A84C', desc:'La Lettre au Masque'},
+];
+
 const WORKBOOKS = [
   {masque:'rouge', file:'workbook_rouge.html',  label:'Workbook Rouge',  color:'#B5312A', peur:'Peur de la maladie'},
   {masque:'orange',file:'workbook_orange.html', label:'Workbook Orange', color:'#C4581F', peur:'Peur de souffrir'},
@@ -954,6 +963,27 @@ const V = {
           </div>
         </div>
 
+        <!-- FICHE DE L'ÉTAPE -->
+        ${(()=>{
+          const fiche = FICHES.find(f=>f.step===(s?s.l:''));
+          const list2 = V.data.getPatients();
+          const p2 = list2.find(x=>x.id===id)||{};
+          if(!fiche) return '';
+          return `<div class="card" style="margin-top:14px;border-left:3px solid ${fiche.color};display:flex;align-items:center;gap:14px;padding:14px 18px">
+            <div style="width:36px;height:36px;border-radius:50%;background:${fiche.color};display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:#fff;flex-shrink:0">${fiche.step}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${fiche.color};margin-bottom:2px">Fiche d'exercice · Étape ${fiche.step}</div>
+              <div style="font-size:13px;font-weight:600;color:var(--ink)">${fiche.desc}</div>
+              <div style="font-size:11px;color:var(--ink4)">À transmettre au patient pour travailler entre les séances</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
+              <a class="btn btn--ghost btn--sm" href="${fiche.file}" target="_blank">↗ Voir</a>
+              <button class="btn btn--gold btn--sm" onclick="V.views.patient.copyFiche('${fiche.file}','${fiche.step}','${id}')">⎘ Envoyer</button>
+            </div>
+          </div>`;
+        })()}
+        </div>
+
         <!-- MOMENTS CLÉS RÉCENTS -->
         ${(d.moments_cles||[]).length ? `
         <div class="card" style="margin-top:14px;background:rgba(168,135,58,.03);border-color:rgba(168,135,58,.15)">
@@ -1117,6 +1147,7 @@ const V = {
                   ${diffBadge}
                   ${mcCount?`<span style="font-size:10px;color:var(--gold);margin-left:6px">★ ${mcCount}</span>`:''}
                   <span class="badge badge--${statut==='validee'?'done':statut==='en_cours'?'active':statut==='bloquee'?'neutral':'neutral'}" style="margin-left:auto">${STATUTS[statut]}</span>
+                  <button onclick="event.stopPropagation();V.views.patient.copyFiche(FICHES.find(f=>f.step===s.l)?.file||'',s.l,'${id}')" style="margin-left:8px;padding:2px 8px;font-size:10px;font-weight:600;color:${col};background:rgba(${col},.06);border:1px solid rgba(${col},.2);border-radius:10px;cursor:pointer;white-space:nowrap">📄 Fiche</button>
                 </div>
                 <div class="step-detail${isActive?' open':''}" id="step-detail-${num}">
                   <div class="step-desc">${s.desc}</div>
@@ -1238,6 +1269,14 @@ const V = {
         const ADMIN_PARAM = '?admin=VALEUR-ADMIN-2025';
 
         return `
+          <div class="card" style="margin-bottom:14px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Fiches d'exercices V.A.L.E.U.R©</div>
+            <p style="font-size:12px;color:var(--ink4);margin-bottom:12px;line-height:1.65">Une fiche par étape — à transmettre au patient pour travailler entre les séances. Contient la psychoéducation, le protocole détaillé et les espaces de réflexion.</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+              ${V.views.patient._fichesGrid(d, id)}
+            </div>
+          </div>
+
           ${wb ? `<div class="card" style="margin-bottom:14px;border-left:3px solid ${col};background:rgba(168,135,58,.03)">
             <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Workbook patient</div>
             <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">${wb.label}</div>
@@ -1321,6 +1360,46 @@ const V = {
         V.views.patient.renderTab(id, 'protocole');
       },
       addSeance() {},
+      _fichesGrid(d, id) {
+        const currentL = VALEUR_STEPS[(d.protocole?.etape_courante||1)-1]?.l;
+        return FICHES.map(fi => {
+          const isCurrent = fi.step === currentL;
+          const bdr = isCurrent ? fi.color : 'var(--line)';
+          const bg  = isCurrent ? 'rgba(168,135,58,.04)' : 'var(--bg)';
+          return '<div style="border:1px solid '+bdr+';border-radius:var(--r-sm);padding:10px 12px;background:'+bg+';position:relative">'
+            +(isCurrent?'<div style="position:absolute;top:5px;right:6px;font-size:8px;font-weight:700;color:'+fi.color+';letter-spacing:1px">EN COURS</div>':'')
+            +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
+            +'<div style="width:26px;height:26px;border-radius:50%;background:'+fi.color+';display:flex;align-items:center;justify-content:center;font-family:Cormorant Garamond,serif;font-size:14px;font-weight:600;color:#fff;flex-shrink:0">'+fi.step+'</div>'
+            +'<div><div style="font-size:10px;font-weight:700;color:'+fi.color+'">'+fi.name+'</div>'
+            +'<div style="font-size:11px;color:var(--ink4)">'+fi.desc+'</div></div></div>'
+            +'<div style="display:flex;gap:4px">'
+            +'<a href="'+fi.file+'" target="_blank" style="flex:1;text-align:center;padding:4px 6px;font-size:10px;font-weight:600;color:var(--ink3);background:var(--surface);border:1px solid var(--line);border-radius:4px;text-decoration:none">↗</a>'
+            +'<button data-f="'+fi.file+'" data-s="'+fi.step+'" data-p="'+id+'" onclick="V.views.patient.copyFiche(this.dataset.f,this.dataset.s,this.dataset.p)" style="flex:2;padding:4px 6px;font-size:10px;font-weight:600;color:'+fi.color+';background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.1);border-radius:4px;cursor:pointer">⎘ Envoyer</button>'
+            +'</div></div>';
+        }).join('');
+      },
+
+      copyFiche(file, step, id) {
+        if(!file) return;
+        const list = V.data.getPatients();
+        const p = list.find(x=>x.id===id)||{};
+        const prenom = p.prenom||'';
+        const base = 'https://cabinet.psyh.fr/';
+        const url = base + file + (prenom ? '?prenom='+encodeURIComponent(prenom) : '');
+        const copy = t => {
+          if(navigator.clipboard) navigator.clipboard.writeText(t).catch(()=>fallback(t));
+          else fallback(t);
+        };
+        const fallback = t => {
+          const el = document.createElement('textarea');
+          el.value = t; document.body.appendChild(el);
+          el.select(); document.execCommand('copy');
+          document.body.removeChild(el);
+        };
+        copy(url);
+        V.ui.toast(prenom ? `✓ Fiche ${step} copiée — personnalisée pour ${prenom}` : `✓ Lien fiche ${step} copié`);
+      },
+
       confirmDelete(id) {
         if(!confirm('Supprimer ce patient\u00a0? Cette action est irréversible.')) return;
         V.data.deletePatient(id);
