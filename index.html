@@ -626,34 +626,224 @@ const V = {
     dashboard: {
       render() {
         const patients = V.data.getPatients();
-        const active = patients.filter(p => {
-          const d = V.data.getPatient(p.id);
-          return d && d.portrait;
+        const all = patients.map(p => ({ p, d: V.data.getPatient(p.id)||{} }));
+        const avecPortrait = all.filter(({d}) => d.portrait);
+
+        // ── INDICATEUR 1 : SPA moyen (initial vs actuel) ──
+        let spaInitSum=0, spaActSum=0, spaCount=0, spaProgSum=0, spaProgN=0;
+        avecPortrait.forEach(({d}) => {
+          const init = d.portrait?.spa;
+          const hist = d.spa_historique||[];
+          const act  = hist.length ? hist[hist.length-1].valeur : init;
+          if(init!==undefined) { spaInitSum+=init; spaActSum+=(act||init); spaCount++; }
+          if(init!==undefined && hist.length>=2) { spaProgSum+=(act-init); spaProgN++; }
         });
-        const avecPortrait = patients.filter(p => V.data.getPatient(p.id)?.portrait);
-        // SPA moyen
-        let spaSum = 0, spaCount = 0;
-        patients.forEach(p => {
-          const d = V.data.getPatient(p.id);
-          if(d?.portrait?.spa) { spaSum += d.portrait.spa; spaCount++; }
+        const spaMoyInit = spaCount ? Math.round(spaInitSum/spaCount) : null;
+        const spaMoyAct  = spaCount ? Math.round(spaActSum/spaCount)  : null;
+        const spaProgMoy = spaProgN  ? Math.round(spaProgSum/spaProgN): null;
+        const spaProgCol = spaProgMoy>0?'#2D7A4F':spaProgMoy<0?'#B5312A':'var(--ink4)';
+
+        // ── INDICATEUR 2 : Distribution masques ──
+        const maskDist = {};
+        MASKS.forEach(m => maskDist[m]=0);
+        avecPortrait.forEach(({d}) => { if(d.portrait?.masque) maskDist[d.portrait.masque]=(maskDist[d.portrait.masque]||0)+1; });
+        const maskTotal = Object.values(maskDist).reduce((a,b)=>a+b,0)||1;
+        const maskMax = Math.max(...Object.values(maskDist))||1;
+
+        // ── INDICATEUR 3 : Difficulté par étape ──
+        const diffByStep = {1:{f:0,r:0,b:0},2:{f:0,r:0,b:0},3:{f:0,r:0,b:0},4:{f:0,r:0,b:0},5:{f:0,r:0,b:0},6:{f:0,r:0,b:0}};
+        const DIFF_KEY = {fluide:'f',resistance:'r',blocage:'b'};
+        all.forEach(({d}) => {
+          (d.seances||[]).forEach(s => {
+            const n = s.etape; if(!n||n<1||n>6) return;
+            const k = DIFF_KEY[s.difficulte]; if(k) diffByStep[n][k]++;
+          });
         });
-        const spaMoy = spaCount ? Math.round(spaSum/spaCount) : '—';
-        // Recents
-        const recents = [...patients].slice(-4).reverse();
+
+        // ── INDICATEUR 4 : Séances par étape ──
+        const seancesParEtape = {1:[],2:[],3:[],4:[],5:[],6:[]};
+        all.forEach(({d}) => {
+          const byStep = {};
+          (d.seances||[]).forEach(s => {
+            if(!s.etape||s.etape<1||s.etape>6) return;
+            byStep[s.etape] = (byStep[s.etape]||0)+1;
+          });
+          Object.entries(byStep).forEach(([n,cnt]) => { if(seancesParEtape[n]) seancesParEtape[n].push(cnt); });
+        });
+        const avgParEtape = {};
+        for(let i=1;i<=6;i++) {
+          const arr = seancesParEtape[i];
+          avgParEtape[i] = arr.length ? (arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1) : '—';
+        }
+
+        // ── INDICATEUR 5 : Étapes des moments clés ──
+        const mcByStep = {1:0,2:0,3:0,4:0,5:0,6:0};
+        let mcTotal = 0;
+        all.forEach(({d}) => {
+          (d.moments_cles||[]).forEach(m => {
+            const n = m.etape; if(n>=1&&n<=6) { mcByStep[n]++; mcTotal++; }
+          });
+        });
+
+        // ── INDICATEUR 6 : Abandons (inactif > 4 semaines) ──
+        const now = Date.now();
+        const INACTIF_MS = 28*24*60*60*1000;
+        let abandons = 0; const abandonDetail = [];
+        all.forEach(({p,d}) => {
+          if(!d.portrait) return;
+          const seances = d.seances||[];
+          if(!seances.length) return;
+          const lastDate = new Date(seances[seances.length-1].date).getTime();
+          const etapeR = d.protocole?.etape_courante||1;
+          if(now - lastDate > INACTIF_MS && etapeR < 6) {
+            abandons++;
+            abandonDetail.push({nom:p.prenom, etape: VALEUR_STEPS[etapeR-1]?.l||etapeR});
+          }
+        });
+
+        // ── DURÉE PARCOURS ──
+        let dureeSum=0, dureeN=0;
+        all.forEach(({d}) => {
+          const seances = d.seances||[];
+          if(seances.length>=2) {
+            const d1=new Date(seances[0].date), d2=new Date(seances[seances.length-1].date);
+            const weeks = Math.round((d2-d1)/(7*24*3600000));
+            if(weeks>0) { dureeSum+=weeks; dureeN++; }
+          }
+        });
+        const dureeMoy = dureeN ? Math.round(dureeSum/dureeN) : null;
+
+        // ── RENDU ──
+        const recents = [...patients].slice(-3).reverse();
+        const STEP_COLORS = ['#4A90D9','#E05252','#E8863A','#D4A017','#3AAA6F','#C9A84C'];
+
         document.getElementById('app-content').innerHTML = `
-          <div class="view-wrap">
+          <div class="view-wrap" style="max-width:960px">
             <div class="view-header">
               <h1 class="view-title">Tableau de bord</h1>
               <button class="btn btn--gold" onclick="V.views.patients.openModal(null)">＋ Nouveau patient</button>
             </div>
-            <div class="stats-grid">
+
+            <!-- ── KPI RAPIDES ── -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px">
               <div class="stat-card"><div class="stat-value">${patients.length}</div><div class="stat-label">Patients</div></div>
-              <div class="stat-card"><div class="stat-value">${avecPortrait.length}</div><div class="stat-label">Portraits importés</div></div>
-              <div class="stat-card" style="cursor:pointer" onclick="V.router.go('workbooks')"><div class="stat-value">7</div><div class="stat-label" style="color:var(--gold)">Workbooks ↗</div></div>
-              <div class="stat-card"><div class="stat-value">${spaMoy}${spaCount?'%':''}</div><div class="stat-label">SPA moyen</div></div>
+              <div class="stat-card"><div class="stat-value">${avecPortrait.length}</div><div class="stat-label">Avec portrait</div></div>
+              <div class="stat-card">
+                <div class="stat-value" style="color:${spaProgCol}">${spaProgMoy!==null?(spaProgMoy>0?'+':'')+spaProgMoy+'%':'—'}</div>
+                <div class="stat-label">Progression SPA moy.</div>
+              </div>
+              <div class="stat-card" style="${abandons?'border-color:#B5312A30;':''}" >
+                <div class="stat-value" style="${abandons?'color:#B5312A':''}">${abandons}</div>
+                <div class="stat-label">Inactifs >4 sem.</div>
+              </div>
             </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+              <!-- ── INDICATEUR 1 : SPA ── -->
+              <div class="card">
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:14px">① Progression SPA</div>
+                ${spaMoyInit!==null ? `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                  <div style="text-align:center">
+                    <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--ink4)">${spaMoyInit}%</div>
+                    <div style="font-size:10px;color:var(--ink5)">SPA initial moy.</div>
+                  </div>
+                  <div style="font-size:22px;color:var(--ink5)">→</div>
+                  <div style="text-align:center">
+                    <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:${spaProgCol}">${spaMoyAct}%</div>
+                    <div style="font-size:10px;color:var(--ink5)">SPA actuel moy.</div>
+                  </div>
+                </div>
+                <div style="background:var(--bg2);border-radius:4px;height:8px;overflow:hidden;margin-bottom:6px">
+                  <div style="height:100%;background:var(--gold);width:${Math.min(100,(spaMoyAct/100)*100)}%;border-radius:4px;transition:width .6s"></div>
+                </div>
+                <div style="font-size:11px;color:${spaProgCol};font-weight:600;text-align:right">${spaProgMoy!==null?(spaProgMoy>0?'↑ +':spaProgMoy<0?'↓ ':'')+spaProgMoy+'% en moyenne':''}</div>
+                ${dureeMoy?`<div style="font-size:11px;color:var(--ink5);margin-top:6px">Durée moy. parcours : ${dureeMoy} semaines</div>`:''}
+                ` : '<div style="font-size:13px;color:var(--ink4)">Données insuffisantes</div>'}
+              </div>
+
+              <!-- ── INDICATEUR 2 : Masques ── -->
+              <div class="card">
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:14px">② Distribution des masques</div>
+                ${MASKS.map(m => {
+                  const n=maskDist[m]||0; const pct=maskTotal?Math.round(n/maskTotal*100):0;
+                  const barW = maskMax ? Math.round(n/maskMax*100) : 0;
+                  return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+                    <div style="width:44px;font-size:11px;font-weight:600;color:${MASK_COLORS[m]};flex-shrink:0">${m[0].toUpperCase()+m.slice(1)}</div>
+                    <div style="flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden">
+                      <div style="height:100%;background:${MASK_COLORS[m]};width:${barW}%;border-radius:3px"></div>
+                    </div>
+                    <div style="font-size:11px;color:var(--ink4);width:32px;text-align:right">${n} (${pct}%)</div>
+                  </div>`;
+                }).join('')}
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+              <!-- ── INDICATEUR 3 : Difficulté par étape ── -->
+              <div class="card">
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:14px">③ Difficulté par étape</div>
+                ${VALEUR_STEPS.map((s,i) => {
+                  const n=i+1; const db=diffByStep[n];
+                  const total=db.f+db.r+db.b||1;
+                  const wF=Math.round(db.f/total*100), wR=Math.round(db.r/total*100), wB=Math.round(db.b/total*100);
+                  return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                    <div style="width:22px;height:22px;border-radius:50%;background:${STEP_COLORS[i]};display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:600;color:#fff;flex-shrink:0">${s.l}</div>
+                    <div style="flex:1">
+                      <div style="height:8px;border-radius:4px;overflow:hidden;display:flex">
+                        <div style="width:${wF}%;background:#2D7A4F" title="Fluide ${wF}%"></div>
+                        <div style="width:${wR}%;background:#B8930A" title="Résistance ${wR}%"></div>
+                        <div style="width:${wB}%;background:#B5312A" title="Blocage ${wB}%"></div>
+                        <div style="flex:1;background:var(--bg2)"></div>
+                      </div>
+                    </div>
+                    <div style="font-size:10px;color:var(--ink5);width:28px;text-align:right">${avgParEtape[n]}×</div>
+                  </div>`;
+                }).join('')}
+                <div style="display:flex;gap:12px;margin-top:8px;font-size:10px;color:var(--ink5)">
+                  <span><span style="color:#2D7A4F">■</span> Fluide</span>
+                  <span><span style="color:#B8930A">■</span> Résistance</span>
+                  <span><span style="color:#B5312A">■</span> Blocage</span>
+                  <span style="margin-left:auto">× = séances moy.</span>
+                </div>
+              </div>
+
+              <!-- ── INDICATEUR 4+5 : Moments clés + abandons ── -->
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div class="card" style="flex:1">
+                  <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-bottom:12px">⑤ Moments clés ★ par étape</div>
+                  ${mcTotal ? VALEUR_STEPS.map((s,i) => {
+                    const n=i+1; const cnt=mcByStep[n]||0; const pct=Math.round(cnt/mcTotal*100);
+                    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+                      <div style="width:18px;font-size:10px;font-weight:600;color:${STEP_COLORS[i]};flex-shrink:0">${s.l}</div>
+                      <div style="flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden">
+                        <div style="height:100%;background:var(--gold);width:${pct}%"></div>
+                      </div>
+                      <div style="font-size:10px;color:var(--ink5);width:28px;text-align:right">${cnt}</div>
+                    </div>`;
+                  }).join('') : '<div style="font-size:12px;color:var(--ink5)">Aucun moment clé encore.</div>'}
+                </div>
+                ${abandons ? `<div class="card" style="border-color:#B5312A30;background:rgba(181,49,42,.03)">
+                  <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#B5312A;margin-bottom:10px">⑥ Patients inactifs >4 semaines</div>
+                  ${abandonDetail.map(a=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);font-size:12px">
+                    <span style="color:var(--ink3)">${a.nom}</span>
+                    <span style="color:var(--ink5);margin-left:auto">arrêté étape ${a.etape}</span>
+                  </div>`).join('')}
+                </div>` : `<div class="card" style="background:rgba(45,122,79,.04);border-color:rgba(45,122,79,.15)">
+                  <div style="font-size:12px;color:#2D7A4F;font-weight:500">✓ Aucun abandon détecté</div>
+                  <div style="font-size:11px;color:var(--ink5);margin-top:4px">Tous les patients actifs depuis moins de 4 semaines</div>
+                </div>`}
+              </div>
+            </div>
+
+            <!-- ── PATIENTS RÉCENTS ── -->
             <div class="card">
-              <div class="section-header"><span class="section-title">Patients récents</span></div>
+              <div class="section-header" style="margin-bottom:10px">
+                <span class="section-title">Patients récents</span>
+                <button class="btn btn--ghost btn--sm" onclick="V.router.go('patients')">Voir tous →</button>
+              </div>
               <div class="recent-list">
                 ${recents.length ? recents.map(p => V.views.patients._rowHTML(p)).join('') : '<p style="font-size:13px;color:var(--ink4)">Aucun patient encore.</p>'}
               </div>
