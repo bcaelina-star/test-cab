@@ -347,7 +347,7 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
           <div class="field-group" style="margin:0"><label class="field-label" style="color:#5C3280">Indigo</label><input class="field-input" id="s-indigo" type="number" min="0" max="100" placeholder="0"></div>
           <div class="field-group" style="margin:0"><label class="field-label" style="color:#7A3594">Violet</label><input class="field-input" id="s-violet" type="number" min="0" max="100" placeholder="0"></div>
         </div>
-        <div class="field-group"><label class="field-label">SPA %</label><input class="field-input" id="s-spa" type="number" min="0" max="100" placeholder="0"></div>
+        <div class="field-group"><label class="field-label">SPA % <span style="font-size:10px;color:var(--ink5);font-weight:400">(calculé automatiquement si vide)</span></label><input class="field-input" id="s-spa" type="number" min="0" max="100" placeholder="Auto"></div>
         <button class="btn btn--primary btn--full" onclick="V.portrait.saveManual()">Enregistrer le portrait</button>
       </div>
       <div id="import-scores-preview" style="display:none;margin-top:16px"></div>
@@ -839,13 +839,61 @@ const V = {
             </div>
 
             <!-- ── PATIENTS RÉCENTS ── -->
-            <div class="card">
+            <div class="card" style="margin-bottom:14px">
               <div class="section-header" style="margin-bottom:10px">
                 <span class="section-title">Patients récents</span>
                 <button class="btn btn--ghost btn--sm" onclick="V.router.go('patients')">Voir tous →</button>
               </div>
               <div class="recent-list">
                 ${recents.length ? recents.map(p => V.views.patients._rowHTML(p)).join('') : '<p style="font-size:13px;color:var(--ink4)">Aucun patient encore.</p>'}
+              </div>
+            </div>
+
+            <!-- ── MODE D'EMPLOI ── -->
+            <div class="card" style="background:rgba(168,135,58,.03);border-color:rgba(168,135,58,.18)">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold)">Mode d'emploi · Récupérer le portrait d'un patient</div>
+                <button onclick="this.closest('.card').querySelector('.mode-body').style.display=this.closest('.card').querySelector('.mode-body').style.display==='none'?'block':'none';this.textContent=this.textContent==='▼ Masquer'?'▶ Afficher':'▼ Masquer'" style="font-size:11px;color:var(--gold);background:none;border:none;cursor:pointer;font-family:inherit">▼ Masquer</button>
+              </div>
+              <div class="mode-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+                  <div>
+                    <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:10px">📱 Via le questionnaire en ligne</div>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      ${[
+                        ['1','Envoyer le lien du questionnaire','Transmettez : <code style="background:var(--bg2);padding:2px 6px;border-radius:3px;font-size:10.5px">questionnaire.psyh.fr</code> à votre patient par email ou SMS.'],
+                        ['2','Le patient complète les 129 questions','Il saisit son prénom et email à la fin. Il arrive sur la page de résultats verrouillée (paywall).'],
+                        ['3','Il vous envoie son lien URL','Il copie l\'URL de sa page de résultats et vous l\'envoie (email, SMS, WhatsApp). Cette URL contient tous ses scores.'],
+                        ['4','Vous ajoutez le code praticien','Ajoutez <code style="background:var(--bg2);padding:2px 6px;border-radius:3px;font-size:10.5px">&admin=VALEUR-ADMIN-2025</code> à la fin de l\'URL reçue. Vous accédez au portrait complet.'],
+                        ['5','Importer dans le cabinet','Dans sa fiche patient, cliquez "Importer portrait" → onglet Email → saisissez son email → les scores arrivent automatiquement.'],
+                      ].map(([n,t,d]) => `<div style="display:flex;gap:10px;padding:8px 10px;background:var(--surface);border-radius:var(--r-sm);border:1px solid var(--line)">
+                        <div style="width:20px;height:20px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">${n}</div>
+                        <div><div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px">${t}</div><div style="font-size:11px;color:var(--ink4);line-height:1.6">${d}</div></div>
+                      </div>`).join('')}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:10px">✏️ Via saisie manuelle (scores connus)</div>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      ${[
+                        ['1','Créer la fiche patient','Patients → ＋ Patient → renseignez prénom, nom, email.'],
+                        ['2','Ouvrir l\'import portrait','Dans la fiche → bouton "Importer portrait" → onglet "Saisie manuelle".'],
+                        ['3','Entrer les 7 scores (0–100)','Renseignez les pourcentages de chaque masque. Le SPA se calcule automatiquement — vous pouvez le laisser vide.'],
+                        ['4','Enregistrer','Le portrait s\'affiche, les défis s\'activent, le protocole démarre.'],
+                      ].map(([n,t,d]) => `<div style="display:flex;gap:10px;padding:8px 10px;background:var(--surface);border-radius:var(--r-sm);border:1px solid var(--line)">
+                        <div style="width:20px;height:20px;border-radius:50%;background:var(--ink4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">${n}</div>
+                        <div><div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px">${t}</div><div style="font-size:11px;color:var(--ink4);line-height:1.6">${d}</div></div>
+                      </div>`).join('')}
+                    </div>
+                    <div style="margin-top:12px;padding:10px 12px;background:rgba(168,135,58,.06);border-radius:var(--r-sm);border:1px solid rgba(168,135,58,.2)">
+                      <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:4px">⚠️ Code à ne jamais transmettre au patient</div>
+                      <div style="font-size:11px;color:var(--ink4);line-height:1.6">Le code <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">VALEUR-ADMIN-2025</code> déverrouille le portrait gratuitement. Il est réservé exclusivement à la praticienne. Le patient accède au portrait uniquement après paiement (39 €) ou import par vous.</div>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>`;
@@ -1603,7 +1651,9 @@ const V = {
     saveManual() {
       const scores = {};
       MASKS.forEach(m => { scores[m] = parseInt(document.getElementById('s-'+m).value)||0; });
-      const spa = parseInt(document.getElementById('s-spa').value)||0;
+      const spaRaw = document.getElementById('s-spa').value.trim();
+      // SPA auto-calculé si champ vide : 100 - moyenne des 7 scores
+      const spa = spaRaw !== '' ? parseInt(spaRaw) : Math.round(100 - MASKS.reduce((a,m)=>a+(scores[m]||0),0)/7);
       this._applyScores(scores, null, spa);
     },
     _applyScores(scores, prenom, spaOverride, dominantOverride) {
@@ -1613,7 +1663,7 @@ const V = {
       let config = 'mono';
       if(elevated.length >= 3) config = 'Triade';
       else if(elevated.length === 2) config = 'Dyade';
-      const spa = (spaOverride !== undefined && spaOverride !== null) ? spaOverride : Math.round(100 - (scores[masque]||0));
+      const spa = (spaOverride !== undefined && spaOverride !== null && !isNaN(spaOverride)) ? spaOverride : Math.round(100 - MASKS.reduce((a,m)=>a+(scores[m]||0),0)/7);
       const id = this._pid;
       const d = V.data.getPatient(id) || V.data.newPatientData();
       d.portrait = { masque, scores, spa, config, masks: elevated, importedAt: new Date().toISOString() };
