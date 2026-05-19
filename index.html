@@ -64,6 +64,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-weight:400;line-height:1.6;
 .btn--ghost{background:transparent;border-color:var(--line);color:var(--ink3)}.btn--ghost:hover{background:var(--bg2);color:var(--ink)}
 .btn--gold{background:var(--gold);color:#fff}.btn--gold:hover{background:var(--gold-lt)}
 .btn--danger{background:transparent;border-color:#B5312A30;color:#B5312A}.btn--danger:hover{background:#B5312A10}
+.btn--gift{background:rgba(168,135,58,.1);color:var(--gold);border:1px solid rgba(168,135,58,.3)}.btn--gift:hover{background:rgba(168,135,58,.2)}
 .btn--sm{padding:5px 10px;font-size:11px;min-height:28px}
 .btn--full{width:100%}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
@@ -236,7 +237,7 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sb-logo">
-      <div class="sb-brand">V.A.L.E.U.R<sup>©</sup></div>
+      <div class="sb-brand" onclick="V.router.go('dashboard')" style="cursor:pointer" title="Retour au tableau de bord">V.A.L.E.U.R<sup>©</sup></div>
       <div class="sb-tagline">Cabinet praticien</div>
     </div>
     <div class="sb-section">Navigation</div>
@@ -265,6 +266,9 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
     </a>
     <div class="sb-divider"></div>
     <div class="sb-section">Cabinet</div>
+    <button class="nav-item" id="nav-gifts" onclick="V.router.go('gifts')">
+      <span class="nav-icon">🎁</span><span>Codes cadeaux</span>
+    </button>
     <button class="nav-item" onclick="V.data.exportJSON()">
       <span class="nav-icon">↓</span><span>Sauvegarder</span>
     </button>
@@ -589,6 +593,11 @@ const V = {
         bc.innerHTML = '<span class="bc-active">Mes patients</span>';
         V.views.patients.render();
         document.getElementById('nav-patients').classList.add('active');
+      } else if(view === 'gifts') {
+        bc.innerHTML = '<span class="bc-active">Codes cadeaux</span>';
+        V.gift.renderView();
+        const _ng = document.getElementById('nav-gifts');
+        if(_ng) _ng.classList.add('active');
       } else if(view === 'workbooks') {
         bc.innerHTML = '<span class="bc-active">Workbooks patients</span>';
         V.views.workbooks.render();
@@ -896,6 +905,104 @@ const V = {
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- ── MOTS DE PASSE & PROTOCOLE ── -->
+          <div class="card" style="background:rgba(26,24,20,.02);border-color:var(--line);margin-bottom:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold)">🔐 Codes & accès — Méthode V.A.L.E.U.R©</div>
+              <button onclick="this.closest('.card').querySelector('.pwd-body').classList.toggle('hidden')" style="font-size:11px;color:var(--gold);background:none;border:none;cursor:pointer;font-family:inherit">▼ Afficher / Masquer</button>
+            </div>
+            <div class="pwd-body hidden">
+
+              <!-- Tableau des codes -->
+              <div style="overflow-x:auto;margin-bottom:20px">
+                <table style="width:100%;border-collapse:collapse;font-size:12px">
+                  <thead>
+                    <tr style="background:var(--bg2);border-bottom:2px solid var(--line)">
+                      <th style="padding:8px 12px;text-align:left;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4)">Code / Clé</th>
+                      <th style="padding:8px 12px;text-align:left;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4)">Valeur</th>
+                      <th style="padding:8px 12px;text-align:left;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4)">Usage</th>
+                      <th style="padding:8px 12px;text-align:left;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4)">Où</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom:1px solid var(--line)">
+                      <td style="padding:9px 12px;font-weight:600;color:var(--ink)">Code cabinet</td>
+                      <td style="padding:9px 12px"><code style="background:var(--bg2);padding:2px 8px;border-radius:4px;font-size:11px;letter-spacing:1px;color:var(--gold)">VALEUR-ADMIN-2025</code></td>
+                      <td style="padding:9px 12px;color:var(--ink3)">Connexion à cet espace praticien</td>
+                      <td style="padding:9px 12px;color:var(--ink4)">Page de connexion cabinet</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--line);background:var(--bg)">
+                      <td style="padding:9px 12px;font-weight:600;color:var(--ink)">Bypass portrait</td>
+                      <td style="padding:9px 12px"><code style="background:var(--bg2);padding:2px 8px;border-radius:4px;font-size:11px;letter-spacing:1px;color:var(--gold)">?admin=VALEUR-ADMIN-2025</code></td>
+                      <td style="padding:9px 12px;color:var(--ink3)">Déverrouille un portrait sans paiement</td>
+                      <td style="padding:9px 12px;color:var(--ink4)">À ajouter à l'URL résultats.html</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--line)">
+                      <td style="padding:9px 12px;font-weight:600;color:var(--ink)">Secret API</td>
+                      <td style="padding:9px 12px"><code style="background:var(--bg2);padding:2px 8px;border-radius:4px;font-size:11px;letter-spacing:1px;color:var(--gold)">valeur-cab-2026</code></td>
+                      <td style="padding:9px 12px;color:var(--ink3)">Authentifie les appels API du cabinet (Neon/Vercel)</td>
+                      <td style="padding:9px 12px;color:var(--ink4)">Interne — automatique</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--line);background:var(--bg)">
+                      <td style="padding:9px 12px;font-weight:600;color:var(--ink)">Code cadeau</td>
+                      <td style="padding:9px 12px"><code style="background:var(--bg2);padding:2px 8px;border-radius:4px;font-size:11px;letter-spacing:1px;color:var(--gold)">VALEUR-[PRÉNOM]-[ANNÉE]-[XXXX]</code></td>
+                      <td style="padding:9px 12px;color:var(--ink3)">Portrait offert au patient sans paiement</td>
+                      <td style="padding:9px 12px;color:var(--ink4)">Fiche patient → 🎁 Cadeau</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:9px 12px;font-weight:600;color:var(--ink)">Lien admin portrait</td>
+                      <td style="padding:9px 12px"><code style="background:var(--bg2);padding:2px 8px;border-radius:4px;font-size:11px;letter-spacing:1px;color:var(--gold)">resultats.html?admin=VALEUR-ADMIN-2025&email=…</code></td>
+                      <td style="padding:9px 12px;color:var(--ink3)">Voir le portrait complet d'un patient depuis son email</td>
+                      <td style="padding:9px 12px;color:var(--ink4)">À ouvrir dans le navigateur</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Mode d'emploi complet -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--line)">📋 Flux patient standard (payant)</div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)"><div style="width:18px;height:18px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">1</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Envoyer le questionnaire</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">questionnaire.psyh.fr · Le patient reçoit ses résultats + paywall 39€</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)"><div style="width:18px;height:18px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">2</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Le patient paie</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">Stripe → portrait débloqué automatiquement + email de récupération envoyé</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)"><div style="width:18px;height:18px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">3</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Importer dans le cabinet</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">Fiche patient → Importer portrait → Par email → scores récupérés automatiquement</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0"><div style="width:18px;height:18px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">4</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Démarrer le protocole</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">Onglet Parcours → étape V.A.L.E.U.R© → enregistrer séances + défis</div></div></div>
+                </div>
+
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--line)">🎁 Flux code cadeau (gratuit)</div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(168,135,58,.6);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">1</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Ouvrir la fiche patient</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">Patients → cliquer sur le patient voulu</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(168,135,58,.6);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">2</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Générer le lien</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">Bouton 🎁 Cadeau dans le bandeau patient</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(168,135,58,.6);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">3</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Envoyer au patient</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">Email ou SMS · Portrait débloqué sans paiement</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(168,135,58,.6);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">4</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Suivi dans Codes cadeaux</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">Onglet 🎁 → statut En attente / Utilisé</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0"><div style="width:18px;height:18px;border-radius:50%;background:rgba(168,135,58,.6);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">5</div><div><div style="font-size:11px;font-weight:600;color:var(--ink)">Voir le portrait</div><div style="font-size:10.5px;color:var(--ink4);line-height:1.55">👁 Portrait → mode praticien bypass admin</div></div></div>
+                </div>
+
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--line)">👁 Voir un portrait existant manuellement</div>
+                  <div style="font-size:12px;color:var(--ink3);line-height:1.8">
+                    Ouvrir dans le navigateur :<br>
+                    <code style="background:var(--bg2);padding:2px 6px;border-radius:3px;font-size:10px;display:block;margin:6px 0;word-break:break-all">https://questionnaire.psyh.fr/resultats.html?admin=VALEUR-ADMIN-2025&email=patient@email.fr</code>
+                    Remplacer l'email par celui utilisé lors du questionnaire.
+                  </div>
+                </div>
+
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--line)">⚠️ À ne jamais partager</div>
+                  <div style="background:rgba(181,49,42,.04);border:1px solid rgba(181,49,42,.15);border-radius:6px;padding:10px 12px">
+                    <div style="font-size:11px;color:#B5312A;font-weight:600;margin-bottom:4px">Codes confidentiels praticien</div>
+                    <div style="font-size:11px;color:var(--ink4);line-height:1.7">
+                      Le code <code style="background:rgba(181,49,42,.08);padding:1px 5px;border-radius:3px">VALEUR-ADMIN-2025</code> déverrouille <strong>gratuitement</strong> n'importe quel portrait. Ne jamais le transmettre à un patient.<br><br>
+                      Utilisez exclusivement les <strong>codes cadeaux</strong> pour offrir un portrait — ils sont à usage unique et traçables.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>`;
       }
     },
@@ -1068,6 +1175,7 @@ const V = {
               <div class="pb-actions">
                 <button class="btn btn--ghost btn--sm" onclick="V.views.patients.openModal('${id}')">✏️</button>
                 <button class="btn btn--gold btn--sm" onclick="V.portrait.openImport('${id}')">📊 ${masque ? 'MAJ' : 'Portrait'}</button>
+                <button class="btn btn--gift btn--sm" data-pid="${id}" data-prenom="${p.prenom||''}" data-email="${p.email||''}" onclick="V.gift.openModalFromEl(this)">🎁 Cadeau</button>
                 <button class="btn btn--danger btn--sm" onclick="V.views.patient.confirmDelete('${id}')">🗑</button>
               </div>
             </div>
@@ -1631,8 +1739,8 @@ const V = {
       btn.textContent = 'Récupération…'; btn.disabled = true;
       msg.style.display = 'none';
       try {
-        const r = await fetch(API + '/get-scores-by-email?email=' + encodeURIComponent(email), {
-          headers: { 'x-cabinet-secret': ADMIN_PWD }
+        const r = await fetch(API + '/get-scores?email=' + encodeURIComponent(email), {
+          headers: { 'x-cabinet-secret': 'valeur-cab-2026' }
         });
         const data = await r.json();
         if(!data.found || !data.scores) throw new Error('Non trouvé');
@@ -1704,5 +1812,229 @@ V.auth.logout = function() {
   document.getElementById('auth-input').value = '';
 };
 </script>
+
+<!-- ══ MODAL CODES CADEAUX ════════════════════════════════════════ -->
+<div class="modal" id="modal-gift">
+  <div class="modal-card" style="max-width:480px">
+    <div class="modal-header">
+      <h3 class="modal-title" id="gift-modal-title">🎁 Code cadeau</h3>
+      <button class="modal-close" onclick="V.ui.closeModal('modal-gift')">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--ink4);margin-bottom:16px;line-height:1.7">
+        Ce lien permet à votre patient de passer le questionnaire et d'obtenir son portrait premium <strong>gratuitement</strong>, sans paiement.
+      </p>
+      <div id="gift-gen-area">
+        <button id="gift-gen-btn" class="btn btn--gold btn--full" onclick="V.gift.generate()">✨ Générer le lien cadeau</button>
+      </div>
+      <div id="gift-link-area" style="display:none">
+        <div style="background:rgba(168,135,58,.06);border:1px solid rgba(168,135,58,.2);border-radius:8px;padding:14px;margin-bottom:10px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Lien à envoyer au patient</p>
+          <p id="gift-link-display" style="font-size:12px;color:var(--ink);word-break:break-all;font-family:monospace;margin-bottom:10px"></p>
+          <button id="gift-copy-btn" onclick="V.gift.copy()" class="btn btn--gold btn--sm">📋 Copier le lien</button>
+        </div>
+        <p style="font-size:11px;color:var(--ink4);font-style:italic">Code à usage unique · Portrait débloqué automatiquement à la fin du questionnaire</p>
+      </div>
+      <p id="gift-err" style="display:none;font-size:12px;color:#B5312A;margin-top:8px"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ MODULE CODES CADEAUX — V.gift ════════════════════════════════
+V.gift = {
+  _pid:null, _prenom:null, _email:null, _code:null, _link:null,
+  _SECRET:'valeur-cab-2026',
+
+  openModalFromEl(el) {
+    const pid    = el.dataset.pid    || '';
+    const prenom = el.dataset.prenom || '';
+    const email  = el.dataset.email  || '';
+    this.openModal(pid, prenom, email);
+  },
+
+  openModal(pid, prenom, email) {
+    this._pid=pid; this._prenom=prenom||''; this._email=email||'';
+    this._code=null; this._link=null;
+    document.getElementById('gift-modal-title').textContent = '🎁 Cadeau pour '+(prenom||'ce patient');
+    document.getElementById('gift-gen-area').style.display   = 'block';
+    document.getElementById('gift-link-area').style.display  = 'none';
+    document.getElementById('gift-err').style.display        = 'none';
+    const btn = document.getElementById('gift-gen-btn');
+    if(btn){ btn.textContent='✨ Générer le lien cadeau'; btn.disabled=false; }
+    V.ui.openModal('modal-gift');
+  },
+
+  async generate() {
+    const btn = document.getElementById('gift-gen-btn');
+    btn.textContent='Génération…'; btn.disabled=true;
+    try {
+      const r = await fetch(API+'/gifts?action=create', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-cabinet-secret':this._SECRET},
+        body: JSON.stringify({prenom:this._prenom, email:this._email, note:'Fiche patient '+this._pid})
+      });
+      const d = await r.json();
+      if(!d.success) throw new Error(d.error||'Erreur serveur');
+      this._code=d.code; this._link=d.link;
+      this._saveToPatient(d.code, d.link);
+      document.getElementById('gift-link-display').textContent = d.link;
+      document.getElementById('gift-gen-area').style.display  = 'none';
+      document.getElementById('gift-link-area').style.display = 'block';
+    } catch(e) {
+      document.getElementById('gift-err').textContent = 'Erreur : '+e.message;
+      document.getElementById('gift-err').style.display = 'block';
+      btn.textContent='✨ Générer le lien cadeau'; btn.disabled=false;
+    }
+  },
+
+  copy() {
+    if(!this._link) return;
+    const link = this._link;
+    const fallback = t => { const el=document.createElement('textarea'); el.value=t; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); };
+    if(navigator.clipboard) {
+      navigator.clipboard.writeText(link).then(()=>{
+        const btn=document.getElementById('gift-copy-btn');
+        btn.textContent='✅ Copié !'; setTimeout(()=>{ btn.textContent='📋 Copier le lien'; },2500);
+      }).catch(()=>fallback(link));
+    } else { fallback(link); V.ui.toast('✓ Lien copié'); }
+  },
+
+  _saveToPatient(code, link) {
+    if(!this._pid) return;
+    const d = V.data.getPatient(this._pid)||V.data.newPatientData();
+    d.giftCode=code; d.giftLink=link;
+    d.giftCreatedAt=new Date().toISOString(); d.giftUsed=false;
+    V.data.savePatient(this._pid, d);
+  },
+
+  // Vérifier si le code cadeau du patient a été utilisé
+  async checkUsed(pid) {
+    const d = V.data.getPatient(pid);
+    if(!d||!d.giftCode) return false;
+    if(d.giftUsed) return true;
+    try {
+      const r = await fetch(API+'/gifts?code='+encodeURIComponent(d.giftCode));
+      const j = await r.json();
+      if(!j.valid && j.reason==='Code déjà utilisé') {
+        d.giftUsed=true; d.giftUsedAt=d.giftUsedAt||new Date().toISOString();
+        V.data.savePatient(pid, d);
+        return true;
+      }
+    } catch(e){}
+    return false;
+  },
+
+  // Ouvrir le portrait cadeau (mode praticien, bypass admin)
+  openPortrait(pid) {
+    const list = V.data.getPatients();
+    const p = list.find(x=>x.id===pid)||{};
+    const params = new URLSearchParams({admin:'VALEUR-ADMIN-2025'});
+    if(p.email)  params.set('email',  p.email);
+    if(p.prenom) params.set('prenom', p.prenom);
+    window.open('https://questionnaire.psyh.fr/resultats.html?'+params.toString(),'_blank');
+  },
+
+  // ── Vue globale : liste de tous les codes ────────────────────────
+  async renderView() {
+    const el = document.getElementById('app-content');
+    el.innerHTML = `<div class="view-wrap">
+      <div class="view-header">
+        <h1 class="view-title">Codes cadeaux</h1>
+        <button class="btn btn--gold" onclick="V.gift.openModal(null,'','')">＋ Nouveau code</button>
+      </div>
+      <div class="card" style="background:rgba(168,135,58,.04);border-color:rgba(168,135,58,.18);margin-bottom:16px;font-size:13px;color:var(--ink4);line-height:1.8">
+        <strong style="color:var(--ink)">Mode d'emploi :</strong><br>
+        1. Ouvrez la fiche d'un patient → bouton <strong>🎁 Cadeau</strong><br>
+        2. Générez le lien et envoyez-le par email ou SMS<br>
+        3. Le patient fait le questionnaire → portrait débloqué sans paiement<br>
+        4. Revenez ici pour voir si le code a été utilisé → <strong>👁 Portrait</strong>
+      </div>
+      <div id="gifts-list"><div style="font-size:13px;color:var(--ink4);padding:20px 0">Chargement…</div></div>
+    </div>`;
+    try {
+      const r = await fetch(API+'/gifts?list=1&secret='+this._SECRET);
+      const d = await r.json();
+      if(!d.codes) throw new Error('Réponse invalide');
+      const listEl = document.getElementById('gifts-list');
+      if(!d.codes.length) {
+        listEl.innerHTML = '<div class="card" style="text-align:center;padding:40px;color:var(--ink4)">Aucun code cadeau créé. Ouvrez la fiche d’un patient et cliquez 🎁 Cadeau.</div>';
+        return;
+      }
+      listEl.innerHTML = '';
+      d.codes.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'card';
+        row.style.cssText = 'margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap';
+        row.innerHTML = `
+          <div style="flex:1;min-width:180px">
+            <div style="font-size:13px;font-weight:600;color:var(--ink)">${c.prenom||'—'}</div>
+            ${c.email ? `<div style="font-size:11px;color:var(--ink5)">${c.email}</div>` : ''}
+            <div style="font-size:11px;color:var(--ink4);font-family:monospace;margin-top:2px">${c.code}</div>
+            ${c.note ? `<div style="font-size:10px;color:var(--ink5);margin-top:2px;font-style:italic">${c.note}</div>` : ''}
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div class="badge ${c.used?'badge--done':'badge--active'}" style="margin-bottom:4px">${c.used?'✅ Utilisé':'⏳ En attente'}</div>
+            ${c.used_at ? `<div style="font-size:10px;color:var(--ink5)">utilisé le ${new Date(c.used_at).toLocaleDateString('fr-FR')}</div>` : ''}
+            <div style="font-size:10px;color:var(--ink5)">créé le ${new Date(c.created_at).toLocaleDateString('fr-FR')}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0" id="actions-${c.code.replace(/-/g,'_')}"></div>`;
+        const actionsEl = row.querySelector('[id^="actions-"]');
+        if(!c.used) {
+          const btnCopy = document.createElement('button');
+          btnCopy.className = 'btn btn--ghost btn--sm';
+          btnCopy.textContent = '⎘ Lien';
+          btnCopy.onclick = () => V.gift._copyCode(c.code);
+          actionsEl.appendChild(btnCopy);
+          const btnRev = document.createElement('button');
+          btnRev.className = 'btn btn--danger btn--sm';
+          btnRev.textContent = 'Révoquer';
+          btnRev.onclick = () => V.gift._revoke(c.code);
+          actionsEl.appendChild(btnRev);
+        } else {
+          const btnPort = document.createElement('button');
+          btnPort.className = 'btn btn--ghost btn--sm';
+          btnPort.style.color = '#2D7A4F';
+          btnPort.textContent = '👁 Portrait';
+          btnPort.onclick = () => V.gift._openByPrenom(c.prenom, c.email);
+          actionsEl.appendChild(btnPort);
+        }
+        listEl.appendChild(row);
+      });
+    } catch(e) {
+      document.getElementById('gifts-list').innerHTML = '<div class="card" style="color:#B5312A;padding:16px">Erreur de chargement. Vérifiez la connexion et la configuration API.</div>';
+    }
+  },
+
+  _copyCode(code) {
+    const link = 'https://questionnaire.psyh.fr?gift='+code;
+    const fallback = t => { const el=document.createElement('textarea'); el.value=t; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); };
+    if(navigator.clipboard) navigator.clipboard.writeText(link).then(()=>V.ui.toast('✓ Lien copié')).catch(()=>{ fallback(link); V.ui.toast('✓ Lien copié'); });
+    else { fallback(link); V.ui.toast('✓ Lien copié'); }
+  },
+
+  _openByPrenom(prenom, email) {
+    const params = new URLSearchParams({admin:'VALEUR-ADMIN-2025'});
+    if(email)  params.set('email',  email);
+    if(prenom) params.set('prenom', prenom);
+    window.open('https://questionnaire.psyh.fr/resultats.html?'+params.toString(),'_blank');
+  },
+
+  async _revoke(code) {
+    if(!confirm('Révoquer ce code ? Il ne pourra plus être utilisé par le patient.')) return;
+    try {
+      const r = await fetch(API+'/gifts?action=revoke', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-cabinet-secret':this._SECRET},
+        body:JSON.stringify({code})
+      });
+      const d = await r.json();
+      if(d.success) { V.ui.toast('✓ Code révoqué'); V.gift.renderView(); }
+      else V.ui.toast('Erreur : '+(d.error||'Erreur inconnue'), true);
+    } catch(e) { V.ui.toast('Erreur réseau', true); }
+  }
+};
+</script>
+
 </body>
 </html>
