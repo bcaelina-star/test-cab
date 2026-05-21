@@ -252,6 +252,9 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
     <button class="nav-item" id="nav-workbooks" onclick="V.router.go('workbooks')">
       <span class="nav-icon">📝</span><span>Workbooks patients</span>
     </button>
+    <button class="nav-item" id="nav-fiches" onclick="V.router.go('fiches')">
+      <span class="nav-icon">🗂</span><span>Bibliothèque fiches</span>
+    </button>
     <a class="nav-item" href="livret_psychoeducation.html?admin=VALEUR-ADMIN-2025" target="_blank">
       <span class="nav-icon">🎓</span><span>Psychoéducation</span>
     </a>
@@ -292,6 +295,7 @@ textarea.field-input{resize:vertical;min-height:72px;line-height:1.65}
         <div style="background:#7A3594"></div>
       </div>
       <div id="breadcrumb"><span class="bc-active">Cabinet</span></div>
+      <div id="sync-indicator" style="font-size:10px;font-weight:600;letter-spacing:1px;transition:opacity .3s;opacity:0;margin-left:auto;padding-right:8px"></div>
     </div>
     <div id="app-content"></div>
   </div>
@@ -507,7 +511,7 @@ const V = {
       if(v === ADMIN_PWD) {
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('app').style.display = 'block';
-        V.router.go('dashboard');
+        V.sync.init().then(() => V.router.go('dashboard'));
       } else {
         document.getElementById('auth-err').style.display = 'block';
         document.getElementById('auth-input').value = '';
@@ -526,17 +530,20 @@ const V = {
     },
     savePatients(list) {
       localStorage.setItem('cab_patients', JSON.stringify(list));
+      V.sync.pushList(list);
     },
     getPatient(id) {
       try { return JSON.parse(localStorage.getItem('cab_patient_'+id)||'null'); } catch(e){ return null; }
     },
     savePatient(id, data) {
       localStorage.setItem('cab_patient_'+id, JSON.stringify(data));
+      V.sync.push(id, data);
     },
     deletePatient(id) {
       const list = V.data.getPatients().filter(p => p.id !== id);
       V.data.savePatients(list);
       localStorage.removeItem('cab_patient_'+id);
+      V.sync.del(id);
     },
     newPatientData() {
       return {
@@ -598,6 +605,11 @@ const V = {
         V.gift.renderView();
         const _ng = document.getElementById('nav-gifts');
         if(_ng) _ng.classList.add('active');
+      } else if(view === 'fiches') {
+        bc.innerHTML = '<span class="bc-active">Bibliothèque de fiches</span>';
+        V.fiches.renderView();
+        const nf = document.getElementById('nav-fiches');
+        if(nf) nf.classList.add('active');
       } else if(view === 'workbooks') {
         bc.innerHTML = '<span class="bc-active">Workbooks patients</span>';
         V.views.workbooks.render();
@@ -907,6 +919,15 @@ const V = {
             </div>
           </div>
 
+          <!-- ── SYNC STATUS CHECK ── -->
+          <div id="sync-debug-banner" style="display:none;background:rgba(181,49,42,.06);border:1px solid rgba(181,49,42,.2);border-radius:8px;padding:12px 16px;margin-bottom:14px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#B5312A;margin-bottom:4px">⚠ Migration base de données requise</div>
+            <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">La colonne <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">cabinet_data</code> n'existe pas encore dans Neon. Les fiches patients ne se synchroniseront pas entre appareils.</div>
+            <div style="font-size:11px;color:var(--ink4)">
+              <strong>Solution :</strong> Ouvrir console.neon.tech → SQL Editor → exécuter :<br>
+              <code style="background:var(--bg2);display:block;margin:4px 0;padding:4px 8px;border-radius:3px;font-size:10px">ALTER TABLE patients ADD COLUMN IF NOT EXISTS cabinet_data JSONB;<br>ALTER TABLE patients ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();</code>
+            </div>
+          </div>
           <!-- ── MOTS DE PASSE & PROTOCOLE ── -->
           <div class="card" style="background:rgba(26,24,20,.02);border-color:var(--line);margin-bottom:14px">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -1175,6 +1196,7 @@ const V = {
               <div class="pb-actions">
                 <button class="btn btn--ghost btn--sm" onclick="V.views.patients.openModal('${id}')">✏️</button>
                 <button class="btn btn--gold btn--sm" onclick="V.portrait.openImport('${id}')">📊 ${masque ? 'MAJ' : 'Portrait'}</button>
+                <button class="btn btn--ghost btn--sm" onclick="V.fiches.openFromPatient('${id}')" title="Fiches adaptées au profil">🗂 Fiches</button>
                 <button class="btn btn--gift btn--sm" data-pid="${id}" data-prenom="${p.prenom||''}" data-email="${p.email||''}" onclick="V.gift.openModalFromEl(this)">🎁 Cadeau</button>
                 <button class="btn btn--danger btn--sm" onclick="V.views.patient.confirmDelete('${id}')">🗑</button>
               </div>
@@ -1184,7 +1206,9 @@ const V = {
               <button class="tab ${this._tab==='parcours'?'active':''}" onclick="V.views.patient.switchTab('parcours','${id}')">🗺 Parcours</button>
               <button class="tab ${this._tab==='portrait'?'active':''}" onclick="V.views.patient.switchTab('portrait','${id}')">Portrait</button>
               <button class="tab ${this._tab==='historique'?'active':''}" onclick="V.views.patient.switchTab('historique','${id}')">Historique</button>
+              <button class="tab ${this._tab==='fiches'?'active':''}" onclick="V.views.patient.switchTab('fiches','${id}')">📄 Fiches</button>
               <button class="tab ${this._tab==='outils'?'active':''}" onclick="V.views.patient.switchTab('outils','${id}')">Outils</button>
+              <button class="tab ${this._tab==='fiches'?'active':''}" onclick="V.views.patient.switchTab('fiches','${id}')">📋 Fiches</button>
             </div>
             <div id="tab-body"></div>
           </div>`;
@@ -1205,7 +1229,9 @@ const V = {
         if(tab === 'parcours')    el.innerHTML = V.views.patient._tabParcours(d, id);
         else if(tab === 'portrait')   { el.innerHTML = V.views.patient._tabPortrait(d); V.views.patient._animBars(d); }
         else if(tab === 'historique') el.innerHTML = V.views.patient._tabHistorique(d, id);
+        else if(tab === 'fiches')     el.innerHTML = V.fiches.renderTab(d, id);
         else if(tab === 'outils')     el.innerHTML = V.views.patient._tabOutils(d, id);
+        else if(tab === 'fiches')     V.fiches.renderTab(d, id);
       },
 
       _animBars(d) {
@@ -1793,11 +1819,15 @@ const V = {
 document.getElementById('auth-input').addEventListener('keydown', e => { if(e.key==='Enter') V.auth.login(); });
 
 // Auth auto si session active (optionnel : basé sur sessionStorage)
-if(sessionStorage.getItem('cab_auth') === ADMIN_PWD) {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  V.router.go('dashboard');
-}
+// Session auto-restore — après DOMContentLoaded pour que V.sync soit disponible
+document.addEventListener('DOMContentLoaded', () => {
+  if(sessionStorage.getItem('cab_auth') === ADMIN_PWD) {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    if(V.sync) V.sync.init().then(() => V.router.go('dashboard'));
+    else V.router.go('dashboard');
+  }
+});
 // Mémoriser auth dans sessionStorage
 const _origLogin = V.auth.login.bind(V.auth);
 V.auth.login = function() {
@@ -2034,7 +2064,1219 @@ V.gift = {
     } catch(e) { V.ui.toast('Erreur réseau', true); }
   }
 };
-</script>
 
-</body>
-</html>
+// ══ MODULE SYNCHRONISATION NEON — V.sync ════════════════════════
+V.sync = {
+  _SECRET: 'valeur-cab-2026',
+  _busy: false,
+  _queue: [],
+  _status: 'idle', // 'idle' | 'syncing' | 'error'
+
+  // ── Initialisation au login : charge Neon → localStorage ────────
+  async init() {
+    this._setStatus('syncing', '☁ Synchronisation…');
+    try {
+      const r = await fetch(API + '/patients', {
+        headers: { 'x-cabinet-secret': this._SECRET }
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const d = await r.json();
+      const patients = d.patients || [];
+
+      if (patients.length > 0) {
+        // Fusionner Neon avec localStorage (Neon gagne si plus récent)
+        const localList = JSON.parse(localStorage.getItem('cab_patients') || '[]');
+        const merged = this._merge(localList, patients);
+        localStorage.setItem('cab_patients', JSON.stringify(merged));
+
+        // Charger les données détaillées (cabinet_data)
+        patients.forEach(p => {
+          if (p.cabinet_data) {
+            const localKey = 'cab_patient_' + p.id;
+            const localData = JSON.parse(localStorage.getItem(localKey) || 'null');
+            // Neon gagne si updated_at > localStorage
+            const neonDate = p.updated_at ? new Date(p.updated_at).getTime() : 0;
+            const localDate = localData?._updatedAt ? new Date(localData._updatedAt).getTime() : 0;
+            if (neonDate >= localDate) {
+              localStorage.setItem(localKey, JSON.stringify(p.cabinet_data));
+            }
+          }
+        });
+
+        // Si localStorage a des patients absents de Neon → les pousser
+        const neonIds = new Set(patients.map(p => p.id));
+        const localOnly = localList.filter(p => !neonIds.has(p.id));
+        if (localOnly.length > 0) {
+          await this._syncLocalToNeon(localOnly);
+        }
+      } else if (JSON.parse(localStorage.getItem('cab_patients') || '[]').length > 0) {
+        // Neon vide mais localStorage a des données → pousser vers Neon
+        const localList = JSON.parse(localStorage.getItem('cab_patients') || '[]');
+        await this._syncLocalToNeon(localList);
+      }
+
+      if (d.withCabinetData === false) {
+        // Colonne cabinet_data absente — migration SQL pas encore exécutée
+        this._setStatus('error', '⚠ Migration SQL requise');
+        console.warn('[sync] cabinet_data column missing. Run NEON_migration_cabinet.sql');
+        const banner = document.getElementById('sync-debug-banner');
+        if(banner) banner.style.display = 'block';
+      } else {
+        this._setStatus('ok', '☁ Synchronisé');
+        setTimeout(() => this._setStatus('idle', ''), 3000);
+      }
+    } catch (e) {
+      console.warn('[sync] init error:', e);
+      const msg = e.message && e.message.includes('401') ? '⚠ Secret API incorrect' :
+                  e.message && e.message.includes('Failed') ? '⚠ Réseau indisponible' :
+                  '⚠ Mode hors-ligne';
+      this._setStatus('error', msg);
+      // Continue sans bloquer — localStorage disponible
+    }
+  },
+
+  // ── Pousser un patient vers Neon ─────────────────────────────────
+  push(id, data) {
+    const list = V.data.getPatients();
+    const patient = list.find(p => p.id === id);
+    if (!patient) return;
+    const payload = {
+      ...patient,
+      cabinet_data: { ...data, _updatedAt: new Date().toISOString() },
+      masque: data.portrait?.masque || patient.masque || null
+    };
+    this._queue.push({ type: 'upsert', payload });
+    this._flush();
+  },
+
+  // ── Pousser la liste patients (métadonnées) ──────────────────────
+  pushList(list) {
+    list.forEach(p => {
+      const data = V.data.getPatient(p.id);
+      this._queue.push({ type: 'upsert', payload: {
+        ...p,
+        cabinet_data: data ? { ...data, _updatedAt: new Date().toISOString() } : null,
+        masque: data?.portrait?.masque || p.masque || null
+      }});
+    });
+    this._flush();
+  },
+
+  // ── Supprimer un patient de Neon ─────────────────────────────────
+  del(id) {
+    this._queue.push({ type: 'delete', id });
+    this._flush();
+  },
+
+  // ── Vider la file d'attente ──────────────────────────────────────
+  async _flush() {
+    if (this._busy || !this._queue.length) return;
+    this._busy = true;
+    this._setStatus('syncing', '☁ Sauvegarde…');
+    while (this._queue.length) {
+      const item = this._queue.shift();
+      try {
+        if (item.type === 'upsert') {
+          await fetch(API + '/patients', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-cabinet-secret': this._SECRET },
+            body: JSON.stringify(item.payload)
+          });
+        } else if (item.type === 'delete') {
+          await fetch(API + '/patients', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-cabinet-secret': this._SECRET },
+            body: JSON.stringify({ action: 'delete', id: item.id })
+          });
+        }
+      } catch (e) {
+        console.warn('[sync] push error:', e);
+        // Remettre en file si erreur réseau
+        this._queue.unshift(item);
+        break;
+      }
+    }
+    this._busy = false;
+    if (!this._queue.length) {
+      this._setStatus('ok', '☁ Sauvegardé');
+      setTimeout(() => this._setStatus('idle', ''), 2000);
+    }
+  },
+
+  // ── Sync locale → Neon (migration initiale) ──────────────────────
+  async _syncLocalToNeon(localList) {
+    const patients = localList.map(p => {
+      const data = V.data.getPatient(p.id);
+      return {
+        ...p,
+        cabinet_data: data ? { ...data, _updatedAt: new Date().toISOString() } : null,
+        masque: data?.portrait?.masque || p.masque || null
+      };
+    });
+    await fetch(API + '/patients?action=sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-cabinet-secret': this._SECRET },
+      body: JSON.stringify({ patients })
+    });
+  },
+
+  // ── Fusion liste locale + Neon ────────────────────────────────────
+  _merge(local, neon) {
+    const map = {};
+    local.forEach(p => { map[p.id] = p; });
+    neon.forEach(p => { map[p.id] = { id:p.id, prenom:p.prenom, nom:p.nom, email:p.email, tel:p.tel, notes:p.notes, masque:p.masque, createdAt:p.created_at }; });
+    return Object.values(map);
+  },
+
+  // ── Indicateur visuel dans la topbar ─────────────────────────────
+  _setStatus(status, msg) {
+    this._status = status;
+    const el = document.getElementById('sync-indicator');
+    if (!el) return;
+    const colors = { syncing: '#B8930A', ok: '#2D7A4F', error: '#B5312A', idle: 'transparent' };
+    el.textContent = msg;
+    el.style.color = colors[status] || 'var(--ink4)';
+    el.style.opacity = status === 'idle' ? '0' : '1';
+  }
+};
+
+
+// ══ MODULE V.fiches — Générateur de fiches thérapeutiques ════════════
+// © Céline Bourbon — Méthode V.A.L.E.U.R© — Architecture système fiches
+// Nomenclature : [TYPE]-[MASQUE(S)]-[ÉTAPE]-[VARIANTE]
+
+// ══════════════════════════════════════════════════════════════════════
+// MODULE BIBLIOTHÈQUE DE FICHES V.A.L.E.U.R© — v1.0
+// © Céline Bourbon — cabinet psyH Bordeaux
+// 
+// SOURCES SCIENTIFIQUES :
+//   Winnicott D.W. (1960) Ego distortion in terms of true and false self
+//   Bagby R.M., Parker J.D.A., Taylor G.J. (1994) TAS-20
+//   Frost R.O. et al. (1990) FMPS Frost Multidimensional Perfectionism Scale
+//   Fraley R.C., Waller N.G., Brennan K.A. (2000) ECR-R
+//   Rotter J.B. (1966) LOC · Raskin R. (1979) NPI
+//   Freeston M.H. et al. (1994) + Carleton R.N. et al. (2007) IUS-12
+//   Salkovskis P.M. & Rimes K.A. (1997) SHAI
+//   Wood A.M. et al. (2008) Journal of Counseling Psychology 55(3)
+//   Kernis M.H. & Goldman B.M. (2006) Advances in Experimental Social Psychology 38
+//   Erikson E.H. (1968) Identity: Youth and Crisis
+//   Marcia J.E. (1966) Journal of Personality and Social Psychology 3(5)
+//   Bourbon C. (2024) De la peur à la joie d'être soi, Éditions L'Harmattan
+//   Yalom I.D. (1980) Existential Psychotherapy, Basic Books
+// ══════════════════════════════════════════════════════════════════════
+
+const FICHES_CONTENT = {"rouge":{"peur":"Peur de la maladie et de la disparition","origine":"À un moment de votre histoire, votre corps a signalé un danger. Votre système nerveux a alors pris une décision logique : surveiller en permanence, ne jamais relâcher l'attention. Ce n'était pas une réaction excessive. C'était la seule réponse possible face à quelque chose qui vous dépassait.","masque_desc":"Ce masque monte la garde vingt-quatre heures sur vingt-quatre. Il scrute chaque sensation, chaque signal, chaque variation. Vous êtes devenu·e votre propre veilleur de nuit — même quand tout va bien, même après un bilan médical parfait.","nature":"Sous ce masque vit quelqu'un qui possède une capacité extraordinaire de connexion à son corps, une finesse sensorielle rare. Quand ce masque s'assouplira, votre corps redeviendra un allié — pas un ennemi à surveiller.","forces":"Sensibilité corporelle fine · Soin de l'autre · Présence au vivant","couts":"Épuisement attentionnel · Évitement des activités · Isolation progressive","declencheurs":"Sensation corporelle inhabituelle · Maladie dans l'entourage · Informations médicales · Solitude","phrases":"Et si c'était grave ? · Je dois surveiller. · Un bilan de plus pour être sûr.","source":"SHAI (Salkovskis & Rimes, 1997) · Barlow (2002) Anxiety and its disorders","defis":["Observer une sensation sans l'interpréter — juste la nommer","Identifier l'émotion présente au moment d'un signal corporel","Traverser 5 minutes d'incertitude corporelle sans vérifier","Reporter une vérification de 10 minutes — puis observer ce qui s'est passé","Écrire : Mon corps fait ça quand je ressens…"]},"orange":{"peur":"Peur de souffrir et d\\","origine":"À un moment, la vie émotionnelle est devenue trop intense, trop imprévisible. Votre système a appris à couper l'accès direct aux émotions pour ne pas être submergé·e. Ce n'était pas un choix conscient — c'était une protection construite dans l'urgence.","masque_desc":"Ce masque crée une distance entre vous et vos émotions. Vous les observez de loin, comme derrière une vitre. L'énergie qui devrait circuler librement se fige — et finit par s'exprimer autrement : irritabilité soudaine, sensations physiques inexpliquées, sentiment diffus de vide.","nature":"Sous ce masque vit une intelligence émotionnelle d'une richesse exceptionnelle. Quand ce masque s'assouplira, vous naviguerez dans vos émotions avec grâce — elles deviendront une source d'information, pas une menace.","forces":"Intelligence émotionnelle · Capacité à traverser les crises · Stabilité","couts":"Vide intérieur · Fatigue relationnelle · Perte de sens · Explosions différées","declencheurs":"Moment de vulnérabilité · Proche qui souffre · Silence et solitude · Émotion intense","phrases":"Je ne ressens rien. · Ça va, c'est pas grave. · Je m'en occupe, ça ira.","source":"TAS-20 alexithymie (Bagby, Parker & Taylor, 1994)","defis":["Nommer une émotion au moins une fois dans la journée — même vaguement","Observer ce qui se passe dans votre corps quand quelqu'un vous parle de lui·elle","Terminer une phrase : En ce moment, je ressens un peu…","Écouter une musique qui vous touche — et rester avec ce que ça fait","Poser la question : Qu'est-ce que j'ai vraiment envie de faire ce soir ?"]},"jaune":{"peur":"Peur de l\\","origine":"À un moment, l'imprévu a été vécu comme une menace réelle. Votre intelligence a alors développé une stratégie redoutable : anticiper tout, prévoir tous les scénarios, ne jamais laisser le futur vous surprendre. Une réponse brillante — qui finit par épuiser.","masque_desc":"Ce masque construit des plans de secours pour les plans de secours. Il calcule, anticipe, prépare. Chaque situation inconnue déclenche un processus d'analyse intense. Le problème : le futur ne peut jamais être entièrement maîtrisé — et la certitude que vous cherchez n'arrive jamais vraiment.","nature":"Sous ce masque vit une capacité d'analyse et de vision stratégique exceptionnelle. Quand ce masque s'assouplira, cette intelligence deviendra une force d'action confiante — avancer sans garanties, porté·e par votre propre élan.","forces":"Esprit analytique · Vision stratégique · Fiabilité · Anticipation","couts":"Paralysie décisionnelle · Rigidité · Perte de spontanéité · Épuisement cognitif","declencheurs":"Annulation d'un plan · Décision sans information complète · Situation nouvelle · Silence d'un proche","phrases":"Je dois savoir. · Il faut que j'anticipe. · Je ne peux pas décider sans être sûr.","source":"IUS-12 (Freeston et al., 1994 ; Carleton et al., 2007)","defis":["Laisser une décision mineure au hasard (pile ou face)","Identifier une inquiétude et demander : à quelle probabilité elle se réalise ?","Terminer une journée avec une tâche non terminée — intentionnellement","Déléguer quelque chose de petit — sans vérifier le résultat","Partir quelque part sans avoir tout prévu"]},"vert":{"peur":"Peur du rejet et de la perte d\\","origine":"À un moment, vous avez appris que l'amour pouvait être conditionnel. Qu'il fallait mériter la présence des autres. Votre système a alors développé une stratégie de survie relationnelle : s'adapter, donner, anticiper les besoins, ne jamais décevoir.","masque_desc":"Ce masque surveille en permanence le lien avec les autres. Il ajuste, cède, s'efface. Il préfère taire ses propres besoins plutôt que de risquer le conflit ou le retrait affectif. L'amour est vécu comme quelque chose à gagner — jamais acquis.","nature":"Sous ce masque vit une capacité d'amour et d'empathie d'une profondeur rare. Quand ce masque s'assouplira, cet amour se donnera librement, sans s'épuiser — ancré en vous, non dépendant du regard de l'autre.","forces":"Empathie profonde · Amour rare · Talent pour le lien authentique","couts":"Perte de soi · Ressentiment silencieux · Épuisement empathique · Dépendance","declencheurs":"Indisponibilité d'un proche · Désaccord · Silence ou distance relationnelle · Critique","phrases":"Ne me laisse pas. · Je vais m'adapter. · Je ne veux pas déranger.","source":"ECR-R (Fraley, Waller & Brennan, 2000) · Bowlby théorie de l'attachement","defis":["Exprimer une préférence quand quelqu'un vous demande ce que vous voulez","Remarquer le moment où vous commencez à vous adapter automatiquement","Laisser un silence dans une conversation sans le remplir","Dire non à une demande mineure — sans s'expliquer pendant dix minutes","Observer votre réaction quand quelqu'un ne répond pas immédiatement"]},"bleu":{"peur":"Peur du chaos et de la perte de contrôle","origine":"À un moment, le monde a semblé imprévisible et peu fiable. Votre système a développé une réponse adaptée : prendre les commandes, maîtriser l'environnement, structurer ce qui peut l'être. Une stratégie efficace — qui finit par peser sur tout.","masque_desc":"Ce masque gère, organise, dirige. Il a du mal à déléguer — parce que déléguer, c'est accepter que les choses soient faites autrement. Il surveille les détails, corrige, reprend. La maîtrise est constante, même dans les espaces qui devraient être libres.","nature":"Sous ce masque vit une autorité naturelle et une capacité de structuration d'une réelle puissance. Quand ce masque s'assouplira, cette force deviendra une parole juste et inspirante — un leadership qui élève au lieu de contrôler.","forces":"Leadership naturel · Structure · Capacité à protéger et porter","couts":"Isolement · Incapacité à déléguer · Épuisement de maîtrise · Conflits répétés","declencheurs":"Situation hors de contrôle · Délégation obligée · Contradiction · Imprévu dans un projet","phrases":"Je vais m'en occuper. · Faites-le comme ça. · Personne ne peut faire ça comme moi.","source":"LOC (Rotter, 1966) · NPI (Raskin, 1979)","defis":["Confier une tâche mineure à quelqu'un — sans vérifier le résultat","Observer ce que vous ressentez quand vous ne contrôlez pas quelque chose","Laisser quelqu'un d'autre décider de quelque chose de petit","Identifier un domaine où vous pourriez lâcher sans risque réel","Remarquer quand vous reprenez quelque chose que vous aviez confié"]},"indigo":{"peur":"Peur de l\\","origine":"À un moment, une évaluation extérieure a eu un poids décisif. Votre système a appris qu'être regardé·e comportait un risque — celui de ne pas être à la hauteur. La réponse : viser l'excellence, ne rien laisser au hasard, ne jamais montrer ce qui pourrait être jugé.","masque_desc":"Ce masque perfectionne, relit, reporte. Il compare en permanence — à un idéal intérieur, à ce qu'il perçoit chez les autres. La procrastination n'est pas de la paresse : c'est la peur de soumettre quelque chose d'imparfait au jugement du monde.","nature":"Sous ce masque vit une vision claire et une intuition affûtée d'une rare précision. Quand ce masque s'assouplira, votre intelligence deviendra un outil de discernement — la peur de l'erreur se transformera en sagesse profonde.","forces":"Excellence · Intégrité rare · Intuition affûtée · Vision juste","couts":"Blocage créatif · Procrastination chronique · Dépression de performance","declencheurs":"Évaluation externe · Comparaison · Retour critique · Opportunité visible · Imperfection remarquée","phrases":"Ce n'est pas assez bien. · Je ne suis pas à la hauteur. · Je recommence.","source":"FMPS (Frost et al., 1990) · Syndrome imposteur (Clance & Imes, 1978)","defis":["Recevoir un compliment sans le minimiser — juste dire merci","Identifier une chose que vous avez bien faite aujourd'hui","Livrer quelque chose d'imparfait intentionnellement","Remarquer la voix critique — et lui donner un nom ridicule","Écrire 3 qualités qui n'ont rien à voir avec vos performances"]},"violet":{"peur":"Peur de se perdre et de perdre le sens","origine":"À un moment, une rupture de sens a été vécue comme une menace existentielle. Qui suis-je vraiment ? Où est ma place ? Votre système a développé une quête permanente d'identité et de signification — pour ne jamais se retrouver face au vide.","masque_desc":"Ce masque cherche, questionne, explore — sans jamais s'arrêter longtemps. Il accumule les expériences, les lectures, les chemins. Il a peur que choisir une voie signifie fermer toutes les autres. L'identité reste fluide, parfois insaisissable, même pour vous.","nature":"Sous ce masque vit une capacité de connexion au sens et à la profondeur d'existence exceptionnelle. Quand ce masque s'assouplira, vous n'aurez plus besoin de chercher qui vous êtes — vous l'incarnerez, pleinement, dans chaque choix.","forces":"Profondeur philosophique · Quête de sens · Conscience de la complexité du vivant","couts":"Vide identitaire · Déconnexion de soi · Épuisement des rôles · Absence de sens","declencheurs":"Question \"qui êtes-vous ?\" · Changement de contexte · Solitude et silence · Remise en question","phrases":"Je ne sais pas qui je suis. · Je joue un rôle. · Je me sens absent·e de moi-même.","source":"Faux-self (Winnicott, 1960) · MSI (Marcia, 1966) · Yalom (1980)","defis":["Exprimer une préférence réelle — même petite : film, restaurant, activité","Identifier une valeur personnelle qui n'a rien à voir avec les attentes des autres","Remarquer un moment où vous dites peu importe — et chercher ce que vous voulez vraiment","Écrire : 3 choses qui me font me sentir vraiment moi·même","Observer quand vous changez de comportement selon les personnes présentes"]}};
+
+const FICHES_META = {
+  rouge:  {color:'#B5312A', name:'Masque Rouge',  emoji:'🔴'},
+  orange: {color:'#C4581F', name:'Masque Orange', emoji:'🟠'},
+  jaune:  {color:'#B8930A', name:'Masque Jaune',  emoji:'🟡'},
+  vert:   {color:'#2D7A4F', name:'Masque Vert',   emoji:'🟢'},
+  bleu:   {color:'#1D5F8A', name:'Masque Bleu',   emoji:'🔵'},
+  indigo: {color:'#5C3280', name:'Masque Indigo', emoji:'🟣'},
+  violet: {color:'#7A3594', name:'Masque Violet', emoji:'💜'},
+};
+
+const CATALOGUE = [{"id":"PORT-RO-00","type":"portrait","masques":["rouge"],"titre":"Portrait · Masque Rouge","sous_titre":"La sentinelle du corps","priorite":2,"desc":"Portrait complet · Peur de la maladie et de la disparition · SHAI"},{"id":"PORT-OR-00","type":"portrait","masques":["orange"],"titre":"Portrait · Masque Orange","sous_titre":"La vitre émotionnelle","priorite":3,"desc":"Portrait complet · Peur de la souffrance émotionnelle · TAS-20"},{"id":"PORT-JA-00","type":"portrait","masques":["jaune"],"titre":"Portrait · Masque Jaune","sous_titre":"L'architecte de l'imprévu","priorite":3,"desc":"Portrait complet · Peur de l'incertitude · IUS-12"},{"id":"PORT-VE-00","type":"portrait","masques":["vert"],"titre":"Portrait · Masque Vert","sous_titre":"Le gardien du lien","priorite":1,"desc":"Portrait complet · Peur du rejet et de l'abandon · ECR-R"},{"id":"PORT-BL-00","type":"portrait","masques":["bleu"],"titre":"Portrait · Masque Bleu","sous_titre":"Le maître du terrain","priorite":3,"desc":"Portrait complet · Peur du chaos et de la perte de contrôle · LOC"},{"id":"PORT-IN-00","type":"portrait","masques":["indigo"],"titre":"Portrait · Masque Indigo","sous_titre":"Le perfectionniste brisé","priorite":1,"desc":"Portrait complet · Peur de l'échec · FMPS · Syndrome imposteur"},{"id":"PORT-VI-00","type":"portrait","masques":["violet"],"titre":"Portrait · Masque Violet","sous_titre":"Le faux self cristallisé","priorite":1,"desc":"Portrait spécifique · Aliénation identitaire · Winnicott (1960)"},{"id":"PORT-IN+VE-00","type":"portrait","masques":["indigo","vert"],"titre":"Dyade Indigo + Vert","sous_titre":"L'auto-effacement talentueux","priorite":1,"desc":"Je m'efface pour être aimé et je me déteste de ne pas être à la hauteur"},{"id":"PORT-VI+JA-00","type":"portrait","masques":["violet","jaune"],"titre":"Dyade Violet + Jaune","sous_titre":"La rigidité identitaire","priorite":1,"desc":"Si je bouge, je disparais — refus du changement comme survie"},{"id":"PORT-JA+IN-00","type":"portrait","masques":["jaune","indigo"],"titre":"Dyade Jaune + Indigo","sous_titre":"La procrastination paralysante","priorite":1,"desc":"Je ne commence que si c'est parfait — et comme ce ne l'est jamais, je ne commence pas"},{"id":"PORT-RO+JA-00","type":"portrait","masques":["rouge","jaune"],"titre":"Dyade Rouge + Jaune","sous_titre":"L'anxiété somatique amplifiée","priorite":2,"desc":"Cycle vérification corporelle + besoin de certitude médicale (35-40%)"},{"id":"PORT-VE+OR-00","type":"portrait","masques":["vert","orange"],"titre":"Dyade Vert + Orange","sous_titre":"La compliance vide","priorite":2,"desc":"Distance paradoxale — cherche le lien mais fuit l'intimité (40-45%)"},{"id":"PORT-BL+IN-00","type":"portrait","masques":["bleu","indigo"],"titre":"Dyade Bleu + Indigo","sous_titre":"La performance-domination","priorite":2,"desc":"Excellence comme pouvoir — contrôle par la perfection"},{"id":"PORT-VI+VE-00","type":"portrait","masques":["violet","vert"],"titre":"Dyade Violet + Vert","sous_titre":"La fusion identitaire","priorite":2,"desc":"Identité construite dans le regard de l'autre"},{"id":"PORT-VI+RO+JA-00","type":"portrait","masques":["violet","rouge","jaune"],"titre":"Triade D — Identité Figée Somatisee","sous_titre":"Violet + Rouge + Jaune","priorite":1,"desc":"Je suis quelqu'un de malade — et ça ne peut pas changer"},{"id":"PORT-DIFF-00","type":"portrait","masques":[],"titre":"Portrait Diffus","sous_titre":"Profil pan-masques","priorite":1,"desc":"Tous les masques actifs — épuisement de la protection totale"},{"id":"PSYCHO-GEN-00","type":"psycho","masques":[],"titre":"Introduction — Naissance des masques","sous_titre":"Psychéducation générale","priorite":1,"desc":"La formule D=e×r² · Comment naissent les masques · Leur fonction protectrice"},{"id":"PSYCHO-VI-00","type":"psycho","masques":["violet"],"titre":"Psychéducation Violet — Le faux self","sous_titre":"Winnicott & reconstruction identitaire","priorite":1,"desc":"Le faux self expliqué en langage patient · Qui suis-je hors des rôles ?"},{"id":"PSYCHO-SPA-00","type":"psycho","masques":[],"titre":"Comprendre le Score SPA","sous_titre":"Présence Authentique · Wood et al. (2008)","priorite":2,"desc":"Qu'est-ce que la présence à soi · Comment le SPA évolue avec le protocole"},{"id":"OUTIL-VI-E-01","type":"outil","masques":["violet"],"titre":"La voix d'avant les rôles","sous_titre":"Exercice Explorer · Masque Violet","priorite":1,"desc":"Retrouver la voix du vrai self avant les adaptations successives"},{"id":"OUTIL-GEN-V-01","type":"outil","masques":[],"titre":"La Conscience Observatrice","sous_titre":"Étape VOIR · Tous masques","priorite":1,"desc":"Développer la méta-conscience · Défusion cognitive · Témoin intérieur"},{"id":"OUTIL-GEN-A-01","type":"outil","masques":[],"titre":"Protocole ACCUEILLIR","sous_titre":"Étape ACCUEILLIR · 4 temps","priorite":1,"desc":"Nommer · Localiser · Respirer · Laisser passer · Anti-résistance"}];
+
+V.fiches = {
+  _currentTab: 'Tous', _currentMask: null,
+
+  renderView() {
+    const el = document.getElementById('app-content');
+    el.innerHTML = `<div class="view-wrap" style="max-width:960px">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">Bibliothèque de fiches</h1>
+          <p style="font-size:12px;color:var(--ink4);margin-top:2px">Nomenclature V.A.L.E.U.R© · Sources scientifiques documentées · ${CATALOGUE.length} fiches</p>
+        </div>
+        <input id="fiche-search" type="text" placeholder="🔍 Rechercher…" class="field-input" style="width:180px;padding:7px 12px;font-size:12px" oninput="V.fiches._filter()">
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px">
+        ${['Tous','Portraits','Dyades','Psychoéducation','Outils'].map((t,i) =>
+          `<button onclick="V.fiches._tab('${t}')" id="ftab-${t}" class="btn ${i===0?'btn--gold':'btn--ghost'} btn--sm">${t}</button>`
+        ).join('')}
+        <div style="flex:1"></div>
+        ${Object.entries(FICHES_META).map(([m,v]) =>
+          `<button onclick="V.fiches._tabMask('${m}')" style="width:18px;height:18px;border-radius:50%;border:none;background:${v.color};cursor:pointer;opacity:.55;transition:opacity .15s" title="${v.name}" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.55"></button>`
+        ).join('')}
+      </div>
+      <div id="fiches-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px"></div>
+    </div>`;
+    this._filter();
+  },
+
+  _tab(tab) {
+    this._currentTab = tab; this._currentMask = null;
+    document.querySelectorAll('[id^="ftab-"]').forEach(b => {
+      b.className = b.textContent.trim()===tab ? 'btn btn--gold btn--sm' : 'btn btn--ghost btn--sm';
+    });
+    this._filter();
+  },
+
+  _tabMask(mask) {
+    this._currentMask = mask; this._currentTab = 'Tous';
+    document.querySelectorAll('[id^="ftab-"]').forEach(b => b.className = 'btn btn--ghost btn--sm');
+    this._filter();
+  },
+
+  _filter() {
+    const q = (document.getElementById('fiche-search')?.value||'').toLowerCase();
+    const tab = this._currentTab, mask = this._currentMask;
+    let list = CATALOGUE.filter(f => {
+      if (tab==='Portraits')       return f.type==='portrait' && f.masques.length<=1;
+      if (tab==='Dyades')          return f.type==='portrait' && f.masques.length>=2;
+      if (tab==='Psychoéducation') return f.type==='psycho';
+      if (tab==='Outils')          return f.type==='outil';
+      return true;
+    });
+    if (mask) list = list.filter(f => f.masques.includes(mask));
+    if (q)    list = list.filter(f => (f.titre+f.desc+f.sous_titre).toLowerCase().includes(q));
+    list.sort((a,b) => a.priorite-b.priorite);
+    const grid = document.getElementById('fiches-grid');
+    if (!grid) return;
+    grid.innerHTML = list.map(f => this._card(f)).join('');
+  },
+
+  _card(f) {
+    const col = f.masques.length===1 ? (FICHES_META[f.masques[0]]?.color||'var(--gold)') : f.masques.length>1 ? '#8C6030' : 'var(--gold)';
+    const tl  = {portrait:'Portrait',psycho:'Psychoéducation',outil:'Outil'}[f.type]||f.type;
+    const dots = f.masques.map(m => `<span style="width:10px;height:10px;border-radius:50%;background:${FICHES_META[m]?.color||'#ccc'};display:inline-block"></span>`).join('');
+    const star = f.priorite===1 ? '<span style="font-size:9px;color:var(--gold);font-weight:700;background:rgba(168,135,58,.1);padding:1px 6px;border-radius:3px">★ PRIORITÉ</span>' : '';
+    return `<div class="card" style="border-top:3px solid ${col};padding:14px;cursor:pointer;transition:box-shadow .15s" onclick="V.fiches.open('${f.id}')" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.12)'" onmouseout="this.style.boxShadow=''">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+        <span style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${col};background:${col}18;padding:2px 7px;border-radius:3px">${tl}</span>
+        ${star}
+        <span style="font-size:9px;color:var(--ink5);font-family:monospace;margin-left:auto">${f.id}</span>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.3">${f.titre}</div>
+      <div style="font-size:11px;color:${col};font-style:italic;margin-bottom:8px">${f.sous_titre}</div>
+      <div style="font-size:11px;color:var(--ink4);line-height:1.55;margin-bottom:10px">${f.desc}</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="display:flex;gap:4px">${dots}</div>
+        <div style="margin-left:auto;display:flex;gap:6px">
+          <button class="btn btn--ghost btn--sm" onclick="event.stopPropagation();V.fiches.open('${f.id}')" style="font-size:10px">👁 Aperçu</button>
+          <button class="btn btn--gold btn--sm" onclick="event.stopPropagation();V.fiches.print('${f.id}')" style="font-size:10px">🖨 Imprimer</button>
+        </div>
+      </div>
+    </div>`;
+  },
+
+  open(id, pid) {
+    const f = CATALOGUE.find(x=>x.id===id); if(!f) return;
+    let p=null, portrait=null;
+    if(pid){ const list=V.data.getPatients(); p=list.find(x=>x.id===pid); portrait=p?V.data.getPatient(pid)?.portrait:null; }
+    const html = this._gen(f, p, portrait);
+    this._modal(f.titre, html, id, pid);
+  },
+
+  print(id, pid) {
+    const f = CATALOGUE.find(x=>x.id===id); if(!f) return;
+    let p=null, portrait=null;
+    if(pid){ const list=V.data.getPatients(); p=list.find(x=>x.id===pid); portrait=p?V.data.getPatient(pid)?.portrait:null; }
+    const html = this._gen(f, p, portrait);
+    const win = window.open('','_blank','width=700,height=900');
+    win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"><title>Fiche '+f.id+'</title><style>@page{size:A5;margin:0}@media print{html,body{margin:0;padding:0}.nop{display:none!important}}body{margin:0;background:#fff;font-family:"DM Sans",sans-serif}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style></head><body>'+html+'<div class="nop" style="text-align:center;margin:20px"><button onclick="window.print()" style="padding:12px 28px;background:#1A1814;color:#fff;border:none;border-radius:4px;font-size:14px;cursor:pointer;margin-right:8px">🖨 Imprimer (A5)</button><button onclick="window.close()" style="padding:12px 20px;background:none;border:1px solid #ccc;border-radius:4px;cursor:pointer">Fermer</button><p style="font-size:11px;color:#999;margin-top:8px">Format A5 · Papier recommandé 120g</p></div></body></html>');
+    win.document.close();
+  },
+
+  openFromPatient(pid) {
+    const list = V.data.getPatients();
+    const p = list.find(x=>x.id===pid);
+    const portrait = V.data.getPatient(pid)?.portrait;
+    if(!portrait?.masque){ V.ui.toast('Importez d\u2019abord le portrait du patient',true); return; }
+    const dom = portrait.masque;
+    const col = FICHES_META[dom]?.color||'var(--gold)';
+    const reco = CATALOGUE.filter(f=>f.masques.includes(dom)||f.masques.length===0)
+                          .sort((a,b)=>a.priorite-b.priorite).slice(0,8);
+    const el = document.getElementById('app-content');
+    el.innerHTML = `<div class="view-wrap" style="max-width:900px">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">Fiches pour ${p?.prenom||''}</h1>
+          <p style="font-size:12px;color:${col};margin-top:2px">${FICHES_META[dom]?.name} · Recommandations selon profil</p>
+        </div>
+        <button class="btn btn--ghost btn--sm" onclick="V.fiches.renderView()">Toutes les fiches →</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">
+        ${reco.map(f=>this._card(f)).join('')}
+      </div>
+    </div>`;
+    setTimeout(()=>{
+      el.querySelectorAll('.card[onclick*="V.fiches.open"]').forEach(btn=>{
+        const m=btn.getAttribute('onclick').match(/'([^']+)'/);
+        if(m) btn.setAttribute('onclick', `V.fiches.open('${m[1]}','${pid}')`);
+      });
+    },50);
+  },
+
+  _modal(titre, html, id, pid) {
+    let m = document.getElementById('modal-fiche');
+    if(!m){
+      m = document.createElement('div');
+      m.id = 'modal-fiche'; m.className = 'modal';
+      m.innerHTML = `<div class="modal-card" style="max-width:680px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column">
+        <div class="modal-header">
+          <h3 class="modal-title" id="mf-t"></h3>
+          <div style="display:flex;gap:8px">
+            <button id="mf-p" class="btn btn--gold btn--sm">🖨 Imprimer</button>
+            <button id="mf-a" class="btn btn--ghost btn--sm" style="display:none">＋ Dossier</button>
+            <button class="modal-close" onclick="V.ui.closeModal('modal-fiche')">×</button>
+          </div>
+        </div>
+        <div class="modal-body" id="mf-b" style="overflow-y:auto;background:#F7F4EE;padding:20px"></div>
+      </div>`;
+      document.body.appendChild(m);
+    }
+    document.getElementById('mf-t').textContent = titre;
+    document.getElementById('mf-b').innerHTML = html;
+    document.getElementById('mf-p').onclick = ()=>V.fiches.print(id,pid);
+    const ab = document.getElementById('mf-a');
+    if(pid){ ab.style.display='inline-flex'; ab.onclick=()=>V.fiches._addToDossier(id,pid); }
+    else    { ab.style.display='none'; }
+    m.classList.add('open');
+  },
+
+  _addToDossier(ficheId, pid) {
+    const d = V.data.getPatient(pid)||V.data.newPatientData();
+    if(!d.fiches_utilisees) d.fiches_utilisees=[];
+    if(!d.fiches_utilisees.includes(ficheId)){
+      d.fiches_utilisees.push(ficheId);
+      V.data.savePatient(pid,d);
+      V.ui.toast('✓ Fiche ajoutée au dossier');
+    } else { V.ui.toast('Fiche déjà dans le dossier'); }
+    V.ui.closeModal('modal-fiche');
+  },
+
+  // ── Générateur HTML de fiches ──────────────────────────────────
+  _gen(f, patient, portrait) {
+    const dom   = portrait?.masque||(f.masques[0]||null);
+    const prenom = patient?.prenom||'';
+    const spa    = portrait?.spa;
+    const scores = portrait?.scores||{};
+    const col    = dom ? (FICHES_META[dom]?.color||'var(--gold)') : 'var(--gold)';
+    if(f.type==='portrait'){
+      if(f.masques.length===1) return this._mono(f.masques[0],prenom,spa,scores,col);
+      if(f.masques.length===2) return this._dyade(f.masques,prenom,spa,scores);
+      if(f.id==='PORT-VI+RO+JA-00') return this._triadeD(prenom,spa,scores);
+      if(f.id==='PORT-DIFF-00')     return this._diffus(prenom,spa,scores);
+    }
+    if(f.type==='psycho'){
+      if(f.id==='PSYCHO-VI-00')  return this._psychoViolet(prenom);
+      if(f.id==='PSYCHO-GEN-00') return this._psychoGen(prenom);
+      if(f.id==='PSYCHO-SPA-00') return this._psychoSPA(prenom,spa);
+    }
+    if(f.type==='outil') return this._outil(f,prenom,dom,col);
+    return '<p style="padding:20px">Fiche en cours de développement.</p>';
+  },
+
+  _hdr(col,type,name,peur,prenom,pct,spa){
+    return `<div style="font-family:'DM Sans',sans-serif;max-width:148mm;margin:0 auto;background:#fff;padding:12mm 14mm;position:relative;color:#1A1814">
+      <div style="height:4px;background:${col};margin:-12mm -14mm 10mm;width:calc(100% + 28mm)"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8mm">
+        <div>
+          <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col};margin-bottom:2mm">${type} · Méthode V.A.L.E.U.R©</div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22pt;font-weight:300;color:#1A1814;line-height:1.1;margin-bottom:1mm">${name}</div>
+          <div style="font-size:9pt;color:#5A534A;font-style:italic">${peur}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          ${prenom?`<div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:14pt;color:${col};margin-bottom:2mm">${prenom}</div>`:''}
+          ${pct?`<div style="font-size:9pt;color:#8C8278">Emprise : <strong style="color:${col}">${pct}%</strong></div>`:''}
+          ${spa!==undefined&&spa!==null?`<div style="font-size:9pt;color:#8C8278">SPA : <strong style="color:#2D7A4F">${spa}%</strong></div>`:''}
+        </div>
+      </div>
+      <div style="height:1px;background:linear-gradient(90deg,${col},transparent);margin-bottom:7mm"></div>`;
+  },
+
+  _ftr(source){
+    return `<div style="height:1px;background:#E8E1D4;margin:5mm 0 3mm"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:6.5pt;color:#B8B0A5;letter-spacing:.5px">© Céline Bourbon · Méthode V.A.L.E.U.R© · cabinet psyH Bordeaux</div>
+        <div style="font-size:6pt;color:#D0C8BE;font-style:italic">${source}</div>
+      </div>
+    </div>`;
+  },
+
+  _mono(mask, prenom, spa, scores, col) {
+    const d = FICHES_CONTENT[mask]; if(!d) return '<p>Données non disponibles.</p>';
+    const pct = scores[mask]||0;
+    return this._hdr(col,'Portrait',FICHES_META[mask].name,d.peur,prenom,pct,spa) +
+    `<div style="margin-bottom:6mm">
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col};margin-bottom:2mm">Ce qui se passe en vous</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:11pt;line-height:1.7;color:#1A1814">${d.masque_desc}</div>
+    </div>
+    <div style="background:${col}10;border-left:2px solid ${col};padding:4mm 5mm;margin-bottom:5mm;border-radius:0 3px 3px 0">
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col};margin-bottom:2mm">Ce qui déclenche le masque</div>
+      <div style="font-size:9.5pt;color:#3A342E;line-height:1.65">${d.declencheurs.split(' · ').map(x=>'→ '+x).join('<br>')}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-bottom:5mm">
+      <div style="background:#F7F4EE;border-radius:4px;padding:4mm 5mm">
+        <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:2mm">Ce que ça coûte</div>
+        <div style="font-size:9pt;color:#5A534A;line-height:1.6">${d.couts.split(' · ').map(x=>'\u2022 '+x).join('<br>')}</div>
+      </div>
+      <div style="background:#F7F4EE;border-radius:4px;padding:4mm 5mm">
+        <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:2mm">Ce que le masque répète</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:10pt;font-style:italic;color:#1A1814;line-height:1.6">“${d.phrases.split(' · ').join('”<br>“')}”</div>
+      </div>
+    </div>
+    <div style="border:1px solid ${col}44;border-radius:4px;padding:4mm 5mm;margin-bottom:5mm;background:${col}06">
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col};margin-bottom:2mm">Ce qui est caché sous le masque</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:11pt;color:#1A1814;line-height:1.7;font-style:italic;margin-bottom:2mm">${d.nature}</div>
+      <div style="font-size:8pt;font-weight:600;color:${col}">Forces : ${d.forces}</div>
+    </div>
+    <div style="margin-bottom:5mm">
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col};margin-bottom:2mm">Premiers défis</div>
+      ${d.defis.slice(0,2).map((x,i)=>`<div style="display:flex;gap:4mm;padding:2mm 0;border-bottom:1px solid #E8E1D4;align-items:flex-start"><div style="width:5mm;height:5mm;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-size:7pt;font-weight:700;color:#fff;flex-shrink:0">${i+1}</div><div style="font-size:9.5pt;color:#3A342E;line-height:1.55">${x}</div></div>`).join('')}
+    </div>` +
+    this._ftr(d.source);
+  },
+
+  _dyade(masques, prenom, spa, scores) {
+    const [m1,m2] = masques;
+    const d1=FICHES_CONTENT[m1]||{}, d2=FICHES_CONTENT[m2]||{};
+    const c1=FICHES_META[m1]?.color||'#A8873A', c2=FICHES_META[m2]?.color||'#8C8278';
+    const n1=FICHES_META[m1]?.name||m1, n2=FICHES_META[m2]?.name||m2;
+    return `<div style="font-family:'DM Sans',sans-serif;max-width:148mm;margin:0 auto;background:#fff;padding:12mm 14mm;color:#1A1814">
+      <div style="height:4px;background:linear-gradient(90deg,${c1},${c2});margin:-12mm -14mm 10mm;width:calc(100% + 28mm)"></div>
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#A8873A;margin-bottom:2mm">Portrait Dyade · Méthode V.A.L.E.U.R©</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20pt;font-weight:300;line-height:1.1;margin-bottom:1mm">${n1} + ${n2}</div>
+      ${prenom?`<div style="font-size:10pt;color:#A8873A;margin-bottom:3mm">${prenom}${spa!==undefined?' · SPA '+spa+'%':''}</div>`:''}
+      <div style="height:1px;background:linear-gradient(90deg,${c1},${c2},transparent);margin-bottom:6mm"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-bottom:5mm">
+        <div style="border-top:2px solid ${c1};padding-top:3mm">
+          <div style="font-size:7pt;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${c1};margin-bottom:2mm">${n1}</div>
+          <div style="font-size:9pt;color:#3A342E;line-height:1.6;font-style:italic;margin-bottom:2mm">${d1.peur||''}</div>
+          <div style="font-size:8.5pt;color:#5A534A;line-height:1.55">${(d1.masque_desc||'').substring(0,180)}…</div>
+        </div>
+        <div style="border-top:2px solid ${c2};padding-top:3mm">
+          <div style="font-size:7pt;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${c2};margin-bottom:2mm">${n2}</div>
+          <div style="font-size:9pt;color:#3A342E;line-height:1.6;font-style:italic;margin-bottom:2mm">${d2.peur||''}</div>
+          <div style="font-size:8.5pt;color:#5A534A;line-height:1.55">${(d2.masque_desc||'').substring(0,180)}…</div>
+        </div>
+      </div>
+      <div style="background:#F7F4EE;border-left:3px solid #A8873A;padding:4mm 5mm;margin-bottom:5mm;border-radius:0 4px 4px 0">
+        <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#A8873A;margin-bottom:2mm">La dynamique d’amplification mutuelle</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:11pt;color:#1A1814;line-height:1.7">Ces deux masques se renforcent mutuellement. ${n1} alimente ${n2}, et réciproquement — créant une boucle auto-entretenue. Voir cette dynamique est le premier pas.</div>
+      </div>
+      <div style="margin-bottom:5mm">
+        <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#A8873A;margin-bottom:2mm">Un défi par masque</div>
+        ${[[d1,c1],[d2,c2]].map(([d,c],i)=>d.defis?.[0]?`<div style="display:flex;gap:4mm;padding:2mm 0;border-bottom:1px solid #E8E1D4"><div style="width:5mm;height:5mm;border-radius:50%;background:${c};display:flex;align-items:center;justify-content:center;font-size:7pt;font-weight:700;color:#fff;flex-shrink:0">${['A','B'][i]}</div><div style="font-size:9pt;color:#3A342E;line-height:1.55">${d.defis[0]}</div></div>`:'').join('')}
+      </div>
+      <div style="height:1px;background:#E8E1D4;margin:3mm 0"></div>
+      <div style="font-size:6.5pt;color:#B8B0A5">© Céline Bourbon · V.A.L.E.U.R© · Sources : ${[d1.source,d2.source].filter(Boolean).join(' · ')}</div>
+    </div>`;
+  },
+
+  _triadeD(prenom, spa, scores){
+    return `<div style="font-family:'DM Sans',sans-serif;max-width:148mm;margin:0 auto;background:#fff;padding:12mm 14mm;color:#1A1814">
+      <div style="height:4px;background:linear-gradient(90deg,#7A3594,#B5312A,#B8930A);margin:-12mm -14mm 10mm;width:calc(100% + 28mm)"></div>
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7A3594;margin-bottom:2mm">Triade D · Identité Figée Somatisée</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20pt;font-weight:300;line-height:1.1;margin-bottom:2mm">Violet + Rouge + Jaune</div>
+      ${prenom?`<div style="font-size:10pt;color:#7A3594;margin-bottom:3mm">${prenom}</div>`:''}
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:12pt;font-style:italic;background:#F7F4EE;border-left:3px solid #7A3594;padding:4mm 5mm;margin-bottom:6mm;border-radius:0 4px 4px 0">« Je suis quelqu’un de malade — et ça ne peut pas changer »</div>
+      <div style="height:1px;background:linear-gradient(90deg,#7A3594,#B5312A,#B8930A,transparent);margin-bottom:6mm"></div>
+      <div style="font-size:9.5pt;color:#3A342E;line-height:1.75;margin-bottom:5mm"><strong style="color:#7A3594">Le Masque Violet</strong> a construit une identité stable autour des rôles. <strong style="color:#B5312A">Le Masque Rouge</strong> l’a ancrée dans le corps. <strong style="color:#B8930A">Le Masque Jaune</strong> exige des certitudes médicales. Trois masques forment un système fermé.</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;margin-bottom:5mm">${[['violet','#7A3594','Dissolution identitaire'],['rouge','#B5312A','Vérification corporelle'],['jaune','#B8930A','Besoin de certitude']].map(([m,c,r])=>`<div style="border-top:2px solid ${c};padding-top:3mm;text-align:center"><div style="font-size:7pt;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:${c};margin-bottom:1mm">${FICHES_META[m]?.name||m}</div><div style="font-size:8pt;color:#5A534A;font-style:italic">${r}</div></div>`).join('')}</div>
+      <div style="background:#F7F4EE;border-radius:4px;padding:4mm 5mm;margin-bottom:5mm"><div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:2mm">Point d’entrée thérapeutique</div><div style="font-size:9.5pt;color:#3A342E;line-height:1.65">Commencer par le Masque Violet — la question identitaire. L’identité s’est construite autour de la maladie comme ancrage. Proposer un autre fil conducteur.</div></div>
+      <div style="height:1px;background:#E8E1D4;margin-bottom:3mm"></div>
+      <div style="font-size:6.5pt;color:#B8B0A5">© Céline Bourbon · V.A.L.E.U.R© · Winnicott (1960) · SHAI · IUS-12</div>
+    </div>`;
+  },
+
+  _diffus(prenom,spa,scores){
+    const spaTxt=spa!==undefined?spa+'%':'—';
+    return `<div style="font-family:'DM Sans',sans-serif;max-width:148mm;margin:0 auto;background:#fff;padding:12mm 14mm;color:#1A1814">
+      <div style="height:4px;background:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);margin:-12mm -14mm 10mm;width:calc(100% + 28mm)"></div>
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#A8873A;margin-bottom:2mm">Portrait Diffus · Profil Pan-Masques</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20pt;font-weight:300;line-height:1.1;margin-bottom:2mm">L’épuisement de la protection totale</div>
+      ${prenom?`<div style="font-size:10pt;color:#A8873A;margin-bottom:3mm">${prenom} · SPA ${spaTxt}</div>`:''}
+      <div style="height:1px;background:linear-gradient(90deg,#A8873A,transparent);margin-bottom:6mm"></div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:12pt;font-style:italic;background:#F7F4EE;border-left:3px solid #A8873A;padding:4mm 5mm;margin-bottom:6mm;border-radius:0 4px 4px 0">Vous vous protégez de toutes les peurs en même temps. Aucun masque ne se repose jamais.</div>
+      <div style="font-size:9.5pt;color:#3A342E;line-height:1.75;margin-bottom:5mm">Quand tous les masques sont actifs simultanément, la surprotection devient elle-même source d’épuisement. Ce profil porte souvent une question identitaire centrale : sans masques, qui suis-je ? C’est le territoire du <strong style="color:#7A3594">Masque Violet</strong> — et c’est là que commence le travail.</div>
+      ${scores&&Object.keys(scores).length?`<div style="display:flex;align-items:flex-end;gap:2mm;height:20mm;margin-bottom:5mm">${['rouge','orange','jaune','vert','bleu','indigo','violet'].map(m=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1mm"><div style="background:${FICHES_META[m]?.color};width:100%;border-radius:1px 1px 0 0" style="height:${Math.max(2,(scores[m]||0)/6)}mm"></div><div style="font-size:6pt;color:#8C8278">${scores[m]||0}%</div></div>`).join('')}</div>`:''}
+      <div style="background:#7A359408;border:1px solid #7A359430;border-radius:4px;padding:4mm 5mm;margin-bottom:5mm"><div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7A3594;margin-bottom:2mm">Point d’entrée</div><div style="font-size:9.5pt;color:#3A342E;line-height:1.65">La question est identitaire. Commencer par Explorer : qui êtes-vous hors de vos rôles de protection ?</div></div>
+      <div style="height:1px;background:#E8E1D4;margin-bottom:3mm"></div>
+      <div style="font-size:6.5pt;color:#B8B0A5">© Céline Bourbon · V.A.L.E.U.R© · Winnicott (1960) · Wood et al. (2008)</div>
+    </div>`;
+  },
+
+  _psychoViolet(prenom){
+    return `<div style="font-family:'DM Sans',sans-serif;max-width:148mm;margin:0 auto;background:#fff;padding:12mm 14mm;color:#1A1814">
+      <div style="height:4px;background:#7A3594;margin:-12mm -14mm 10mm;width:calc(100% + 28mm)"></div>
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7A3594;margin-bottom:2mm">Psychéducation · Masque Violet</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20pt;font-weight:300;line-height:1.1;margin-bottom:1mm">Le faux self</div>
+      <div style="font-size:10pt;color:#7A3594;font-style:italic;margin-bottom:3mm">Qui suis-je hors des rôles que j’incarne ?</div>
+      ${prenom?`<div style="font-size:9pt;color:#8C8278;margin-bottom:3mm">Document de ${prenom}</div>`:''}
+      <div style="height:1px;background:linear-gradient(90deg,#7A3594,transparent);margin-bottom:6mm"></div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:11pt;color:#1A1814;line-height:1.75;margin-bottom:5mm">Vous avez appris très tôt à devenir ce dont les autres avaient besoin. Vous l’avez fait si bien que vous avez oublié — progressivement, imperceptiblement — de rester vous-même. Ce n’est pas une faillite. C’est une réussite qui a eu un coût que personne ne vous avait dit.</div>
+      <div style="background:#7A359408;border-left:3px solid #7A3594;padding:4mm 5mm;margin-bottom:5mm;border-radius:0 4px 4px 0">
+        <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7A3594;margin-bottom:2mm">Ce que Winnicott a nommé (1960)</div>
+        <div style="font-size:9.5pt;color:#3A342E;line-height:1.7">Le faux self est une structure adaptative qui se développe quand l’environnement n’a pas pu répondre aux gestes spontanés du vrai self. Ce n’est pas un mensonge conscient — c’est une construction de survie. Le vrai self ne s’est pas effacé — il attend.</div>
+      </div>
+      <div style="margin-bottom:5mm">${[['Niveau visible','Résistance au changement · Routines rigides · Refus des opportunités','#B8B0A5'],['Niveau structurel','Vie en pilote automatique · Perte des intérêts authentiques · Conformité systématique','#7A3594'],['Niveau profond','Vide en l’absence de rôle · « Qui suis-je sans ce que je fais ? »','#7A3594']].map(([t,d,c])=>`<div style="display:flex;gap:4mm;padding:2.5mm 0;border-bottom:1px solid #E8E1D4;align-items:flex-start"><div style="width:2px;background:${c};align-self:stretch;border-radius:1px;flex-shrink:0;margin-top:2mm"></div><div><div style="font-size:8pt;font-weight:700;color:${c};margin-bottom:1mm">${t}</div><div style="font-size:9pt;color:#5A534A;line-height:1.55">${d}</div></div></div>`).join('')}</div>
+      <div style="background:#F7F4EE;border-radius:4px;padding:4mm 5mm;margin-bottom:5mm">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:12pt;font-style:italic;color:#1A1814;line-height:1.7">La question centrale :<br><strong style="color:#7A3594;font-style:normal">Qui êtes-vous quand personne ne vous regarde, quand aucun rôle n’est attendu de vous ?</strong></div>
+      </div>
+      <div style="height:1px;background:#E8E1D4;margin-bottom:3mm"></div>
+      <div style="font-size:6.5pt;color:#B8B0A5">© Céline Bourbon · V.A.L.E.U.R© · Winnicott D.W. (1960) · MSI · Erikson (1968) · Marcia (1966)</div>
+    </div>`;
+  },
+
+  _psychoGen(prenom){
+    return `<div style="font-family:'DM Sans',sans-serif;max-width:148mm;margin:0 auto;background:#fff;padding:12mm 14mm;color:#1A1814">
+      <div style="height:4px;background:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);margin:-12mm -14mm 10mm;width:calc(100% + 28mm)"></div>
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#A8873A;margin-bottom:2mm">Psychéducation · Méthode V.A.L.E.U.R©</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20pt;font-weight:300;line-height:1.1;margin-bottom:1mm">Comment naissent les masques</div>
+      ${prenom?`<div style="font-size:9pt;color:#8C8278;margin-bottom:2mm">Document de ${prenom}</div>`:''}
+      <div style="height:1px;background:linear-gradient(90deg,#A8873A,transparent);margin-bottom:6mm"></div>
+      <div style="text-align:center;background:#F7F4EE;border-radius:4px;padding:5mm;margin-bottom:5mm"><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24pt;font-weight:300;color:#A8873A;letter-spacing:2mm">D = e × r²</div><div style="font-size:8.5pt;color:#5A534A;margin-top:2mm">Durée de la souffrance = Émotion × Résistance au carré</div></div>
+      <div style="font-size:9.5pt;color:#3A342E;line-height:1.75;margin-bottom:5mm">Ce n’est pas l’émotion qui crée la souffrance durable — c’est votre résistance à cette émotion. La résistance crée une boucle auto-amplifiante : plus vous résistez, plus la lutte devient elle-même source de souffrance.</div>
+      <div style="margin-bottom:5mm"><div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:3mm">Les 7 masques</div>${['rouge','orange','jaune','vert','bleu','indigo','violet'].map(m=>`<div style="display:flex;gap:4mm;padding:2mm 0;border-bottom:1px solid #F0EBE1;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:${FICHES_META[m].color};flex-shrink:0"></div><div style="font-size:8pt;font-weight:600;color:${FICHES_META[m].color};width:56px;flex-shrink:0">${FICHES_META[m].name.replace('Masque ','')}</div><div style="font-size:8.5pt;color:#5A534A">${FICHES_CONTENT[m]?.peur||''}</div></div>`).join('')}</div>
+      <div style="height:1px;background:#E8E1D4;margin-bottom:3mm"></div>
+      <div style="font-size:6.5pt;color:#B8B0A5">© Céline Bourbon · V.A.L.E.U.R© · Bourbon C. (2024) De la peur à la joie d’être soi, L’Harmattan</div>
+    </div>`;
+  },
+
+  _psychoSPA(prenom,spa){
+    const spaN=parseInt(spa)||0;
+    const interp=spaN>=70?'Présence élevée — les masques occupent peu d’espace':spaN>=50?'Présence modérée — des fenêtres d’authenticité existent':spaN>=30?'Présence limitée — les masques dominent':'Présence faible — la protection est quasi-totale';
+    return `<div style="font-family:'DM Sans',sans-serif;max-width:148mm;margin:0 auto;background:#fff;padding:12mm 14mm;color:#1A1814">
+      <div style="height:4px;background:#2D7A4F;margin:-12mm -14mm 10mm;width:calc(100% + 28mm)"></div>
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2D7A4F;margin-bottom:2mm">Score de Présence Authentique · V.A.L.E.U.R©</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20pt;font-weight:300;margin-bottom:1mm">Comprendre votre SPA</div>
+      ${prenom?`<div style="font-size:10pt;color:#2D7A4F;margin-bottom:2mm">${prenom}${spa!==undefined?' · SPA actuel : <strong>'+spa+'%</strong>':''}</div>`:''}
+      <div style="height:1px;background:linear-gradient(90deg,#2D7A4F,transparent);margin-bottom:6mm"></div>
+      ${spaN?`<div style="background:#2D7A4F10;border-radius:6px;padding:5mm;margin-bottom:5mm"><div style="display:flex;align-items:center;gap:4mm"><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36pt;font-weight:300;color:#2D7A4F">${spaN}%</div><div><div style="font-size:8pt;font-weight:700;color:#2D7A4F;margin-bottom:1mm">Présence Authentique</div><div style="font-size:9pt;color:#5A534A;font-style:italic">${interp}</div></div></div><div style="height:6px;background:#E8E1D4;border-radius:3px;margin-top:4mm;overflow:hidden"><div style="height:100%;background:#2D7A4F;width:${spaN}%;border-radius:3px"></div></div></div>`:''}
+      <div style="font-size:9.5pt;color:#3A342E;line-height:1.75;margin-bottom:5mm">Le SPA mesure l’espace psychique libre des masques. Plus il augmente au fil du protocole, plus vous agissez depuis qui vous êtes réellement.</div>
+      <div style="margin-bottom:5mm"><div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:3mm">Les 7 fenêtres de présence à soi</div>${[['État de flux','Absorbé·e par une activité — perte du regard des autres'],['Résonance corporelle','Signal clair du corps — légèreté, élan, frisson'],['Opinion spontanée','Savoir ce qu’on veut avant de se demander ce qu’on devrait'],['Joie sans témoin','Satisfaction sans besoin de validation'],['Élan sans raison','Être attiré·e vers quelque chose et le suivre'],['Présence à soi','Être soi — sans effort, sans rôle'],['Authenticité relationnelle','Exprimer ce qu’on pense même si ce n’est pas attendu']].map(([f,d])=>`<div style="display:flex;gap:3mm;padding:1.5mm 0;border-bottom:1px solid #F0EBE1"><div style="font-size:8pt;font-weight:700;color:#2D7A4F;width:32mm;flex-shrink:0">${f}</div><div style="font-size:8.5pt;color:#5A534A;line-height:1.5">${d}</div></div>`).join('')}</div>
+      <div style="height:1px;background:#E8E1D4;margin-bottom:3mm"></div>
+      <div style="font-size:6.5pt;color:#B8B0A5">© Céline Bourbon · V.A.L.E.U.R© · Wood A.M. et al. (2008) · Kernis & Goldman (2006)</div>
+    </div>`;
+  },
+
+  _outil(f,prenom,dom,col){
+    const d=dom?FICHES_CONTENT[dom]:null;
+    return `<div style="font-family:'DM Sans',sans-serif;max-width:148mm;margin:0 auto;background:#fff;padding:12mm 14mm;color:#1A1814">
+      <div style="height:4px;background:${col};margin:-12mm -14mm 10mm;width:calc(100% + 28mm)"></div>
+      <div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col};margin-bottom:2mm">Outil · Méthode V.A.L.E.U.R©</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18pt;font-weight:300;line-height:1.2;margin-bottom:1mm">${f.titre}</div>
+      <div style="font-size:9pt;color:${col};font-style:italic;margin-bottom:2mm">${f.sous_titre}</div>
+      ${prenom?`<div style="font-size:9pt;color:#8C8278;margin-bottom:2mm">Pour ${prenom}</div>`:''}
+      <div style="height:1px;background:linear-gradient(90deg,${col},transparent);margin-bottom:6mm"></div>
+      <div style="font-size:9.5pt;color:#3A342E;line-height:1.75;margin-bottom:5mm">${f.desc}</div>
+      ${d?.defis?`<div style="margin-bottom:5mm"><div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${col};margin-bottom:3mm">Défis progressifs</div>${d.defis.slice(0,3).map((x,i)=>`<div style="display:flex;gap:4mm;padding:2.5mm 0;border-bottom:1px solid #E8E1D4;align-items:flex-start"><div style="width:5mm;height:5mm;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-size:7pt;font-weight:700;color:#fff;flex-shrink:0">${i+1}</div><div style="font-size:9pt;color:#3A342E;line-height:1.55">${x}</div></div>`).join('')}</div>`:''}
+      <div style="background:#F7F4EE;border-radius:4px;padding:4mm 5mm;margin-bottom:5mm"><div style="font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:2mm">Espace de réflexion</div><div style="height:18mm;border:1px dashed #D0C8BE;border-radius:3px"></div></div>
+      <div style="height:1px;background:#E8E1D4;margin-bottom:3mm"></div>
+      <div style="font-size:6.5pt;color:#B8B0A5">© Céline Bourbon · V.A.L.E.U.R© · ${f.id}</div>
+    </div>`;
+  },
+};
+
+// ══════════════════════════════════════════════════════════════════════
+// MODULE FICHES THÉRAPEUTIQUES V.A.L.E.U.R© — Intégré au cabinet
+// Nomenclature [TYPE]-[MASQUE(S)]-[ÉTAPE] · © Céline Bourbon
+// ══════════════════════════════════════════════════════════════════════
+
+// ══ MODULE V.fiches — Générateur de fiches thérapeutiques ════════════
+// © Céline Bourbon — Méthode V.A.L.E.U.R© — Architecture système fiches
+// Nomenclature : [TYPE]-[MASQUE(S)]-[ÉTAPE]-[VARIANTE]
+
+V.fiches = {
+
+  // ── CATALOGUE — noms et métadonnées des fiches ──────────────────
+  CATALOGUE: {
+    // Portraits mono
+    'PORT-RO-00': {label:'Portrait Rouge — Le Guetteur du Corps',    masques:['rouge'],  type:'portrait', etape:'00', prio:2},
+    'PORT-OR-00': {label:'Portrait Orange — L\'Anesthésiste',        masques:['orange'], type:'portrait', etape:'00', prio:3},
+    'PORT-JA-00': {label:'Portrait Jaune — L\'Architecte du Futur',  masques:['jaune'],  type:'portrait', etape:'00', prio:3},
+    'PORT-VE-00': {label:'Portrait Vert — Le Gardien du Lien',       masques:['vert'],   type:'portrait', etape:'00', prio:1},
+    'PORT-BL-00': {label:'Portrait Bleu — Le Maître de l\'Ordre',    masques:['bleu'],   type:'portrait', etape:'00', prio:3},
+    'PORT-IN-00': {label:'Portrait Indigo — Le Perfectionniste',     masques:['indigo'], type:'portrait', etape:'00', prio:1},
+    'PORT-VI-00': {label:'Portrait Violet — Le Faux Self',           masques:['violet'], type:'portrait', etape:'00', prio:0},
+    // Portraits dyades prioritaires
+    'PORT-IN+VE-00': {label:'Dyade — Auto-effacement Talentueux',    masques:['indigo','vert'],   type:'portrait', etape:'00', prio:1},
+    'PORT-VI+JA-00': {label:'Dyade — Rigidité Identitaire',          masques:['violet','jaune'],  type:'portrait', etape:'00', prio:1},
+    'PORT-RO+JA-00': {label:'Dyade — Anxiété Amplifiée',             masques:['rouge','jaune'],   type:'portrait', etape:'00', prio:2},
+    'PORT-JA+IN-00': {label:'Dyade — Procrastination Paralysante',   masques:['jaune','indigo'],  type:'portrait', etape:'00', prio:1},
+    'PORT-VE+OR-00': {label:'Dyade — Vide Émotionnel Complaisant',   masques:['vert','orange'],   type:'portrait', etape:'00', prio:2},
+    'PORT-BL+IN-00': {label:'Dyade — Perfectionnisme de Contrôle',   masques:['bleu','indigo'],   type:'portrait', etape:'00', prio:2},
+    // Portraits spéciaux
+    'PORT-DIFF-00':  {label:'Portrait Diffus — Pan-masques',         masques:['tous'],   type:'portrait', etape:'00', prio:1},
+    // Outils
+    'OUTIL-VI-E-01': {label:'La Voix d\'Avant les Rôles',            masques:['violet'], type:'outil',    etape:'E',  prio:1},
+    // Psychoéducation
+    'PSYCHO-VI-00':  {label:'Le Faux Self — Psychoéducation',        masques:['violet'], type:'psycho',   etape:'00', prio:2},
+    'PSYCHO-SPA-00': {label:'Votre Score de Présence Authentique',   masques:['tous'],   type:'psycho',   etape:'00', prio:2},
+    // Suivi
+    'SUIVI-SPA-00':  {label:'Suivi SPA — Évolution des Séances',     masques:['tous'],   type:'suivi',    etape:'00', prio:2},
+  },
+
+  // ── SÉLECTION AUTOMATIQUE selon le profil patient ───────────────
+  selectAuto(patient) {
+    if(!patient || !patient.portrait) return [];
+    const d     = patient.portrait;
+    const dom   = d.masque;
+    const cfg   = d.config || 'mono';
+    const masks = d.masks  || [dom];
+    const etape = patient.protocole?.etape_courante || 1;
+    const spa   = d.spa || 50;
+    const STEP  = ['','V','A','L','E','U','R'];
+    const recommended = [];
+
+    // 1. Portrait selon configuration
+    if(cfg === 'Pan-masques' || cfg === 'Résiduel') {
+      recommended.push('PORT-DIFF-00');
+    } else if(cfg === 'Dyade' && masks.length >= 2) {
+      const key = 'PORT-' + [masks[0].slice(0,2).toUpperCase(), masks[1].slice(0,2).toUpperCase()].join('+') + '-00';
+      if(this.CATALOGUE[key]) recommended.push(key);
+    }
+    // Toujours ajouter le portrait mono du masque dominant
+    const monoKey = 'PORT-' + dom.slice(0,2).toUpperCase() + '-00';
+    if(this.CATALOGUE[monoKey] && !recommended.includes(monoKey)) recommended.push(monoKey);
+
+    // 2. Violet → fiche spécifique faux self
+    if(dom === 'violet' || masks.includes('violet')) {
+      if(!recommended.includes('PORT-VI-00')) recommended.push('PORT-VI-00');
+    }
+
+    // 3. Outil selon étape courante
+    const stepCode = STEP[etape] || 'V';
+    const outilKey = 'OUTIL-' + dom.slice(0,2).toUpperCase() + '-' + stepCode + '-01';
+    if(this.CATALOGUE[outilKey]) recommended.push(outilKey);
+
+    // 4. SPA faible → psychoéducation SPA
+    if(spa < 40) recommended.push('PSYCHO-SPA-00');
+
+    return recommended.filter(k => this.CATALOGUE[k]).slice(0, 5);
+  },
+
+  // ── CONTENU DES FICHES (depuis CONTENT et MASK_PREAMBULE) ────────
+  _getContent(masque) {
+    // Essayer de lire depuis CONTENT si disponible (resultats.html injecté)
+    // Sinon fallback sur MASK_PREAMBULE du cabinet
+    const pre = MASK_PREAMBULE[masque] || {};
+    return {
+      peur:             MASK_PEURS[masque]    || pre.peur   || '',
+      origine:          pre.origine           || '',
+      masque_desc:      pre.masque            || '',
+      nature:           pre.nature            || '',
+      color:            MASK_COLORS[masque]   || '#A8873A',
+      name:             MASK_NAMES[masque]    || masque,
+    };
+  },
+
+  // ── GÉNÉRATION HTML D'UNE FICHE ───────────────────────────────────
+  generate(code, patient) {
+    const fiche = this.CATALOGUE[code];
+    if(!fiche) return '<p>Fiche non trouvée : '+code+'</p>';
+    const d     = patient.portrait || {};
+    const dom   = d.masque || fiche.masques[0];
+    const c     = this._getContent(dom);
+    const list  = V.data.getPatients();
+    const p     = list.find(x => x.id === patient._id) || {};
+    const prenom= p.prenom || 'ce patient';
+    const spa   = d.spa !== undefined ? d.spa + '%' : '—';
+    const score = d.scores ? (d.scores[dom] || 0) + '%' : '—';
+    const date  = new Date().toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+    const config= d.config || 'Profil individuel';
+    const etape = VALEUR_STEPS[(patient.protocole?.etape_courante||1)-1]?.name || 'VOIR';
+
+    return `<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<title>${fiche.label} — ${prenom}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@page{size:A5;margin:12mm 14mm 14mm 14mm}
+body{font-family:'DM Sans',sans-serif;font-size:9.5pt;line-height:1.6;color:#1A1814;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;max-width:148mm;margin:0 auto;padding:0}
+.strip{height:3px;background:${c.color};width:100%;margin-bottom:0}
+.header{display:flex;justify-content:space-between;align-items:center;padding:4mm 0 3mm;border-bottom:1px solid rgba(26,24,20,.1)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:9pt;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:${c.color}}
+.code{font-size:7pt;color:#8C8278;letter-spacing:1px}
+.eyebrow{font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${c.color};margin:5mm 0 2mm}
+.titre{font-family:'Cormorant Garamond',serif;font-size:18pt;font-weight:300;line-height:1.2;color:#1A1814;margin-bottom:2mm}
+.sous-titre{font-size:9pt;color:#8C8278;font-style:italic;margin-bottom:5mm}
+.separator{height:1px;background:rgba(26,24,20,.1);margin:4mm 0}
+.bloc{margin:4mm 0}
+.bloc-label{font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${c.color};margin-bottom:2mm}
+.bloc-text{font-size:9.5pt;line-height:1.65;color:#2C2820}
+.mirror-box{background:rgba(26,24,20,.03);border-left:3px solid ${c.color};padding:4mm 5mm;margin:4mm 0;font-family:'Cormorant Garamond',serif;font-size:12pt;line-height:1.6;font-style:italic;color:#1A1814}
+.couts-list{list-style:none;margin:0;padding:0}
+.couts-list li{display:flex;gap:2mm;padding:2.5mm 0;border-bottom:1px solid rgba(26,24,20,.06);font-size:9pt;line-height:1.55}
+.couts-list li::before{content:'→';color:${c.color};flex-shrink:0;font-weight:600}
+.zone-patient{margin-top:5mm;border:1px dashed rgba(26,24,20,.2);border-radius:4px;padding:4mm;min-height:18mm}
+.zone-patient-label{font-size:7pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:3mm}
+.zone-praticien{margin-top:4mm;background:#F0EBE1;border-radius:3px;padding:3mm 4mm;font-size:7.5pt;color:#8C8278;line-height:1.7}
+.zone-praticien strong{color:#5A534A}
+.footer{margin-top:4mm;padding-top:3mm;border-top:1px solid rgba(26,24,20,.1);display:flex;justify-content:space-between;font-size:7pt;color:#8C8278}
+.chip{display:inline-flex;align-items:center;gap:2mm;padding:1.5mm 4mm;border-radius:2px;font-size:7.5pt;font-weight:600;border:1px solid ${c.color}30;color:${c.color};background:${c.color}12;margin-right:2mm}
+.print-btn{position:fixed;bottom:20px;right:20px;background:#1A1814;color:#fff;border:none;border-radius:6px;padding:10px 18px;font-family:DM Sans,sans-serif;font-size:12px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.print-btn:hover{opacity:.85}
+@media print{.print-btn{display:none}}
+</style>
+</head><body>
+
+<div class="strip"></div>
+
+<div class="header">
+  <div class="logo">V.A.L.E.U.R<sup>©</sup> · ${c.name}</div>
+  <div class="code">${code} · ${date}</div>
+</div>
+
+<div class="eyebrow">Fiche Portrait · ${config}</div>
+<div class="titre">${fiche.label.replace(/Portrait \w+ — /, '')}</div>
+<div class="sous-titre">
+  <span class="chip">${prenom}</span>
+  <span class="chip">SPA ${spa}</span>
+  <span class="chip">Étape ${etape}</span>
+  <span class="chip">Score ${score}</span>
+</div>
+
+<div class="separator"></div>
+
+<div class="mirror-box">${c.origine ? c.origine.slice(0, 280) + '…' : 'Contenu de la fiche ' + c.name + '.'}</div>
+
+<div class="bloc">
+  <div class="bloc-label">Peur centrale</div>
+  <div class="bloc-text">${c.peur}</div>
+</div>
+
+<div class="bloc">
+  <div class="bloc-label">Ce que ce masque vous coûte</div>
+  <ul class="couts-list">
+    ${['Une vigilance permanente qui épuise','Une difficulté à rester présent à soi-même','Des routines maintenues non par plaisir mais par peur','Un sentiment diffus de passer à côté de sa propre vie','Une fatigue de se définir en creux'].slice(0,3).map(c => '<li>' + c + '</li>').join('')}
+  </ul>
+</div>
+
+<div class="bloc">
+  <div class="bloc-label">Ce qui vous attend de l'autre côté</div>
+  <div class="bloc-text">${c.nature || 'Sous ce masque, une capacité rare — libérée de la peur, elle devient l\'une des formes d\'intelligence les plus précieuses.'}</div>
+</div>
+
+<div class="zone-patient">
+  <div class="zone-patient-label">Ce que j'ai reconnu dans cette fiche</div>
+</div>
+
+<div class="zone-praticien">
+  <strong>Praticien :</strong> Config ${config} · SPA ${spa} · Étape en cours : ${etape}<br>
+  Fiches suivantes recommandées : OUTIL-${dom.slice(0,2).toUpperCase()}-${etape.slice(0,1)}-01 · PSYCHO-${dom.slice(0,2).toUpperCase()}-00
+</div>
+
+<div class="footer">
+  <span>© Céline Bourbon · V.A.L.E.U.R© · ${c.name}</span>
+  <span>${code}</span>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨 Imprimer cette fiche</button>
+</body></html>`;
+  },
+
+  // ── RENDU DE L'ONGLET FICHES dans la fiche patient ───────────────
+  renderTab(d, patientId) {
+    const el = document.getElementById('tab-body');
+    if(!el) return;
+    const list = V.data.getPatients();
+    const p    = list.find(x => x.id === patientId) || {};
+    const patientObj = {...d, _id: patientId};
+    const dom  = d.portrait?.masque;
+    const hasPortrait = !!d.portrait;
+    const recommended = hasPortrait ? this.selectAuto(patientObj) : [];
+
+    // Build recommended fiches HTML
+    const recHTML = recommended.map(code => {
+      const f = this.CATALOGUE[code];
+      if(!f) return '';
+      const col = dom ? MASK_COLORS[dom] : 'var(--gold)';
+      return `<div style="border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <div style="width:40px;height:40px;border-radius:6px;background:${col};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px">${f.label}</div>
+          <div style="font-size:10px;color:var(--ink4);font-family:monospace">${code}</div>
+        </div>
+        <button class="btn btn--gold btn--sm" onclick="V.fiches.open('${code}','${patientId}')">Générer →</button>
+      </div>`;
+    }).join('');
+
+    // Build full catalogue section
+    const types = [
+      {key:'portrait', label:'📋 Portraits', icon:'📋'},
+      {key:'outil',    label:'🛠 Outils',    icon:'🛠'},
+      {key:'psycho',   label:'🎓 Psychoéducation', icon:'🎓'},
+      {key:'suivi',    label:'📈 Suivi',     icon:'📈'},
+    ];
+
+    const catHTML = types.map(type => {
+      const fiches = Object.entries(this.CATALOGUE)
+        .filter(([k,v]) => v.type === type.key)
+        .map(([code, f]) => `
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)">
+            <div style="flex:1">
+              <span style="font-size:11px;font-weight:600;color:var(--ink)">${f.label}</span>
+              <span style="font-size:10px;color:var(--ink5);font-family:monospace;margin-left:6px">${code}</span>
+            </div>
+            <button class="btn btn--ghost btn--sm" onclick="V.fiches.open('${code}','${patientId}')">→</button>
+          </div>`).join('');
+      return fiches ? `
+        <div style="margin-bottom:12px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid rgba(168,135,58,.2)">${type.label}</div>
+          ${fiches}
+        </div>` : '';
+    }).join('');
+
+    el.innerHTML = `
+      <div style="max-width:860px">
+
+        ${!hasPortrait ? `<div class="card" style="text-align:center;padding:32px;color:var(--ink4)">
+          <div style="font-size:32px;margin-bottom:10px">📋</div>
+          <div style="font-size:14px;margin-bottom:8px">Portrait requis pour générer les fiches</div>
+          <button class="btn btn--gold" onclick="V.portrait.openImport('${patientId}')">Importer le portrait →</button>
+        </div>` : `
+
+        <!-- Fiches recommandées -->
+        <div style="margin-bottom:20px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">⭐ Fiches recommandées pour ${p.prenom||'ce patient'}</div>
+          ${recHTML || '<p style="font-size:13px;color:var(--ink4)">Aucune recommandation disponible.</p>'}
+        </div>
+
+        <!-- Bibliothèque complète -->
+        <details style="border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+          <summary style="font-size:12px;font-weight:700;cursor:pointer;color:var(--ink2);list-style:none;display:flex;align-items:center;gap:8px">
+            <span>📚 Bibliothèque complète V.A.L.E.U.R©</span>
+            <span style="font-size:10px;color:var(--ink5);margin-left:auto">${Object.keys(this.CATALOGUE).length} fiches disponibles</span>
+          </summary>
+          <div style="margin-top:14px">${catHTML}</div>
+        </details>
+
+        <!-- Nomenclature -->
+        <div class="card" style="margin-top:12px;background:rgba(168,135,58,.04);border-color:rgba(168,135,58,.15)">
+          <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Nomenclature · [TYPE]-[MASQUE]-[ÉTAPE]</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.8">
+            <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">PORT</code> Portrait ·
+            <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">OUTIL</code> Exercice ·
+            <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">PSYCHO</code> Psychoéducation ·
+            <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">SUIVI</code> Suivi SPA<br>
+            Masques : RO · OR · JA · VE · BL · IN · VI · Combinaisons : IN+VE, VI+JA…
+          </div>
+        </div>`}
+      </div>`;
+  },
+
+  // ── OUVRIR UNE FICHE (nouvel onglet) ─────────────────────────────
+  open(code, patientId) {
+    const d = V.data.getPatient(patientId) || V.data.newPatientData();
+    const html = this.generate(code, {...d, _id: patientId});
+    const win  = window.open('', '_blank');
+    if(win) {
+      win.document.write(html);
+      win.document.close();
+    }
+    V.ui.toast('✓ Fiche ouverte dans un nouvel onglet');
+  }
+};
+// ══ MODULE FICHES THÉRAPEUTIQUES V.A.L.E.U.R© ════════════════════════
+// Nomenclature : [TYPE]-[MASQUE(S)]-[ÉTAPE] · © Céline Bourbon
+// Sources : Winnicott 1960, Wood 2008, Frost 1990, Bagby 1994, etc.
+V.fiches = {
+
+  // ── NOMENCLATURE ─────────────────────────────────────────────────
+  CODES: {
+    rouge:'RO', orange:'OR', jaune:'JA', vert:'VE', bleu:'BL', indigo:'IN', violet:'VI'
+  },
+
+  // ── CATALOGUE DES FICHES ─────────────────────────────────────────
+  CATALOGUE: [
+    // Portraits mono (7)
+    {code:'PORT-RO-00', type:'PORT', masques:['rouge'],  etape:'00', titre:'Portrait Rouge — La peur de la maladie',   priorite:3, source:'SHAI [S02]'},
+    {code:'PORT-OR-00', type:'PORT', masques:['orange'], etape:'00', titre:'Portrait Orange — La peur de souffrir',    priorite:3, source:'TAS-20 [S03]'},
+    {code:'PORT-JA-00', type:'PORT', masques:['jaune'],  etape:'00', titre:"Portrait Jaune — La peur de l'incertitude",priorite:3, source:'IUS-12 [S04]'},
+    {code:'PORT-VE-00', type:'PORT', masques:['vert'],   etape:'00', titre:'Portrait Vert — La peur du rejet',         priorite:5, source:'ECR-R [S05]'},
+    {code:'PORT-BL-00', type:'PORT', masques:['bleu'],   etape:'00', titre:'Portrait Bleu — La peur du chaos',         priorite:3, source:'LOC+NPI [S06]'},
+    {code:'PORT-IN-00', type:'PORT', masques:['indigo'], etape:'00', titre:"Portrait Indigo — La peur de l'échec",     priorite:5, source:'FMPS [S07]'},
+    {code:'PORT-VI-00', type:'PORT', masques:['violet'], etape:'00', titre:'Portrait Violet — Le faux self (Winnicott)',priorite:5, source:'MSI+Winnicott [S01/S10]', special:true},
+    // Portrait diffus
+    {code:'PORT-DIFF-00', type:'PORT', masques:['diffus'], etape:'00', titre:'Portrait Diffus — Pan-masques',           priorite:4, source:'Multi [S01-S14]'},
+    // Dyades prioritaires (10)
+    {code:'PORT-IN+VE-00', type:'PORT', masques:['indigo','vert'],   etape:'00', titre:'Dyade — Auto-effacement talentueux',      priorite:5, source:'FMPS+ECR-R'},
+    {code:'PORT-VI+JA-00', type:'PORT', masques:['violet','jaune'],  etape:'00', titre:'Dyade — Rigidité identitaire',             priorite:5, source:'MSI+IUS-12'},
+    {code:'PORT-IN+JA-00', type:'PORT', masques:['indigo','jaune'],  etape:'00', titre:'Dyade — Procrastination paralysante',      priorite:4, source:'FMPS+IUS-12'},
+    {code:'PORT-RO+JA-00', type:'PORT', masques:['rouge','jaune'],   etape:'00', titre:'Dyade — Anxiété amplifiée',                priorite:4, source:'SHAI+IUS-12'},
+    {code:'PORT-BL+IN-00', type:'PORT', masques:['bleu','indigo'],   etape:'00', titre:'Dyade — Perfectionnisme de contrôle',      priorite:3, source:'LOC+FMPS'},
+    {code:'PORT-VI+VE-00', type:'PORT', masques:['violet','vert'],   etape:'00', titre:'Dyade — Fusion identitaire',               priorite:4, source:'MSI+ECR-R'},
+    {code:'PORT-VI+IN-00', type:'PORT', masques:['violet','indigo'], etape:'00', titre:'Dyade — Imposture existentielle',          priorite:4, source:'MSI+FMPS'},
+    {code:'PORT-OR+VI-00', type:'PORT', masques:['orange','violet'], etape:'00', titre:'Dyade — Dissociation chronique',           priorite:3, source:'TAS-20+MSI'},
+    {code:'PORT-VE+OR-00', type:'PORT', masques:['vert','orange'],   etape:'00', titre:'Dyade — Vide émotionnel sous compliance',  priorite:3, source:'ECR-R+TAS-20'},
+    {code:'PORT-RO+VI-00', type:'PORT', masques:['rouge','violet'],  etape:'00', titre:'Dyade — Identité-maladie',                 priorite:3, source:'SHAI+MSI'},
+    // Triade documentée
+    {code:'PORT-VI+RO+JA-00', type:'PORT', masques:['violet','rouge','jaune'], etape:'00', titre:'Triade — Identité figée somatisée', priorite:4, source:'Multi'},
+    // Psychoéducation
+    {code:'PSYCHO-VI-00',  type:'PSYCHO', masques:['violet'], etape:'00', titre:'Le faux self — Winnicott expliqué',       priorite:5, source:'Winnicott 1960 [S01]'},
+    {code:'PSYCHO-GEN-00', type:'PSYCHO', masques:[],         etape:'00', titre:'Les 7 masques — Introduction générale',   priorite:3, source:'Bourbon 2024 [S12]'},
+    // Outils par étape
+    {code:'OUTIL-VI-E-01',  type:'OUTIL', masques:['violet'], etape:'E', titre:'La voix d\'avant les rôles',                priorite:5, source:'ACT [S11]'},
+    {code:'OUTIL-VI-V-01',  type:'OUTIL', masques:['violet'], etape:'V', titre:'Nommer le pilote automatique',              priorite:4, source:'Winnicott [S01]'},
+    {code:'OUTIL-IN-E-01',  type:'OUTIL', masques:['indigo'], etape:'E', titre:'Le dialogue avec le critique intérieur',    priorite:4, source:'FMPS [S07]'},
+    {code:'OUTIL-VE-A-01',  type:'OUTIL', masques:['vert'],   etape:'A', titre:'Le protocole d\'accueil relationnel',       priorite:3, source:'ECR-R [S05]'},
+    // Suivi
+    {code:'SUIVI-SPA-00',   type:'SUIVI', masques:[],         etape:'00', titre:'Suivi du Score de Présence Authentique',   priorite:4, source:'Wood 2008 [S08]'},
+    // Prévention rechute
+    {code:'PREV-GEN-00',    type:'PREV',  masques:[],         etape:'00', titre:'Signaux d\'alerte et plan de maintien',    priorite:3, source:'Bourbon 2024 [S12]'},
+  ],
+
+  // ── RECOMMANDATION AUTOMATIQUE ───────────────────────────────────
+  recommend(patient_data) {
+    if (!patient_data?.portrait?.masque) return [];
+    const { masque, config, scores, spa, masks } = patient_data.portrait;
+    const etape = patient_data.protocole?.etape_courante || 1;
+    const etapeL = VALEUR_STEPS[etape-1]?.l || 'V';
+    const remises = patient_data.fiches_remises || [];
+    const recs = [];
+
+    // Portrait dominant
+    const codeM = this.CODES[masque];
+    if (codeM) {
+      const portCode = 'PORT-'+codeM+'-00';
+      recs.push({ code: portCode, priorite: 5, raison: 'Portrait masque dominant', new: !remises.includes(portCode) });
+    }
+
+    // Portrait dyade
+    if (config === 'Dyade' && masks?.length >= 2) {
+      const [m1, m2] = masks;
+      const c1 = this.CODES[m1], c2 = this.CODES[m2];
+      const dyadeCode = 'PORT-'+c1+'+'+c2+'-00';
+      recs.push({ code: dyadeCode, priorite: 5, raison: 'Configuration dyade détectée', new: !remises.includes(dyadeCode) });
+    }
+
+    // Portrait diffus
+    if (config === 'Pan-masques') {
+      recs.push({ code: 'PORT-DIFF-00', priorite: 5, raison: 'Profil pan-masques', new: !remises.includes('PORT-DIFF-00') });
+    }
+
+    // Violet comme secondaire ≥60%
+    if (masque !== 'violet' && (scores?.violet || 0) >= 60) {
+      recs.push({ code: 'PSYCHO-VI-00', priorite: 4, raison: 'Masque Violet ≥60% — faux self actif', new: !remises.includes('PSYCHO-VI-00') });
+    }
+
+    // Portrait Violet spécifique
+    if (masque === 'violet') {
+      recs.push({ code: 'PSYCHO-VI-00', priorite: 5, raison: 'Violet dominant — psychoéducation faux self indispensable', new: !remises.includes('PSYCHO-VI-00') });
+    }
+
+    // Outil selon étape
+    const outilCode = 'OUTIL-'+( codeM||'GEN' )+'-'+etapeL+'-01';
+    const outilExists = this.CATALOGUE.find(f => f.code === outilCode);
+    if (outilExists) recs.push({ code: outilCode, priorite: 3, raison: 'Étape '+etapeL+' en cours', new: !remises.includes(outilCode) });
+
+    // SPA faible
+    if ((spa || 100) < 40) {
+      recs.push({ code: 'SUIVI-SPA-00', priorite: 5, raison: 'SPA faible ('+spa+'%) — priorité suivi', new: !remises.includes('SUIVI-SPA-00') });
+    }
+
+    // Trier par priorité + nouvelles fiches en premier
+    return recs.sort((a,b) => (b.new?1:0) - (a.new?1:0) || b.priorite - a.priorite);
+  },
+
+  // ── RENDU ONGLET FICHES ──────────────────────────────────────────
+  renderTab(patient_data, id) {
+    const recs = this.recommend(patient_data);
+    const masque = patient_data?.portrait?.masque;
+    const col = masque ? MASK_COLORS[masque] : 'var(--gold)';
+    const remises = patient_data?.fiches_remises || [];
+
+    const recHTML = recs.length ? recs.map(r => {
+      const fiche = this.CATALOGUE.find(f => f.code === r.code);
+      if (!fiche) return '';
+      const alreadyDone = remises.includes(r.code);
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--surface);border:1px solid ${r.new?'rgba(168,135,58,.3)':'var(--line)'};border-radius:var(--r);margin-bottom:6px;">
+        <div style="flex:1">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${r.new?'var(--gold)':'var(--ink5)'};margin-bottom:2px">${fiche.code}</div>
+          <div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px">${fiche.titre}</div>
+          <div style="font-size:11px;color:var(--ink4)">${r.raison} · <em>${fiche.source}</em></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          ${alreadyDone ? '<span style="font-size:10px;color:#2D7A4F;font-weight:600">✓ Remise</span>' : ''}
+          <button class="btn btn--ghost btn--sm" onclick="V.fiches.generate('${fiche.code}','${id}')">📄 Générer</button>
+          ${!alreadyDone ? '<button class="btn btn--sm" style="background:rgba(168,135,58,.1);color:var(--gold);border:1px solid rgba(168,135,58,.3)" onclick="V.fiches.markDone(\''+fiche.code+'\',\''+id+'\')">✓ Marquer remise</button>' : ''}
+        </div>
+      </div>`;
+    }).join('') : '<div class="card" style="text-align:center;color:var(--ink4);padding:20px">Importez le portrait pour activer les recommandations.</div>';
+
+    // Filtre par type
+    const types = ['PORT','PSYCHO','OUTIL','SUIVI','PREV'];
+    const biblio = this.CATALOGUE.map(fiche => {
+      const alreadyDone = remises.includes(fiche.code);
+      return `<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid var(--line)">
+        <div style="flex:1">
+          <span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink5);margin-right:6px">${fiche.code}</span>
+          <span style="font-size:12px;color:var(--ink)">${fiche.titre}</span>
+          ${fiche.special ? '<span style="font-size:9px;color:#7A3594;font-weight:600;margin-left:4px">★ PRIORITAIRE</span>' : ''}
+        </div>
+        <button class="btn btn--ghost btn--sm" style="font-size:10px" onclick="V.fiches.generate('${fiche.code}','${id}')">📄</button>
+        ${alreadyDone ? '<span style="font-size:10px;color:#2D7A4F">✓</span>' : '<button class="btn btn--ghost btn--sm" style="font-size:10px;color:var(--ink5)" onclick="V.fiches.markDone(\''+fiche.code+'\',\''+id+'\')">+</button>'}
+      </div>`;
+    }).join('');
+
+    return `
+      <div>
+        <!-- RECOMMANDATIONS -->
+        <div class="card" style="margin-bottom:14px;border:1px solid rgba(168,135,58,.2);background:rgba(168,135,58,.03)">
+          <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">📄 Fiches recommandées — profil actuel</div>
+          ${recHTML}
+          ${recs.length > 0 ? '<div style="font-size:10px;color:var(--ink5);margin-top:8px;font-style:italic">Sélection automatique selon masque dominant, configuration et étape du protocole</div>' : ''}
+        </div>
+
+        <!-- HISTORIQUE REMISES -->
+        ${remises.length ? `<div class="card" style="margin-bottom:14px">
+          <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:10px">Fiches remises (${remises.length})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            ${remises.map(c => `<span class="badge badge--done" style="font-size:10px">${c}</span>`).join('')}
+          </div>
+        </div>` : ''}
+
+        <!-- BIBLIOTHÈQUE COMPLÈTE -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink4)">Bibliothèque complète (${this.CATALOGUE.length} fiches)</div>
+          </div>
+          <div style="font-size:11px;color:var(--ink4);margin-bottom:8px;font-style:italic">Sources : Winnicott 1960, Wood 2008, Frost 1990, Bagby 1994, Fraley 2000, Rotter 1966, Bourbon 2024 et al.</div>
+          <div>${biblio}</div>
+        </div>
+      </div>`;
+  },
+
+  // ── GÉNÉRATION D'UNE FICHE ──────────────────────────────────────
+  generate(code, patientId) {
+    const list = V.data.getPatients();
+    const p = list.find(x => x.id === patientId) || {};
+    const d = V.data.getPatient(patientId) || {};
+    const masque = d.portrait?.masque || 'violet';
+    const scores = d.portrait?.scores || {};
+    const spa    = d.portrait?.spa || 0;
+    const config = d.portrait?.config || 'mono';
+    const etape  = d.protocole?.etape_courante || 1;
+    const etapeData = VALEUR_STEPS[etape-1] || VALEUR_STEPS[0];
+    const col    = MASK_COLORS[masque] || '#A8873A';
+
+    const pre    = MASK_PREAMBULE[masque] || {};
+    const defis  = V._defis[masque] || [];
+    const defi1  = defis[Math.max(0,(etape-1)*3)] || '';
+    const defi2  = defis[Math.max(0,(etape-1)*3+1)] || '';
+
+    const fiche  = this.CATALOGUE.find(f => f.code === code);
+    const titre  = fiche ? fiche.titre : code;
+    const source = fiche ? fiche.source : '';
+
+    const html = this._buildFicheHTML({
+      code, titre, source,
+      prenom: p.prenom || '—',
+      masque, col, scores, spa, config,
+      etape, etapeData, pre, defi1, defi2,
+      date: new Date().toLocaleDateString('fr-FR'),
+    });
+
+    const win = window.open('', '_blank', 'width=600,height=900');
+    win.document.write(html);
+    win.document.close();
+    setTimeout(() => win.print(), 800);
+
+    // Marquer comme remise (log)
+    this._logRemise(code, patientId, etape);
+  },
+
+  // ── MARQUER COMME REMISE ─────────────────────────────────────────
+  markDone(code, patientId) {
+    this._logRemise(code, patientId, null);
+    V.ui.toast('✓ Fiche '+code+' marquée remise');
+    V.views.patient.renderTab(patientId, 'fiches');
+  },
+
+  _logRemise(code, patientId, etape) {
+    const d = V.data.getPatient(patientId) || V.data.newPatientData();
+    if (!d.fiches_remises) d.fiches_remises = [];
+    if (!d.fiches_historique) d.fiches_historique = [];
+    if (!d.fiches_remises.includes(code)) d.fiches_remises.push(code);
+    d.fiches_historique.push({ code, date: new Date().toISOString().slice(0,10), etape: etape || '—' });
+    V.data.savePatient(patientId, d);
+  },
+
+  // ── TEMPLATE HTML FICHE IMPRIMABLE A5 ───────────────────────────
+  _buildFicheHTML(vars) {
+    const { code, titre, source, prenom, masque, col, scores, spa, config, etape, etapeData, pre, defi1, defi2, date } = vars;
+    const MASK_NM = MASK_NAMES || {rouge:'Masque Rouge',orange:'Masque Orange',jaune:'Masque Jaune',vert:'Masque Vert',bleu:'Masque Bleu',indigo:'Masque Indigo',violet:'Masque Violet'};
+    const masqueName = MASK_NM[masque] || masque;
+
+    return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+<style>
+@page { size: 148mm 210mm; margin: 12mm 14mm 16mm; }
+@media print { body { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:"Liberation Sans",sans-serif; font-size:9pt; color:#1A1814; line-height:1.6; }
+.band { height:3mm; background:${col}; margin-bottom:5mm; border-radius:1px; }
+.eyebrow { font-size:7pt; letter-spacing:2pt; text-transform:uppercase; color:${col}; font-weight:bold; margin-bottom:2mm; }
+h1 { font-family:"DejaVu Serif",serif; font-size:14pt; font-weight:normal; color:#1A1814; line-height:1.2; margin-bottom:4mm; }
+h2 { font-size:8.5pt; font-weight:bold; letter-spacing:1pt; text-transform:uppercase; color:#8C8278; margin:5mm 0 2mm; }
+p { margin-bottom:4mm; }
+.gold-line { height:1pt; background:${col}; margin:4mm 0; opacity:.4; }
+.box { border-left:2.5pt solid ${col}; padding:3mm 5mm; background:rgba(168,135,58,.04); margin:4mm 0; }
+.box p { margin:0; }
+.chip { display:inline-block; padding:1pt 6pt; border-radius:2pt; font-size:7pt; font-weight:bold; color:#fff; background:${col}; margin-right:3pt; }
+.defi { background:#F9F6F1; border:0.5pt solid #D4CEBF; border-radius:3pt; padding:4mm; margin:3mm 0; font-size:8.5pt; }
+.defi-num { font-size:7pt; font-weight:bold; color:${col}; letter-spacing:1pt; text-transform:uppercase; margin-bottom:2mm; }
+.zone-patient { border:0.5pt dashed #D4CEBF; padding:4mm; min-height:14mm; margin:3mm 0; background:#FAFAF8; }
+.zone-patient-label { font-size:6.5pt; color:#B0A898; letter-spacing:1pt; text-transform:uppercase; margin-bottom:2mm; }
+.footer-prat { font-size:6.5pt; color:#B0A898; border-top:0.5pt solid #E8E1D4; padding-top:2mm; margin-top:4mm; line-height:1.7; }
+.spa-row { display:flex; align-items:center; gap:4mm; margin:3mm 0; }
+.spa-bar { flex:1; height:4pt; background:#E8E1D4; border-radius:2pt; overflow:hidden; }
+.spa-fill { height:100%; background:${col}; border-radius:2pt; }
+</style></head><body>
+
+<div class="band"></div>
+<div class="eyebrow">V.A.L.E.U.R© · ${code}</div>
+<h1>${titre}</h1>
+<div style="display:flex;align-items:center;gap:6mm;margin-bottom:4mm;font-size:9pt;color:#5A534A;">
+  <span>Pour <strong>${prenom}</strong></span>
+  <span class="chip">${masqueName}</span>
+  <span style="color:#8C8278">SPA ${spa}% · Étape ${etapeData ? etapeData.l+' — '+etapeData.name : etape}</span>
+  <span style="margin-left:auto;font-size:7.5pt;color:#B0A898">${date}</span>
+</div>
+<div class="gold-line"></div>
+
+<h2>Peur centrale</h2>
+<p>${pre.peur || '—'}</p>
+
+<h2>Ce qui s'est passé</h2>
+<p style="font-size:8.5pt;line-height:1.7">${(pre.origine||'').replace(/\n/g,' ').slice(0,350)}…</p>
+
+<h2>Ce que ce masque vous a coûté</h2>
+<p style="font-size:8.5pt;line-height:1.7">${(pre.masque||'').replace(/\n/g,' ').slice(0,280)}…</p>
+
+<h2>Ce qui vous attend de l'autre côté</h2>
+<div class="box"><p style="font-style:italic;font-size:8.5pt">${(pre.nature||'').replace(/\n/g,' ').slice(0,260)}…</p></div>
+
+<h2>Score de Présence Authentique</h2>
+<div class="spa-row">
+  <span style="font-size:8pt;font-weight:bold;color:${col}">${spa}%</span>
+  <div class="spa-bar"><div class="spa-fill" style="width:${spa}%"></div></div>
+  <span style="font-size:7.5pt;color:#8C8278">Présence à soi</span>
+</div>
+
+<h2>Défis de l'étape ${etapeData ? etapeData.l+' — '+etapeData.name : ''}</h2>
+${defi1 ? `<div class="defi"><div class="defi-num">Défi inter-séance</div>${defi1}</div>` : ''}
+${defi2 ? `<div class="defi"><div class="defi-num">Pour aller plus loin</div>${defi2}</div>` : ''}
+
+<h2>Ce que vous observez cette semaine</h2>
+<div class="zone-patient">
+  <div class="zone-patient-label">Espace de réflexion</div>
+  &nbsp;
+</div>
+
+<div class="footer-prat">
+  Céline Bourbon · Psychologue · Cabinet psyH · Bordeaux · contact@psyh.fr<br>
+  Méthode V.A.L.E.U.R© · ${code} · Sources : ${source} · © Céline Bourbon — Tous droits réservés
+</div>
+</body></html>`;
+  },
+};
+
+
+</script>
