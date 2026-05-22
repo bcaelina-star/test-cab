@@ -75,6 +75,429 @@ h1 em{font-style:italic;color:var(--or)}
 .grille.lg{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
 
 /* Carte */
+a.carte{text-decoration:none;display:block;color:inherit;}
+.carte{cursor:pointer;background:var(--bg2);border:1px solid var(--li);display:flex;flex-direction:column;transition:all .2s;text-decoration:none;color:inherit;border-radius:var(--r);overflow:hidden;cursor:pointer}
+.carte:hover{background:var(--bg3);border-color:rgba(240,235,225,.18);transform:translateY(-1px)}
+.carte.ok{border-color:rgba(201,168,76,.25)}
+.carte.ok:hover{border-color:rgba(201,168,76,.55)}
+.c-bande{height:3px;width:100%;flex-shrink:0}
+.c-top{padding:7px 12px;background:rgba(0,0,0,.2);display:flex;align-items:center;gap:7px}
+.c-dots{display:flex;gap:3px;align-items:center}
+.c-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.c-code{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--iv3)}
+.c-prio{margin-left:auto;font-size:9px;color:var(--or)}
+.c-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:5px}
+.c-cat{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--iv3);margin-bottom:1px}
+.c-peur{font-family:var(--fs);font-size:13.5px;font-weight:400;color:var(--iv);line-height:1.3}
+.c-force{font-size:9.5px;color:var(--iv2);line-height:1.5;margin-top:3px}
+.c-force strong{color:var(--or);font-weight:400}
+.c-foot{padding:7px 14px;border-top:1px solid var(--li2);display:flex;align-items:center;justify-content:space-between}
+.c-sea{font-size:8px;letter-spacing:.8px;color:var(--iv3)}
+.c-dl{font-size:8px;letter-spacing:1px;text-transform:uppercase}
+.c-dl.ok{color:var(--or)}
+.c-dl.np{color:var(--iv3)}
+
+/* Couleurs masques */
+.bR{background:var(--R)}.bO{background:var(--O)}.bJ{background:var(--J)}
+.bV{background:var(--V)}.bB{background:var(--B)}.bI{background:var(--I)}.bVi{background:var(--Vi)}
+.bOR{background:var(--or)}.bCH{background:var(--ch)}
+.bIV{background:linear-gradient(90deg,var(--I),var(--V))}
+.bViJ{background:linear-gradient(90deg,var(--Vi),var(--J))}
+.bJI{background:linear-gradient(90deg,var(--J),var(--I))}
+.bRJ{background:linear-gradient(90deg,var(--R),var(--J))}
+.bVO{background:linear-gradient(90deg,var(--V),var(--O))}
+.bBI{background:linear-gradient(90deg,var(--B),var(--I))}
+.bViV{background:linear-gradient(90deg,var(--Vi),var(--V))}
+.bViRJ{background:linear-gradient(90deg,var(--Vi),var(--R),var(--J))}
+.dR{background:var(--R)}.dO{background:var(--O)}.dJ{background:var(--J)}
+.dV{background:var(--V)}.dB{background:var(--B)}.dI{background:var(--I)}.dVi{background:var(--Vi)}.dOR{background:var(--or)}
+
+/* Footer */
+footer{border-top:1px solid var(--li);padding:22px clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+.ft{font-size:9px;letter-spacing:.4px;color:var(--iv3);line-height:1.7}
+.chroma-bt{height:3px;background:var(--ch)}
+</style>
+</head>
+<body>
+<div class="chroma"></div>
+<nav>
+  <div class="nav-logo">V.A.L.E.U.R<sup>©</sup></div>
+  <div class="nav-r">
+    <div class="filters">
+      <button class="fb on" onclick="filtrer('',this)">Toutes</button>
+      <button class="fb" onclick="filtrer('REV',this)">REV</button>
+      <button class="fb" onclick="filtrer('PSY',this)">PSY</button>
+      <button class="fb" onclick="filtrer('ACT',this)">ACT</button>
+      <button class="fb" onclick="filtrer('CMB',this)">CMB</button>
+      <button class="fb" onclick="filtrer('INT',this)">INT</button>
+      <button class="fb" onclick="filtrer('PRO',this)">PRO</button>
+      <button class="fb" onclick="filtrer('RIT',this)">RIT</button>
+    </div>
+    <span class="nav-sub">parcours.psyh.fr</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-flag"><div class="flag-bar"></div><span class="flag-txt">Bibliothèque thérapeutique imprimable · Usage praticien · parcours.psyh.fr</span></div>
+  <h1>De la peur<br>à la <em>joie d'être soi</em></h1>
+  <p class="hero-sub">7 masques de défense. 22 fiches initiales. Du premier choc de reconnaissance jusqu'aux forces libérées derrière chaque peur.</p>
+  <div class="kpis">
+    <div class="kpi"><span class="kpi-n">22</span><span class="kpi-l">Fiches initiales</span></div>
+    <div class="kpi"><span class="kpi-n">7</span><span class="kpi-l">Familles</span></div>
+    <div class="kpi"><span class="kpi-n">7</span><span class="kpi-l">Masques documentés</span></div>
+    <div class="kpi"><span class="kpi-n">100+</span><span class="kpi-l">Profils extensibles</span></div>
+  </div>
+</div>
+
+<div class="voyage">
+  <div class="voyage-in">
+    <div class="vs"><div class="vs-step">I · Révélation</div><div class="vs-titre">Le masque est nommé</div><div class="vs-desc">Le patient se reconnaît sans se juger. Premier choc de conscience — « C'est moi. »</div></div>
+    <div class="vs"><div class="vs-step">II · Compréhension</div><div class="vs-titre">Le sens émerge</div><div class="vs-desc">La naissance du masque, sa logique, son coût. « Je comprends pourquoi j'ai construit ça. »</div></div>
+    <div class="vs"><div class="vs-step">III · Activation</div><div class="vs-titre">Le protocole s'enclenche</div><div class="vs-desc">V · A · L · E · U · R — six mouvements vers la libération. « Je passe à l'action. »</div></div>
+    <div class="vs"><div class="vs-step">IV · Consolidation</div><div class="vs-titre">Les forces sont libérées</div><div class="vs-desc">Ce qui dormait derrière le masque est nommé, ancré, célébré. « Je suis plus que mon masque. »</div></div>
+  </div>
+</div>
+
+<div class="cat">
+
+<!-- REV -->
+<section class="fam" data-fam="REV">
+  <div class="fam-hdr"><span class="fam-code">REV</span><span class="fam-nom">Portraits des masques</span><span class="fam-seq">Séance 1–2</span></div>
+  <div class="grille">
+    <a class="carte" href="REV-R-00.html" target="_blank">
+      <div class="c-bande" style="background:#B5312A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B5312A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">REV-R-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Masque Rouge</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Peur de la mort — alarme de survie</div></div>
+    </a>
+    <a class="carte" href="REV-O-00.html" target="_blank">
+      <div class="c-bande" style="background:#C4581F;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#C4581F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">REV-O-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Masque Orange</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Peur de la souffrance — coupure du ressenti</div></div>
+    </a>
+    <a class="carte" href="REV-J-00.html" target="_blank">
+      <div class="c-bande" style="background:#B8930A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">REV-J-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Masque Jaune</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Peur de l'inconnu — anticipation</div></div>
+    </a>
+    <a class="carte" href="REV-V-00.html" target="_blank">
+      <div class="c-bande" style="background:#2D7A4F;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#2D7A4F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">REV-V-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Masque Vert</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Peur du rejet — amour conditionnel</div></div>
+    </a>
+    <a class="carte" href="REV-B-00.html" target="_blank">
+      <div class="c-bande" style="background:#1D5F8A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#1D5F8A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">REV-B-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Masque Bleu</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Peur de l'impuissance — maîtrise comme survie</div></div>
+    </a>
+    <a class="carte" href="REV-I-00.html" target="_blank">
+      <div class="c-bande" style="background:#5C3280;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#5C3280;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">REV-I-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Masque Indigo</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Peur de l'échec — perfectionnisme</div></div>
+    </a>
+    <a class="carte" href="REV-Vi-00.html" target="_blank">
+      <div class="c-bande" style="background:#7A3594;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#7A3594;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">REV-Vi-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Masque Violet</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Peur d'être jugé·e sur qui l'on est — faux self</div></div>
+    </a>
+    <a class="carte" href="REV-DIFF-00.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">REV-DIFF-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Portrait Diffus</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Profil adaptatif pan-masques</div></div>
+    </a>
+  </div>
+</section>
+<section class="fam" data-fam="CMB">
+  <div class="fam-hdr"><span class="fam-code">CMB</span><span class="fam-nom">Dyades et triades</span><span class="fam-seq">Séance 3–4</span></div>
+  <div class="grille">
+    <a class="carte" href="CMB-RJ-00.html" target="_blank">
+      <div class="c-bande" style="background:#B5312A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B5312A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-RJ-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Rouge + Jaune</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Corps et incertitude en boucle</div></div>
+    </a>
+    <a class="carte" href="CMB-OV-00.html" target="_blank">
+      <div class="c-bande" style="background:#C4581F;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#C4581F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#2D7A4F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-OV-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Orange + Vert</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Se rapprocher sans pouvoir s'ouvrir</div></div>
+    </a>
+    <a class="carte" href="CMB-JV-00.html" target="_blank">
+      <div class="c-bande" style="background:#B8930A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#2D7A4F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-JV-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Jaune + Vert</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">L'amour a besoin d'être certain</div></div>
+    </a>
+    <a class="carte" href="CMB-RO-00.html" target="_blank">
+      <div class="c-bande" style="background:#B5312A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B5312A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#C4581F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-RO-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Rouge + Orange</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Le corps parle, les émotions se taisent</div></div>
+    </a>
+    <a class="carte" href="CMB-JB-00.html" target="_blank">
+      <div class="c-bande" style="background:#B8930A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#1D5F8A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-JB-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Jaune + Bleu</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Imprévu et impuissance se rejoignent</div></div>
+    </a>
+    <a class="carte" href="CMB-IB-00.html" target="_blank">
+      <div class="c-bande" style="background:#5C3280;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#5C3280;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#1D5F8A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-IB-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Indigo + Bleu</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Valeur = performance et reconnaissance</div></div>
+    </a>
+    <a class="carte" href="CMB-VI-00.html" target="_blank">
+      <div class="c-bande" style="background:#2D7A4F;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#2D7A4F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#5C3280;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-VI-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Vert + Indigo</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">S'effacer protège du rejet et du jugement</div></div>
+    </a>
+    <a class="carte" href="CMB-JI-00.html" target="_blank">
+      <div class="c-bande" style="background:#B8930A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#5C3280;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-JI-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Jaune + Indigo</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Certitude et perfection bloquent le départ</div></div>
+    </a>
+    <a class="carte" href="CMB-ViJ-00.html" target="_blank">
+      <div class="c-bande" style="background:#7A3594;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#7A3594;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-ViJ-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Violet + Jaune</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">L'image de soi se fige pour ne plus être attaquable</div></div>
+    </a>
+    <a class="carte" href="CMB-RB-00.html" target="_blank">
+      <div class="c-bande" style="background:#B5312A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B5312A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#1D5F8A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-RB-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Dyade Rouge + Bleu</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Maîtriser ce que le corps signale</div></div>
+    </a>
+    <a class="carte" href="CMB-RJO-00.html" target="_blank">
+      <div class="c-bande" style="background:#B5312A;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#B5312A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#C4581F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-RJO-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Triade R + J + O</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Corps, incertitude, coupure émotionnelle</div></div>
+    </a>
+    <a class="carte" href="CMB-VBJ-00.html" target="_blank">
+      <div class="c-bande" style="background:#2D7A4F;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#2D7A4F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#1D5F8A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-VBJ-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Triade V + B + J</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Connexion, maîtrise et certitude</div></div>
+    </a>
+    <a class="carte" href="CMB-IBO-00.html" target="_blank">
+      <div class="c-bande" style="background:#5C3280;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#5C3280;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#1D5F8A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#C4581F;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-IBO-00</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Triade I + B + O</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Valeur, reconnaissance, coupure</div></div>
+    </a>
+    <a class="carte" href="CMB-ViRJ-00.html" target="_blank">
+      <div class="c-bande" style="background:#7A3594;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#7A3594;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#B5312A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-dot" style="background:#B8930A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">CMB-ViRJ-00</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Triade Vi + R + J</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Image, corps et incertitude figés</div></div>
+    </a>
+  </div>
+</section>
+<section class="fam" data-fam="PSY">
+  <div class="fam-hdr"><span class="fam-code">PSY</span><span class="fam-nom">Psychoéducation</span><span class="fam-seq">Séance 2–4</span></div>
+  <div class="grille">
+    <a class="carte" href="PSY-XX-001.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">PSY-XX-001</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Naissance des masques</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">7 étapes de création — D=e×r²</div></div>
+    </a>
+    <a class="carte" href="PSY-Vi-010.html" target="_blank">
+      <div class="c-bande" style="background:#7A3594;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#7A3594;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">PSY-Vi-010</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Le faux self</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Winnicott — retrouver ce qui existait avant les rôles</div></div>
+    </a>
+    <a class="carte" href="PSY-XX-011.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">PSY-XX-011</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Score SPA</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Présence Authentique — boussole de liberté</div></div>
+    </a>
+  </div>
+</section>
+<section class="fam" data-fam="ACT">
+  <div class="fam-hdr"><span class="fam-code">ACT</span><span class="fam-nom">Protocoles et exercices</span><span class="fam-seq">Séance 4–8</span></div>
+  <div class="grille">
+    <a class="carte" href="ACT-XX-001.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-XX-001</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Protocole VOIR</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Conscience observatrice — 3 questions de défusion</div></div>
+    </a>
+    <a class="carte" href="ACT-XX-002.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-XX-002</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Protocole ACCUEILLIR</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">D=e×r² — cesser la résistance qui amplifie</div></div>
+    </a>
+    <a class="carte" href="ACT-Vi-050.html" target="_blank">
+      <div class="c-bande" style="background:#7A3594;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#7A3594;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-Vi-050</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">La voix d'avant les rôles</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Exercice EXPLORER — Masque Violet</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-001.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-001</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">La Salle de Cinéma</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Défusion — se repositionner comme spectateur</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-002.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-002</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Les Portes</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Observer les pensées sans les ouvrir mécaniquement</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-003.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-003</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">La Feuille sur le courant</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Laisser passer sans retenir</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-004.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-004</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Nommer le masque</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">3 formulations de défusion en temps réel</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-005.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-005</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Remercier sans obéir</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Accueillir l'intention protectrice sans y obéir</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-006.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-006</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Le Poste de Garde</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Dialoguer avec le masque — explorer ce qu'il protège</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-007.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-007</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">La Météo intérieure</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Lire son état sans le juger</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-008.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-008</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Body Scan V.A.L.E.U.R©</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Localiser le masque dans le corps</div></div>
+    </a>
+    <a class="carte" href="ACT-EX-009.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">ACT-EX-009</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">La Lettre au masque</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Écrire à son masque — intégration UNIFIER</div></div>
+    </a>
+  </div>
+</section>
+<section class="fam" data-fam="INT">
+  <div class="fam-hdr"><span class="fam-code">INT</span><span class="fam-nom">Intégration et suivi</span><span class="fam-seq">Séance 8+</span></div>
+  <div class="grille">
+    <a class="carte" href="INT-XX-001.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">INT-XX-001</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Bilan d'étape</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Ancrer les transformations — éviter la régression</div></div>
+    </a>
+    <a class="carte" href="INT-XX-002.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">INT-XX-002</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Journal de bord mensuel</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Graphe SPA 6 mois — suivi mensuel</div></div>
+    </a>
+    <a class="carte" href="INT-XX-010.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">INT-XX-010</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Forces libérées</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Les 7 forces officielles — consolidation</div></div>
+    </a>
+  </div>
+</section>
+<section class="fam" data-fam="PRO">
+  <div class="fam-hdr"><span class="fam-code">PRO</span><span class="fam-nom">Projection et vision</span><span class="fam-seq">Séance 10+</span></div>
+  <div class="grille">
+    <a class="carte" href="PRO-XX-001.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">PRO-XX-001</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Carte du prochain sommet</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Vision à 6 mois — phrase d'ancrage</div></div>
+    </a>
+    <a class="carte" href="PRO-XX-002.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">PRO-XX-002</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Boussole jours difficiles</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Protocole de retour au calme — 4 étapes</div></div>
+    </a>
+  </div>
+</section>
+<section class="fam" data-fam="RIT">
+  <div class="fam-hdr"><span class="fam-code">RIT</span><span class="fam-nom">Rituels et passages</span><span class="fam-seq">Séances clés</span></div>
+  <div class="grille">
+    <a class="carte" href="RIT-XX-001.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">RIT-XX-001</span><span style="color:#C9A84C;font-size:9px">★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Carte de bienvenue</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Séance 1 — accueil dans le parcours</div></div>
+    </a>
+    <a class="carte" href="RIT-XX-002.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">RIT-XX-002</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Rituel de passage</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Séance 6 — seuil Phase I → Phase II</div></div>
+    </a>
+    <a class="carte" href="RIT-XX-010.html" target="_blank">
+      <div class="c-bande" style="background:#C9A84C;height:3px"></div>
+      <div class="c-top" style="display:flex;align-items:center;gap:6px;padding:8px 10px"><span class="c-dot" style="background:#9E948A;width:9px;height:9px;border-radius:50%;display:inline-block"></span><span class="c-code" style="font-size:9px;font-family:monospace;color:var(--tx3);flex:1">RIT-XX-010</span><span style="color:#C9A84C;font-size:9px">★★</span></div>
+      <div class="c-body" style="padding:0 10px 10px"><div class="c-titre" style="font-weight:500;font-size:12px;margin-bottom:3px">Lettre de clôture</div><div class="c-peur" style="font-size:10px;color:var(--tx3);line-height:1.4">Séance finale — lettre à soi dans 6 mois</div></div>
+    </a>
+  </div>
+</section>
+ html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Bibliothèque V.A.L.E.U.R© — Fiches thérapeutiques</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#12100D;--bg2:#1C1912;--bg3:#252018;
+  --iv:#F0EBE1;--iv2:#D4CCBF;--iv3:#A89E90;
+  --or:#C9A84C;--or2:rgba(201,168,76,.15);--or3:rgba(201,168,76,.3);
+  --li:rgba(240,235,225,.1);--li2:rgba(240,235,225,.06);
+  --R:#B5312A;--O:#C4581F;--J:#B8930A;--V:#2D7A4F;--B:#1D5F8A;--I:#5C3280;--Vi:#7A3594;
+  --ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;
+  --r:4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--iv);font-family:var(--fb);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ── TOP ── */
+.chroma{height:3px;background:var(--ch);position:fixed;top:0;left:0;right:0;z-index:300}
+
+nav{position:fixed;top:3px;left:0;right:0;z-index:299;height:52px;background:rgba(18,16,13,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--li);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:var(--fs);font-size:13px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--or)}
+.nav-logo sup{font-size:7px;vertical-align:super}
+.nav-r{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.nav-sub{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--iv3);display:none}
+@media(min-width:640px){.nav-sub{display:block}}
+
+/* Filtres */
+.filters{display:flex;gap:3px;flex-wrap:wrap}
+.fb{background:none;border:1px solid var(--li);color:var(--iv2);font-family:var(--fb);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;cursor:pointer;transition:all .18s;border-radius:var(--r)}
+.fb:hover{border-color:var(--or3);color:var(--or);background:var(--or2)}
+.fb.on{border-color:var(--or);color:var(--or);background:var(--or2)}
+
+/* ── HERO ── */
+.hero{max-width:1060px;margin:0 auto;padding:clamp(90px,14vw,130px) clamp(16px,4vw,48px) 48px}
+.hero-flag{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.flag-bar{width:20px;height:2.5px;background:var(--ch)}
+.flag-txt{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--iv3)}
+h1{font-family:var(--fs);font-size:clamp(36px,6vw,70px);font-weight:300;line-height:.95;letter-spacing:-1px;margin-bottom:16px;color:var(--iv)}
+h1 em{font-style:italic;color:var(--or)}
+.hero-sub{font-family:var(--fs);font-size:clamp(14px,2vw,17px);font-style:italic;color:var(--iv2);max-width:520px;line-height:1.6;margin-bottom:36px}
+.kpis{display:flex;gap:clamp(20px,4vw,40px);padding-top:22px;border-top:1px solid var(--li);flex-wrap:wrap}
+.kpi{display:flex;flex-direction:column;gap:3px}
+.kpi-n{font-family:var(--fs);font-size:clamp(22px,3vw,28px);font-weight:300;color:var(--or);line-height:1}
+.kpi-l{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--iv3)}
+
+/* ── VOYAGE ── */
+.voyage{border-top:1px solid var(--li);border-bottom:1px solid var(--li);background:rgba(240,235,225,.02)}
+.voyage-in{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));padding:0 clamp(16px,4vw,48px)}
+.vs{padding:18px 20px;border-right:1px solid var(--li)}
+.vs:last-child{border-right:none}
+.vs-step{font-family:var(--fs);font-size:10px;font-style:italic;color:var(--or);margin-bottom:4px;opacity:.85}
+.vs-titre{font-family:var(--fs);font-size:15px;font-weight:400;color:var(--iv);margin-bottom:5px}
+.vs-desc{font-size:11px;color:var(--iv2);line-height:1.55}
+
+/* ── CATALOGUE ── */
+.cat{max-width:1060px;margin:0 auto;padding:48px clamp(16px,4vw,48px) 80px}
+
+/* Famille */
+.fam{margin-bottom:52px}
+.fam-hdr{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--li)}
+.fam-code{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--or);background:var(--or2);border:1px solid var(--or3);padding:3px 10px;border-radius:var(--r);flex-shrink:0}
+.fam-nom{font-family:var(--fs);font-size:clamp(17px,2.5vw,21px);font-weight:400;color:var(--iv)}
+.fam-nom em{font-style:italic;color:var(--iv2)}
+.fam-seq{margin-left:auto;font-size:9px;letter-spacing:.8px;color:var(--iv3);white-space:nowrap}
+
+/* Grille */
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.grille.lg{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+
+/* Carte */
 .carte{background:var(--bg2);border:1px solid var(--li);display:flex;flex-direction:column;transition:all .2s;text-decoration:none;color:inherit;border-radius:var(--r);overflow:hidden;cursor:pointer}
 .carte:hover{background:var(--bg3);border-color:rgba(240,235,225,.18);transform:translateY(-1px)}
 .carte.ok{border-color:rgba(201,168,76,.25)}
