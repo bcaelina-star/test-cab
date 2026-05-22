@@ -193,7 +193,7 @@ textarea.inp{resize:vertical;min-height:72px;line-height:1.55}
       <button class="nav-btn" id="nav-patients" onclick="V.router.go('patients')"><span class="nav-ico">👥</span><span>Patients</span></button>
       <div class="sb-sect">Outils</div>
       <button class="nav-btn" id="nav-gifts" onclick="V.router.go('gifts')"><span class="nav-ico">🎁</span><span>Codes cadeaux</span></button>
-      <a class="nav-btn" href="https://parcours.psyh.fr" target="_blank"><span class="nav-ico">📚</span><span>Bibliothèque</span></a>
+      <a class="nav-btn" href="./bib-index.html" target="_blank"><span class="nav-ico">📚</span><span>Bibliothèque</span></a>
       <a class="nav-btn" href="https://questionnaire.psyh.fr" target="_blank"><span class="nav-ico">📋</span><span>Questionnaire</span></a>
     </nav>
     <div class="sb-foot">
@@ -206,7 +206,8 @@ textarea.inp{resize:vertical;min-height:72px;line-height:1.55}
   <div class="main">
     <div class="chroma-bar"></div>
     <div class="topbar">
-      <div class="bc" id="breadcrumb"><span class="bc-cur">Tableau de bord</span></div>
+      <button id="back-btn" onclick="V.router_back()" style="background:none;border:none;padding:0 12px 0 0;cursor:pointer;font-size:18px;color:var(--ink4);line-height:1;display:none" title="Retour">‹</button>
+      <div class="bc" id="breadcrumb" style="flex:1"><span class="bc-cur">Tableau de bord</span></div>
     </div>
     <div id="app-content"></div>
   </div>
@@ -407,12 +408,18 @@ const V = {
   },
 
   router:{
-    _cur:null,_pid:null,
-    go(view,pid){
+    _cur:null,_pid:null,_history:[],
+    go(view,pid,pushHistory){
+      if(pushHistory!==false&&this._cur&&!(this._cur===view&&this._pid===pid)){
+        this._history.push({view:this._cur,pid:this._pid});
+        if(this._history.length>20)this._history.shift();
+      }
       this._cur=view;this._pid=pid||null;
       document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
       const nv=document.getElementById('nav-'+view);if(nv)nv.classList.add('active');
       const bc=document.getElementById('breadcrumb');
+      const backBtn=document.getElementById('back-btn');
+      if(backBtn)backBtn.style.display=this._history.length>0?'block':'none';
       const el=document.getElementById('app-content');
       if(view==='dashboard'){
         bc.innerHTML='<span class="bc-cur">Tableau de bord</span>';
@@ -429,7 +436,7 @@ const V = {
       } else if(view==='patient'&&pid){
         const list=V.data.getPatients();
         const p=list.find(x=>x.id===pid)||{};
-        bc.innerHTML=`<span class="bc-link" onclick="V.router.go('patients')">Patients</span><span class="bc-sep">›</span><span class="bc-cur">${p.prenom||'…'} ${p.nom||''}</span>`;
+        bc.innerHTML=`<span class="bc-link" onclick="V.router_back()">‹ Patients</span><span class="bc-sep">›</span><span class="bc-cur">${p.prenom||'…'} ${p.nom||''}</span>`;
         document.getElementById('nav-patients').classList.add('active');
         V.views.patient.render(pid);
       }
@@ -460,7 +467,7 @@ const V = {
       '<div class="empty"><div class="empty-ico">👥</div><div class="empty-ttl">Aucun patient</div><div class="empty-sub">Créez votre premier patient ci-dessus.</div></div>'}</div>
   </div>
   <div class="qa">
-    <a href="https://parcours.psyh.fr" target="_blank" class="qa-btn"><span class="qa-ico">📚</span><span>Bibliothèque V.A.L.E.U.R©</span></a>
+    <a href="./bib-index.html" target="_blank" class="qa-btn"><span class="qa-ico">📚</span><span>Bibliothèque V.A.L.E.U.R©</span></a>
     <a href="https://questionnaire.psyh.fr" target="_blank" class="qa-btn"><span class="qa-ico">📋</span><span>Questionnaire patient</span></a>
     <button onclick="V.router.go('gifts')" class="qa-btn"><span class="qa-ico">🎁</span><span>Codes cadeaux</span></button>
     <button onclick="V.router.go('patients')" class="qa-btn"><span class="qa-ico">👥</span><span>Tous les patients</span></button>
@@ -756,7 +763,7 @@ ${port?V.views.patient._portResult(port):''}`;
   </div>
   <div class="mod-body" id="body-${mod}">
     ${fiches.length?`<div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Fiches recommandées</div>
-    <div class="fiche-chips">${fiches.map(f=>`<a class="fc" href="https://parcours.psyh.fr/${f}.html" target="_blank">📄 ${f} ↗</a>`).join('')}</div>`:'' }
+    <div class="fiche-chips">${fiches.map(f=>`<a class="fc" href="./${f}.html" target="_blank">📄 ${f} ↗</a>`).join('')}</div>`:'' }
     <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px">Étapes</div>
     <div class="etapes-grid">${etapes.map(e=>`
       <label class="etc">
@@ -874,6 +881,12 @@ ${port?V.views.patient._portResult(port):''}`;
         if(dot){dot.style.opacity='1';setTimeout(()=>dot.style.opacity='0',1500);}
       }
     }
+  },
+
+  router_back(){
+    const prev=V.router._history.pop();
+    if(prev)V.router.go(prev.view,prev.pid,false);
+    else V.router.go('dashboard',null,false);
   },
 
   gift:{
@@ -1042,7 +1055,7 @@ if(sessionStorage.getItem('cab_auth')===ADMIN_PWD){
   document.getElementById('app').style.display='block';
   V.sync.init().then(()=>V.router.go('dashboard'));
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));if(e.altKey&&e.key==='ArrowLeft'){e.preventDefault();V.router_back();}});
 </script>
 </body>
 </html>
