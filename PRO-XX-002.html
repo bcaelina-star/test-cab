@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="robots" content="noindex,nofollow">
+<title>PRO-XX-002 · Boussole · V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--M:#1D5F8A;--or:#C9A84C;--or-bg:rgba(201,168,76,.09);--or-bd:rgba(201,168,76,.35);
+  --ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);--bp1:linear-gradient(90deg,#1D5F8A,#2D7A4F);--bp2:linear-gradient(90deg,#1D5F8A,#C9A84C);
+  --fond:#FFF;--cr:#FAF8F4;--cr2:#F4F0E8;--tx:#1A1714;--tx2:#4A4138;--tx3:#8C8278;--fi:#DDD8CF;
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media print{@page{size:A4;margin:0}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{page-break-after:always}.page:last-child{page-break-after:avoid}}
+body{background:#E5E1D9;font-family:var(--fb);font-weight:300;color:var(--tx);-webkit-font-smoothing:antialiased}
+.page{width:210mm;min-height:297mm;margin:6mm auto;background:var(--fond);display:flex;flex-direction:column;box-shadow:0 3px 32px rgba(0,0,0,.16)}
+.bande{height:3mm;flex-shrink:0;background:var(--bp1)}.bande-p2{height:3mm;flex-shrink:0;background:var(--bp2)}
+.entete{flex-shrink:0;height:22mm;padding:0 13mm;display:flex;align-items:center;justify-content:space-between;border-bottom:.5pt solid var(--fi)}
+.eh-g{display:flex;flex-direction:column;gap:2px}
+.eh-fam{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3)}
+.eh-titre{font-family:var(--fs);font-size:16pt;font-weight:400;color:var(--tx);line-height:1;letter-spacing:-.3px}
+.eh-titre em{color:var(--M);font-style:italic}
+.eh-sous{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx3);margin-top:1px}
+.eh-d{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.eh-logo{font-family:var(--fs);font-size:10pt;font-weight:600;letter-spacing:3px;color:var(--or)}
+.eh-logo sup{font-size:6pt;vertical-align:super}
+.eh-code{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--M);border:1pt solid var(--M);padding:2px 7px;opacity:.75}
+.corps{flex:1;display:flex;flex-direction:column;padding:0 13mm;min-height:0}
+.spc{flex:1}
+.fi{height:.5pt;background:var(--fi);flex-shrink:0}
+.slbl{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--M);margin:4mm 0 2mm;flex-shrink:0}
+.accroche{flex-shrink:0;background:var(--cr);margin:5mm -13mm 0;padding:5mm 13mm;border-left:2.5pt solid var(--M)}
+.accroche p{font-family:var(--fs);font-size:10.5pt;font-style:italic;font-weight:300;color:var(--tx);line-height:1.65}
+.body-txt{font-size:8.5pt;font-weight:300;color:var(--tx2);line-height:1.7;flex-shrink:0}
+.etapes{display:flex;flex-direction:column;flex-shrink:0}
+.etape{display:grid;grid-template-columns:8mm 1fr;column-gap:4mm;padding:2.5mm 0;border-bottom:.5pt solid var(--fi)}
+.etape:last-child{border-bottom:none}
+.et-num{font-family:var(--fs);font-size:15pt;font-weight:300;color:var(--M);opacity:.45;line-height:1;padding-top:.5mm}
+.et-titre{font-size:8.5pt;font-weight:500;color:var(--tx);margin-bottom:1.5mm}
+.et-txt{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6}
+.bloc-or{flex-shrink:0;background:var(--or-bg);border-left:2.5pt solid var(--or);margin:4mm -13mm 0;padding:4mm 13mm}
+.bloc-or p{font-family:var(--fs);font-size:10pt;font-style:italic;color:var(--tx);line-height:1.65}
+.bloc-or-titre{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin-bottom:2mm}
+.q-bloc{flex-shrink:0;margin-top:3mm}
+.q-txt{font-family:var(--fs);font-size:8.5pt;font-style:italic;color:var(--tx2);margin-bottom:2mm;display:block}
+.reglures{display:flex;flex-direction:column;margin-bottom:3mm}
+.rl{height:6mm;border-bottom:.5pt solid var(--fi);width:100%;display:block}
+.mission{flex-shrink:0;border:.75pt solid var(--or-bd);background:var(--or-bg);padding:4mm 6mm;margin:4mm 0}
+.mission-titre{font-size:7pt;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:2.5mm}
+.mission p{font-size:8.5pt;font-weight:300;color:var(--tx);line-height:1.6}
+.mission-dur{font-size:7pt;color:var(--tx3);font-style:italic;margin-top:1.5mm}
+.beh{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6;padding:1.5mm 0 1.5mm 7mm;position:relative;border-bottom:.5pt solid var(--fi);flex-shrink:0}
+.beh:last-child{border-bottom:none}
+.beh::before{content:'›';position:absolute;left:.5mm;color:var(--M);font-size:10pt;line-height:1.4}
+.defi{display:grid;grid-template-columns:10mm 1fr;grid-template-rows:auto auto auto auto;column-gap:5mm;padding:3mm 0;border-bottom:.5pt solid var(--fi);flex-shrink:0}
+.defi:last-child{border-bottom:none}
+.defi-num{grid-column:1;grid-row:1/5;font-family:var(--fs);font-size:22pt;font-weight:300;color:var(--M);line-height:1;padding-top:1mm;opacity:.45}
+.defi-titre{grid-column:2;grid-row:1;font-size:8.5pt;font-weight:500;color:var(--tx);padding-bottom:1mm}
+.defi-txt{grid-column:2;grid-row:2;font-size:7.5pt;font-weight:300;color:var(--tx2);line-height:1.6;padding-bottom:1mm}
+.defi-note{grid-column:2;grid-row:3;font-size:7.5pt;color:var(--tx3);font-style:italic;line-height:1.5;padding-bottom:1.5mm}
+.defi-rp{grid-column:2;grid-row:4}
+.rl-lbl{font-size:6pt;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:1mm}
+.src{font-size:6pt;color:var(--tx3);letter-spacing:.5px;margin-top:2mm;flex-shrink:0}
+.z9{flex-shrink:0;padding:2.5mm 13mm;margin:0 -13mm;border-top:.5pt solid var(--fi);display:flex;align-items:center;gap:8px}
+.z9-lab{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);flex-shrink:0}
+.z9-arr{font-size:7pt;color:var(--M)}
+.z9-txt{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx2)}
+.z9-txt a{color:var(--M);text-decoration:none}
+.chroma{height:3mm;background:var(--ch);flex-shrink:0}
+.graph-zone{flex-shrink:0;background:var(--cr);border:.5pt solid var(--fi);padding:5mm;margin:3mm 0}
+.graph-label{display:flex;justify-content:space-between;font-size:7pt;color:var(--tx3);margin-bottom:2mm}
+.graph-axis{height:32mm;position:relative;border-left:.5pt solid var(--fi);border-bottom:.5pt solid var(--fi)}
+.graph-grid{position:absolute;width:100%;display:flex;flex-direction:column;justify-content:space-between;height:100%}
+.graph-line{border-top:.5pt dashed var(--fi);width:100%}
+.graph-points{display:flex;justify-content:space-around;align-items:flex-end;height:100%;padding:0 5mm}
+.gp{width:2mm;height:2mm;border-radius:50%;background:var(--M);position:relative}
+.graph-months{display:flex;justify-content:space-around;font-size:6.5pt;color:var(--tx3);margin-top:1.5mm}
+.force-box{flex-shrink:0;background:linear-gradient(135deg,rgba(201,168,76,.09),rgba(201,168,76,.03));border-left:2.5pt solid var(--or);margin:5mm -13mm 0;padding:5mm 13mm}
+.force-titre{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin-bottom:2.5mm}
+.force-box p{font-family:var(--fs);font-size:10pt;font-style:italic;color:var(--tx);line-height:1.65}
+.rit-phrase{font-family:var(--fs);font-size:22pt;font-weight:300;color:var(--M);line-height:1.2;text-align:center;padding:8mm 0;flex-shrink:0}
+.rit-phrase em{font-style:italic}
+.sig-zone{flex-shrink:0;border-bottom:.5pt solid var(--fi);margin-top:auto;padding:4mm 0 2mm}
+.sig-label{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);margin-bottom:2mm}
+.sig-line{height:8mm;border-bottom:.5pt solid var(--fi);width:100%}
+.sig-meta{font-size:7pt;color:var(--tx3);font-style:italic;margin-top:1mm}
+</style></head><body>
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">PRO · Projection · Tous masques · Séance 10+</div>
+    <div class="eh-titre">Ma boussole pour <em>les jours difficiles</em></div>
+    <div class="eh-sous">Prévenir la rechute · maintenir le cap · ne pas repartir de zéro</div>
+  </div>
+  <div class="eh-d">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">PRO-XX-002 · p.1/2</div>
+  </div></div>
+  <div class="corps">
+<div class="accroche"><p>Les masques se réactivent. Ce n'est pas un échec — c'est de la biologie. Ce qui compte, c'est de savoir quoi faire quand ça arrive. Cette boussole est faite pour les jours difficiles.</p></div>
+<div class="fi" style="margin-top:4mm"></div>
+<div class="slbl">Mes 3 déclencheurs principaux</div>
+<div class="q-bloc"><span class="q-txt">Déclencheur 1 — la situation qui active le plus souvent mon masque :</span><div class="reglures"><div class="rl"></div><div class="rl"></div></div></div>
+<div class="q-bloc"><span class="q-txt">Déclencheur 2 — le contexte ou type de personne qui active mon masque :</span><div class="reglures"><div class="rl"></div><div class="rl"></div></div></div>
+<div class="q-bloc"><span class="q-txt">Déclencheur 3 — l'état intérieur (fatigue, pression, solitude) qui rend mon masque plus actif :</span><div class="reglures"><div class="rl"></div><div class="rl"></div></div></div>
+<div class="fi" style="margin-top:2mm"></div>
+<div class="slbl">Le signal que mon masque est actif</div>
+<div class="q-bloc"><span class="q-txt">Ce que je ressens dans le corps quand mon masque prend le relais :</span><div class="reglures"><div class="rl"></div><div class="rl"></div></div></div>
+<div class="q-bloc"><span class="q-txt">Le comportement que mon masque déclenche en premier (le plus automatique) :</span><div class="reglures"><div class="rl"></div><div class="rl"></div></div></div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="RIT-XX-001.html">RIT-XX-001 · Carte de bienvenue — première séance</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+<div class="page">
+  <div class="bande-p2"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">PRO · Protocole · Tous masques</div>
+    <div class="eh-titre">Mon protocole de <em>retour au calme</em></div>
+    <div class="eh-sous">Quand le masque reprend trop de place — 4 étapes</div>
+  </div>
+  <div class="eh-d">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">PRO-XX-002 · p.2/2</div>
+  </div></div>
+  <div class="corps">
+<div class="body-txt" style="margin:5mm 0 3mm"><p>Quand le masque est très actif, les 3 questions VOIR peuvent suffire à créer l'espace nécessaire. Mais parfois il faut un protocole de retour au calme — pour ne pas repartir de zéro.</p></div>
+<div class="fi"></div>
+<div class="slbl">Mon protocole de retour au calme</div>
+<div class="etapes">
+  <div class="etape"><div class="et-num">1</div><div><div class="et-titre">Reconnaître</div><div class="et-txt">« Mon masque est actif. Je vois ça. » Nommer le masque par son nom. Sans jugement. La reconnaissance seule réduit l'intensité.</div></div></div>
+  <div class="etape"><div class="et-num">2</div><div><div class="et-titre">Réguler</div><div class="et-txt">Cohérence cardiaque : 5 inspirations / 5 expirations × 5 cycles. 3 minutes. Rétablit le système nerveux parasympathique. Indispensable avant tout le reste.</div></div></div>
+  <div class="etape"><div class="et-num">3</div><div><div class="et-titre">Relire</div><div class="et-txt">Relire ma phrase d'ancrage (PRO-XX-001). Relire ce que j'ai écrit dans le bilan d'étape (INT-XX-001). Me rappeler ce qui a bougé — et pourquoi ce chemin vaut la peine.</div></div></div>
+  <div class="etape"><div class="et-num">4</div><div><div class="et-titre">Recommencer</div><div class="et-txt">Pas de zéro. La régression est normale et temporaire. Ce qui compte : le cap, pas la ligne droite. Reprendre là où on en est — avec ce qu'on sait maintenant.</div></div></div>
+</div>
+<div class="q-bloc"><span class="q-txt">Ce que je dirai à mon masque la prochaine fois qu'il prendra trop de place :</span><div class="reglures"><div class="rl"></div><div class="rl"></div></div></div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="RIT-XX-001.html">RIT-XX-001 · Carte de bienvenue</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+</body></html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>CMB-R+O-00 · V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--M1:#B5312A;--M2:#C4581F;--or:#C9A84C;--or-bd:rgba(201,168,76,.35);--or-bg:rgba(201,168,76,.1);
+  --ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);--bp1:linear-gradient(90deg,#B5312A,#C4581F);--bp2:linear-gradient(90deg,#B5312A,#C9A84C);
+  --fond:#FFF;--cr:#FAF8F4;--cr2:#F4F0E8;--tx:#1A1714;--tx2:#4A4138;--tx3:#8C8278;--fi:#DDD8CF;
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media print{@page{size:A4;margin:0}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{page-break-after:always}.page:last-child{page-break-after:avoid}}
+body{background:#E5E1D9;font-family:var(--fb);font-weight:300;color:var(--tx);-webkit-font-smoothing:antialiased}
+.page{width:210mm;min-height:297mm;margin:6mm auto;background:var(--fond);display:flex;flex-direction:column;box-shadow:0 3px 32px rgba(0,0,0,.16)}
+.bande{height:3mm;flex-shrink:0;background:var(--bp1)}
+.bande-p2{height:3mm;flex-shrink:0;background:var(--bp2)}
+.entete{flex-shrink:0;height:24mm;padding:0 13mm;display:flex;align-items:center;justify-content:space-between;border-bottom:.5pt solid var(--fi)}
+.eh-g{display:flex;flex-direction:column;gap:2px}
+.eh-fam{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3)}
+.eh-titre{font-family:var(--fs);font-size:12pt;font-weight:400;color:var(--tx);line-height:1.2}
+.eh-titre .m1{color:var(--M1);font-style:italic}
+.eh-titre .m2{color:var(--M2);font-style:italic}
+.eh-nom-valeur{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx3);margin-top:1px}
+.eh-d{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.eh-logo{font-family:var(--fs);font-size:10pt;font-weight:600;letter-spacing:3px;color:var(--or)}
+.eh-logo sup{font-size:6pt;vertical-align:super}
+.eh-code{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--M1);border:1pt solid var(--M1);padding:2px 7px;opacity:.75}
+.corps{flex:1;display:flex;flex-direction:column;padding:0 13mm;min-height:0}
+.spc{flex:1}
+.fi{height:.5pt;background:var(--fi);flex-shrink:0}
+.slbl{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--M1);margin:4mm 0 2mm;flex-shrink:0}
+.mirror{flex-shrink:0;background:var(--cr);margin:5mm -13mm 0;padding:5mm 13mm;border-left:2.5pt solid var(--M1)}
+.mirror p{font-family:var(--fs);font-size:10.5pt;font-style:italic;font-weight:300;color:var(--tx);line-height:1.65}
+.dc{flex-shrink:0;background:rgba(0,0,0,.02);border:1pt solid var(--fi);padding:4mm 5mm;margin:3mm 0}
+.dc-titre{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);margin-bottom:2mm}
+.dc-row{display:grid;grid-template-columns:50% 50%;gap:0;border-bottom:.5pt solid var(--fi)}
+.dc-row:last-child{border-bottom:none}
+.dc-cell{padding:2mm 3mm;font-size:8pt;color:var(--tx2);line-height:1.55}
+.dc-cell:first-child{border-right:.5pt solid var(--fi);color:var(--M1)}
+.dc-res{font-size:8pt;color:var(--tx2);font-style:italic;padding:2mm 0 0;line-height:1.55}
+.cycle{flex-shrink:0;display:flex;flex-direction:column;gap:0;margin-top:1mm}
+.cy-step{display:flex;align-items:baseline;gap:4mm;padding:1.5mm 0;border-bottom:.5pt solid var(--fi)}
+.cy-step:last-child{border-bottom:none}
+.cy-num{font-family:var(--fs);font-size:13pt;font-weight:300;color:var(--M1);opacity:.4;width:5mm;flex-shrink:0;line-height:1}
+.cy-txt{font-size:8pt;color:var(--tx2);line-height:1.55}
+.behs{flex-shrink:0;display:flex;flex-direction:column}
+.beh{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6;padding:1.5mm 0 1.5mm 7mm;position:relative;border-bottom:.5pt solid var(--fi)}
+.beh:last-child{border-bottom:none}
+.beh::before{content:'›';position:absolute;left:.5mm;color:var(--M1);font-size:10pt;line-height:1.4}
+.force{flex-shrink:0;background:linear-gradient(135deg,rgba(201,168,76,.09),rgba(201,168,76,.03));border-left:2.5pt solid var(--or);margin:5mm -13mm 0;padding:5mm 13mm}
+.force-titre{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin-bottom:2.5mm}
+.force p{font-family:var(--fs);font-size:10pt;font-weight:300;color:var(--tx);line-height:1.65;font-style:italic}
+.defis{display:flex;flex-direction:column;flex-shrink:0;margin-top:2mm}
+.defi{display:grid;grid-template-columns:10mm 1fr;grid-template-rows:auto auto auto auto;column-gap:5mm;padding:3mm 0;border-bottom:.5pt solid var(--fi)}
+.defi:last-child{border-bottom:none}
+.defi-num{grid-column:1;grid-row:1/5;font-family:var(--fs);font-size:22pt;font-weight:300;color:var(--M1);line-height:1;padding-top:1mm;opacity:.45}
+.defi-titre{grid-column:2;grid-row:1;font-size:8.5pt;font-weight:500;color:var(--tx);padding-bottom:1mm}
+.defi-txt{grid-column:2;grid-row:2;font-size:7.5pt;font-weight:300;color:var(--tx2);line-height:1.6;padding-bottom:1mm}
+.defi-note{grid-column:2;grid-row:3;font-size:7.5pt;color:var(--tx3);font-style:italic;line-height:1.5;padding-bottom:1.5mm}
+.defi-rp{grid-column:2;grid-row:4;display:flex;flex-direction:column}
+.rl-lbl{font-size:6pt;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:1mm}
+.rl{height:5.5mm;border-bottom:.5pt solid var(--fi);width:100%;display:block}
+.src{font-size:6pt;color:var(--tx3);letter-spacing:.5px;margin-top:2mm;flex-shrink:0}
+.z9{flex-shrink:0;padding:2.5mm 13mm;margin:0 -13mm;border-top:.5pt solid var(--fi);display:flex;align-items:center;gap:8px}
+.z9-lab{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);flex-shrink:0}
+.z9-arr{font-size:7pt;color:var(--M1)}
+.z9-txt{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx2)}
+.z9-txt a{color:var(--M1);text-decoration:none}
+.chroma{height:3mm;background:var(--ch);flex-shrink:0}
+.prev-tag{font-size:6.5pt;letter-spacing:1.5px;color:var(--tx3);margin-top:1mm}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — LA COMBINAISON -->
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete">
+    <div class="eh-g">
+      <div class="eh-fam">CMB · Dyade · Séance 3</div>
+      <div class="eh-titre"><span class="m1">Masque Rouge</span> + <span class="m2">Masque Orange</span></div>
+      <div class="eh-nom-valeur">Quand le corps parle et les émotions se taisent</div>
+    </div>
+    <div class="eh-d">
+      <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+      <div class="eh-code">CMB-R+O-00 · p.1/2</div>
+    </div>
+  </div>
+  <div class="corps">
+    <div class="mirror"><p>« Je surveille mon corps avec une précision minutieuse — mais je ne ressens pas vraiment la peur qui orchestre toute cette surveillance. Le signal est là, l'émotion ne l'est pas. »</p></div>
+    <div class="fi" style="margin-top:4mm"></div>
+    <div class="slbl">Double contrainte</div>
+    <div class="dc">
+      <div class="dc-titre">Chaque masque exige quelque chose d'impossible à tenir simultanément</div>
+      <div class="dc-row"><div class="dc-cell">Mon corps doit être analysé constamment pour détecter le danger.</div><div class="dc-cell">Mais l'accès émotionnel à cette peur est coupé — elle ne peut jamais être traversée.</div></div>
+      <div class="dc-res">L'inquiétude tourne en boucle dans le corps, sans jamais être nommée ni posée.</div>
+    </div>
+    <div class="fi"></div>
+    <div class="slbl">Cycle d'amplification</div>
+    <div class="cycle"><div class="cy-step"><div class="cy-num">1</div><div class="cy-txt">Une sensation physique apparaît</div></div><div class="cy-step"><div class="cy-num">2</div><div class="cy-txt">Rouge déclenche l'analyse et la surveillance</div></div><div class="cy-step"><div class="cy-num">3</div><div class="cy-txt">Orange bloque l'accès à l'émotion liée à cette sensation</div></div><div class="cy-step"><div class="cy-num">4</div><div class="cy-txt">Sans accès émotionnel, la sensation reste non résolue</div></div><div class="cy-step"><div class="cy-num">5</div><div class="cy-txt">La surveillance s'intensifie — cherchant une réponse cognitive à ce qui est émotionnel</div></div></div>
+    <div class="fi" style="margin-top:3mm"></div>
+    <div class="slbl">Ce que cette combinaison produit</div>
+    <div class="behs"><div class="beh">Analyser des symptômes avec une précision quasi médicale — sans affect visible</div><div class="beh">Accumuler des données de santé de façon détachée et intellectuelle</div><div class="beh">Décrire les inquiétudes du corps sans pouvoir nommer ce qu'on ressent</div><div class="beh">Ressentir une anxiété diffuse dont on ne peut pas identifier la source</div><div class="beh">Chercher des explications rationnelles à des signaux qui sont en réalité des peurs</div></div>
+    <div class="prev-tag">Prévalence estimée · 25–30 %</div>
+    <div class="spc"></div>
+    <div class="z9"><span class="z9-lab">Suite</span><span class="z9-arr">→</span><span class="z9-txt">Page 2 · La force libérée et les 3 premiers défis VOIR</span></div>
+  </div>
+  <div class="chroma"></div>
+</div>
+
+<!-- PAGE 2 — L'ESPOIR ET L'ACTION -->
+<div class="page">
+  <div class="bande-p2"></div>
+  <div class="entete">
+    <div class="eh-g">
+      <div class="eh-fam">CMB · Activation · Étape VOIR</div>
+      <div class="eh-titre"><span class="m1">Masque Rouge</span> + <span class="m2">Masque Orange</span> · <span style="color:var(--or);font-style:italic">Ce qui se libère</span></div>
+      <div class="eh-nom-valeur">La force libérée quand les deux masques s'assouplissent ensemble</div>
+    </div>
+    <div class="eh-d">
+      <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+      <div class="eh-code">CMB-R+O-00 · p.2/2</div>
+    </div>
+  </div>
+  <div class="corps">
+    <div class="force">
+      <div class="force-titre">Ce qui dort derrière cette combinaison</div>
+      <p>Sous cette combinaison vit quelqu'un dont l'intelligence analytique et la richesse émotionnelle intérieure sont considérables — séparées l'une de l'autre par une cloison qui a protégé. Quand Rouge et Orange s'assouplissent ensemble : l'élan vital peut se déployer, la peur peut être nommée et traversée émotionnellement, et la vie peut commencer à être habitée plutôt que surveillée.</p>
+    </div>
+    <div class="fi" style="margin-top:4mm"></div>
+    <div class="slbl">Votre mission cette semaine — 3 défis VOIR</div>
+    <div style="font-family:var(--fs);font-size:7.5pt;font-style:italic;color:var(--tx3);margin-bottom:2mm;flex-shrink:0">Observer l'interaction des masques — pas seulement chacun séparément. La conscience de la chaîne précède sa dissolution.</div>
+    <div class="defis"><div class="defi">
+  <div class="defi-num">1</div>
+  <div class="defi-titre">Observer la surveillance sans affect</div>
+  <div class="defi-txt">Lors du prochain épisode d'inquiétude corporelle : observez si une émotion accompagne l'analyse — ou si vous êtes en mode "technicien" de votre corps, sans ressentir.</div>
+  <div class="defi-note">Cette absence d'affect, c'est Orange au travail.</div>
+  <div class="defi-rp"><div class="rl-lbl">Ce que j'ai observé</div><div class="rl"></div><div class="rl"></div></div>
+</div><div class="defi">
+  <div class="defi-num">2</div>
+  <div class="defi-titre">Chercher l'émotion sous l'analyse</div>
+  <div class="defi-txt">Posez-vous : si je n'analysais pas ce symptôme et que je laissais simplement quelque chose arriver — quelle émotion serait là ?</div>
+  <div class="defi-note">Ne forcez pas. Juste regarder si quelque chose se présente. Même vaguement.</div>
+  <div class="defi-rp"><div class="rl-lbl">Ce que j'ai observé</div><div class="rl"></div><div class="rl"></div></div>
+</div><div class="defi">
+  <div class="defi-num">3</div>
+  <div class="defi-titre">Nommer la double contrainte</div>
+  <div class="defi-txt">"Mon Rouge surveille. Mon Orange coupe l'accès à la peur que cette surveillance protège. Il y a une émotion quelque part que mes masques m'empêchent de voir."</div>
+  <div class="defi-note">Cette formulation seule peut créer une ouverture.</div>
+  <div class="defi-rp"><div class="rl-lbl">Ce que j'ai observé</div><div class="rl"></div><div class="rl"></div></div>
+</div></div>
+    <div class="src">Sources · SHAI 1997 · TAS-20 1994 · Céline Bourbon — De la peur à la joie d'être soi, L'Harmattan 2024</div>
+    <div class="spc"></div>
+    <div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="CMB-JB-00.html">CMB-J+B-00 · Masque Jaune + Masque Bleu</a></span></div>
+  </div>
+  <div class="chroma"></div>
+</div>
+
+</body></html>

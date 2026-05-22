@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>CMB-J+V-00 · V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--M1:#B8930A;--M2:#2D7A4F;--or:#C9A84C;--or-bd:rgba(201,168,76,.35);--or-bg:rgba(201,168,76,.1);
+  --ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);--bp1:linear-gradient(90deg,#B8930A,#2D7A4F);--bp2:linear-gradient(90deg,#B8930A,#C9A84C);
+  --fond:#FFF;--cr:#FAF8F4;--cr2:#F4F0E8;--tx:#1A1714;--tx2:#4A4138;--tx3:#8C8278;--fi:#DDD8CF;
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media print{@page{size:A4;margin:0}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{page-break-after:always}.page:last-child{page-break-after:avoid}}
+body{background:#E5E1D9;font-family:var(--fb);font-weight:300;color:var(--tx);-webkit-font-smoothing:antialiased}
+.page{width:210mm;min-height:297mm;margin:6mm auto;background:var(--fond);display:flex;flex-direction:column;box-shadow:0 3px 32px rgba(0,0,0,.16)}
+.bande{height:3mm;flex-shrink:0;background:var(--bp1)}
+.bande-p2{height:3mm;flex-shrink:0;background:var(--bp2)}
+.entete{flex-shrink:0;height:24mm;padding:0 13mm;display:flex;align-items:center;justify-content:space-between;border-bottom:.5pt solid var(--fi)}
+.eh-g{display:flex;flex-direction:column;gap:2px}
+.eh-fam{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3)}
+.eh-titre{font-family:var(--fs);font-size:12pt;font-weight:400;color:var(--tx);line-height:1.2}
+.eh-titre .m1{color:var(--M1);font-style:italic}
+.eh-titre .m2{color:var(--M2);font-style:italic}
+.eh-nom-valeur{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx3);margin-top:1px}
+.eh-d{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.eh-logo{font-family:var(--fs);font-size:10pt;font-weight:600;letter-spacing:3px;color:var(--or)}
+.eh-logo sup{font-size:6pt;vertical-align:super}
+.eh-code{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--M1);border:1pt solid var(--M1);padding:2px 7px;opacity:.75}
+.corps{flex:1;display:flex;flex-direction:column;padding:0 13mm;min-height:0}
+.spc{flex:1}
+.fi{height:.5pt;background:var(--fi);flex-shrink:0}
+.slbl{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--M1);margin:4mm 0 2mm;flex-shrink:0}
+.mirror{flex-shrink:0;background:var(--cr);margin:5mm -13mm 0;padding:5mm 13mm;border-left:2.5pt solid var(--M1)}
+.mirror p{font-family:var(--fs);font-size:10.5pt;font-style:italic;font-weight:300;color:var(--tx);line-height:1.65}
+.dc{flex-shrink:0;background:rgba(0,0,0,.02);border:1pt solid var(--fi);padding:4mm 5mm;margin:3mm 0}
+.dc-titre{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);margin-bottom:2mm}
+.dc-row{display:grid;grid-template-columns:50% 50%;gap:0;border-bottom:.5pt solid var(--fi)}
+.dc-row:last-child{border-bottom:none}
+.dc-cell{padding:2mm 3mm;font-size:8pt;color:var(--tx2);line-height:1.55}
+.dc-cell:first-child{border-right:.5pt solid var(--fi);color:var(--M1)}
+.dc-res{font-size:8pt;color:var(--tx2);font-style:italic;padding:2mm 0 0;line-height:1.55}
+.cycle{flex-shrink:0;display:flex;flex-direction:column;gap:0;margin-top:1mm}
+.cy-step{display:flex;align-items:baseline;gap:4mm;padding:1.5mm 0;border-bottom:.5pt solid var(--fi)}
+.cy-step:last-child{border-bottom:none}
+.cy-num{font-family:var(--fs);font-size:13pt;font-weight:300;color:var(--M1);opacity:.4;width:5mm;flex-shrink:0;line-height:1}
+.cy-txt{font-size:8pt;color:var(--tx2);line-height:1.55}
+.behs{flex-shrink:0;display:flex;flex-direction:column}
+.beh{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6;padding:1.5mm 0 1.5mm 7mm;position:relative;border-bottom:.5pt solid var(--fi)}
+.beh:last-child{border-bottom:none}
+.beh::before{content:'›';position:absolute;left:.5mm;color:var(--M1);font-size:10pt;line-height:1.4}
+.force{flex-shrink:0;background:linear-gradient(135deg,rgba(201,168,76,.09),rgba(201,168,76,.03));border-left:2.5pt solid var(--or);margin:5mm -13mm 0;padding:5mm 13mm}
+.force-titre{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin-bottom:2.5mm}
+.force p{font-family:var(--fs);font-size:10pt;font-weight:300;color:var(--tx);line-height:1.65;font-style:italic}
+.defis{display:flex;flex-direction:column;flex-shrink:0;margin-top:2mm}
+.defi{display:grid;grid-template-columns:10mm 1fr;grid-template-rows:auto auto auto auto;column-gap:5mm;padding:3mm 0;border-bottom:.5pt solid var(--fi)}
+.defi:last-child{border-bottom:none}
+.defi-num{grid-column:1;grid-row:1/5;font-family:var(--fs);font-size:22pt;font-weight:300;color:var(--M1);line-height:1;padding-top:1mm;opacity:.45}
+.defi-titre{grid-column:2;grid-row:1;font-size:8.5pt;font-weight:500;color:var(--tx);padding-bottom:1mm}
+.defi-txt{grid-column:2;grid-row:2;font-size:7.5pt;font-weight:300;color:var(--tx2);line-height:1.6;padding-bottom:1mm}
+.defi-note{grid-column:2;grid-row:3;font-size:7.5pt;color:var(--tx3);font-style:italic;line-height:1.5;padding-bottom:1.5mm}
+.defi-rp{grid-column:2;grid-row:4;display:flex;flex-direction:column}
+.rl-lbl{font-size:6pt;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:1mm}
+.rl{height:5.5mm;border-bottom:.5pt solid var(--fi);width:100%;display:block}
+.src{font-size:6pt;color:var(--tx3);letter-spacing:.5px;margin-top:2mm;flex-shrink:0}
+.z9{flex-shrink:0;padding:2.5mm 13mm;margin:0 -13mm;border-top:.5pt solid var(--fi);display:flex;align-items:center;gap:8px}
+.z9-lab{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);flex-shrink:0}
+.z9-arr{font-size:7pt;color:var(--M1)}
+.z9-txt{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx2)}
+.z9-txt a{color:var(--M1);text-decoration:none}
+.chroma{height:3mm;background:var(--ch);flex-shrink:0}
+.prev-tag{font-size:6.5pt;letter-spacing:1.5px;color:var(--tx3);margin-top:1mm}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — LA COMBINAISON -->
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete">
+    <div class="eh-g">
+      <div class="eh-fam">CMB · Dyade · Séance 3</div>
+      <div class="eh-titre"><span class="m1">Masque Jaune</span> + <span class="m2">Masque Vert</span></div>
+      <div class="eh-nom-valeur">Quand l'amour a besoin d'être certain</div>
+    </div>
+    <div class="eh-d">
+      <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+      <div class="eh-code">CMB-J+V-00 · p.1/2</div>
+    </div>
+  </div>
+  <div class="corps">
+    <div class="mirror"><p>« Je dois savoir que tu m'aimes encore — maintenant, et de façon certaine. L'incertitude relationnelle est insupportable, même quand tout va bien. »</p></div>
+    <div class="fi" style="margin-top:4mm"></div>
+    <div class="slbl">Double contrainte</div>
+    <div class="dc">
+      <div class="dc-titre">Chaque masque exige quelque chose d'impossible à tenir simultanément</div>
+      <div class="dc-row"><div class="dc-cell">Je dois savoir exactement où en est le lien.</div><div class="dc-cell">Mais l'amour ne peut jamais être certifié — il reste toujours une part d'inconnu.</div></div>
+      <div class="dc-res">La vérification constante du lien finit par le fragiliser — et confirme la peur.</div>
+    </div>
+    <div class="fi"></div>
+    <div class="slbl">Cycle d'amplification</div>
+    <div class="cycle"><div class="cy-step"><div class="cy-num">1</div><div class="cy-txt">Un silence ou une réponse courte crée une incertitude</div></div><div class="cy-step"><div class="cy-num">2</div><div class="cy-txt">Jaune active le besoin de savoir : que se passe-t-il ?</div></div><div class="cy-step"><div class="cy-num">3</div><div class="cy-txt">Vert active la peur : est-ce que je suis encore aimé·e ?</div></div><div class="cy-step"><div class="cy-num">4</div><div class="cy-txt">Vérification, question, demande de réassurance</div></div><div class="cy-step"><div class="cy-num">5</div><div class="cy-txt">L'autre peut se sentir sous surveillance et se distancer</div></div><div class="cy-step"><div class="cy-num">6</div><div class="cy-txt">Ce retrait confirme l'inquiétude initiale</div></div></div>
+    <div class="fi" style="margin-top:3mm"></div>
+    <div class="slbl">Ce que cette combinaison produit</div>
+    <div class="behs"><div class="beh">Relire les messages reçus plusieurs fois pour en décoder le "vrai sens"</div><div class="beh">Interpréter un silence ou un retard comme un signal inquiétant</div><div class="beh">Poser des questions de réassurance affective régulièrement</div><div class="beh">Planifier les interactions à l'avance pour anticiper les réactions de l'autre</div><div class="beh">Ajuster ses opinions selon l'humeur perçue de l'autre</div></div>
+    <div class="prev-tag">Prévalence estimée · 30–35 %</div>
+    <div class="spc"></div>
+    <div class="z9"><span class="z9-lab">Suite</span><span class="z9-arr">→</span><span class="z9-txt">Page 2 · La force libérée et les 3 premiers défis VOIR</span></div>
+  </div>
+  <div class="chroma"></div>
+</div>
+
+<!-- PAGE 2 — L'ESPOIR ET L'ACTION -->
+<div class="page">
+  <div class="bande-p2"></div>
+  <div class="entete">
+    <div class="eh-g">
+      <div class="eh-fam">CMB · Activation · Étape VOIR</div>
+      <div class="eh-titre"><span class="m1">Masque Jaune</span> + <span class="m2">Masque Vert</span> · <span style="color:var(--or);font-style:italic">Ce qui se libère</span></div>
+      <div class="eh-nom-valeur">La force libérée quand les deux masques s'assouplissent ensemble</div>
+    </div>
+    <div class="eh-d">
+      <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+      <div class="eh-code">CMB-J+V-00 · p.2/2</div>
+    </div>
+  </div>
+  <div class="corps">
+    <div class="force">
+      <div class="force-titre">Ce qui dort derrière cette combinaison</div>
+      <p>Sous cette combinaison vit quelqu'un dont la sensibilité relationnelle et la capacité d'anticipation sont des dons rares. Libérées de l'alarme, ces qualités créent une présence attentive qui sait créer de la sécurité — sans avoir besoin de la vérifier constamment. Aimer sans contrôler.</p>
+    </div>
+    <div class="fi" style="margin-top:4mm"></div>
+    <div class="slbl">Votre mission cette semaine — 3 défis VOIR</div>
+    <div style="font-family:var(--fs);font-size:7.5pt;font-style:italic;color:var(--tx3);margin-bottom:2mm;flex-shrink:0">Observer l'interaction des masques — pas seulement chacun séparément. La conscience de la chaîne précède sa dissolution.</div>
+    <div class="defis"><div class="defi">
+  <div class="defi-num">1</div>
+  <div class="defi-titre">Observer le déclencheur de la vérification</div>
+  <div class="defi-txt">Identifiez ce qui déclenche le prochain besoin de réassurance : un silence, une réponse courte, un ton légèrement différent.</div>
+  <div class="defi-note">Notez le déclencheur — pas la réaction. Le déclencheur est l'information.</div>
+  <div class="defi-rp"><div class="rl-lbl">Ce que j'ai observé</div><div class="rl"></div><div class="rl"></div></div>
+</div><div class="defi">
+  <div class="defi-num">2</div>
+  <div class="defi-titre">Repérer quel masque arrive en premier</div>
+  <div class="defi-txt">Est-ce l'incertitude d'abord (Jaune : "je ne sais pas ce qui se passe") — ou la peur du rejet (Vert : "est-ce qu'il/elle se distancie") ?</div>
+  <div class="defi-note">Les deux arrivent vite. Nommer l'ordre aide à voir la mécanique.</div>
+  <div class="defi-rp"><div class="rl-lbl">Ce que j'ai observé</div><div class="rl"></div><div class="rl"></div></div>
+</div><div class="defi">
+  <div class="defi-num">3</div>
+  <div class="defi-titre">Nommer la double contrainte</div>
+  <div class="defi-txt">"Mon Vert a besoin de savoir que le lien est sûr. Mon Jaune a besoin de certitude. L'amour ne peut pas être certifié — et mes masques exigent exactement ça."</div>
+  <div class="defi-note">Cette formulation posée mentalement crée un espace suffisant pour respirer.</div>
+  <div class="defi-rp"><div class="rl-lbl">Ce que j'ai observé</div><div class="rl"></div><div class="rl"></div></div>
+</div></div>
+    <div class="src">Sources · IUS-12 2007 · ECR-R 2000 · Céline Bourbon — De la peur à la joie d'être soi, L'Harmattan 2024</div>
+    <div class="spc"></div>
+    <div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="CMB-RO-00.html">CMB-R+O-00 · Masque Rouge + Masque Orange</a></span></div>
+  </div>
+  <div class="chroma"></div>
+</div>
+
+</body></html>

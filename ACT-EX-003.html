@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="robots" content="noindex,nofollow">
+<title>ACT-EX-003 · V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--M:#C9A84C;--or:#C9A84C;--ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);
+  --fond:#FFF;--cr:#FAF8F4;--tx:#1A1714;--tx2:#4A4138;--tx3:#8C8278;--fi:#DDD8CF;
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media print{@page{size:A4;margin:0}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{page-break-after:always}.page:last-child{page-break-after:avoid}}
+body{background:#E5E1D9;font-family:var(--fb);font-weight:300;color:var(--tx);-webkit-font-smoothing:antialiased}
+.page{width:210mm;min-height:297mm;margin:6mm auto;background:var(--fond);display:flex;flex-direction:column;box-shadow:0 3px 32px rgba(0,0,0,.16)}
+.bande{height:3mm;flex-shrink:0;background:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594)}
+.entete{flex-shrink:0;height:22mm;padding:0 13mm;display:flex;align-items:center;justify-content:space-between;border-bottom:.5pt solid var(--fi)}
+.eh-g{display:flex;flex-direction:column;gap:2px}
+.eh-fam{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3)}
+.eh-titre{font-family:var(--fs);font-size:15pt;font-weight:400;color:var(--tx);line-height:1}
+.eh-titre em{color:var(--or);font-style:italic}
+.eh-sous{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx3);margin-top:1px}
+.eh-logo{font-family:var(--fs);font-size:10pt;font-weight:600;letter-spacing:3px;color:var(--or)}
+.eh-logo sup{font-size:6pt;vertical-align:super}
+.eh-code{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--or);border:1pt solid var(--or);padding:2px 7px;opacity:.75}
+.corps{flex:1;display:flex;flex-direction:column;padding:0 13mm}
+.spc{flex:1}
+.fi{height:.5pt;background:var(--fi);flex-shrink:0}
+.slbl{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin:4mm 0 2mm;flex-shrink:0}
+.accroche{flex-shrink:0;background:var(--cr);margin:5mm -13mm 0;padding:5mm 13mm;border-left:2.5pt solid var(--or)}
+.accroche p{font-family:var(--fs);font-size:10.5pt;font-style:italic;font-weight:300;color:var(--tx);line-height:1.65}
+.body-txt{font-size:8.5pt;font-weight:300;color:var(--tx2);line-height:1.7;flex-shrink:0;margin-bottom:3mm}
+.etape{display:grid;grid-template-columns:8mm 1fr;column-gap:4mm;padding:2.5mm 0;border-bottom:.5pt solid var(--fi);flex-shrink:0}
+.etape:last-child{border-bottom:none}
+.et-num{font-family:var(--fs);font-size:15pt;font-weight:300;color:var(--or);opacity:.6;line-height:1;padding-top:.5mm}
+.et-titre{font-size:8.5pt;font-weight:500;color:var(--tx);margin-bottom:1mm}
+.et-txt{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6}
+.valeur-note{flex-shrink:0;background:rgba(201,168,76,.08);border-left:2.5pt solid var(--or);margin:3mm -13mm 0;padding:3.5mm 13mm}
+.valeur-note p{font-size:7.5pt;font-weight:400;color:var(--tx2);line-height:1.6}
+.valeur-note strong{color:var(--or)}
+.rl{height:6mm;border-bottom:.5pt solid var(--fi);display:block;width:100%}
+.rl-lbl{font-size:6pt;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:1mm;display:block}
+.obs{flex-shrink:0;margin-top:2mm}
+.chroma{height:3mm;background:var(--ch);flex-shrink:0}
+.z9{flex-shrink:0;padding:2.5mm 13mm;margin:0 -13mm;border-top:.5pt solid var(--fi);display:flex;align-items:center;gap:8px}
+.z9-lab{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);flex-shrink:0}
+.z9-arr{font-size:7pt;color:var(--or)}
+.z9-txt{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx2)}
+.z9-txt a{color:var(--or);text-decoration:none}
+.cadre{flex-shrink:0;border:.75pt solid rgba(201,168,76,.4);background:rgba(201,168,76,.05);padding:4mm 5mm;margin:3mm 0}
+.cadre-titre{font-size:6.5pt;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:2mm}
+.cadre p{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.65}
+</style>
+</head><body>
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">ACT · Exercice de défusion · Étape VOIR</div>
+    <div class="eh-titre">La Feuille <em>sur le courant</em></div>
+    <div class="eh-sous">Poser chaque pensée de masque sur une feuille et la regarder partir</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">ACT-EX-003 · p.1/2</div>
+  </div></div>
+  <div class="corps">
+<div class="accroche"><p>Votre masque génère des pensées comme un torrent. Cet exercice ne cherche pas à stopper le torrent — il vous apprend à poser chaque pensée sur une feuille et à regarder l'eau l'emporter.</p></div>
+<div class="fi" style="margin-top:4mm"></div>
+<div class="slbl">Le principe</div>
+<div class="body-txt"><p>Issus des travaux sur la défusion cognitive (ACT, Hayes 1999), les exercices de rivière entraînent la capacité à laisser les pensées exister sans y réagir automatiquement. La rivière est toujours là. Les feuilles passent. Vous restez sur la rive.</p></div>
+<div class="slbl">L'exercice — 5 étapes</div>
+<div class="etape"><div class="et-num">1</div><div><div class="et-titre">La rive et le courant</div><div class="et-txt">Fermez les yeux. Visualisez une rivière — son courant calme et régulier. Vous êtes assis·e sur la rive, à l'ombre. L'eau passe sans s'arrêter.</div></div></div>
+<div class="etape"><div class="et-num">2</div><div><div class="et-titre">Chaque pensée devient une feuille</div><div class="et-txt">Quand une pensée arrive — une inquiétude, un jugement, une injonction du masque — posez-la sur une feuille qui flotte sur l'eau. Une pensée, une feuille.</div></div></div>
+<div class="etape"><div class="et-num">3</div><div><div class="et-titre">Regardez-la partir</div><div class="et-txt">Ne retenez pas la feuille. Ne la poussez pas non plus. Regardez-la simplement suivre le courant et disparaître dans le tournant de la rivière.</div></div></div>
+<div class="etape"><div class="et-num">4</div><div><div class="et-titre">La rive — toujours là</div><div class="et-txt">Si une pensée vous emporte et que vous vous retrouvez dans l'eau — c'est normal. Remarquez simplement que vous n'êtes plus sur la rive. Et revenez-y doucement, sans vous juger.</div></div></div>
+<div class="etape"><div class="et-num">5</div><div><div class="et-titre">10 minutes, 10 fois</div><div class="et-txt">Posez les pensées l'une après l'autre. Sans chercher à tout vider. Juste : cette pensée sur cette feuille, maintenant. La rivière fait le reste.</div></div></div>
+<div class="valeur-note"><p><strong>La touche V.A.L.E.U.R©</strong> — Les pensées que votre masque génère sont réelles. Ce qui change, c'est votre rapport à elles. Vous n'êtes pas la rivière. Vous n'êtes pas la feuille. Vous êtes sur la rive — et c'est depuis là que vous choisissez.</p></div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="ACT-EX-004.html">ACT-EX-004 · Nommer le masque en temps réel</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">ACT · Pratique · Étape VOIR</div>
+    <div class="eh-titre">Votre <em>pratique cette semaine</em></div>
+    <div class="eh-sous">10 minutes par jour · observer le flux sans l'arrêter</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">ACT-EX-003 · p.2/2</div>
+  </div></div>
+  <div class="corps">
+<div class="body-txt" style="margin-top:5mm"><p>Pratiquez cet exercice chaque matin cette semaine — 10 minutes, avant que la journée commence. Posez ce qui est là sans le juger. Et notez le soir ce que vous avez observé.</p></div>
+<div class="fi"></div>
+<div class="slbl">Journal de pratique — 7 jours</div>
+<div style="margin-bottom:2.5mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Matin 1</div>
+  <div class="obs"><span class="rl-lbl">Les pensées du masque les plus présentes ce matin</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ai-je pu rester sur la rive ? Qu'est-ce qui m'a emporté ?</span><div class="rl"></div></div>
+</div><div style="margin-bottom:2.5mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Matin 2</div>
+  <div class="obs"><span class="rl-lbl">Les pensées du masque les plus présentes ce matin</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ai-je pu rester sur la rive ? Qu'est-ce qui m'a emporté ?</span><div class="rl"></div></div>
+</div><div style="margin-bottom:2.5mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Matin 3</div>
+  <div class="obs"><span class="rl-lbl">Les pensées du masque les plus présentes ce matin</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ai-je pu rester sur la rive ? Qu'est-ce qui m'a emporté ?</span><div class="rl"></div></div>
+</div><div style="margin-bottom:2.5mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Matin 4</div>
+  <div class="obs"><span class="rl-lbl">Les pensées du masque les plus présentes ce matin</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ai-je pu rester sur la rive ? Qu'est-ce qui m'a emporté ?</span><div class="rl"></div></div>
+</div><div style="margin-bottom:2.5mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Matin 5</div>
+  <div class="obs"><span class="rl-lbl">Les pensées du masque les plus présentes ce matin</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ai-je pu rester sur la rive ? Qu'est-ce qui m'a emporté ?</span><div class="rl"></div></div>
+</div><div style="margin-bottom:2.5mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Matin 6</div>
+  <div class="obs"><span class="rl-lbl">Les pensées du masque les plus présentes ce matin</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ai-je pu rester sur la rive ? Qu'est-ce qui m'a emporté ?</span><div class="rl"></div></div>
+</div><div style="margin-bottom:2.5mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Matin 7</div>
+  <div class="obs"><span class="rl-lbl">Les pensées du masque les plus présentes ce matin</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ai-je pu rester sur la rive ? Qu'est-ce qui m'a emporté ?</span><div class="rl"></div></div>
+</div>
+<div class="fi" style="margin-top:2mm"></div>
+<div class="obs"><span class="rl-lbl">Après 7 jours — ce que cet exercice m'a appris sur mon masque</span><div class="rl"></div><div class="rl"></div></div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="ACT-EX-004.html">ACT-EX-004 · Nommer le masque en temps réel</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+</body></html>

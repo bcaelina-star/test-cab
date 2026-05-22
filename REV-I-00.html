@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>REV-I-00 · Masque Indigo · V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--M:#5C3280;--or:#C5960C;--or-bd:rgba(197,150,12,.35);--or-bg:rgba(197,150,12,.1);--fond:#fff;--cr:#FAF8F4;--cr2:#F5F1EB;--tx:#1E1916;--tx2:#52473F;--tx3:#8C8278;--fi:#D8D2C8;--ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);--fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media print{@page{size:A4;margin:0}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}.fiche{page-break-after:avoid}}
+body{background:#E8E4DC;font-family:var(--fb);font-weight:300;color:var(--tx);-webkit-font-smoothing:antialiased}
+.fiche{width:210mm;min-height:297mm;margin:8mm auto;background:var(--fond);display:flex;flex-direction:column;box-shadow:0 4px 40px rgba(0,0,0,.18)}
+.z1b{height:3mm;background:var(--M);flex-shrink:0}
+.z1h{flex-shrink:0;height:24mm;padding:0 14mm;display:flex;align-items:center;justify-content:space-between;border-bottom:.5pt solid var(--fi)}
+.h-g{display:flex;flex-direction:column;gap:2px}
+.h-fam{font-size:7pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3)}
+.h-nom{font-family:var(--fs);font-size:18pt;font-weight:400;color:var(--tx);line-height:1;letter-spacing:-.3px}
+.h-nom span{color:var(--M);font-style:italic}
+.h-peur{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx3);margin-top:1px}
+.h-d{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.h-logo{font-family:var(--fs);font-size:11pt;font-weight:600;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+.h-logo sup{font-size:6pt;vertical-align:super}
+.h-code{font-size:7pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--M);background:rgba(0,0,0,.04);border:1pt solid var(--M);padding:2px 8px;opacity:.8}
+.corps{flex:1;display:flex;flex-direction:column;padding:0 14mm;min-height:0}
+.fi{height:.5pt;background:var(--fi);flex-shrink:0}
+.slabel{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--M);margin:6mm 0 3mm;flex-shrink:0}
+.z2{flex-shrink:0;background:var(--cr);margin:6mm -14mm 0;padding:6mm 14mm;border-left:2.5pt solid var(--M)}
+.z2 p{font-family:var(--fs);font-size:10.5pt;font-style:italic;font-weight:300;color:var(--tx);line-height:1.65}
+.z2 p em{font-style:normal;color:var(--M);font-weight:400}
+.z2 p strong{font-style:normal;font-weight:500;color:var(--tx)}
+.z3{flex-shrink:0;text-align:center;padding:5mm 8mm;position:relative}
+.z3::before,.z3::after{content:'';position:absolute;left:50%;transform:translateX(-50%);width:28mm;height:.5pt;background:var(--fi)}
+.z3::before{top:0}.z3::after{bottom:0}
+.z3 p{font-family:var(--fs);font-size:12pt;font-weight:500;color:var(--M);line-height:1.45;letter-spacing:-.2px}
+.z4{flex-shrink:0;padding:5mm 0}
+.z4 p{font-size:8.5pt;font-weight:300;color:var(--tx2);line-height:1.65}
+.z4 p em{font-style:italic;color:var(--tx)}
+.z4 p strong{font-weight:500;color:var(--tx)}
+.scenes{display:flex;gap:5mm;margin-top:3mm}
+.scene{flex:1;background:var(--cr2);padding:4mm;border-top:1.5pt solid var(--M)}
+.sc-titre{font-size:7.5pt;font-weight:500;color:var(--M);margin-bottom:3mm;letter-spacing:.3px}
+.scene p{font-size:8pt;color:var(--tx2);line-height:1.6}
+.scene p em{font-style:italic;color:var(--tx)}
+.scene p strong{font-weight:500;color:var(--tx)}
+.z5{flex-shrink:0;background:var(--cr2);margin:0 -14mm;padding:5mm 14mm}
+.z5 p{font-size:8.5pt;font-weight:300;color:var(--tx2);line-height:1.7}
+.z5-src{font-size:6.5pt;color:var(--tx3);letter-spacing:.5px;margin-top:3mm}
+.couts{list-style:none;margin-top:2mm}
+.couts li{font-size:8pt;color:var(--tx2);line-height:1.6;padding:1mm 0 1mm 8mm;position:relative;border-bottom:.5pt solid var(--fi)}
+.couts li:last-child{border-bottom:none}
+.couts li::before{content:'—';position:absolute;left:0;color:var(--M);font-weight:400}
+.z6{flex-shrink:0;border:.75pt solid var(--or-bd);background:var(--or-bg);padding:4mm 6mm;margin:5mm 0}
+.z6-t{font-size:7pt;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:3mm}
+.z6 p{font-size:8.5pt;font-weight:300;color:var(--tx);line-height:1.6}
+.z6 p strong{font-weight:500}
+.z6-d{font-size:7pt;color:var(--tx3);font-style:italic;margin-top:2mm}
+.z7{flex-shrink:0;padding:4mm 0 5mm}
+.z7q{font-family:var(--fs);font-size:8.5pt;font-style:italic;color:var(--tx2);margin-bottom:2mm;display:block}
+.reglures{display:flex;flex-direction:column;margin-bottom:4mm}
+.rl{height:6mm;border-bottom:.5pt solid var(--fi)}
+.spc{flex:1}
+.z9{flex-shrink:0;padding:2.5mm 14mm;margin:0 -14mm;border-top:.5pt solid var(--fi);display:flex;align-items:center;gap:8px}
+.z9-lab{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);flex-shrink:0}
+.z9-arr{font-size:7pt;color:var(--M)}
+.z9-txt{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx2)}
+.chroma{height:3mm;background:var(--ch);flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="z1b"></div>
+  <div class="z1h">
+    <div class="h-g">
+      <div class="h-fam">Famille REV · Révélation · Séance 1–2</div>
+      <div class="h-nom">Masque <span>Indigo</span></div>
+      <div class="h-peur">La peur de l'échec et le sentiment de ne pas être à la hauteur</div>
+    </div>
+    <div class="h-d">
+      <div class="h-logo">V.A.L.E.U.R<sup>©</sup></div>
+      <div class="h-code">REV-I-00</div>
+    </div>
+  </div>
+  <div class="corps">
+    <div class="z2"><p>Il y a une voix dans votre tête qui <strong>évalue en permanence</strong>. Qui compare, qui relativise, qui anticipe le regard des autres. Elle ne vous lâche pas — ni au travail, ni dans vos relations, ni dans les petits moments du quotidien.<br><br>Cette voix est <em>extrêmement sévère avec vous</em>. Un niveau d'exigence que vous n'appliqueriez jamais aux autres. Ce qu'elle ne voit pas : cette exigence n'est pas un gage de qualité. C'est de la peur déguisée en perfectionnisme.<br><br>Vous avez peut-être atteint beaucoup. Et pourtant, quelque chose dans votre rapport à vous-même reste fragile — comme si votre valeur dépendait encore et toujours du prochain résultat.</p></div>
+    <div class="z3"><p>« Je ne mérite pas vraiment cette place.<br>Un jour, on va voir que je ne suis pas à la hauteur.<br>Je dois continuer à prouver, encore et encore, que j'ai ma place ici. »</p></div>
+    <div class="slabel">Ce que ce masque vous coûte</div>
+    <div class="fi"></div>
+    <ul class="couts"><li>Un épuisement permanent à devoir prouver quelque chose que personne ne vous demande</li><li>Des projets abandonnés avant d'être visibles — par peur de l'évaluation</li><li>Des réussites qui ne nourrissent pas — « j'ai eu de la chance », « ça ne compte pas »</li><li>Une sévérité envers vous-même que vous n'infligeriez jamais à quelqu'un que vous aimez</li><li>Votre plaisir du présent gâché par l'anxiété du résultat à venir</li></ul>
+    <div class="fi" style="margin-top:4mm"></div>
+    <div class="z5">
+      <div class="slabel" style="margin-top:0;margin-bottom:3mm">Ce que vous avez construit — et pourquoi</div>
+      <p>À un moment de votre histoire, vous avez appris que votre valeur n'était pas acquise — qu'elle se prouvait. Peut-être que les efforts étaient récompensés mais les personnes rarement. Peut-être qu'une erreur a coûté cher — en affection, en reconnaissance, en place dans le groupe. Votre nature authentique a alors développé une réponse : être irréprochable. Travailler plus. En faire plus. Pour ne jam</p>
+      <div class="z5-src">Source : FMPS · Frost et al., 1990</div>
+    </div>
+    <div class="z6">
+      <div class="z6-t">Mission de la semaine · Étape VOIR</div>
+      <p>L'étape VOIR est centrale pour vous : reconnaître la voix du masque au moment précis où elle s'active — « Ah, c'est mon masque qui me dit que je ne suis pas à la hauteur » — pour cesser de la confondre avec une vérité sur vous.</p>
+      <div class="z6-d">5 minutes par jour · 7 jours</div>
+    </div>
+    <div class="z7">
+      <div class="slabel" style="margin:0 0 3mm">Votre espace</div>
+      <span class="z7q">Ce que j'ai reconnu en lisant cette fiche :</span>
+      <div class="reglures"><div class="rl"></div><div class="rl"></div><div class="rl"></div></div>
+      <span class="z7q">La force que j'aperçois derrière ce masque :</span>
+      <div class="reglures"><div class="rl"></div><div class="rl"></div><div class="rl"></div></div>
+    </div>
+    <div class="spc"></div>
+    <div class="z9">
+      <span class="z9-lab">Prochaine étape</span>
+      <span class="z9-arr">→</span>
+      <span class="z9-txt">Masque Violet — La peur de perdre son identité</span>
+    </div>
+  </div>
+  <div class="chroma"></div>
+</div>
+</body>
+</html>

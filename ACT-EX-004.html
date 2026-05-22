@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="robots" content="noindex,nofollow">
+<title>ACT-EX-004 · V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--M:#C9A84C;--or:#C9A84C;--ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);
+  --fond:#FFF;--cr:#FAF8F4;--tx:#1A1714;--tx2:#4A4138;--tx3:#8C8278;--fi:#DDD8CF;
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media print{@page{size:A4;margin:0}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{page-break-after:always}.page:last-child{page-break-after:avoid}}
+body{background:#E5E1D9;font-family:var(--fb);font-weight:300;color:var(--tx);-webkit-font-smoothing:antialiased}
+.page{width:210mm;min-height:297mm;margin:6mm auto;background:var(--fond);display:flex;flex-direction:column;box-shadow:0 3px 32px rgba(0,0,0,.16)}
+.bande{height:3mm;flex-shrink:0;background:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594)}
+.entete{flex-shrink:0;height:22mm;padding:0 13mm;display:flex;align-items:center;justify-content:space-between;border-bottom:.5pt solid var(--fi)}
+.eh-g{display:flex;flex-direction:column;gap:2px}
+.eh-fam{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3)}
+.eh-titre{font-family:var(--fs);font-size:15pt;font-weight:400;color:var(--tx);line-height:1}
+.eh-titre em{color:var(--or);font-style:italic}
+.eh-sous{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx3);margin-top:1px}
+.eh-logo{font-family:var(--fs);font-size:10pt;font-weight:600;letter-spacing:3px;color:var(--or)}
+.eh-logo sup{font-size:6pt;vertical-align:super}
+.eh-code{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--or);border:1pt solid var(--or);padding:2px 7px;opacity:.75}
+.corps{flex:1;display:flex;flex-direction:column;padding:0 13mm}
+.spc{flex:1}
+.fi{height:.5pt;background:var(--fi);flex-shrink:0}
+.slbl{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin:4mm 0 2mm;flex-shrink:0}
+.accroche{flex-shrink:0;background:var(--cr);margin:5mm -13mm 0;padding:5mm 13mm;border-left:2.5pt solid var(--or)}
+.accroche p{font-family:var(--fs);font-size:10.5pt;font-style:italic;font-weight:300;color:var(--tx);line-height:1.65}
+.body-txt{font-size:8.5pt;font-weight:300;color:var(--tx2);line-height:1.7;flex-shrink:0;margin-bottom:3mm}
+.etape{display:grid;grid-template-columns:8mm 1fr;column-gap:4mm;padding:2.5mm 0;border-bottom:.5pt solid var(--fi);flex-shrink:0}
+.etape:last-child{border-bottom:none}
+.et-num{font-family:var(--fs);font-size:15pt;font-weight:300;color:var(--or);opacity:.6;line-height:1;padding-top:.5mm}
+.et-titre{font-size:8.5pt;font-weight:500;color:var(--tx);margin-bottom:1mm}
+.et-txt{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6}
+.valeur-note{flex-shrink:0;background:rgba(201,168,76,.08);border-left:2.5pt solid var(--or);margin:3mm -13mm 0;padding:3.5mm 13mm}
+.valeur-note p{font-size:7.5pt;font-weight:400;color:var(--tx2);line-height:1.6}
+.valeur-note strong{color:var(--or)}
+.rl{height:6mm;border-bottom:.5pt solid var(--fi);display:block;width:100%}
+.rl-lbl{font-size:6pt;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:1mm;display:block}
+.obs{flex-shrink:0;margin-top:2mm}
+.chroma{height:3mm;background:var(--ch);flex-shrink:0}
+.z9{flex-shrink:0;padding:2.5mm 13mm;margin:0 -13mm;border-top:.5pt solid var(--fi);display:flex;align-items:center;gap:8px}
+.z9-lab{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);flex-shrink:0}
+.z9-arr{font-size:7pt;color:var(--or)}
+.z9-txt{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx2)}
+.z9-txt a{color:var(--or);text-decoration:none}
+.cadre{flex-shrink:0;border:.75pt solid rgba(201,168,76,.4);background:rgba(201,168,76,.05);padding:4mm 5mm;margin:3mm 0}
+.cadre-titre{font-size:6.5pt;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:2mm}
+.cadre p{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.65}
+</style>
+</head><body>
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">ACT · Exercice de défusion · Étape VOIR</div>
+    <div class="eh-titre"><em>Nommer le masque</em> en temps réel</div>
+    <div class="eh-sous">La technique la plus simple — et l'une des plus efficaces</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">ACT-EX-004 · p.1/2</div>
+  </div></div>
+  <div class="corps">
+<div class="accroche"><p>Dès que vous nommez votre masque par son nom, vous créez un espace entre vous et lui. Cet espace — aussi étroit soit-il — c'est là que la liberté commence.</p></div>
+<div class="fi" style="margin-top:4mm"></div>
+<div class="slbl">Le principe neurologique</div>
+<div class="body-txt"><p>Nommer une émotion ou une pensée active le cortex préfrontal (siège de l'observation consciente) et réduit l'activation de l'amygdale (siège de l'alarme). Ce n'est pas de la sémantique — c'est de la physiologie. Nommer calme.</p></div>
+<div class="slbl">3 formulations — du plus simple au plus précis</div>
+<div class="etape"><div class="et-num">1</div><div><div class="et-titre">Formulation basique — "Mon masque est en train de…"</div><div class="et-txt">« Mon Masque Rouge est en train de surveiller mon corps. »<br>« Mon Masque Vert est en train d'anticiper un rejet. »<br>« Mon Masque Jaune cherche une certitude impossible. »<br>Une phrase. Prononcée intérieurement — ou à voix haute si possible.</div></div></div>
+<div class="etape"><div class="et-num">2</div><div><div class="et-titre">Formulation étendue — ajouter la peur</div><div class="et-txt">« Mon Masque [couleur] — peur de [peur centrale] — est en train de [comportement]. »<br>Exemple : « Mon Masque Indigo — peur de l'échec — est en train d'exiger que ce soit parfait avant d'envoyer. »<br>Cette formulation nomme et comprend simultanément.</div></div></div>
+<div class="etape"><div class="et-num">3</div><div><div class="et-titre">Formulation complète — ajouter ce que vous voulez vraiment</div><div class="et-txt">« Mon Masque [couleur] dit [injonction]. Ce que je veux vraiment, c'est [désir authentique]. »<br>Exemple : « Mon Masque Bleu dit "tu dois tout contrôler". Ce que je veux vraiment, c'est faire confiance à cette personne. »<br>Cette troisième phrase amorce déjà le changement.</div></div></div>
+<div class="slbl" style="margin-top:3mm">Appliquer maintenant</div>
+<div class="etape"><div class="et-num">→</div><div><div class="et-titre">Mon masque le plus actif cette semaine</div><div class="et-txt">Identifiez une situation récente. Construisez les 3 formulations pour ce masque et cette situation.</div></div></div>
+<div class="valeur-note"><p><strong>La touche V.A.L.E.U.R©</strong> — Dire "je suis anxieux·se" fusionne masque et identité. Dire "mon Masque Rouge génère de l'anxiété" les sépare. Ce seul changement vous replace à l'extérieur du masque — là où le choix est possible.</p></div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="ACT-EX-005.html">ACT-EX-005 · Remercier sans obéir</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">ACT · Pratique · Étape VOIR</div>
+    <div class="eh-titre">Mes <em>formulations personnelles</em></div>
+    <div class="eh-sous">Construire mes phrases de défusion pour chaque masque actif</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">ACT-EX-004 · p.2/2</div>
+  </div></div>
+  <div class="corps">
+<div class="body-txt" style="margin-top:5mm"><p>Préparez vos formulations à froid — quand le masque n'est pas actif. En situation intense, votre cerveau n'aura pas à chercher les mots. Il les connaîtra déjà.</p></div>
+<div class="fi"></div>
+<div class="slbl">Mes formulations prêtes — par masque actif</div>
+<div style="margin-bottom:3mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Masque 1</div>
+  <div class="obs"><span class="rl-lbl">Mon Masque [couleur] est en train de…</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ce que je veux vraiment</span><div class="rl"></div></div>
+</div><div style="margin-bottom:3mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Masque 2</div>
+  <div class="obs"><span class="rl-lbl">Mon Masque [couleur] est en train de…</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ce que je veux vraiment</span><div class="rl"></div></div>
+</div><div style="margin-bottom:3mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Masque 3</div>
+  <div class="obs"><span class="rl-lbl">Mon Masque [couleur] est en train de…</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ce que je veux vraiment</span><div class="rl"></div></div>
+</div><div style="margin-bottom:3mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Masque 4</div>
+  <div class="obs"><span class="rl-lbl">Mon Masque [couleur] est en train de…</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ce que je veux vraiment</span><div class="rl"></div></div>
+</div><div style="margin-bottom:3mm;flex-shrink:0">
+  <div style="font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:1mm">Masque 5</div>
+  <div class="obs"><span class="rl-lbl">Mon Masque [couleur] est en train de…</span><div class="rl"></div></div>
+  <div class="obs"><span class="rl-lbl">Ce que je veux vraiment</span><div class="rl"></div></div>
+</div>
+<div class="fi" style="margin-top:2mm"></div>
+<div class="slbl">Ma formulation d'urgence — en une phrase</div>
+<div class="body-txt"><p>Une formulation courte que je peux dire en 3 secondes — dans n'importe quelle situation.</p></div>
+<div class="obs"><span class="rl-lbl">Ma phrase d'urgence</span><div class="rl"></div><div class="rl"></div></div>
+<div class="obs"><span class="rl-lbl">Ce que j'ai observé quand je l'ai utilisée</span><div class="rl"></div><div class="rl"></div></div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="ACT-EX-005.html">ACT-EX-005 · Remercier sans obéir</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+</body></html>

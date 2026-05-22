@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="robots" content="noindex,nofollow">
+<title>ACT-EX-001 · V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--M:#C9A84C;--or:#C9A84C;--ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);
+  --fond:#FFF;--cr:#FAF8F4;--tx:#1A1714;--tx2:#4A4138;--tx3:#8C8278;--fi:#DDD8CF;
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media print{@page{size:A4;margin:0}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{page-break-after:always}.page:last-child{page-break-after:avoid}}
+body{background:#E5E1D9;font-family:var(--fb);font-weight:300;color:var(--tx);-webkit-font-smoothing:antialiased}
+.page{width:210mm;min-height:297mm;margin:6mm auto;background:var(--fond);display:flex;flex-direction:column;box-shadow:0 3px 32px rgba(0,0,0,.16)}
+.bande{height:3mm;flex-shrink:0;background:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594)}
+.entete{flex-shrink:0;height:22mm;padding:0 13mm;display:flex;align-items:center;justify-content:space-between;border-bottom:.5pt solid var(--fi)}
+.eh-g{display:flex;flex-direction:column;gap:2px}
+.eh-fam{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3)}
+.eh-titre{font-family:var(--fs);font-size:15pt;font-weight:400;color:var(--tx);line-height:1}
+.eh-titre em{color:var(--or);font-style:italic}
+.eh-sous{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx3);margin-top:1px}
+.eh-logo{font-family:var(--fs);font-size:10pt;font-weight:600;letter-spacing:3px;color:var(--or)}
+.eh-logo sup{font-size:6pt;vertical-align:super}
+.eh-code{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--or);border:1pt solid var(--or);padding:2px 7px;opacity:.75}
+.corps{flex:1;display:flex;flex-direction:column;padding:0 13mm}
+.spc{flex:1}
+.fi{height:.5pt;background:var(--fi);flex-shrink:0}
+.slbl{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin:4mm 0 2mm;flex-shrink:0}
+.accroche{flex-shrink:0;background:var(--cr);margin:5mm -13mm 0;padding:5mm 13mm;border-left:2.5pt solid var(--or)}
+.accroche p{font-family:var(--fs);font-size:10.5pt;font-style:italic;font-weight:300;color:var(--tx);line-height:1.65}
+.body-txt{font-size:8.5pt;font-weight:300;color:var(--tx2);line-height:1.7;flex-shrink:0;margin-bottom:3mm}
+.etape{display:grid;grid-template-columns:8mm 1fr;column-gap:4mm;padding:2.5mm 0;border-bottom:.5pt solid var(--fi);flex-shrink:0}
+.etape:last-child{border-bottom:none}
+.et-num{font-family:var(--fs);font-size:15pt;font-weight:300;color:var(--or);opacity:.6;line-height:1;padding-top:.5mm}
+.et-titre{font-size:8.5pt;font-weight:500;color:var(--tx);margin-bottom:1mm}
+.et-txt{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6}
+.valeur-note{flex-shrink:0;background:rgba(201,168,76,.08);border-left:2.5pt solid var(--or);margin:3mm -13mm 0;padding:3.5mm 13mm}
+.valeur-note p{font-size:7.5pt;font-weight:400;color:var(--tx2);line-height:1.6}
+.valeur-note strong{color:var(--or)}
+.rl{height:6mm;border-bottom:.5pt solid var(--fi);display:block;width:100%}
+.rl-lbl{font-size:6pt;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:1mm;display:block}
+.obs{flex-shrink:0;margin-top:2mm}
+.chroma{height:3mm;background:var(--ch);flex-shrink:0}
+.z9{flex-shrink:0;padding:2.5mm 13mm;margin:0 -13mm;border-top:.5pt solid var(--fi);display:flex;align-items:center;gap:8px}
+.z9-lab{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);flex-shrink:0}
+.z9-arr{font-size:7pt;color:var(--or)}
+.z9-txt{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx2)}
+.z9-txt a{color:var(--or);text-decoration:none}
+.cadre{flex-shrink:0;border:.75pt solid rgba(201,168,76,.4);background:rgba(201,168,76,.05);padding:4mm 5mm;margin:3mm 0}
+.cadre-titre{font-size:6.5pt;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:2mm}
+.cadre p{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.65}
+</style>
+</head><body>
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">ACT · Exercice de défusion · Étape VOIR</div>
+    <div class="eh-titre">La Salle <em>de Cinéma</em></div>
+    <div class="eh-sous">Observer vos pensées sans en être l'acteur — vous êtes le spectateur</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">ACT-EX-001 · p.1/2</div>
+  </div></div>
+  <div class="corps">
+<div class="accroche"><p>Votre masque vous fait croire que vous êtes dans le film. Cet exercice vous replace dans le fauteuil du spectateur — là où vous pouvez voir ce qui se passe, sans en être emporté.</p></div>
+<div class="fi" style="margin-top:4mm"></div>
+<div class="slbl">Le principe</div>
+<div class="body-txt"><p>Quand le masque s'active, nous sommes projetés à l'intérieur de nos pensées — comme un acteur qui a oublié qu'il joue. La Salle de Cinéma crée une distance physique et psychologique en vous repositionnant comme observateur de vos propres états intérieurs.</p></div>
+<div class="slbl">L'exercice — 7 étapes</div>
+<div class="etape"><div class="et-num">1</div><div><div class="et-titre">Installez-vous confortablement</div><div class="et-txt">Yeux fermés. Respirez 3 fois lentement. Laissez le corps se poser.</div></div></div>
+<div class="etape"><div class="et-num">2</div><div><div class="et-titre">Imaginez la salle de cinéma</div><div class="et-txt">Vous êtes assis dans un fauteuil confortable, au milieu d'une grande salle vide. Devant vous, un écran blanc. L'espace est calme, sûr, légèrement obscur.</div></div></div>
+<div class="etape"><div class="et-num">3</div><div><div class="et-titre">Projetez vos pensées sur l'écran</div><div class="et-txt">Invitez vos pensées à apparaître sur l'écran — comme des images, des sous-titres, des scènes. Ne les censurez pas. Laissez-les se montrer.</div></div></div>
+<div class="etape"><div class="et-num">4</div><div><div class="et-titre">Nommez ce que vous voyez</div><div class="et-txt">« Il y a une pensée qui dit que… » « Mon masque présente l'image de… » Nommez à la troisième personne. Vous observez — vous ne jouez pas.</div></div></div>
+<div class="etape"><div class="et-num">5</div><div><div class="et-titre">Laissez le film se dérouler</div><div class="et-txt">Ne mettez pas le film sur pause. Regardez les scènes défiler — y compris les plus difficiles. Vous êtes dans le fauteuil, pas sur l'écran.</div></div></div>
+<div class="etape"><div class="et-num">6</div><div><div class="et-titre">Revenez à l'observateur</div><div class="et-txt">Sentez le fauteuil sous vous. La salle autour. Rappel : vous n'êtes pas ce film. Vous êtes celui ou celle qui le regarde.</div></div></div>
+<div class="etape"><div class="et-num">7</div><div><div class="et-titre">Posez la question</div><div class="et-txt">Ce que je viens de voir sur l'écran — est-ce une réalité ou la logique de mon masque ? Qu'est-ce que je choisirais depuis le fauteuil du spectateur ?</div></div></div>
+<div class="valeur-note"><p><strong>La touche V.A.L.E.U.R©</strong> — Ce que vous voyez sur l'écran, c'est votre masque au travail. Il projette des scènes qui semblent réelles parce qu'il cherche à vous protéger. Mais vous n'êtes pas votre masque — vous êtes celui ou celle qui peut le regarder.</p></div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="ACT-EX-002.html">ACT-EX-002 · Les Portes — laisser passer sans ouvrir</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">ACT · Pratique · Étape VOIR</div>
+    <div class="eh-titre">Votre <em>entraînement</em></div>
+    <div class="eh-sous">Salle de Cinéma — 3 situations · ce que vous avez observé</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">ACT-EX-001 · p.2/2</div>
+  </div></div>
+  <div class="corps">
+<div class="body-txt" style="margin-top:5mm"><p>Cet exercice se pratique pendant l'épisode — pas seulement en séance. 5 minutes suffisent. Plus vous le pratiquez dans les situations de basse intensité, plus il sera accessible dans les moments difficiles.</p></div>
+<div class="fi"></div>
+<div class="slbl">3 situations d'entraînement — cette semaine</div>
+<div class="cadre"><div class="cadre-titre">Situation 1 — intensité faible</div><p>Une situation du quotidien où votre masque s'active légèrement. Choisissez-la intentionnellement cette semaine.</p></div>
+<div class="obs"><span class="rl-lbl">Ce que j'ai vu sur l'écran — les pensées/images du masque</span><div class="rl"></div><div class="rl"></div></div>
+<div class="obs"><span class="rl-lbl">Ce que j'ai ressenti depuis le fauteuil</span><div class="rl"></div></div>
+<div style="margin-top:3mm"></div>
+<div class="cadre"><div class="cadre-titre">Situation 2 — intensité modérée</div><p>Une situation plus chargée où vous testez l'exercice en temps réel.</p></div>
+<div class="obs"><span class="rl-lbl">Ce que j'ai vu sur l'écran</span><div class="rl"></div><div class="rl"></div></div>
+<div class="obs"><span class="rl-lbl">Ai-je pu rester dans le fauteuil ? Qu'est-ce qui m'a aidé ou gêné ?</span><div class="rl"></div><div class="rl"></div></div>
+<div style="margin-top:3mm"></div>
+<div class="cadre"><div class="cadre-titre">Situation 3 — votre choix</div><p>La situation où votre masque est le plus souvent actif.</p></div>
+<div class="obs"><span class="rl-lbl">Ce que l'exercice a changé — même discrètement</span><div class="rl"></div><div class="rl"></div></div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="ACT-EX-002.html">ACT-EX-002 · Les Portes</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+</body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="robots" content="noindex,nofollow">
+<title>PSY-XX-001 · Naissance des masques · V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--M:#C9A84C;--or:#C9A84C;--or-bg:rgba(201,168,76,.09);--or-bd:rgba(201,168,76,.35);
+  --ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);--bp1:#C9A84C;--bp2:linear-gradient(90deg,#C9A84C,#B5312A);
+  --fond:#FFF;--cr:#FAF8F4;--cr2:#F4F0E8;--tx:#1A1714;--tx2:#4A4138;--tx3:#8C8278;--fi:#DDD8CF;
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media print{@page{size:A4;margin:0}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{page-break-after:always}.page:last-child{page-break-after:avoid}}
+body{background:#E5E1D9;font-family:var(--fb);font-weight:300;color:var(--tx);-webkit-font-smoothing:antialiased}
+.page{width:210mm;min-height:297mm;margin:6mm auto;background:var(--fond);display:flex;flex-direction:column;box-shadow:0 3px 32px rgba(0,0,0,.16)}
+.bande{height:3mm;flex-shrink:0;background:var(--bp1)}.bande-p2{height:3mm;flex-shrink:0;background:var(--bp2)}
+.entete{flex-shrink:0;height:22mm;padding:0 13mm;display:flex;align-items:center;justify-content:space-between;border-bottom:.5pt solid var(--fi)}
+.eh-g{display:flex;flex-direction:column;gap:2px}
+.eh-fam{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3)}
+.eh-titre{font-family:var(--fs);font-size:16pt;font-weight:400;color:var(--tx);line-height:1;letter-spacing:-.3px}
+.eh-titre em{color:var(--M);font-style:italic}
+.eh-sous{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx3);margin-top:1px}
+.eh-d{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.eh-logo{font-family:var(--fs);font-size:10pt;font-weight:600;letter-spacing:3px;color:var(--or)}
+.eh-logo sup{font-size:6pt;vertical-align:super}
+.eh-code{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--M);border:1pt solid var(--M);padding:2px 7px;opacity:.75}
+.corps{flex:1;display:flex;flex-direction:column;padding:0 13mm;min-height:0}
+.spc{flex:1}
+.fi{height:.5pt;background:var(--fi);flex-shrink:0}
+.slbl{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--M);margin:4mm 0 2mm;flex-shrink:0}
+.accroche{flex-shrink:0;background:var(--cr);margin:5mm -13mm 0;padding:5mm 13mm;border-left:2.5pt solid var(--M)}
+.accroche p{font-family:var(--fs);font-size:10.5pt;font-style:italic;font-weight:300;color:var(--tx);line-height:1.65}
+.body-txt{font-size:8.5pt;font-weight:300;color:var(--tx2);line-height:1.7;flex-shrink:0}
+.etapes{display:flex;flex-direction:column;flex-shrink:0}
+.etape{display:grid;grid-template-columns:8mm 1fr;column-gap:4mm;padding:2.5mm 0;border-bottom:.5pt solid var(--fi)}
+.etape:last-child{border-bottom:none}
+.et-num{font-family:var(--fs);font-size:15pt;font-weight:300;color:var(--M);opacity:.45;line-height:1;padding-top:.5mm}
+.et-titre{font-size:8.5pt;font-weight:500;color:var(--tx);margin-bottom:1.5mm}
+.et-txt{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6}
+.bloc-or{flex-shrink:0;background:var(--or-bg);border-left:2.5pt solid var(--or);margin:4mm -13mm 0;padding:4mm 13mm}
+.bloc-or p{font-family:var(--fs);font-size:10pt;font-style:italic;color:var(--tx);line-height:1.65}
+.bloc-or-titre{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin-bottom:2mm}
+.q-bloc{flex-shrink:0;margin-top:3mm}
+.q-txt{font-family:var(--fs);font-size:8.5pt;font-style:italic;color:var(--tx2);margin-bottom:2mm;display:block}
+.reglures{display:flex;flex-direction:column;margin-bottom:3mm}
+.rl{height:6mm;border-bottom:.5pt solid var(--fi);width:100%;display:block}
+.mission{flex-shrink:0;border:.75pt solid var(--or-bd);background:var(--or-bg);padding:4mm 6mm;margin:4mm 0}
+.mission-titre{font-size:7pt;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--or);margin-bottom:2.5mm}
+.mission p{font-size:8.5pt;font-weight:300;color:var(--tx);line-height:1.6}
+.mission-dur{font-size:7pt;color:var(--tx3);font-style:italic;margin-top:1.5mm}
+.beh{font-size:8pt;font-weight:300;color:var(--tx2);line-height:1.6;padding:1.5mm 0 1.5mm 7mm;position:relative;border-bottom:.5pt solid var(--fi);flex-shrink:0}
+.beh:last-child{border-bottom:none}
+.beh::before{content:'›';position:absolute;left:.5mm;color:var(--M);font-size:10pt;line-height:1.4}
+.defi{display:grid;grid-template-columns:10mm 1fr;grid-template-rows:auto auto auto auto;column-gap:5mm;padding:3mm 0;border-bottom:.5pt solid var(--fi);flex-shrink:0}
+.defi:last-child{border-bottom:none}
+.defi-num{grid-column:1;grid-row:1/5;font-family:var(--fs);font-size:22pt;font-weight:300;color:var(--M);line-height:1;padding-top:1mm;opacity:.45}
+.defi-titre{grid-column:2;grid-row:1;font-size:8.5pt;font-weight:500;color:var(--tx);padding-bottom:1mm}
+.defi-txt{grid-column:2;grid-row:2;font-size:7.5pt;font-weight:300;color:var(--tx2);line-height:1.6;padding-bottom:1mm}
+.defi-note{grid-column:2;grid-row:3;font-size:7.5pt;color:var(--tx3);font-style:italic;line-height:1.5;padding-bottom:1.5mm}
+.defi-rp{grid-column:2;grid-row:4}
+.rl-lbl{font-size:6pt;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:1mm}
+.src{font-size:6pt;color:var(--tx3);letter-spacing:.5px;margin-top:2mm;flex-shrink:0}
+.z9{flex-shrink:0;padding:2.5mm 13mm;margin:0 -13mm;border-top:.5pt solid var(--fi);display:flex;align-items:center;gap:8px}
+.z9-lab{font-size:6.5pt;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);flex-shrink:0}
+.z9-arr{font-size:7pt;color:var(--M)}
+.z9-txt{font-family:var(--fs);font-size:8pt;font-style:italic;color:var(--tx2)}
+.z9-txt a{color:var(--M);text-decoration:none}
+.chroma{height:3mm;background:var(--ch);flex-shrink:0}
+.graph-zone{flex-shrink:0;background:var(--cr);border:.5pt solid var(--fi);padding:5mm;margin:3mm 0}
+.graph-label{display:flex;justify-content:space-between;font-size:7pt;color:var(--tx3);margin-bottom:2mm}
+.graph-axis{height:32mm;position:relative;border-left:.5pt solid var(--fi);border-bottom:.5pt solid var(--fi)}
+.graph-grid{position:absolute;width:100%;display:flex;flex-direction:column;justify-content:space-between;height:100%}
+.graph-line{border-top:.5pt dashed var(--fi);width:100%}
+.graph-points{display:flex;justify-content:space-around;align-items:flex-end;height:100%;padding:0 5mm}
+.gp{width:2mm;height:2mm;border-radius:50%;background:var(--M);position:relative}
+.graph-months{display:flex;justify-content:space-around;font-size:6.5pt;color:var(--tx3);margin-top:1.5mm}
+.force-box{flex-shrink:0;background:linear-gradient(135deg,rgba(201,168,76,.09),rgba(201,168,76,.03));border-left:2.5pt solid var(--or);margin:5mm -13mm 0;padding:5mm 13mm}
+.force-titre{font-size:6.5pt;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--or);margin-bottom:2.5mm}
+.force-box p{font-family:var(--fs);font-size:10pt;font-style:italic;color:var(--tx);line-height:1.65}
+.rit-phrase{font-family:var(--fs);font-size:22pt;font-weight:300;color:var(--M);line-height:1.2;text-align:center;padding:8mm 0;flex-shrink:0}
+.rit-phrase em{font-style:italic}
+.sig-zone{flex-shrink:0;border-bottom:.5pt solid var(--fi);margin-top:auto;padding:4mm 0 2mm}
+.sig-label{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);margin-bottom:2mm}
+.sig-line{height:8mm;border-bottom:.5pt solid var(--fi);width:100%}
+.sig-meta{font-size:7pt;color:var(--tx3);font-style:italic;margin-top:1mm}
+</style></head><body>
+<div class="page">
+  <div class="bande"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">PSY · Psychoéducation · Séance 2</div>
+    <div class="eh-titre">Naissance <em>des masques</em></div>
+    <div class="eh-sous">Les 7 étapes de création d'une protection psychologique</div>
+  </div>
+  <div class="eh-d">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">PSY-XX-001 · p.1/2</div>
+  </div></div>
+  <div class="corps">
+<div class="accroche"><p>Vos masques ne sont pas des défauts de caractère. Ce sont des protections construites par un enfant qui faisait face à quelque chose de plus grand que lui — avec les ressources qu'il avait.</p></div>
+<div class="fi" style="margin-top:4mm"></div>
+<div class="slbl">Les 7 étapes de création d'un masque</div>
+<div class="etapes">
+  <div class="etape"><div class="et-num">1</div><div><div class="et-titre">La blessure fondatrice</div><div class="et-txt">Un besoin fondamental n'est pas satisfait — être vu, aimé, protégé. Pas nécessairement une grande tragédie : une absence, une critique répétée, une humiliation. Suffisant pour que votre système nerveux grave : « dangereux ».</div></div></div>
+  <div class="etape"><div class="et-num">2</div><div><div class="et-titre">La prédiction automatique</div><div class="et-txt">L'enfant que vous étiez interprète à travers le filtre de la peur : « Si j'ai souffert, c'est parce que quelque chose en moi n'allait pas. » Une prédiction s'installe : <em>Si je suis moi-même, je souffrirai à nouveau.</em></div></div></div>
+  <div class="etape"><div class="et-num">3</div><div><div class="et-titre">L'invention du masque</div><div class="et-txt">Face à cette prédiction, l'enfant invente une stratégie : un comportement qui éloignerait le danger. Si je suis quelqu'un d'autre, je serai en sécurité. Il teste, retient ce qui semble marcher. Le masque est né.</div></div></div>
+  <div class="etape"><div class="et-num">4</div><div><div class="et-titre">La récompense immédiate</div><div class="et-txt">Le masque fonctionne — du moins au début. L'enfant obtient ce qu'il cherche. Son cerveau enregistre : <em>ce comportement = sécurité obtenue.</em> La récompense renforce le masque.</div></div></div>
+  <div class="etape"><div class="et-num">5</div><div><div class="et-titre">L'intensification par la répétition</div><div class="et-txt">Chaque utilisation réussie renforce les connexions neurologiques. Le masque s'étend progressivement à tous les contextes. Il devient une habitude ancrée, puis une façon d'être — et enfin une identité apparente.</div></div></div>
+  <div class="etape"><div class="et-num">6</div><div><div class="et-titre">La prédiction auto-réalisée</div><div class="et-txt">À l'âge adulte, le masque crée exactement ce qu'il cherchait à éviter. Le masque du rejet génère le rejet. Le masque du contrôle génère la distance. La boucle se referme — invisible de l'intérieur.</div></div></div>
+  <div class="etape"><div class="et-num">7</div><div><div class="et-titre">L'isolement et la souffrance chronique</div><div class="et-txt">Avec le temps : déconnexion de soi, relations de surface, épuisement, répétition des mêmes schémas. Jusqu'au moment où la souffrance devient assez claire pour qu'une question émerge : <em>Et si c'était le masque — pas moi ?</em></div></div></div>
+</div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="PSY-Vi-010.html">PSY-Vi-010 · Le faux self — Masque Violet</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+<div class="page">
+  <div class="bande-p2"></div>
+  <div class="entete"><div class="eh-g">
+    <div class="eh-fam">PSY · Réflexion · Séance 2</div>
+    <div class="eh-titre">Votre masque <em>personnel</em></div>
+    <div class="eh-sous">Comment ces étapes se sont jouées dans votre histoire</div>
+  </div>
+  <div class="eh-d">
+    <div class="eh-logo">V.A.L.E.U.R<sup>©</sup></div>
+    <div class="eh-code">PSY-XX-001 · p.2/2</div>
+  </div></div>
+  <div class="corps">
+<div class="bloc-or" style="margin-top:5mm">
+  <div class="bloc-or-titre">La bonne nouvelle</div>
+  <p>Les masques peuvent s'assouplir. Pas en les combattant — en les comprenant. D=e×r² — ce n'est pas l'émotion qui crée la souffrance. C'est la résistance à cette émotion, amplifiée au carré. Cesser de résister commence par voir.</p>
+</div>
+<div class="fi" style="margin-top:5mm"></div>
+<div class="slbl">Comment ce masque est apparu dans ma vie</div>
+<div class="q-bloc"><span class="q-txt">La situation qui a pu déclencher la création de mon masque :</span><div class="reglures"><div class="rl"></div><div class="rl"></div><div class="rl"></div></div></div>
+<div class="q-bloc"><span class="q-txt">La prédiction que j'ai construite à ce moment-là :</span><div class="reglures"><div class="rl"></div><div class="rl"></div></div></div>
+<div class="q-bloc"><span class="q-txt">Comment cette prédiction influence encore ma vie aujourd'hui :</span><div class="reglures"><div class="rl"></div><div class="rl"></div></div></div>
+<div class="mission">
+  <div class="mission-titre">Mission de la semaine</div>
+  <p>Cette semaine, identifiez <strong>une situation</strong> où votre masque s'est activé. Notez : le déclencheur · le comportement du masque · ce que vous vouliez vraiment à la place. Sans juger. Le voir, c'est déjà ne plus être entièrement dedans.</p>
+  <div class="mission-dur">15 minutes · un soir dans la semaine</div>
+</div>
+<div class="src">Source · Céline Bourbon — De la peur à la joie d'être soi, L'Harmattan 2024 · Modèle V.A.L.E.U.R©</div>
+<div class="spc"></div>
+<div class="z9"><span class="z9-lab">Prochaine étape</span><span class="z9-arr">→</span><span class="z9-txt"><a href="PSY-XX-011.html">PSY-XX-011 · Comprendre mon Score de Présence Authentique</a></span></div></div>
+  <div class="chroma"></div>
+</div>
+</body></html>
