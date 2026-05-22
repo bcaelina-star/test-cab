@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Bibliothèque V.A.L.E.U.R© — Fiches thérapeutiques</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#12100D;--bg2:#1C1912;--bg3:#252018;
+  --iv:#F0EBE1;--iv2:#D4CCBF;--iv3:#A89E90;
+  --or:#C9A84C;--or2:rgba(201,168,76,.15);--or3:rgba(201,168,76,.3);
+  --li:rgba(240,235,225,.1);--li2:rgba(240,235,225,.06);
+  --R:#B5312A;--O:#C4581F;--J:#B8930A;--V:#2D7A4F;--B:#1D5F8A;--I:#5C3280;--Vi:#7A3594;
+  --ch:linear-gradient(90deg,#B5312A,#C4581F,#B8930A,#2D7A4F,#1D5F8A,#5C3280,#7A3594);
+  --fs:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;
+  --r:4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--iv);font-family:var(--fb);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ── TOP ── */
+.chroma{height:3px;background:var(--ch);position:fixed;top:0;left:0;right:0;z-index:300}
+
+nav{position:fixed;top:3px;left:0;right:0;z-index:299;height:52px;background:rgba(18,16,13,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--li);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:var(--fs);font-size:13px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--or)}
+.nav-logo sup{font-size:7px;vertical-align:super}
+.nav-r{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.nav-sub{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--iv3);display:none}
+@media(min-width:640px){.nav-sub{display:block}}
+
+/* Filtres */
+.filters{display:flex;gap:3px;flex-wrap:wrap}
+.fb{background:none;border:1px solid var(--li);color:var(--iv2);font-family:var(--fb);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;cursor:pointer;transition:all .18s;border-radius:var(--r)}
+.fb:hover{border-color:var(--or3);color:var(--or);background:var(--or2)}
+.fb.on{border-color:var(--or);color:var(--or);background:var(--or2)}
+
+/* ── HERO ── */
+.hero{max-width:1060px;margin:0 auto;padding:clamp(90px,14vw,130px) clamp(16px,4vw,48px) 48px}
+.hero-flag{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.flag-bar{width:20px;height:2.5px;background:var(--ch)}
+.flag-txt{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--iv3)}
+h1{font-family:var(--fs);font-size:clamp(36px,6vw,70px);font-weight:300;line-height:.95;letter-spacing:-1px;margin-bottom:16px;color:var(--iv)}
+h1 em{font-style:italic;color:var(--or)}
+.hero-sub{font-family:var(--fs);font-size:clamp(14px,2vw,17px);font-style:italic;color:var(--iv2);max-width:520px;line-height:1.6;margin-bottom:36px}
+.kpis{display:flex;gap:clamp(20px,4vw,40px);padding-top:22px;border-top:1px solid var(--li);flex-wrap:wrap}
+.kpi{display:flex;flex-direction:column;gap:3px}
+.kpi-n{font-family:var(--fs);font-size:clamp(22px,3vw,28px);font-weight:300;color:var(--or);line-height:1}
+.kpi-l{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--iv3)}
+
+/* ── VOYAGE ── */
+.voyage{border-top:1px solid var(--li);border-bottom:1px solid var(--li);background:rgba(240,235,225,.02)}
+.voyage-in{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));padding:0 clamp(16px,4vw,48px)}
+.vs{padding:18px 20px;border-right:1px solid var(--li)}
+.vs:last-child{border-right:none}
+.vs-step{font-family:var(--fs);font-size:10px;font-style:italic;color:var(--or);margin-bottom:4px;opacity:.85}
+.vs-titre{font-family:var(--fs);font-size:15px;font-weight:400;color:var(--iv);margin-bottom:5px}
+.vs-desc{font-size:11px;color:var(--iv2);line-height:1.55}
+
+/* ── CATALOGUE ── */
+.cat{max-width:1060px;margin:0 auto;padding:48px clamp(16px,4vw,48px) 80px}
+
+/* Famille */
+.fam{margin-bottom:52px}
+.fam-hdr{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--li)}
+.fam-code{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--or);background:var(--or2);border:1px solid var(--or3);padding:3px 10px;border-radius:var(--r);flex-shrink:0}
+.fam-nom{font-family:var(--fs);font-size:clamp(17px,2.5vw,21px);font-weight:400;color:var(--iv)}
+.fam-nom em{font-style:italic;color:var(--iv2)}
+.fam-seq{margin-left:auto;font-size:9px;letter-spacing:.8px;color:var(--iv3);white-space:nowrap}
+
+/* Grille */
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.grille.lg{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+
+/* Carte */
+.carte{background:var(--bg2);border:1px solid var(--li);display:flex;flex-direction:column;transition:all .2s;text-decoration:none;color:inherit;border-radius:var(--r);overflow:hidden;cursor:pointer}
+.carte:hover{background:var(--bg3);border-color:rgba(240,235,225,.18);transform:translateY(-1px)}
+.carte.ok{border-color:rgba(201,168,76,.25)}
+.carte.ok:hover{border-color:rgba(201,168,76,.55)}
+.c-bande{height:3px;width:100%;flex-shrink:0}
+.c-top{padding:7px 12px;background:rgba(0,0,0,.2);display:flex;align-items:center;gap:7px}
+.c-dots{display:flex;gap:3px;align-items:center}
+.c-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.c-code{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--iv3)}
+.c-prio{margin-left:auto;font-size:9px;color:var(--or)}
+.c-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:5px}
+.c-cat{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--iv3);margin-bottom:1px}
+.c-peur{font-family:var(--fs);font-size:13.5px;font-weight:400;color:var(--iv);line-height:1.3}
+.c-force{font-size:9.5px;color:var(--iv2);line-height:1.5;margin-top:3px}
+.c-force strong{color:var(--or);font-weight:400}
+.c-foot{padding:7px 14px;border-top:1px solid var(--li2);display:flex;align-items:center;justify-content:space-between}
+.c-sea{font-size:8px;letter-spacing:.8px;color:var(--iv3)}
+.c-dl{font-size:8px;letter-spacing:1px;text-transform:uppercase}
+.c-dl.ok{color:var(--or)}
+.c-dl.np{color:var(--iv3)}
+
+/* Couleurs masques */
+.bR{background:var(--R)}.bO{background:var(--O)}.bJ{background:var(--J)}
+.bV{background:var(--V)}.bB{background:var(--B)}.bI{background:var(--I)}.bVi{background:var(--Vi)}
+.bOR{background:var(--or)}.bCH{background:var(--ch)}
+.bIV{background:linear-gradient(90deg,var(--I),var(--V))}
+.bViJ{background:linear-gradient(90deg,var(--Vi),var(--J))}
+.bJI{background:linear-gradient(90deg,var(--J),var(--I))}
+.bRJ{background:linear-gradient(90deg,var(--R),var(--J))}
+.bVO{background:linear-gradient(90deg,var(--V),var(--O))}
+.bBI{background:linear-gradient(90deg,var(--B),var(--I))}
+.bViV{background:linear-gradient(90deg,var(--Vi),var(--V))}
+.bViRJ{background:linear-gradient(90deg,var(--Vi),var(--R),var(--J))}
+.dR{background:var(--R)}.dO{background:var(--O)}.dJ{background:var(--J)}
+.dV{background:var(--V)}.dB{background:var(--B)}.dI{background:var(--I)}.dVi{background:var(--Vi)}.dOR{background:var(--or)}
+
+/* Footer */
+footer{border-top:1px solid var(--li);padding:22px clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+.ft{font-size:9px;letter-spacing:.4px;color:var(--iv3);line-height:1.7}
+.chroma-bt{height:3px;background:var(--ch)}
+</style>
+</head>
+<body>
+<div class="chroma"></div>
+<nav>
+  <div class="nav-logo">V.A.L.E.U.R<sup>©</sup></div>
+  <div class="nav-r">
+    <div class="filters">
+      <button class="fb on" onclick="filtrer('',this)">Toutes</button>
+      <button class="fb" onclick="filtrer('REV',this)">REV</button>
+      <button class="fb" onclick="filtrer('PSY',this)">PSY</button>
+      <button class="fb" onclick="filtrer('ACT',this)">ACT</button>
+      <button class="fb" onclick="filtrer('CMB',this)">CMB</button>
+      <button class="fb" onclick="filtrer('INT',this)">INT</button>
+      <button class="fb" onclick="filtrer('PRO',this)">PRO</button>
+      <button class="fb" onclick="filtrer('RIT',this)">RIT</button>
+    </div>
+    <span class="nav-sub">parcours.psyh.fr</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-flag"><div class="flag-bar"></div><span class="flag-txt">Bibliothèque thérapeutique imprimable · Usage praticien · parcours.psyh.fr</span></div>
+  <h1>De la peur<br>à la <em>joie d'être soi</em></h1>
+  <p class="hero-sub">7 masques de défense. 22 fiches initiales. Du premier choc de reconnaissance jusqu'aux forces libérées derrière chaque peur.</p>
+  <div class="kpis">
+    <div class="kpi"><span class="kpi-n">22</span><span class="kpi-l">Fiches initiales</span></div>
+    <div class="kpi"><span class="kpi-n">7</span><span class="kpi-l">Familles</span></div>
+    <div class="kpi"><span class="kpi-n">7</span><span class="kpi-l">Masques documentés</span></div>
+    <div class="kpi"><span class="kpi-n">100+</span><span class="kpi-l">Profils extensibles</span></div>
+  </div>
+</div>
+
+<div class="voyage">
+  <div class="voyage-in">
+    <div class="vs"><div class="vs-step">I · Révélation</div><div class="vs-titre">Le masque est nommé</div><div class="vs-desc">Le patient se reconnaît sans se juger. Premier choc de conscience — « C'est moi. »</div></div>
+    <div class="vs"><div class="vs-step">II · Compréhension</div><div class="vs-titre">Le sens émerge</div><div class="vs-desc">La naissance du masque, sa logique, son coût. « Je comprends pourquoi j'ai construit ça. »</div></div>
+    <div class="vs"><div class="vs-step">III · Activation</div><div class="vs-titre">Le protocole s'enclenche</div><div class="vs-desc">V · A · L · E · U · R — six mouvements vers la libération. « Je passe à l'action. »</div></div>
+    <div class="vs"><div class="vs-step">IV · Consolidation</div><div class="vs-titre">Les forces sont libérées</div><div class="vs-desc">Ce qui dormait derrière le masque est nommé, ancré, célébré. « Je suis plus que mon masque. »</div></div>
+  </div>
+</div>
+
+<div class="cat">
+
+<!-- REV -->
+<div class="fam" data-fam="REV">
+  <div class="fam-hdr">
+    <span class="fam-code">REV</span>
+    <span class="fam-nom">Révélation · <em>Portraits et miroirs de reconnaissance</em></span>
+    <span class="fam-seq">Séance 1–2</span>
+  </div>
+  <div class="grille">
+    <a class="carte ok" href="REV-R-00.html" data-fam="REV">
+      <div class="c-bande bR"></div><div class="c-top"><span class="c-dot dR"></span><span class="c-code">REV-R-00</span><span class="c-prio">★</span></div>
+      <div class="c-body"><div class="c-cat">Masque Rouge</div><div class="c-peur">La peur de la mort et de la maladie</div><div class="c-force"><strong>Force libérée :</strong> l'élan vital libéré de l'alarme de survie — habiter sa vie plutôt que la surveiller. Le goût de vivre dans l'ici et maintenant.</div></div>
+      <div class="c-foot"><span class="c-sea">Séance 1</span><span class="c-dl ok">Disponible →</span></div>
+    </a>
+    <a class="carte ok" href="REV-O-00.html" data-fam="REV">
+      <div class="c-bande bO"></div><div class="c-top"><span class="c-dot dO"></span><span class="c-code">REV-O-00</span></div>
+      <div class="c-body"><div class="c-cat">Masque Orange</div><div class="c-peur">La peur de la souffrance et des émotions douloureuses</div><div class="c-force"><strong>Force libérée :</strong> Sous ce masque vit quelqu'un d'une profondeur émotionnelle extraordinaire — précisément parce que la capacité à ressentir est tell</div></div>
+      <div class="c-foot"><span class="c-sea">Séance 1</span><span class="c-dl ok">Disponible →</span></div>
+    </a>
+    <a class="carte ok" href="REV-J-00.html" data-fam="REV">
+      <div class="c-bande bJ"></div><div class="c-top"><span class="c-dot dJ"></span><span class="c-code">REV-J-00</span></div>
+      <div class="c-body"><div class="c-cat">Masque Jaune</div><div class="c-peur">La peur de l'inconnu et de ce qui ne peut pas être contrôlé</div><div class="c-force"><strong>Force libérée :</strong> une confiance inébranlable et une action juste — plus besoin de garanties pour avancer. De l'anticipation paralysante à l'action confiante et intuitive.</div></div>
+      <div class="c-foot"><span class="c-sea">Séance 1</span><span class="c-dl ok">Disponible →</span></div>
+    </a>
+    <a class="carte ok" href="REV-V-00.html" data-fam="REV">
+      <div class="c-bande bV"></div><div class="c-top"><span class="c-dot dV"></span><span class="c-code">REV-V-00</span><span class="c-prio">★</span></div>
+      <div class="c-body"><div class="c-cat">Masque Vert</div><div class="c-peur">La peur du rejet et de l'abandon</div><div class="c-force"><strong>Force libérée :</strong> Sous ce masque vit quelqu'un d'une générosité profonde, d'une capacité de connexion rare, d'une sensibilité relationnelle qui est </div></div>
+      <div class="c-foot"><span class="c-sea">Séance 1</span><span class="c-dl ok">Disponible →</span></div>
+    </a>
+    <a class="carte ok" href="REV-B-00.html" data-fam="REV">
+      <div class="c-bande bB"></div><div class="c-top"><span class="c-dot dB"></span><span class="c-code">REV-B-00</span></div>
+      <div class="c-body"><div class="c-cat">Masque Bleu</div><div class="c-peur">La peur de l'impuissance et de la perte de maîtrise</div><div class="c-force"><strong>Force libérée :</strong> Sous ce masque vit quelqu'un d'un leadership authentique, d'une capacité à tenir et à inspirer qui est réelle — pas construite par</div></div>
+      <div class="c-foot"><span class="c-sea">Séance 1</span><span class="c-dl ok">Disponible →</span></div>
+    </a>
+    <a class="carte ok" href="REV-I-00.html" data-fam="REV">
+      <div class="c-bande bI"></div><div class="c-top"><span class="c-dot dI"></span><span class="c-code">REV-I-00</span><span class="c-prio">★</span></div>
+      <div class="c-body"><div class="c-cat">Masque Indigo</div><div class="c-peur">La peur de l'échec et de ne pas être à la hauteur</div><div class="c-force"><strong>Force libérée :</strong> une vision claire et une intuition affûtée — discernement libre, confiance en sa vision intérieure, sagesse de chaque expérience.</div></div>
+      <div class="c-foot"><span class="c-sea">Séance 1</span><span class="c-dl ok">Disponible →</span></div>
+    </a>
+    <a class="carte ok" href="REV-Vi-00.html" data-fam="REV">
+      <div class="c-bande bVi"></div><div class="c-top"><span class="c-dot dVi"></span><span class="c-code">REV-Vi-00</span><span class="c-prio">★★</span></div>
+      <div class="c-body"><div class="c-cat">Masque Violet</div><div class="c-peur">La peur d'être jugé·e sur qui l'on est, de ne plus savoir qui l'on est</div><div class="c-force"><strong>Force libérée :</strong> Sous ce masque vit quelqu'un d'une profondeur existentielle rare, d'une quête authentique de sens et d'une capacité à se transform</div></div>
+      <div class="c-foot"><span class="c-sea">Séance 1</span><span class="c-dl ok">Disponible →</span></div>
+    </a>
+    <div class="carte" data-fam="REV">
+      <div class="c-bande bCH"></div><div class="c-top"><div class="c-dots"><span class="c-dot dR"></span><span class="c-dot dJ"></span><span class="c-dot dVi"></span></div><span class="c-code">REV-DIFF-00</span><span class="c-prio">★★</span></div>
+      <div class="c-body"><div class="c-cat">Profil Adaptatif — pan-masques</div><div class="c-peur">6 à 7 masques actifs simultanément</div><div class="c-force"><strong>Force libérée :</strong> une adaptabilité exceptionnelle — quand l'énergie n'est plus dispersée dans toutes les peurs à la fois.</div></div>
+      <div class="c-foot"><span class="c-sea">Séance 2</span><span class="c-dl np">En préparation</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PSY -->
+<div class="fam" data-fam="PSY">
+  <div class="fam-hdr"><span class="fam-code">PSY</span><span class="fam-nom">Psychoéducation · <em>Sens, naissance et mécanique des masques</em></span><span class="fam-seq">Séance 2–4</span></div>
+  <div class="grille">
+    <div class="carte" data-fam="PSY"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">PSY-XX-001</span><span class="c-prio">★</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Naissance des masques — les 7 étapes de création</div><div class="c-force">D=e×r² — ce n'est pas l'émotion qui crée la souffrance, c'est la résistance amplifiée au carré.</div></div><div class="c-foot"><span class="c-sea">Séance 2</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="PSY"><div class="c-bande bVi"></div><div class="c-top"><span class="c-dot dVi"></span><span class="c-code">PSY-Vi-010</span><span class="c-prio">★★</span></div><div class="c-body"><div class="c-cat">Masque Violet</div><div class="c-peur">Le faux self — ce qui a été construit à la place de soi</div><div class="c-force">Winnicott 1960 — vers le vrai self : ce qui existait avant les rôles et les attentes.</div></div><div class="c-foot"><span class="c-sea">Séance 3</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="PSY"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">PSY-XX-011</span><span class="c-prio">★</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Comprendre mon Score de Présence Authentique</div><div class="c-force">Le SPA mesure l'espace psychique libre — plus il monte, plus vous êtes vous. Wood et al. 2008.</div></div><div class="c-foot"><span class="c-sea">Séance 4+</span><span class="c-dl np">En préparation</span></div></div>
+  </div>
+</div>
+
+<!-- ACT -->
+<div class="fam" data-fam="ACT">
+  <div class="fam-hdr"><span class="fam-code">ACT</span><span class="fam-nom">Activation · <em>Protocoles V.A.L.E.U.R© et défis inter-séances</em></span><span class="fam-seq">Semaine par semaine</span></div>
+  <div class="grille">
+    <div class="carte" data-fam="ACT"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">ACT-XX-001</span><span class="c-prio">★</span></div><div class="c-body"><div class="c-cat">Tous masques · Étape VOIR</div><div class="c-peur">Protocole VOIR — La conscience observatrice</div><div class="c-force">Sortir de la fusion avec le masque. Observer sans être emporté. La liberté commence par un centimètre de distance.</div></div><div class="c-foot"><span class="c-sea">Séance 4</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="ACT"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">ACT-XX-002</span><span class="c-prio">★</span></div><div class="c-body"><div class="c-cat">Tous masques · Étape ACCUEILLIR</div><div class="c-peur">Protocole ACCUEILLIR — 4 temps anti-résistance</div><div class="c-force">D=e×r² — cesser le combat. Recevoir ce qui est là sans l'amplifier par la résistance.</div></div><div class="c-foot"><span class="c-sea">Séance 5</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="ACT"><div class="c-bande bVi"></div><div class="c-top"><span class="c-dot dVi"></span><span class="c-code">ACT-Vi-050</span><span class="c-prio">★★</span></div><div class="c-body"><div class="c-cat">Masque Violet · Étape EXPLORER</div><div class="c-peur">La voix d'avant les rôles — retrouver ce qui existait avant</div><div class="c-force">Qui étiez-vous avant de jouer le jeu des attentes ? Cette voix n'a pas disparu.</div></div><div class="c-foot"><span class="c-sea">Séance 6</span><span class="c-dl np">En préparation</span></div></div>
+  </div>
+</div>
+
+<!-- CMB -->
+<div class="fam" data-fam="CMB">
+  <div class="fam-hdr"><span class="fam-code">CMB</span><span class="fam-nom">Combinaisons · <em>Dyades, triades et profils mixtes documentés</em></span><span class="fam-seq">Séance 3 · profils combinés</span></div>
+  <div class="grille lg">
+    <div class="carte" data-fam="CMB"><div class="c-bande bIV"></div><div class="c-top"><div class="c-dots"><span class="c-dot dI"></span><span class="c-dot dV"></span></div><span class="c-code">CMB-I+V-00</span><span class="c-prio">★★</span></div><div class="c-body"><div class="c-cat">Masque Indigo + Masque Vert</div><div class="c-peur">Peur de l'échec et peur du rejet — combinées</div><div class="c-force">Configuration la plus fréquente. FMPS + ECR-R. La honte de ne pas être à la hauteur amplifie la peur d'être rejeté pour ça.</div></div><div class="c-foot"><span class="c-sea">Séance 3</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="CMB"><div class="c-bande bViJ"></div><div class="c-top"><div class="c-dots"><span class="c-dot dVi"></span><span class="c-dot dJ"></span></div><span class="c-code">CMB-Vi+J-00</span><span class="c-prio">★★</span></div><div class="c-body"><div class="c-cat">Masque Violet + Masque Jaune</div><div class="c-peur">Peur d'être jugé·e sur qui l'on est et peur de l'inconnu — combinées</div><div class="c-force">L'identité rigide comme réponse à l'incertitude. IUS-12 + Winnicott 1960.</div></div><div class="c-foot"><span class="c-sea">Séance 3</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="CMB"><div class="c-bande bJI"></div><div class="c-top"><div class="c-dots"><span class="c-dot dJ"></span><span class="c-dot dI"></span></div><span class="c-code">CMB-J+I-00</span><span class="c-prio">★★</span></div><div class="c-body"><div class="c-cat">Masque Jaune + Masque Indigo</div><div class="c-peur">Peur de l'inconnu et peur de l'échec — combinées</div><div class="c-force">Ne pas commencer pour ne jamais échouer. IUS-12 + FMPS. La procrastination comme protection double.</div></div><div class="c-foot"><span class="c-sea">Séance 3</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="CMB"><div class="c-bande bRJ"></div><div class="c-top"><div class="c-dots"><span class="c-dot dR"></span><span class="c-dot dJ"></span></div><span class="c-code">CMB-R+J-00</span><span class="c-prio">★</span></div><div class="c-body"><div class="c-cat">Masque Rouge + Masque Jaune</div><div class="c-peur">Peur de la mort et peur de l'inconnu — combinées</div><div class="c-force">35–40 % des profils Rouge. SHAI + IUS-12. Chaque sensation corporelle déclenche un besoin de certitude impossible.</div></div><div class="c-foot"><span class="c-sea">Séance 3</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="CMB"><div class="c-bande bVO"></div><div class="c-top"><div class="c-dots"><span class="c-dot dV"></span><span class="c-dot dO"></span></div><span class="c-code">CMB-V+O-00</span><span class="c-prio">★</span></div><div class="c-body"><div class="c-cat">Masque Vert + Masque Orange</div><div class="c-peur">Peur du rejet et peur des émotions — combinées</div><div class="c-force">40–45 % des profils Vert. ECR-R + TAS-20. S'adapter pour plaire sans accès à ce que l'on ressent.</div></div><div class="c-foot"><span class="c-sea">Séance 3</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="CMB"><div class="c-bande bBI"></div><div class="c-top"><div class="c-dots"><span class="c-dot dB"></span><span class="c-dot dI"></span></div><span class="c-code">CMB-B+I-00</span><span class="c-prio">★</span></div><div class="c-body"><div class="c-cat">Masque Bleu + Masque Indigo</div><div class="c-peur">Peur de l'impuissance et peur de l'échec — combinées</div><div class="c-force">LOC + FMPS + NPI. La performance comme seul langage de valeur et de sécurité.</div></div><div class="c-foot"><span class="c-sea">Séance 3</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="CMB"><div class="c-bande bViV"></div><div class="c-top"><div class="c-dots"><span class="c-dot dVi"></span><span class="c-dot dV"></span></div><span class="c-code">CMB-Vi+V-00</span><span class="c-prio">★</span></div><div class="c-body"><div class="c-cat">Masque Violet + Masque Vert</div><div class="c-peur">Peur d'être jugé·e sur qui l'on est et peur du rejet — combinées</div><div class="c-force">Devenir ce que l'autre attend pour ne pas être rejeté — et ne plus savoir qui l'on est. Winnicott + ECR-R.</div></div><div class="c-foot"><span class="c-sea">Séance 3</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="CMB"><div class="c-bande bViRJ"></div><div class="c-top"><div class="c-dots"><span class="c-dot dVi"></span><span class="c-dot dR"></span><span class="c-dot dJ"></span></div><span class="c-code">CMB-Vi+R+J-00</span><span class="c-prio">★★</span></div><div class="c-body"><div class="c-cat">Masque Violet + Rouge + Jaune — Triade</div><div class="c-peur">Identité, corps et incertitude — trois peurs simultanées</div><div class="c-force">Configuration la plus complexe. Winnicott + SHAI + IUS-12. L'identité se fige pour tenir contre deux alarmes simultanées.</div></div><div class="c-foot"><span class="c-sea">Séance 3–4</span><span class="c-dl np">En préparation</span></div></div>
+  </div>
+</div>
+
+<!-- INT -->
+<div class="fam" data-fam="INT">
+  <div class="fam-hdr"><span class="fam-code">INT</span><span class="fam-nom">Intégration · <em>Bilans, consolidations et ancrage des avancées</em></span><span class="fam-seq">Tous les 4–6 séances</span></div>
+  <div class="grille">
+    <div class="carte" data-fam="INT"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">INT-XX-001</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Bilan d'étape — ce qui a bougé</div><div class="c-force">Nommer les transformations concrètes. Éviter la régression par l'ancrage narratif de chaque avancée.</div></div><div class="c-foot"><span class="c-sea">Séance 8</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="INT"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">INT-XX-002</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Journal de bord mensuel — évolution des scores</div><div class="c-force">Graphe SPA patient : visualiser la progression de la présence authentique dans le temps.</div></div><div class="c-foot"><span class="c-sea">Mensuel</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="INT"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">INT-XX-010</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Forces libérées — consolidation par masque</div><div class="c-force">Ce qui était caché derrière le masque était déjà votre force. VIA Character Strengths · Seligman 2004.</div></div><div class="c-foot"><span class="c-sea">Séance 8</span><span class="c-dl np">En préparation</span></div></div>
+  </div>
+</div>
+
+<!-- PRO -->
+<div class="fam" data-fam="PRO">
+  <div class="fam-hdr"><span class="fam-code">PRO</span><span class="fam-nom">Projection · <em>Autonomie, prévention de rechute et envol</em></span><span class="fam-seq">Fin de parcours</span></div>
+  <div class="grille">
+    <div class="carte" data-fam="PRO"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">PRO-XX-001</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Carte de mon prochain sommet — vision à 6 mois</div><div class="c-force">Projeter le patient dans son futur sans masque. Anticiper sans catastrophisme. Préparer l'envol.</div></div><div class="c-foot"><span class="c-sea">Séance 10+</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="PRO"><div class="c-bande bCH"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">PRO-XX-002</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Ma boussole pour les jours difficiles</div><div class="c-force">3 déclencheurs principaux identifiés. Un protocole de retour au calme pour ne pas repartir de zéro.</div></div><div class="c-foot"><span class="c-sea">Séance 10+</span><span class="c-dl np">En préparation</span></div></div>
+  </div>
+</div>
+
+<!-- RIT -->
+<div class="fam" data-fam="RIT">
+  <div class="fam-hdr"><span class="fam-code">RIT</span><span class="fam-nom">Rituels · <em>Passages, célébrations et clôtures symboliques</em></span><span class="fam-seq">Moments charnières</span></div>
+  <div class="grille">
+    <div class="carte" data-fam="RIT"><div class="c-bande bOR"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">RIT-XX-001</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Carte de bienvenue — première séance</div><div class="c-force">Marquer le début du voyage. Un rituel d'entrée conscient dans le processus.</div></div><div class="c-foot"><span class="c-sea">Séance 1</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="RIT"><div class="c-bande bOR"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">RIT-XX-002</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Rituel de passage — fin de phase I</div><div class="c-force">Marquer le seuil symbolique. Transformer le parcours en expérience mémorable et incarnée.</div></div><div class="c-foot"><span class="c-sea">Séance 6</span><span class="c-dl np">En préparation</span></div></div>
+    <div class="carte" data-fam="RIT"><div class="c-bande bOR"></div><div class="c-top"><span class="c-dot dOR"></span><span class="c-code">RIT-XX-010</span></div><div class="c-body"><div class="c-cat">Tous masques</div><div class="c-peur">Lettre de clôture du parcours</div><div class="c-force">Une lettre à soi dans 6 mois — ce que vous avez traversé, ce que vous êtes devenu·e.</div></div><div class="c-foot"><span class="c-sea">Séance finale</span><span class="c-dl np">En préparation</span></div></div>
+  </div>
+</div>
+
+</div><!-- /cat -->
+
+<footer>
+  <div class="ft">© Céline Bourbon · Méthode V.A.L.E.U.R© · cabinet psyH Bordeaux<br>De la peur à la joie d'être soi — Éditions L'Harmattan, 2024</div>
+  <div class="ft" style="text-align:right">parcours.psyh.fr · Usage praticien · Noindex<br>Bibliothèque interne V.A.L.E.U.R©</div>
+</footer>
+<div class="chroma-bt"></div>
+
+<script>
+function filtrer(fam,btn){
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.fam').forEach(f=>{
+    f.style.display=(!fam||f.dataset.fam===fam)?'':'none';
+  });
+}
+</script>
+</body>
+</html>
