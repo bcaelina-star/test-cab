@@ -4535,11 +4535,11 @@ async function buildPage(){
   } else if(profil.type==='pan'){
     profileTypeLabel = 'Profil Pan-masques — Suradaptation';
     profileDesc = 'Toutes vos défenses sont hautement actives. Ce n\'est pas une accumulation de faiblesses — c\'est le signe d\'une suradaptation permanente\u00a0: vous avez appris à répondre à chaque peur, à jouer chaque rôle, si bien que vous ne savez plus sur quelle version de vous-même vous appuyer pour exister. C\'est précisément ce que nomme le Masque Violet\u00a0: avoir tout construit pour survivre, et avoir perdu en chemin le contact avec votre essence. Votre portrait travaille toutes vos peurs — de la plus active à la moins active — pour retrouver ce qui, en vous, n\'a jamais cessé d\'être vrai.';
-  } else if(profil.type==='amplification'&&profil.subtype==='dyade'){
+  } else if((profil.type==='dyade'||profil.type==='amplification'&&profil.subtype==='dyade')){
     const dyadeData = gd(profil.masks[0],profil.masks[1]);
     profileTypeLabel = 'Amplification — Dyade';
     profileDesc = dyadeData ? `La dyade <strong>${dyadeData.n}</strong> crée une amplification de vos mécanismes défensifs. Ces deux masques se renforcent mutuellement.` : 'Deux masques en amplification mutuelle.';
-  } else if(profil.type==='amplification'&&profil.subtype==='triade'){
+  } else if((profil.type==='triade'||profil.type==='amplification'&&profil.subtype==='triade')){
     const triadeData = gt(profil.masks);
     profileTypeLabel = 'Amplification — Triade';
     profileDesc = triadeData ? `La triade <strong>${triadeData.n}</strong> — trois masques actifs simultanément, se renforçant mutuellement dans une configuration défensive complexe.` : 'Trois masques en amplification mutuelle.';
@@ -4576,7 +4576,7 @@ async function buildPage(){
     ${tiebreakNote}`;
 
   // Amplitude badge (dyade/triade)
-  if(profil.type==='amplification'){
+  if(profil.type==='dyade'||profil.type==='triade'||profil.type==='amplification'){
     const ampZone = document.getElementById('amplitude-zone');
     const subLabel = profil.subtype==='dyade'?'Dyade':'Triade';
     ampZone.innerHTML = `
@@ -4694,8 +4694,8 @@ async function buildPage(){
   // ── Récupération email ─────────────────────────────────────────────
   if(email){
     const recov = document.getElementById('recovery-zone');
-    recov.style.display='flex';
-    document.getElementById('email-display').textContent = email;
+    if(recov) recov.style.display='flex';
+    const _ed2=document.getElementById('email-display');if(_ed2)_ed2.textContent=email;
   }
 
   // ── Email EmailJS — prospect ou acheteur ──────────────────────────────
