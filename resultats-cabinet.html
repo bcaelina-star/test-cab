@@ -1537,71 +1537,64 @@ const TIEBREAK_ORDER = ['jaune','rouge','indigo','vert','bleu','orange','violet'
 
 function detectProfile(sc){
   const VALID=['rouge','orange','jaune','vert','bleu','indigo','violet'];
-  const sorted=VALID.map(k=>({key:k,pct:sc[k]||0})).sort((a,b)=>b.pct-a.pct);
-  const[m0,m1,m2]=sorted;
+  var sorted=VALID.map(function(k){return{key:k,pct:sc[k]||0};}).sort(function(a,b){return b.pct-a.pct;});
 
-  // ── ÉTAPE -1 : PROFIL ADAPTATIF ───────────────────────────────────
-  // Seuil scientifique : aucun masque n'atteint le niveau Significatif (≥50%)
-  // Fondement : instruments instruments cliniques validés — scores < 50%
-  // = absence de pertinence clinique sur ce domaine 
-  // Score global ≤ 192/448 (≤43%) = fonctionnement adaptatif documenté
+  // ── ÉTAPE 0 : ADAPTATIF ───────────────────────────────────────────
   var _globalMean=Math.round(VALID.reduce(function(s,k){return s+(sc[k]||0);},0)/7);
-  if(m0.pct<50){
-    // Sous-profil : Équilibré (tous < 30%) vs Vigilant (max 30-49%)
-    var _subtype=m0.pct<30?'equilibre':'vigilant';
-    return{type:'adaptatif',subtype:_subtype,masks:[m0.key],globalMean:_globalMean,all_sorted:sorted};
+  if(sorted[0].pct<50){
+    var _subtype=sorted[0].pct<30?'equilibre':'vigilant';
+    return{type:'adaptatif',subtype:_subtype,masks:[sorted[0].key],globalMean:_globalMean,all_sorted:sorted};
   }
 
-  // ── ÉTAPE 0 : EX-AEQUO AU SOMMET — DÉPARTAGE AUTOMATIQUE ──────────
-  // Algorithme fondé sur l'impact transdiagnostique documenté (Barlow, Carleton, Clark & Beck)
-  // Hiérarchie : JAUNE > ROUGE > INDIGO > VERT > BLEU > ORANGE > VIOLET
-  const TIEBREAK_ORDER=['jaune','rouge','indigo','vert','bleu','orange','violet'];
-  const top=sorted[0].pct;
-  const tied=sorted.filter(m=>m.pct===top);
+  // ── TIEBREAK : réordonner SANS return ────────────────────────────
+  var TIEBREAK_ORDER=['jaune','rouge','indigo','vert','bleu','orange','violet'];
+  var top=sorted[0].pct;
+  var tied=sorted.filter(function(m){return m.pct===top;});
   if(tied.length>=2){
-    // Parmi les masques à égalité, prendre celui le plus haut dans la hiérarchie
-    const tiedKeys=tied.map(m=>m.key);
-    const winner=TIEBREAK_ORDER.find(k=>tiedKeys.includes(k))||tiedKeys[0];
-    // Reconstruire sorted avec le winner en premier (réordonne les égaux)
-    const reordered=[
-      sorted.find(m=>m.key===winner),
-      ...sorted.filter(m=>m.key!==winner)
-    ];
-    // Retourner comme mono avec flag tiebreak pour affichage de la note
-    return{type:'residuel',masks:[winner],tiebreak:true,tiebreak_tied:tiedKeys,tiebreak_score:top,all_sorted:reordered};
+    var tiedKeys=tied.map(function(m){return m.key;});
+    var winner=TIEBREAK_ORDER.find(function(k){return tiedKeys.indexOf(k)>=0;})||tiedKeys[0];
+    sorted=[sorted.find(function(m){return m.key===winner;})].concat(sorted.filter(function(m){return m.key!==winner;}));
   }
+  var m0=sorted[0],m1=sorted[1],m2=sorted[2],m3=sorted[3];
 
   // ── ÉTAPE 1 : PAN-MASQUES ─────────────────────────────────────────
-  // Quand 6-7 masques ≥65% avec écart ≤20pts → profil pan-masques
-  // Masque dominant = Violet : la perte d'identité est le fond commun
-  // de toutes les peurs activées simultanément (Céline Bourbon, V.A.L.E.U.R©)
-  const above65=sorted.filter(m=>m.pct>=65);
-  if(above65.length>=6&&m0.pct<80&&(m0.pct-above65[above65.length-1].pct)<=20){
-    const panMasks=above65.map(m=>m.key);
-    // Violet toujours dominant pour les profils pan-masques
-    const panSorted=['violet',...panMasks.filter(k=>k!=='violet')];
-    return{type:'pan',masks:panSorted};
+  var above60=sorted.filter(function(m){return m.pct>=60;});
+  if(above60.length>=5&&(above60[0].pct-above60[above60.length-1].pct)<=20){
+    return{type:'pan',masks:above60.map(function(m){return m.key;}),all_sorted:sorted};
   }
 
-  // ── ÉTAPE 2 : MONO DOMINANT ───────────────────────────────────────
-  if(m0.pct>=80){
-    const secondary=m1&&m1.pct>=65?m1.key:undefined;
-    return{type:'mono',subtype:secondary?'dominant_secondaire':'dominant',masks:[m0.key],secondary};
+  // ── ÉTAPE 2 : TRIADE ─────────────────────────────────────────────
+  if(m0.pct>=60&&m1&&m1.pct>=55&&m2&&m2.pct>=55&&
+     (m0.pct-m2.pct)<=15&&
+     (!m3||m1.pct-m3.pct>10)){
+    return{type:'triade',masks:[m0.key,m1.key,m2.key],all_sorted:sorted};
   }
 
-  // ── ÉTAPE 3 : TRIADE ──────────────────────────────────────────────
-  if(m0.pct>=60&&m1&&m1.pct>=60&&m2&&m2.pct>=60&&(m0.pct-m2.pct)<=15){
-    return{type:'triade',masks:[m0.key,m1.key,m2.key]};
-  }
-
-  // ── ÉTAPE 4 : DYADE ───────────────────────────────────────────────
+  // ── ÉTAPE 3 : DYADE FORTE ────────────────────────────────────────
   if(m0.pct>=65&&m1&&m1.pct>=65&&(m0.pct-m1.pct)<=10){
-    const subtype=m2&&m2.pct>=55&&m2.pct<65?'dyade_tertiaire':'dyade';
-    return{type:'dyade',subtype,masks:[m0.key,m1.key]};
+    var dSub=m2&&m2.pct>=55&&m2.pct<65?'dyade_tertiaire':'dyade';
+    return{type:'dyade',subtype:dSub,masks:[m0.key,m1.key],
+           secondary:dSub==='dyade_tertiaire'?m2.key:undefined,all_sorted:sorted};
   }
 
-  // ── ÉTAPE 5 : RÉSIDUEL ────────────────────────────────────────────
-  return{type:'residuel',masks:[m0.key]};
+  // ── ÉTAPE 3b : DYADE MODÉRÉE ─────────────────────────────────────
+  if(m0.pct>=55&&m1&&m1.pct>=55&&(m0.pct-m1.pct)<=10){
+    return{type:'dyade',subtype:'dyade_moderee',masks:[m0.key,m1.key],all_sorted:sorted};
+  }
+
+  // ── ÉTAPE 4 : MONO ───────────────────────────────────────────────
+  if(m0.pct>=75){
+    var sec=m1&&m1.pct>=60&&(m0.pct-m1.pct)>10?m1.key:undefined;
+    return{type:'mono',subtype:sec?'dominant_secondaire':'dominant',
+           masks:[m0.key],secondary:sec,all_sorted:sorted};
+  }
+  if(m0.pct>=60){
+    var sec2=m1&&m1.pct>=50&&(m0.pct-m1.pct)>10?m1.key:undefined;
+    return{type:'mono',subtype:'fort',masks:[m0.key],secondary:sec2,all_sorted:sorted};
+  }
+
+  // ── ÉTAPE 5 : RÉSIDUEL ───────────────────────────────────────────
+  return{type:'residuel',masks:[m0.key],all_sorted:sorted};
 }
 
 
