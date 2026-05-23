@@ -194,7 +194,8 @@ textarea.inp{resize:vertical;min-height:72px;line-height:1.55}
       <div class="sb-sect">Outils</div>
       <button class="nav-btn" id="nav-gifts" onclick="V.router.go('gifts')"><span class="nav-ico">🎁</span><span>Codes cadeaux</span></button>
       <a class="nav-btn" href="./bib-index.html" target="_blank"><span class="nav-ico">📚</span><span>Bibliothèque</span></a>
-      <a class="nav-btn" href="https://questionnaire.psyh.fr" target="_blank"><span class="nav-ico">📋</span><span>Questionnaire</span></a>
+      <a class="nav-btn" href="./questionnaire.html" target="_blank"><span class="nav-ico">📋</span><span>Questionnaire cabinet</span></a>
+      <a class="nav-btn" href="https://questionnaire.psyh.fr" target="_blank"><span class="nav-ico">🌐</span><span>Questionnaire public</span></a>
     </nav>
     <div class="sb-foot">
       <button class="foot-btn" onclick="V.data.exportJSON()"><span>↓</span><span>Sauvegarder</span></button>
@@ -468,7 +469,8 @@ const V = {
   </div>
   <div class="qa">
     <a href="./bib-index.html" target="_blank" class="qa-btn"><span class="qa-ico">📚</span><span>Bibliothèque V.A.L.E.U.R©</span></a>
-    <a href="https://questionnaire.psyh.fr" target="_blank" class="qa-btn"><span class="qa-ico">📋</span><span>Questionnaire patient</span></a>
+    <a href="./questionnaire.html" target="_blank" class="qa-btn"><span class="qa-ico">📋</span><span>Questionnaire cabinet (gratuit)</span></a>
+    <a href="https://questionnaire.psyh.fr" target="_blank" class="qa-btn"><span class="qa-ico">🌐</span><span>Questionnaire public</span></a>
     <button onclick="V.router.go('gifts')" class="qa-btn"><span class="qa-ico">🎁</span><span>Codes cadeaux</span></button>
     <button onclick="V.router.go('patients')" class="qa-btn"><span class="qa-ico">👥</span><span>Tous les patients</span></button>
     <button onclick="V.data.exportJSON()" class="qa-btn"><span class="qa-ico">↓</span><span>Sauvegarder</span></button>
@@ -659,13 +661,20 @@ ${port?V.views.patient._portResult(port):''}`;
         const btn=event.target;btn.textContent='Chargement…';btn.disabled=true;
         const msg=document.getElementById('port-email-msg');msg.style.display='none';
         try{
-          const r=await fetch(API+'/get-scores?email='+encodeURIComponent(email),{headers:{'x-cabinet-secret':'valeur-cab-2026'}});
+          // Appel API sans header custom — même endpoint que resultats.html
+          const r=await fetch('https://valeur-backend-api.vercel.app/api/get-scores?email='+encodeURIComponent(email));
+          if(!r.ok) throw new Error('HTTP '+r.status);
           const data=await r.json();
-          if(!data.found||!data.scores)throw new Error();
-          V.views.patient._applyPortrait(pid,data.scores,data.prenom,data.spa,data.dominant,email);
+          // Réponse possible: {found, scores} ou {scores} ou scores directs
+          const scores=data.scores||data;
+          const found=data.found!==false&&scores&&Object.keys(scores).length>0;
+          if(!found) throw new Error('not_found');
+          V.views.patient._applyPortrait(pid,scores,data.prenom||'',data.spa||null,data.dominant||null,email);
           msg.style.display='block';msg.style.color='var(--v)';msg.textContent='✓ Portrait chargé et enregistré.';
-        }catch{
-          msg.style.display='block';msg.style.color='var(--r)';msg.textContent='Aucun résultat trouvé pour cet email.';
+        }catch(e){
+          const notFound=e.message==='not_found';
+          msg.style.display='block';msg.style.color='var(--r)';
+          msg.textContent=notFound?'Aucun résultat trouvé pour cet email. Le patient a-t-il passé le questionnaire ?':'Erreur de chargement ('+e.message+'). Réessayez.';
         }
         btn.textContent='Récupérer le portrait →';btn.disabled=false;
       },
@@ -680,10 +689,10 @@ ${port?V.views.patient._portResult(port):''}`;
           if(!gd||gd.valid===false&&gd.reason!=='Code déjà utilisé'){throw new Error('Code invalide');}
           const email=gd.email;
           if(!email)throw new Error('Email non trouvé dans le code');
-          const r2=await fetch(API+'/get-scores?email='+encodeURIComponent(email),{headers:{'x-cabinet-secret':'valeur-cab-2026'}});
+          const r2=await fetch('https://valeur-backend-api.vercel.app/api/get-scores?email='+encodeURIComponent(email));
           const sd=await r2.json();
-          if(!sd.found||!sd.scores)throw new Error('Scores non trouvés');
-          V.views.patient._applyPortrait(pid,sd.scores,sd.prenom,sd.spa,sd.dominant);
+          const gScores=(typeof sd.scores==='object')?sd.scores:sd;if(!gScores||!gScores.rouge)throw new Error('Scores non trouvés');
+          V.views.patient._applyPortrait(pid,sd.scores||sd,sd.prenom||'',sd.spa||null,sd.dominant||null,email);
           msg.style.display='block';msg.style.color='var(--v)';msg.textContent='✓ Portrait chargé depuis le code cadeau.';
         }catch(e){
           msg.style.display='block';msg.style.color='var(--r)';msg.textContent='Erreur : '+(e.message||'Code non trouvé');
@@ -695,6 +704,8 @@ ${port?V.views.patient._portResult(port):''}`;
         MASKS.forEach(m=>{scores[m]=parseInt(document.getElementById('sm-'+m).value)||0;});
         const spaVal=document.getElementById('sm-spa').value.trim();
         const spa=spaVal!==''?parseInt(spaVal):Math.round(100-MASKS.reduce((a,m)=>a+(scores[m]||0),0)/7);
+        // Sauver pour resultats-cabinet (questionnaire passé en cabinet)
+        localStorage.setItem('cab_preview_scores', JSON.stringify({scores,spa,prenom:''}));
         V.views.patient._applyPortrait(pid,scores,null,spa,null);
       },
       _applyPortrait(pid,scores,prenom,spaOverride,dominantOverride,_email){
@@ -726,9 +737,11 @@ ${port?V.views.patient._portResult(port):''}`;
             <div class="s-val">${port.scores[mk]||0}%</div>
           </div>`).join('');
         const email=port.email||'';
-        const portraitUrl=email
+        // Portrait complet = resultats.html ORIGINAL sur questionnaire.psyh.fr
+          // (a la logique de chargement Neon + admin bypass complet)
+          const portraitUrl=email
           ?`https://questionnaire.psyh.fr/resultats.html?portrait=unlocked&email=${encodeURIComponent(email)}&admin=VALEUR-ADMIN-2025`
-          :`https://questionnaire.psyh.fr/resultats.html?admin=VALEUR-ADMIN-2025`;
+          :`resultats-cabinet.html`;
         return`<div class="port-box" style="margin-top:14px;border-left:3px solid ${col}">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
             <div style="width:14px;height:14px;border-radius:50%;background:${col};flex-shrink:0"></div>
