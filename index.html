@@ -988,6 +988,8 @@ ${port?V.views.patient._portResult(port,pid):''}`;
         const r=await fetch(API+'/gifts?list=1&secret='+this._SECRET);
         const d=await r.json();
         if(!d.codes)throw new Error();
+        const _hidden=V.gift._getHidden();
+        d.codes=d.codes.filter(function(c){return!_hidden.includes(c.code);});
         const listEl=document.getElementById('gifts-list');
         if(!d.codes.length){listEl.innerHTML='<div class="card" style="text-align:center;padding:32px;color:var(--ink4)">Aucun code cadeau créé.</div>';return;}
         listEl.innerHTML=d.codes.map(c=>`<div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -1004,6 +1006,8 @@ ${port?V.views.patient._portResult(port,pid):''}`;
       if(!email)return;
       window.open('https://questionnaire.psyh.fr/resultats.html?admin=VALEUR-ADMIN-2025&email='+encodeURIComponent(email),'_blank');
     },
+    _getHidden(){try{return JSON.parse(localStorage.getItem('cab_hidden_gifts')||'[]');}catch{return[];}},
+    _hideCode(code){var h=this._getHidden();if(!h.includes(code)){h.push(code);localStorage.setItem('cab_hidden_gifts',JSON.stringify(h));}V.gift.renderView();},
     async _revoke(code){
       if(!confirm('Révoquer ce code ?'))return;
       try{
