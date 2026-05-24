@@ -704,9 +704,14 @@ ${port?V.views.patient._portResult(port):''}`;
         MASKS.forEach(m=>{scores[m]=parseInt(document.getElementById('sm-'+m).value)||0;});
         const spaVal=document.getElementById('sm-spa').value.trim();
         const spa=spaVal!==''?parseInt(spaVal):Math.round(100-MASKS.reduce((a,m)=>a+(scores[m]||0),0)/7);
-        // Sauver pour resultats-cabinet (questionnaire passé en cabinet)
-        localStorage.setItem('cab_preview_scores', JSON.stringify({scores,spa,prenom:''}));
-        V.views.patient._applyPortrait(pid,scores,null,spa,null);
+        // Récupérer prenom+email depuis la fiche patient
+        const _pat=(V.data.getPatients()||[]).find(p=>p.id===pid)||{};
+        const _prenom=_pat.prenom||'';
+        const _email=_pat.email||'';
+        // 1. Sauvegarder le portrait dans la fiche (→ synchro Neon via patients.js)
+        V.views.patient._applyPortrait(pid,scores,_prenom,spa,null,_email);
+        // 2. Bridge localStorage pour resultats-cabinet (fallback si Neon lent)
+        localStorage.setItem('cab_preview_scores',JSON.stringify({scores,spa,prenom:_prenom,email:_email,patientId:pid}));
       },
       _applyPortrait(pid,scores,prenom,spaOverride,dominantOverride,_email){
         const sorted=[...MASKS].sort((a,b)=>(scores[b]||0)-(scores[a]||0));
@@ -739,9 +744,11 @@ ${port?V.views.patient._portResult(port):''}`;
         const email=port.email||'';
         // Portrait complet = resultats.html ORIGINAL sur questionnaire.psyh.fr
           // (a la logique de chargement Neon + admin bypass complet)
+          // Portrait par email (patient public) → questionnaire.psyh.fr
+          // Portrait manuel (cabinet) → resultats-cabinet.html avec patientId pour chargement Neon
           const portraitUrl=email
           ?`https://questionnaire.psyh.fr/resultats.html?portrait=unlocked&email=${encodeURIComponent(email)}&admin=VALEUR-ADMIN-2025`
-          :`resultats-cabinet.html`;
+          :`resultats-cabinet.html?patientId=${pid}&portrait=unlocked`;
         return`<div class="port-box" style="margin-top:14px;border-left:3px solid ${col}">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
             <div style="width:14px;height:14px;border-radius:50%;background:${col};flex-shrink:0"></div>
