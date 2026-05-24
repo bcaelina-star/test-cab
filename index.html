@@ -718,19 +718,30 @@ ${port?V.views.patient._portResult(port,pid):''}`;
         }
         btn.textContent='Charger le portrait →';btn.disabled=false;
       },
+      
+    _scoresUrl(scores,spa,prenom,pid){
+      const base='resultats-cabinet.html';
+      const masks=['rouge','orange','jaune','vert','bleu','indigo','violet'];
+      const parts=masks.map(m=>m+'='+(scores[m]||0));
+      if(spa!=null) parts.push('spa='+spa);
+      if(prenom) parts.push('prenom='+encodeURIComponent(prenom));
+      if(pid) parts.push('patientId='+encodeURIComponent(pid));
+      parts.push('portrait=unlocked');
+      return base+'?'+parts.join('&');
+    },
       _saveManual(pid){
         const scores={};
         MASKS.forEach(m=>{scores[m]=parseInt(document.getElementById('sm-'+m).value)||0;});
         const spaVal=document.getElementById('sm-spa').value.trim();
         const spa=spaVal!==''?parseInt(spaVal):Math.round(100-MASKS.reduce((a,m)=>a+(scores[m]||0),0)/7);
-        // Récupérer prenom+email depuis la fiche patient
         const _pat=(V.data.getPatients()||[]).find(p=>p.id===pid)||{};
         const _prenom=_pat.prenom||'';
         const _email=_pat.email||'';
-        // 1. Sauvegarder le portrait dans la fiche (→ synchro Neon via patients.js)
+        // Sauvegarder en local + Neon
         V.views.patient._applyPortrait(pid,scores,_prenom,spa,null,_email);
-        // 2. Bridge localStorage pour resultats-cabinet (fallback si Neon lent)
-        localStorage.setItem('cab_preview_scores',JSON.stringify({scores,spa,prenom:_prenom,email:_email,patientId:pid}));
+        // Ouvrir le portrait directement avec les scores dans l'URL — zéro localStorage
+        const url=V.views.patient._scoresUrl(scores,spa,_prenom,pid);
+        window.open(url,'_blank');
       },
       _applyPortrait(pid,scores,prenom,spaOverride,dominantOverride,_email){
         const sorted=[...MASKS].sort((a,b)=>(scores[b]||0)-(scores[a]||0));
@@ -761,13 +772,10 @@ ${port?V.views.patient._portResult(port,pid):''}`;
             <div class="s-val">${port.scores[mk]||0}%</div>
           </div>`).join('');
         const email=port.email||'';
-        // Portrait complet = resultats.html ORIGINAL sur questionnaire.psyh.fr
-          // (a la logique de chargement Neon + admin bypass complet)
-          // Portrait par email (patient public) → questionnaire.psyh.fr
-          // Portrait manuel (cabinet) → resultats-cabinet.html avec patientId pour chargement Neon
-          const portraitUrl=email
+        // URL portrait : si email → public (Neon scores). Si manuel → scores dans URL directement
+        const portraitUrl=email
           ?`https://questionnaire.psyh.fr/resultats.html?portrait=unlocked&email=${encodeURIComponent(email)}&admin=VALEUR-ADMIN-2025`
-          :`resultats-cabinet.html?patientId=${pid}&portrait=unlocked`;
+          :V.views.patient._scoresUrl(port.scores,port.spa,port.prenom||'',pid);
         return`<div class="port-box" style="margin-top:14px;border-left:3px solid ${col}">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
             <div style="width:14px;height:14px;border-radius:50%;background:${col};flex-shrink:0"></div>
