@@ -1578,6 +1578,163 @@ function detectProfile(sc){
 }
 
 
+// ══ PAN-MASQUES — construction depuis dyades & triades validées ═══════════════
+
+// Message sanitaire (spread ≤ 10%) — déontologique, non inventé
+var PAN_HEALTH_MSG =
+  '<div style="background:rgba(29,95,138,.08);border-left:3px solid #1D5F8A;border-radius:6px;padding:20px 22px;margin:24px 0;font-size:14px;line-height:1.8;color:#1A1714">' +
+  '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1D5F8A;margin-bottom:12px">Un mot sur ce que r\u00e9v\u00e8le ce profil</div>' +
+  '<p style="margin-bottom:10px">Votre questionnaire montre que votre syst\u00e8me nerveux est tr\u00e8s sollicit\u00e9 en ce moment\u00a0\u2014 plusieurs m\u00e9canismes de protection actifs en m\u00eame temps, \u00e0 un niveau \u00e9lev\u00e9.</p>' +
+  '<p style="margin-bottom:10px"><strong>V.A.L.E.U.R\u00a9 est une m\u00e9thode psycho\u00e9ducative</strong>\u00a0: elle peut vous aider \u00e0 mieux comprendre comment vous fonctionnez\u00a0\u2014 mais elle n\u2019est pas con\u00e7ue pour accompagner seule les situations de tension intense ou de stress durable. Ce n\u2019est pas un protocole de gestion de crise, et ce questionnaire ne constitue en aucun cas un diagnostic.</p>' +
+  '<p style="margin-bottom:10px">Si vous vous reconnaissez dans ce niveau d\u2019activation, la premi\u00e8re chose que nous vous encourageons \u00e0 faire est simplement <strong>d\u2019en parler \u00e0 une personne de confiance</strong>\u00a0\u2014 quelqu\u2019un dans votre entourage avec qui vous vous sentez en s\u00e9curit\u00e9.</p>' +
+  '<p>Si cette tension persiste, un accompagnement orient\u00e9 vers la <strong>r\u00e9gulation \u00e9motionnelle</strong> peut vous aider \u00e0 retrouver davantage de calme int\u00e9rieur et de marge de man\u0153uvre. Vous n\u2019avez pas \u00e0 traverser \u00e7a seul\u00b7e.</p>' +
+  '</div>';
+
+function buildPanMasqueReport(profile, scores, prenom, isGift) {
+  var top3 = profile.masks.slice(0,3);
+  var satellites = profile.masks.slice(3);
+  var subtype = profile.subtype||'generalise';
+  var spread = typeof profile.spread==='number'?profile.spread:0;
+
+  // ── Spread intro (décrit le niveau d'activation — pas de texte inventé) ──
+  var SPREAD_TITRES = {ultra_plat:'Suradaptation Totale',generalise:'Activation G\u00e9n\u00e9ralis\u00e9e',structure:'Diffusion Structur\u00e9e'};
+  var SPREAD_DESCS = {
+    ultra_plat: "Votre profil pr\u00e9sente une activation \u00e9quivalente et simultan\u00e9e de l\u2019ensemble de vos syst\u00e8mes d\u00e9fensifs. Votre syst\u00e8me nerveux r\u00e9pond \u00e0 toutes les classes de menace au m\u00eame niveau d\u2019intensit\u00e9\u00a0\u2014 aucun masque ne domine, ils s\u2019alimentent mutuellement dans un \u00e9tat de vigilance permanente.",
+    generalise: "Votre profil r\u00e9v\u00e8le une activation diffuse de l\u2019ensemble de vos d\u00e9fenses, avec une l\u00e9g\u00e8re organisation autour de trois masques principaux. Votre syst\u00e8me nerveux maintient une vigilance active sur plusieurs registres simultan\u00e9ment.",
+    structure:  "Votre profil montre une activation \u00e9tendue de vos syst\u00e8mes d\u00e9fensifs, avec une triade de masques l\u00e9g\u00e8rement plus intenses. Les masques actifs cr\u00e9ent un r\u00e9seau d\u2019amplification mutuelle, sans qu\u2019aucun soit suffisamment dominant pour structurer seul la dynamique."
+  };
+  var spreadTitre = SPREAD_TITRES[subtype]||SPREAD_TITRES.generalise;
+  var spreadDesc  = SPREAD_DESCS[subtype]||SPREAD_DESCS.generalise;
+
+  var mc0=MASK_META[top3[0]]||{color:'#9E948A',name:top3[0],peur:''};
+  var mc1=MASK_META[top3[1]]||{color:'#9E948A',name:top3[1],peur:''};
+  var mc2=MASK_META[top3[2]]||{color:'#9E948A',name:top3[2],peur:''};
+
+  // ── TRIADE-CŒUR : lookup table validée V.A.L.E.U.R© ─────────────────────
+  var triadeData = gt(top3);
+
+  // ── Si pas de triade documentée : 3 dyades composantes (toutes validées) ──
+  var coreDyades = null;
+  if(!triadeData){
+    coreDyades = [
+      [top3[0],top3[1]], [top3[0],top3[2]], [top3[1],top3[2]]
+    ].map(function(pair){
+      var d=gd(pair[0],pair[1]);
+      return d?{a:pair[0],b:pair[1],data:d}:null;
+    }).filter(Boolean);
+  }
+
+  // ── Score bars ───────────────────────────────────────────────────────────
+  var barsHtml = profile.masks.map(function(k){
+    var m=MASK_META[k]||{color:'#9E948A',name:k};
+    var pct=scores[k]||0;
+    return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.05)">' +
+      '<div style="width:96px;font-size:12px;font-weight:500;color:'+m.color+';flex-shrink:0">'+m.name+'</div>' +
+      '<div style="flex:1;background:rgba(0,0,0,.07);border-radius:4px;height:8px;overflow:hidden">' +
+        '<div style="width:'+pct+'%;background:'+m.color+';height:100%;border-radius:4px"></div>' +
+      '</div>' +
+      '<div style="width:36px;font-size:12px;font-weight:600;color:'+m.color+';text-align:right;flex-shrink:0">'+pct+'%</div>' +
+    '</div>';
+  }).join('');
+
+  // ── CŒUR HTML ────────────────────────────────────────────────────────────
+  var coreHtml;
+  if(triadeData){
+    coreHtml =
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:8px">Triade-c\u0153ur \u2014 Configuration centrale document\u00e9e</div>' +
+      '<div style="font-family:Georgia,serif;font-size:18px;font-style:italic;color:#1A1714;margin-bottom:12px">'+triadeData.n+'</div>' +
+      '<div style="font-size:13px;color:#4A4138;line-height:1.75">' +
+        'Parmi vos masques actifs, <strong style="color:'+mc0.color+'">'+mc0.name+'</strong>, <strong style="color:'+mc1.color+'">'+mc1.name+'</strong> et <strong style="color:'+mc2.color+'">'+mc2.name+'</strong> forment le c\u0153ur de votre profil. ' +
+        "Ces trois masques se renforcent mutuellement\u00a0: quand l\u2019un s\u2019active, il tend \u00e0 amplifier les deux autres, cr\u00e9ant une boucle de renforcement au c\u0153ur de votre dynamique d\u00e9fensive." +
+      '</div>';
+  } else if(coreDyades&&coreDyades.length){
+    var cdHtml = coreDyades.map(function(item){
+      var mA=MASK_META[item.a]||{color:'#9E948A',name:item.a};
+      var mB=MASK_META[item.b]||{color:'#9E948A',name:item.b};
+      return '<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05)">' +
+        '<div style="flex-shrink:0;width:8px;height:8px;border-radius:50%;background:'+mA.color+';margin-top:5px"></div>' +
+        '<div><div style="font-size:13px;font-weight:600;color:#1A1714;margin-bottom:2px">'+item.data.n+'</div>' +
+        '<div style="font-size:12px;color:#4A4138">'+mA.name+' + '+mB.name+' \u2014 '+item.data.b1+' \u00b7 '+item.data.b2+'</div></div>' +
+      '</div>';
+    }).join('');
+    coreHtml =
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:8px">Configuration centrale \u2014 Trois dynamiques en amplification</div>' +
+      '<div style="font-size:13px;color:#4A4138;line-height:1.75;margin-bottom:10px">' +
+        'Votre configuration centrale repose sur l\u2019amplification mutuelle de trois dynamiques document\u00e9es V.A.L.E.U.R\u00a9\u00a0:' +
+      '</div>' + cdHtml;
+  } else {
+    coreHtml = '<div style="font-size:13px;color:#4A4138">Configuration multi-masques \u2014 '+mc0.name+', '+mc1.name+', '+mc2.name+'</div>';
+  }
+
+  // ── SATELLITES : lookup dyades validées avec chaque masque cœur ──────────
+  var satItemsHtml = satellites.map(function(s){
+    var sMeta=MASK_META[s]||{color:'#9E948A',name:s};
+    var sPct=scores[s]||0;
+    var links=top3.map(function(core){
+      var d=gd(s,core);
+      var cMeta=MASK_META[core]||{color:'#9E948A',name:core};
+      return d?{cMeta:cMeta,dyade:d}:null;
+    }).filter(Boolean);
+    if(!links.length)return '';
+    var linksHtml=links.map(function(lk){
+      return '<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.04)">' +
+        '<div style="flex-shrink:0;font-size:11px;color:'+lk.cMeta.color+';font-weight:600;width:80px;padding-top:1px">+'+lk.cMeta.name.replace('Masque ','')+'</div>' +
+        '<div><span style="font-size:12px;font-weight:600;color:#1A1714">'+lk.dyade.n+'</span>' +
+        '<span style="font-size:12px;color:#8C8278"> \u2014 '+lk.dyade.b1+' \u00b7 '+lk.dyade.b2+'</span></div>' +
+      '</div>';
+    }).join('');
+    return '<div style="padding:12px 0;border-bottom:1px solid rgba(0,0,0,.08)">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+        '<div style="width:8px;height:8px;border-radius:50%;background:'+sMeta.color+';flex-shrink:0"></div>' +
+        '<div style="font-size:14px;font-weight:600;color:'+sMeta.color+'">'+sMeta.name+'</div>' +
+        '<span style="font-size:12px;color:#8C8278">\u00a0'+sPct+'%\u00a0\u2014 r\u00e9sonances document\u00e9es avec la triade-c\u0153ur\u00a0:</span>' +
+      '</div>' + linksHtml + '</div>';
+  }).filter(Boolean).join('');
+
+  var satHtml = satItemsHtml ? (
+    '<div style="background:#fff;border-radius:8px;padding:18px 20px;margin-bottom:16px;border:1px solid #DDD8CF">' +
+    '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:10px">Masques satellites \u2014 R\u00e9sonances document\u00e9es</div>' +
+    '<div style="font-size:13px;color:#4A4138;line-height:1.7;margin-bottom:8px">Chaque masque satellite entre en r\u00e9sonance avec la configuration centrale via des dynamiques valid\u00e9es V.A.L.E.U.R\u00a9\u00a0:</div>' +
+    satItemsHtml + '</div>'
+  ) : '';
+
+  var gradient='linear-gradient(135deg,'+mc0.color+'1A 0%,'+mc1.color+'1A 50%,'+mc2.color+'1A 100%)';
+  var giftHtml=isGift?'<div style="background:rgba(168,135,58,.1);border:1px solid rgba(168,135,58,.3);border-radius:6px;padding:8px 16px;text-align:center;font-size:11px;color:#A8873A;letter-spacing:1px;margin-bottom:16px;font-weight:600">\uD83C\uDF81 Portrait offert \u2014 Acc\u00e8s partenaire V.A.L.E.U.R\u00a9</div>':'';
+  var coreTitle = triadeData ? triadeData.n : (mc0.name+' \u00b7 '+mc1.name+' \u00b7 '+mc2.name);
+
+  var html = giftHtml +
+    '<div style="background:'+gradient+';border-radius:12px;padding:28px 24px;margin-bottom:20px;border:1px solid rgba(0,0,0,.08)">' +
+      '<div style="font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8C8278;margin-bottom:6px">Profil V.A.L.E.U.R\u00a9</div>' +
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:'+mc0.color+';margin-bottom:6px">Pan-Masques \u2014 '+spreadTitre+'</div>' +
+      '<div style="font-family:Georgia,serif;font-size:20px;font-weight:300;color:#1A1714;font-style:italic;margin-bottom:12px">'+coreTitle+'</div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+        top3.map(function(k){var m=MASK_META[k]||{color:'#9E948A',name:k};return '<span style="background:'+m.color+'22;border:1px solid '+m.color+'55;color:'+m.color+';font-size:11px;padding:3px 10px;border-radius:12px;font-weight:600">'+m.name+'</span>';}).join('') +
+      '</div>' +
+    '</div>' +
+    '<div style="background:#FAF8F4;border-radius:8px;padding:18px 20px;margin-bottom:16px;font-size:14px;line-height:1.8;color:#4A4138">' +
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:8px">Ce que votre profil r\u00e9v\u00e8le</div>' +
+      spreadDesc +
+    '</div>' +
+    '<div style="background:#fff;border-radius:8px;padding:18px 20px;margin-bottom:16px;border:1px solid #DDD8CF">' +
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:12px">Activation par masque</div>' +
+      barsHtml +
+    '</div>' +
+    '<div style="background:#fff;border-radius:8px;padding:18px 20px;margin-bottom:16px;border:1px solid #DDD8CF">' +
+      coreHtml +
+    '</div>' +
+    satHtml +
+    (spread<=10?PAN_HEALTH_MSG:'');
+
+  var rw=document.getElementById('premium-report-wrap');
+  if(!rw){rw=document.createElement('div');rw.id='premium-report-wrap';document.body.appendChild(rw);}
+  rw.innerHTML=html;rw.style.display='block';rw.style.maxWidth='900px';rw.style.margin='0 auto';rw.style.padding='20px 16px';
+  var _l=document.getElementById('loading');if(_l)_l.style.display='none';
+  var _a=document.getElementById('app');if(_a)_a.style.display='block';
+  var _pw=document.getElementById('paywall-section');if(_pw)_pw.style.display='none';
+  var _pt=document.getElementById('portrait');if(_pt)_pt.style.display='none';
+  var _fab=document.getElementById('pdf-fab');if(_fab)_fab.style.display='block';
+}
+
 // ══ DYADES (21 combinaisons) ════════════════════════════════════════════════
 const DYADES = {};
 function sd(key,data){DYADES[key]=data;}
@@ -1586,9 +1743,9 @@ sd('orange+rouge',{n:'Le Corps qui se Tait',b1:'Hypervigilance somatique',b2:'É
 sd('jaune+rouge',{n:'L\'Alerte Permanente',b1:'Anxiété de santé',b2:'Intolérance à l\'incertitude'});
 sd('rouge+vert',{n:'La Vigilance Relationnelle',b1:'Anxiété somatique',b2:'Peur du rejet'});
 sd('bleu+rouge',{n:'Le Corps sous Contrôle',b1:'Hypervigilance somatique',b2:'Besoin de maîtrise'});
-sd('indigo+rouge',{n:'La Performance ou la Catastrophe',b1:'Anxiété santé',b2:'Peur de l\'échec'});
-sd('rouge+violet',{n:'L\'Existence Menacée',b1:'Peur de mourir',b2:'Peur de ne pas exister'});
-sd('jaune+orange',{n:'L\'Incertitude du Dedans',b1:'Alexithymie',b2:'Intolérance à l\'imprévu'});
+sd('indigo+rouge',{n:'L\'Angoisse de Performance',b1:'Anxiété santé',b2:'Peur de l\'échec'});
+sd('rouge+violet',{n:'Corps et Identité en Alerte',b1:'Peur de mourir',b2:'Peur de ne pas exister'});
+sd('jaune+orange',{n:'La Rumination Détachée',b1:'Rumination cognitive constante',b2:'Déconnexion émotionnelle'});
 sd('orange+vert',{n:'La Peur d\'Être Vu',b1:'Évitement émotionnel',b2:'Peur du rejet'});
 sd('bleu+orange',{n:'La Maîtrise sans Ressenti',b1:'Évitement émotionnel',b2:'Besoin de contrôle'});
 sd('indigo+orange',{n:'L\'Exigence Invisible',b1:'Alexithymie',b2:'Perfectionnisme'});
@@ -1688,7 +1845,17 @@ const PLAYLIST={
   vert:{peur:"le rejet et l\'abandon",bridge:"Ce que vos réponses dessinent : une <strong>sensibilité extrême aux signaux relationnels</strong>. Votre système nerveux a appris à surveiller en permanence les humeurs, les silences, les tonalités des autres — pour éviter la rupture. Ce radar fonctionne même avec des personnes bienveillantes, même quand rien ne menace le lien.",thoughts:["Qu\'est-ce qu\'ils pensent de moi ?","J\'ai sûrement dit quelque chose qui a mal passé.","Et s\'ils finissaient par se lasser de moi ?","Mieux vaut m\'adapter — si je prends trop de place, ils vont partir."]},
   bleu:{peur:"l\'impuissance et la perte de maîtrise",bridge:"Ce que vos réponses dessinent : un <strong>besoin de maîtriser les situations et les personnes</strong> autour de vous. Votre système nerveux a appris que lâcher prise exposait à l\'échec ou à l\'effondrement. Ce réflexe de contrôle s\'active même là où vous pourriez, en réalité, vous permettre de vous reposer.",thoughts:["Si je ne contrôle pas ça, ça va partir en vrille.","Les autres ne font jamais comme il faut.","Je dois vérifier, reprendre, corriger — sinon ça rate.","Je ne peux pas me permettre de ne pas être indispensable."]},
   indigo:{peur:"l\'échec et le sentiment d\'imposture",bridge:"Ce que vos réponses dessinent : une <strong>voix intérieure particulièrement sévère</strong> qui évalue, remet en question, anticipe le jugement des autres. Votre système nerveux a appris que cette exigence envers vous-même vous protégerait de l\'échec et du regard critique. Elle vous pousse — mais elle vous épuise davantage qu\'elle ne vous protège.",thoughts:["Ce n\'est pas assez bien. Je dois retravailler ça.","On va finir par voir que je ne mérite pas ma place.","C\'était la chance — pas ma compétence réelle.","Je ne peux pas commencer tant que je ne suis pas prêt(e)."]},
-  violet:{peur:"la perte de soi et du changement",bridge:"Ce que vos réponses dessinent : une <strong>résistance profonde au changement et à l\'inconnu de soi</strong>. Votre système nerveux a appris que maintenir des rôles stables et des routines connues était la meilleure façon de rester entier·e. Ce mécanisme vous stabilise — mais il peut aussi vous maintenir dans une vie qui ne vous ressemble plus.",thoughts:["Je suis coincé(e) dans cette vie.","Je ne sais plus vraiment qui je suis.","Si je change, je vais me perdre — ou perdre les autres.","Mieux vaut maintenir ce que je connais, même si ça me pèse."]}
+  violet:{
+    peur:"d’être jugé·e ou attaqué·e sur qui l’on est — et de ne pas être aimé·e pour ce qu’on est vraiment",
+    descriptor:"Sensibilité et lucidité profondes",
+    bridge:"Ce que vos réponses dessinent : une <strong>hypersensibilité et hyperadaptabilité profondes</strong> — un profil caméléon. Vous avez appris très tôt qu’être vraiment soi comportait un risque — celui d’être rejeté, incompris, jugé. Alors vous avez construit une version de vous-même qui serait acceptée. Brillante dans ses adaptations. Et profondément seule, car jamais vraiment vue.",
+    origine:"Quelque part dans votre histoire, il a été plus sûr de s’adapter que d’exister. Ce que votre système nerveux a retenu : <em>pour être aimé·e, il faut d’abord être acceptable.</em> Et ‘acceptable’ ne voulait pas dire vous-même.",
+    prison:"Le Masque Violet est le plus silencieux. Il agit en effacement progressif. Il vous a appris à vous étudier depuis l’extérieur. La question <em>‘qui suis-je’</em> est devenue anxiogène car vous ne savez plus faire la différence entre ce que vous êtes et ce que vous avez construit pour survivre.",
+    mirror:"Vous avez probablement été très tôt sensible aux atmosphères, au non-dit, au regard de l’autre. Cette sensibilité — extraordinaire — vous a permis de vous adapter avec une précision remarquable. Mais quand on passe autant d’énergie à être ce que les autres veulent voir, on finit par ne plus savoir ce qu’on voulait, soi. Ce vide n’est pas de la dépression. C’est la question de votre vraie vie qui attend d’être posée.",
+    force:"Votre force est une <strong>sensibilité et une lucidité exceptionnelles</strong>. Vous percevez ce que la plupart ne voient pas. Le problème n’est pas votre lucidité — c’est la <em>direction</em> dans laquelle elle s’est orientée : vers l’extérieur, vers le regard de l’autre. Quand cette même énergie se tourne vers l’intérieur, quelque chose de fondamental change.",
+    liberation:"Il y a quelqu’un en vous qui n’a jamais eu besoin d’être différent·e pour avoir de la valeur. Le chemin n’est pas de détruire ce que vous avez construit — c’est de comprendre que vous n’en avez plus besoin pour la même raison.",
+    thoughts:["Est-ce que les gens m’aimeraient vraiment s’ils savaient qui je suis au fond ?","Je me sens différent·e — mais je ne sais pas comment le dire.","Je joue des rôles tellement bien que je ne sais plus qui je suis vraiment.","Qu’est-ce qui reste si j’arrête de m’adapter ?"]
+  }
 };
 
 /* ═══ CONTENU 7 MASQUES ═══ */
@@ -4371,34 +4538,23 @@ async function buildPage(){
   const urlP2=new URLSearchParams(window.location.search);
   const _masks=['rouge','orange','jaune','vert','bleu','indigo','violet'];
 
-  // PRIORITÉ 0 — patientId en URL → chargement depuis Neon (cabinet_data.portrait)
-  // Flux : score manuel cabinet → _applyPortrait → patients.js (Neon) → id dans URL
+  // PRIORITÉ 0 — patientId → Neon cabinet_data.portrait
   const _patientId = urlP2.get('patientId');
   if(_patientId && !rawScores){
     try{
-      const _cabSecret='valeur-cab-2026';
-      const _patRes = await fetchWithTimeout(
-        'https://valeur-backend-api.vercel.app/api/patients?id='+encodeURIComponent(_patientId),
-        {headers:{'x-cabinet-secret':_cabSecret}},
-        8000
-      );
-      if(_patRes.ok){
-        const _patData = await _patRes.json();
-        const _port = _patData.patient&&_patData.patient.cabinet_data&&_patData.patient.cabinet_data.portrait;
+      const _pr=await fetchWithTimeout('https://valeur-backend-api.vercel.app/api/patients?id='+encodeURIComponent(_patientId),
+        {headers:{'x-cabinet-secret':'valeur-cab-2026'}},8000);
+      if(_pr.ok){
+        const _pd=await _pr.json();
+        const _port=_pd.patient&&_pd.patient.cabinet_data&&_pd.patient.cabinet_data.portrait;
         if(_port&&_port.scores&&Object.keys(_port.scores).length>0){
-          rawScores = _port.scores;
-          // Écraser prenom/email avec les données réelles de la fiche Neon
-          const _neonPrenom = _patData.patient.prenom||'';
-          const _neonEmail  = _patData.patient.email||'';
-          try{localStorage.setItem('valeur_prenom',_neonPrenom);}catch(e){}
-          try{localStorage.setItem('valeur_email', _neonEmail);}catch(e){}
-          if(_port.spa!=null) rawScores.spa = _port.spa;
+          rawScores=_port.scores;
+          try{localStorage.setItem('valeur_prenom',_pd.patient.prenom||'');}catch(e){}
+          try{localStorage.setItem('valeur_email',_pd.patient.email||'');}catch(e){}
+          if(_port.spa!=null) rawScores.spa=_port.spa;
         }
       }
-    }catch(e){
-      // Si Neon inaccessible → fallback cab_preview_scores (priorité 2)
-      console.warn('Neon patientId fetch failed, falling back to localStorage',e);
-    }
+    }catch(e){console.warn('Neon patientId fallback',e);}
   }
 
   // PRIORITÉ 1 — URL params (toujours prioritaire sur localStorage)
@@ -4409,33 +4565,30 @@ async function buildPage(){
     const urlPrenom=urlP2.get('prenom');
     const urlEmail=urlP2.get('email');
     const urlSpa=urlP2.get('spa');
-    // CABINET : toujours écraser prenom et email avec les données de la fiche (même si vide)
-    try{localStorage.setItem('valeur_prenom', urlPrenom||'');}catch(e){}
-    try{localStorage.setItem('valeur_email',  urlEmail||'');}catch(e){}
+    try{localStorage.setItem('valeur_prenom',urlPrenom||'');}catch(e){}
+    try{localStorage.setItem('valeur_email',urlEmail||'');}catch(e){}
     if(urlSpa)    rawScores.spa=parseInt(urlSpa);
     // Écraser le localStorage avec les nouveaux scores
     try{localStorage.setItem('valeur_scores',JSON.stringify(rawScores));}catch(e){}
   }
 
-  // PRIORITÉ 2 — cab_preview_scores (scores entrés manuellement depuis la fiche cabinet)
-  // CRITIQUE : doit être avant valeur_scores pour éviter la pollution par une ancienne session
+  // PRIORITÉ 2 — cab_preview_scores (scores manuels cabinet → bridge localStorage)
   if(!rawScores){
     try{
-      var _cabPrev=localStorage.getItem('cab_preview_scores');
-      if(_cabPrev){
-        var _cabData=JSON.parse(_cabPrev);
-        if(_cabData&&_cabData.scores&&Object.keys(_cabData.scores).length>0){
-          rawScores=_cabData.scores;
-          // Écraser prenom/email avec ceux de la fiche patient — pas l'ancienne session
-          try{localStorage.setItem('valeur_prenom',_cabData.prenom||'');}catch(e){}
-          try{localStorage.setItem('valeur_email', _cabData.email||'');}catch(e){}
-          if(_cabData.spa!=null) rawScores.spa=_cabData.spa;
+      var _cp=localStorage.getItem('cab_preview_scores');
+      if(_cp){
+        var _cpd=JSON.parse(_cp);
+        if(_cpd&&_cpd.scores&&Object.keys(_cpd.scores).length>0){
+          rawScores=_cpd.scores;
+          try{localStorage.setItem('valeur_prenom',_cpd.prenom||'');}catch(e){}
+          try{localStorage.setItem('valeur_email',_cpd.email||'');}catch(e){}
+          if(_cpd.spa!=null) rawScores.spa=_cpd.spa;
         }
       }
     }catch(e){}
   }
 
-  // PRIORITÉ 2b — localStorage valeur_scores (patient ayant passé le test sur CE navigateur)
+  // PRIORITÉ 2b — localStorage valeur_scores (questionnaire passé sur ce navigateur)
   if(!rawScores){
     try{ rawScores=JSON.parse(localStorage.getItem('valeur_scores')); }catch(e){}
   }
@@ -4749,7 +4902,7 @@ async function buildPage(){
   }
 
   // ── Email EmailJS — prospect ou acheteur ──────────────────────────────
-  const isPraticien = true; // resultats-cabinet.html = usage cabinet exclusif — jamais d'email patient
+  const isPraticien = true; // cabinet exclusif — jamais d'email patient
 
   // ── Vérification code cadeau ──────────────────────────────────────
   if(!paid){
