@@ -164,6 +164,19 @@ textarea.inp{resize:vertical;min-height:72px;line-height:1.55}
 .tag{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:9px}
 .tag-gold{background:var(--gb);color:var(--gold);border:1px solid var(--gbd)}
 @media(max-width:680px){.sidebar{width:50px}.sb-head,.sb-tagline,.nav-btn span,.sb-sect,.foot-btn span{display:none}.sb-logo{font-size:10px;letter-spacing:1px}.nav-btn{justify-content:center;padding:11px}.dash-grid{grid-template-columns:1fr}.s-grid,.etapes-grid,.row-g{grid-template-columns:1fr}}
+
+.guide-acc{border:1px solid var(--line);border-radius:var(--rad);overflow:hidden;margin-bottom:8px}
+.guide-hd{display:flex;align-items:center;gap:10px;padding:11px 15px;cursor:pointer;background:#fff;user-select:none;font-size:13px;font-weight:500}
+.guide-hd:hover{background:var(--iv)}
+.guide-body{display:none;padding:14px 16px;border-top:1px solid var(--line);background:var(--iv);font-size:12px;line-height:1.8;color:var(--ink2)}
+.guide-body.open{display:block}
+.guide-step{display:flex;gap:9px;margin-bottom:8px;align-items:flex-start}
+.guide-num{width:20px;height:20px;border-radius:50%;background:var(--gold);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.guide-tip{background:var(--gb);border-left:2px solid var(--gold);padding:8px 12px;border-radius:var(--rad);margin-top:6px;font-size:11px;color:var(--ink2)}
+.guide-section{margin-bottom:20px}
+.pp-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:12px}
+.pp-row:last-child{border-bottom:none}
+.pp-num{width:22px;height:22px;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;margin-top:1px}
 </style>
 </head>
 <body>
@@ -196,6 +209,8 @@ textarea.inp{resize:vertical;min-height:72px;line-height:1.55}
       <a class="nav-btn" href="./bib-index.html" target="_blank"><span class="nav-ico">📚</span><span>Bibliothèque</span></a>
       <a class="nav-btn" href="./questionnaire.html" target="_blank"><span class="nav-ico">📋</span><span>Questionnaire cabinet</span></a>
       <a class="nav-btn" href="https://questionnaire.psyh.fr" target="_blank"><span class="nav-ico">🌐</span><span>Questionnaire public</span></a>
+      <div class="sb-sect">Aide</div>
+      <button class="nav-btn" id="nav-guide" onclick="V.router.go('guide')"><span class="nav-ico">❓</span><span>Guide d'utilisation</span></button>
     </nav>
     <div class="sb-foot">
       <button class="foot-btn" onclick="V.data.exportJSON()"><span>↓</span><span>Sauvegarder</span></button>
@@ -440,6 +455,10 @@ const V = {
         bc.innerHTML=`<span class="bc-link" onclick="V.router_back()">‹ Patients</span><span class="bc-sep">›</span><span class="bc-cur">${p.prenom||'…'} ${p.nom||''}</span>`;
         document.getElementById('nav-patients').classList.add('active');
         V.views.patient.render(pid);
+      } else if(view==='guide'){
+        bc.innerHTML='<span class="bc-cur">Guide d\'utilisation</span>';
+        const _ng=document.getElementById('nav-guide');if(_ng)_ng.classList.add('active');
+        V.views.guide.render();
       }
     }
   },
@@ -990,6 +1009,79 @@ ${port?V.views.patient._portResult(port):''}`;
 };
 
 // ── SYNC NEON (exact copy from existing, working) ─────────────────
+
+// ── GUIDE VIEW ──────────────────────────────────────────────────────
+V.views.guide={render(){
+  document.getElementById('app-content').innerHTML=`
+<div class="view-hd"><h1 class="view-ttl">Guide d'utilisation</h1></div>
+
+<div class="guide-section">
+  <div class="card-hd">CHEMIN DE CRÉATION DU PORTRAIT — 3 VOIES</div>
+
+  <div style="background:#fff;border-radius:var(--rad);border:1px solid var(--line);padding:16px;margin-bottom:8px">
+    <div style="font-weight:600;font-size:12px;color:var(--b);margin-bottom:8px">🌐 VIA 1 — Patient ayant passé le questionnaire public</div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--b)">1</div><div>Patient passe le questionnaire sur <strong>questionnaire.psyh.fr</strong> avec son email</div></div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--b)">2</div><div>Scores enregistrés automatiquement dans Neon</div></div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--b)">3</div><div>Fiche patient → onglet <strong>Portrait</strong> → saisir l'email → <strong>Récupérer le portrait</strong></div></div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--b)">4</div><div>Cliquer <strong>🎭 Ouvrir le portrait complet ↗</strong> → portrait chargé, prénom correct</div></div>
+  </div>
+
+  <div style="background:#fff;border-radius:var(--rad);border:1px solid var(--line);padding:16px;margin-bottom:8px">
+    <div style="font-weight:600;font-size:12px;color:var(--v);margin-bottom:8px">✏️ VIA 2 — Saisie manuelle (test papier ou séance cabinet)</div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--v)">1</div><div>Fiche patient → onglet <strong>Portrait</strong> → onglet <strong>✏️ Manuel</strong></div></div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--v)">2</div><div>Saisir les scores (0–100%) masque par masque + SPA → <strong>Enregistrer le portrait</strong></div></div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--v)">3</div><div>Portrait sauvegardé dans la fiche Neon — synchronisé sur tous vos appareils</div></div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--v)">4</div><div>Cliquer <strong>🎭 Ouvrir le portrait complet ↗</strong> → chargé depuis Neon par identifiant patient</div></div>
+    <div class="guide-tip">💡 Aucun email envoyé — la saisie manuelle est toujours silencieuse et privée.</div>
+  </div>
+
+  <div style="background:#fff;border-radius:var(--rad);border:1px solid var(--line);padding:16px;margin-bottom:8px">
+    <div style="font-weight:600;font-size:12px;color:var(--gold);margin-bottom:8px">🎁 VIA 3 — Code cadeau (automatique)</div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--gold)">1</div><div>Fiche patient → <strong>🎁 Générer un lien cadeau</strong> → copier et envoyer au patient</div></div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--gold)">2</div><div>Patient clique, passe le questionnaire gratuitement</div></div>
+    <div class="pp-row"><div class="pp-num" style="background:var(--gold)">3</div><div><strong>Portrait chargé automatiquement</strong> dans la fiche — aucune action requise de votre part</div></div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="card-hd">AUTRES WORKFLOWS</div>
+
+  <div class="guide-acc">
+    <div class="guide-hd" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.arr').textContent=this.nextElementSibling.classList.contains('open')?'▼':'▶'">
+      <span>🗺 Suivre le parcours d'un patient</span><span class="arr" style="margin-left:auto">▶</span>
+    </div>
+    <div class="guide-body">
+      <div class="guide-step"><div class="guide-num">1</div><div>Fiche patient → onglet <strong>Parcours</strong></div></div>
+      <div class="guide-step"><div class="guide-num">2</div><div>7 modules V.A.L.E.U.R en accordéon — cochez les étapes, ajoutez des notes de séance</div></div>
+      <div class="guide-step"><div class="guide-num">3</div><div>Fiches recommandées adaptées au masque du patient — cliquez pour les ouvrir</div></div>
+      <div class="guide-tip">💡 Le point de couleur sur chaque module indique l'avancement : gris = non commencé · or = en cours · vert = terminé.</div>
+    </div>
+  </div>
+
+  <div class="guide-acc">
+    <div class="guide-hd" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.arr').textContent=this.nextElementSibling.classList.contains('open')?'▼':'▶'">
+      <span>📎 Documents et notes</span><span class="arr" style="margin-left:auto">▶</span>
+    </div>
+    <div class="guide-body">
+      <div class="guide-step"><div class="guide-num">1</div><div>Fiche patient → onglet <strong>Notes & Docs</strong></div></div>
+      <div class="guide-step"><div class="guide-num">2</div><div>Glissez ou cliquez pour ajouter un fichier (PDF, Word, image — max 3 Mo)</div></div>
+      <div class="guide-step"><div class="guide-num">3</div><div>Utilisez <strong>↓ Sauvegarder</strong> (menu gauche) régulièrement — exporte un JSON complet</div></div>
+      <div class="guide-tip">⚠️ Les documents sont dans votre navigateur. La sauvegarde JSON protège contre toute perte.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="card-hd">RACCOURCIS</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;color:var(--ink2)">
+    <div><strong>Alt + ←</strong> &nbsp; Retour arrière</div>
+    <div><strong>Échap</strong> &nbsp; Fermer une fenêtre modale</div>
+    <div><strong>Clic logo</strong> &nbsp; Tableau de bord</div>
+    <div><strong>‹ Patients</strong> &nbsp; Retour à la liste</div>
+  </div>
+</div>`;
+}};
+
 V.sync = {
   _SECRET:'valeur-cab-2026',_busy:false,_queue:[],_status:'idle',
   async init(){
