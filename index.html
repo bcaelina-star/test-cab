@@ -666,7 +666,7 @@ const V = {
     <button class="btn btn-gold" onclick="V.views.patient._saveManual('${pid}')">Enregistrer le portrait</button>
   </div>
 </div>
-${port?V.views.patient._portResult(port):''}`;
+${port?V.views.patient._portResult(port,pid):''}`;
       },
       _pmode(mode){
         document.querySelectorAll('.pmode').forEach(b=>b.classList.remove('on'));
@@ -751,7 +751,7 @@ ${port?V.views.patient._portResult(port):''}`;
         V.ui.toast('✓ Portrait enregistré');
         V.views.patient._portrait(pid);
       },
-      _portResult(port){
+      _portResult(port,pid){
         if(!port)return'';
         const m=port.masque;const col=m?FICHES_META[m]?.color:'#9E948A';
         const bars=MASKS.map(mk=>`
