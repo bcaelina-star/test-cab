@@ -1732,7 +1732,7 @@ function buildPanMasqueReport(profile, scores, prenom, isGift) {
   var _a=document.getElementById('app');if(_a)_a.style.display='block';
   var _pw=document.getElementById('paywall-section');if(_pw)_pw.style.display='none';
   var _pt=document.getElementById('portrait');if(_pt)_pt.style.display='none';
-  var _fab=document.getElementById('pdf-fab');if(_fab)_fab.style.display='block';
+
 }
 
 // ══ DYADES (21 combinaisons) ════════════════════════════════════════════════
@@ -2078,16 +2078,16 @@ const DYADES_DATA = {
     behaviors:['De nombreux symptômes physiques variés expriment ce que vous ne pouvez pas nommer émotionnellement — pas par choix, mais par mécanisme','Vous consultez régulièrement sans trouver de cause satisfaisante — l\'anxiété physique n\'a pas de réponse médicale parce que sa source n\'est pas médicale','Vous fonctionnez en mode gestion face à l\'inquiétude — mais l\'émotion sous-jacente ne se traverse pas ainsi','L\'épuisement arrive sans signal d\'alarme clair — les deux masques court-circuitent les signaux émotionnels habituels']
   },
   'bleu_jaune': {
-    name:'L\'Hypercontrôle',
-    tagline:'Si je prépare tout, rien ne peut m\'échapper.',
-    desc:'Votre masque Jaune a besoin de certitude — votre masque Bleu a besoin de maîtriser. Ensemble, ils créent une vigilance permanente : rien ne doit être laissé au hasard, rien ne doit être imprévu. Vous planifiez, vérifiez, anticipez — non pas pour dominer, mais parce que l\'incertitude et l\'impuissance sont deux sensations que votre système nerveux refuse catégoriquement.',
+    name:'Contrôle Relationnel Autoritaire',
+    tagline:'Ça doit être bien fait — et c\'est moi qui décide comment',
+    desc:'Votre masque Jaune exige la certitude — votre masque Bleu a besoin de maîtriser les situations et les personnes. Ensemble, ils créent un besoin de contrôle total. La délégation est impossible. L\'imprévu est vécu comme une menace directe. Votre efficacité est réelle — mais elle coûte des relations, de la spontanéité, et une fatigue structurelle difficile à reconnaître.',
     cycle:[
       {step:'Une situation échappe à votre contrôle',effect:'Bleu et Jaune s\'activent simultanément.'},
       {step:'Vous planifiez et imposez une méthode',effect:'Pour reprendre la maîtrise.'},
       {step:'L\'autre résiste ou improvise',effect:'L\'incertitude revient — plus menaçante qu\'avant.'},
       {step:'Le contrôle se resserre encore',effect:'Jusqu\'à l\'épuisement ou la rupture.'}
     ],
-    behaviors:['Vous vérifiez le travail des autres même quand vous avez délégué — la délégation partielle crée plus d\'anxiété que la non-délégation','Vous planifiez avec un niveau de détail qui épuise votre entourage et parfois vous-même','Vous avez du mal à accepter qu\'une chose soit faite différemment de votre méthode, même si le résultat est équivalent','Vous ressentez une tension réelle quand quelque chose échappe à votre organisation — c\'est votre système nerveux qui s\'active, pas de la rigidité.']
+    behaviors:['Vous vérifiez le travail des autres même quand vous avez délégué. La délégation partielle crée plus d\'anxiété que la non-délégation.','Vous planifiez avec un niveau de détail qui épuise votre entourage et parfois vous-même.','Vous avez du mal à accepter qu\'une chose soit faite différemment de votre méthode. Même si le résultat est équivalent.','Votre rigidité est perçue comme de l\'autoritarisme — ce n\'est pas votre intention, c\'est la logique de deux masques qui exigent la maîtrise totale.']
   },
   'bleu_indigo': {
     name:'Perfectionnisme Narcissique',
@@ -2102,16 +2102,16 @@ const DYADES_DATA = {
     behaviors:['Vous reprenez systématiquement le travail des autres — non par malveillance, mais parce que le résultat doit atteindre un standard précis','Vous avez du mal à recevoir des compliments sans les relativiser — la reconnaissance externe ne satisfait pas le standard interne','Vous attendez que les autres performent à votre niveau — cette attente crée des tensions chroniques','Votre exigence monte à chaque réussite — ce qui était excellent hier devient le minimum attendu demain']
   },
   'indigo_vert': {
-    name:'Auto-Effacement Profond',
+    name:'Auto-Effacement de Soi',
     tagline:'Je minimise ce que je suis pour ne pas menacer — ni être trop visible',
-    desc:'Votre masque Vert minimise pour préserver la relation — votre masque Indigo minimise parce qu\'être vu·e est risqué. Les deux masques travaillent dans le même sens : l\'effacement. Vos compétences réelles ne s\'expriment qu\'à moitié. Vos réussites sont systématiquement réattribuées aux autres. Ce que vous êtes vraiment reste en retrait — non par humilité, mais par protection.',
+    desc:'Votre masque Vert minimise pour préserver la relation — votre masque Indigo minimise parce qu\'être vu·e est risqué. Les deux masques travaillent dans le même sens : l\'effacement. Non par manque de valeur, mais parce que deux peurs différentes produisent la même réponse. Vos compétences réelles ne s\'expriment qu\'à moitié. Vos réussites sont systématiquement réattribuées aux autres.',
     cycle:[
-      {step:'Une compétence ou réussite visible',effect:'Masque Vert craint qu\'elle crée de la distance.'},
+      {step:'Une compétence ou réussite devient visible',effect:'Masque Vert craint qu\'elle crée de la distance.'},
       {step:'Masque Indigo la minimise',effect:'Attribuée à la chance, aux circonstances, aux autres.'},
       {step:'Vous restez en retrait',effect:'L\'effacement est perçu comme protection du lien.'},
-      {step:'Vos talents restent inexploités',effect:'Et la question "qui suis-je ?" reste sans réponse.'}
+      {step:'Vos talents restent inexploités',effect:'Et la question \'qui suis-je ?\' reste sans réponse.'}
     ],
-    behaviors:['Quelqu\'un vous complimente — vous minimisez immédiatement, les deux masques travaillent ensemble vers le même effacement','Vous restez en retrait même quand vous avez quelque chose d\'important à dire — être visible semble risqué pour le lien ET pour l\'image','Vos compétences réelles ne sont pas connues de ceux qui comptent — non par manque d\'opportunités mais parce que les deux masques évitent l\'exposition','Vous avez des projets et des talents que vous ne déployez qu\'à moitié — la ligne entre humilité et auto-sabotage est difficile à tracer depuis l\'intérieur']
+    behaviors:['Quelqu\'un vous complimente. Vous minimisez immédiatement — les deux masques travaillent ensemble vers le même effacement.','Vous restez en retrait même quand vous avez quelque chose d\'important à dire. Être visible semble risqué — pour le lien ET pour l\'image.','Vos compétences réelles ne sont pas connues de ceux qui comptent — non par manque d\'opportunités, mais parce que les deux masques évitent l\'exposition.','Vous avez des projets et des talents que vous ne déployez qu\'à moitié. La ligne entre humilité et auto-sabotage est difficile à tracer depuis l\'intérieur.']
   },
   'indigo_jaune': {
     name:'Perfectionnisme Procrastinant',
@@ -2138,7 +2138,7 @@ const DYADES_DATA = {
     behaviors:['Un changement de routine crée une anxiété disproportionnée — les deux masques interprètent l\'imprévu comme une menace','Vous maintenez des habitudes épuisantes parce qu\'y renoncer créerait un vide inconnu','Vous refusez des opportunités nouvelles — non par manque d\'intérêt, mais parce que le changement est évalué comme risque supérieur au bénéfice','Votre entourage perçoit une rigidité qui n\'est pas votre caractère profond — c\'est la logique de deux protections qui ont besoin de stabilité']
   },
   'bleu_rouge': {
-    name:'Vigilance Corporelle Contrôlée',
+    name:'Hypervigilance Somatique Contrôlée',
     tagline:'Je contrôle mon corps pour ne pas perdre le contrôle de ma vie',
     desc:'Votre masque Rouge surveille le corps en permanence — votre masque Bleu a besoin de tout maîtriser pour se sentir en sécurité. Ensemble, ils transforment l\'anxiété corporelle en projet de contrôle. Le corps est géré comme un système à optimiser. Mais le corps ne se laisse pas maîtriser totalement — chaque signal de limite réactive l\'anxiété.',
     cycle:[
@@ -2147,19 +2147,19 @@ const DYADES_DATA = {
       {step:'Le corps résiste à la maîtrise totale',effect:'Ce qui réactive l\'anxiété de Masque Rouge.'},
       {step:'Le contrôle se renforce',effect:'Créant la tension physique qu\'il prétendait prévenir.'}
     ],
-    behaviors:['Vous gérez votre corps comme un projet — régimes, protocoles, optimisations. Le moindre écart déclenche une vigilance accrue','Vous ne vous permettez pas de vous reposer vraiment — il y a toujours quelque chose à surveiller','La tension physique chronique est souvent le premier signe visible — votre corps exprime la pression impossible à relâcher','Vous avez du mal à accepter les limitations physiques normales — le corps qui résiste est vécu comme une défaillance']
+    behaviors:['Vous gérez votre corps comme un projet — régimes, protocoles, optimisations. Le moindre écart déclenche une vigilance accrue.','Vous ne vous permettez pas de vous reposer vraiment — il y a toujours quelque chose à surveiller ou à maintenir sous contrôle.','La tension physique chronique est souvent le premier signe visible. Votre corps exprime la pression impossible à relâcher.','Vous avez du mal à accepter les limitations physiques normales. Le corps qui résiste est vécu comme une défaillance.']
   },
   'rouge_vert': {
-    name:'Somatisation Relationnelle',
+    name:'Somatisation Dépendante',
     tagline:'Mon corps me trahit et j\'ai besoin de toi pour le traverser',
-    desc:'Votre masque Rouge génère une anxiété corporelle — votre masque Vert crée un besoin de réassurance relationnelle. Votre corps est devenu un moyen de connexion, souvent sans que vous en ayez conscience. La solitude amplifie les symptômes. La présence de l\'autre les réduit momentanément.',
+    desc:'Votre masque Rouge génère une anxiété corporelle — votre masque Vert crée un besoin de réassurance relationnelle. Votre corps est devenu un moyen de connexion, souvent sans que vous en ayez conscience. La solitude amplifie les symptômes. La présence de l\'autre les réduit momentanément. Une dépendance au soutien de l\'autre s\'installe progressivement.',
     cycle:[
       {step:'Un symptôme surgit',effect:'Masque Rouge génère une anxiété corporelle.'},
       {step:'La solitude amplifie l\'anxiété',effect:'Masque Vert a besoin d\'une présence pour la traverser.'},
       {step:'La réassurance soulage momentanément',effect:'Mais crée une dépendance au soutien de l\'autre.'},
       {step:'La prochaine inquiétude est plus difficile seul·e',effect:'Le besoin de présence augmente progressivement.'}
     ],
-    behaviors:['La solitude amplifie vos inquiétudes — la présence de l\'autre les réduit. Ce lien entre sécurité physique et présence relationnelle s\'est construit progressivement','Vous avez du mal à aller à des consultations seul·e — la présence d\'un proche transforme une procédure médicale en moment de sécurité','Vous partagez vos inquiétudes corporelles en détail — ce partage maintient le lien ET maintient l\'anxiété active','Les tensions relationnelles amplifient vos symptômes — les deux masques sont liés, ce qui affecte l\'un retentit sur l\'autre']
+    behaviors:['La solitude amplifie vos inquiétudes. La présence de l\'autre les réduit. Ce lien entre sécurité physique et présence relationnelle s\'est construit progressivement.','Vous avez du mal à aller à des consultations seul·e. La présence d\'un proche transforme une procédure médicale en moment de sécurité.','Vous partagez vos inquiétudes corporelles en détail. Ce partage maintient le lien — et maintient aussi l\'anxiété active.','Les tensions relationnelles amplifient vos symptômes. Les deux masques sont liés — ce qui affecte l\'un retentit sur l\'autre.']
   },
   'indigo_rouge': {
     name:'Perfectionnisme Somatique',
@@ -2174,28 +2174,28 @@ const DYADES_DATA = {
     behaviors:['Quand votre corps donne un signal de limite, vous l\'interprétez d\'abord comme un manque de rigueur','Vos routines physiques sont très structurées et difficiles à assouplir — l\'écart est suivi d\'une auto-critique immédiate','Vous avez du mal à simplement être fatigué·e sans chercher la cause et le protocole de récupération optimal','Le corps parfait est un standard inatteignable — et sa poursuite produit exactement les symptômes qu\'il cherchait à éviter']
   },
   'rouge_violet': {
-    name:'Identité Construite sur la Santé',
-    tagline:'Je suis ma vigilance — sans elle, qui serais-je ?',
-    desc:'Votre masque Rouge construit une vigilance corporelle permanente — votre masque Violet cherche une identité stable. La vigilance corporelle peut devenir un rôle identitaire : le patient attentif, celui qui surveille, qui consulte, qui sait. Ce rôle procure une clarté que le masque Violet ne trouve pas ailleurs.',
+    name:'Identité Somatisée',
+    tagline:'Je suis ma maladie',
+    desc:'Votre masque Rouge construit une vigilance corporelle permanente — votre masque Violet cherche une identité stable. La vigilance corporelle peut devenir un rôle identitaire : le patient attentif, celui qui surveille, qui consulte, qui sait. Ce rôle procure une clarté que le masque Violet ne trouve pas ailleurs. La résistance inconsciente à aller mieux n\'est pas un choix — c\'est la peur de perdre la seule identité disponible.',
     cycle:[
       {step:'Une préoccupation de santé surgit',effect:'Masque Rouge s\'en saisit.'},
-      {step:'Elle comble un vide identitaire',effect:'Masque Violet y trouve un rôle stable.'},
+      {step:'Elle comble un vide identitaire',effect:'Masque Violet y trouve un rôle stable : le patient attentif.'},
       {step:'L\'identité se construit autour de la santé',effect:'Guérir deviendrait une perte de soi.'},
       {step:'Les symptômes persistent',effect:'Ils remplissent une fonction identitaire que rien ne remplace.'}
     ],
-    behaviors:['Votre santé occupe une place centrale dans vos conversations — c\'est devenu un repère identitaire stable','L\'idée de cesser de surveiller peut créer une anxiété inattendue — qui serais-je sans cette vigilance ?','Vous avez construit des relations autour du rôle de patient·e attentif·ve — ce rôle procure une place claire','Les bénéfices secondaires ne sont pas des calculs conscients — ils sont la logique d\'un système qui cherche à exister de façon stable']
+    behaviors:['Votre santé occupe une place centrale dans vos conversations. C\'est devenu un repère identitaire stable dans un contexte intérieur moins défini.','L\'idée de cesser de surveiller peut créer une anxiété inattendue. Qui serais-je sans cette vigilance ?','Vous avez construit des relations autour du rôle de patient·e attentif·ve. Ce rôle procure une place claire.','Les bénéfices secondaires ne sont pas des calculs conscients — ils sont la logique d\'un système qui cherche à exister de façon stable.']
   },
   'jaune_orange': {
-    name:'Planification Sans Ressenti',
-    tagline:'Je planifie tout — mais je ne ressens rien de ce que je vis',
-    desc:'Votre masque Orange vous coupe de l\'accès émotionnel — votre masque Jaune exige de tout anticiper. Ensemble, ils créent une vie parfaitement structurée mais vide de sens et de plaisir. Vous planifiez sans ressentir. L\'épuisement s\'installe sans signal émotionnel d\'alarme — ce qui rend le crash d\'autant plus soudain.',
+    name:'Contrôle Dissocié',
+    tagline:'Je planifie tout mais ne ressens rien',
+    desc:'Votre masque Orange vous coupe de l\'accès émotionnel — votre masque Jaune exige de tout anticiper. Ensemble, ils créent une vie parfaitement structurée mais vide de sens et de plaisir. Vous planifiez sans ressentir. Vous anticipez sans jamais vraiment habiter ce que vous vivez. L\'épuisement s\'installe sans signal émotionnel d\'alarme — ce qui rend le crash d\'autant plus soudain.',
     cycle:[
       {step:'Une situation imprévue arrive',effect:'Masque Jaune s\'active pour la contrôler.'},
       {step:'Masque Orange empêche de ressentir l\'anxiété',effect:'Vous planifiez à vide — sans accès à ce que vous vivez.'},
       {step:'La planification ne procure aucune satisfaction',effect:'L\'émotion non traversée cherche une autre sortie.'},
       {step:'Plus de contrôle, moins de ressenti',effect:'La vie devient mécanique — le cycle s\'approfondit.'}
     ],
-    behaviors:['Vous planifiez tout — et vous ne ressentez pas vraiment ce que vous planifiez. La structure existe. Le sens manque','Vous êtes incapable de profiter du moment présent — vous êtes toujours dans l\'anticipation, même pendant les moments supposés de repos','L\'émotion qui ne peut pas s\'exprimer cherche une autre sortie — irritabilité, fatigue inexpliquée, sentiment de vide chronique','Le crash arrive sans signal préalable — les deux masques court-circuitent les systèmes d\'alerte normaux']
+    behaviors:['Vous planifiez tout — et vous ne ressentez pas vraiment ce que vous planifiez. La structure existe. Le sens manque.','Vous êtes toujours dans l\'anticipation — même pendant les moments supposés de repos. Le présent reste inhabité.','L\'émotion qui ne peut pas s\'exprimer cherche une autre sortie — irritabilité, fatigue inexpliquée, sentiment de vide chronique.','Le crash arrive sans signal préalable. Les deux masques court-circuitent les systèmes d\'alerte normaux.']
   },
   'bleu_orange': {
     name:'Excellence Sans Émotion',
@@ -2222,28 +2222,28 @@ const DYADES_DATA = {
     behaviors:['Vous travaillez beaucoup — sans savoir si vous êtes satisfait·e. La satisfaction est inaccessible quand le canal émotionnel est coupé','Votre auto-critique est froide et détachée — ce n\'est pas de la douleur, c\'est un algorithme d\'évaluation automatique qui tourne en continu','La procrastination vous surprend vous-même — vous avez les compétences, et pourtant vous repoussez. C\'est la démotivation profonde qui parle','Quand le crash arrive, il est soudain — les deux masques ensemble suppriment les signaux d\'alerte habituels']
   },
   'orange_violet': {
-    name:'Dissolution Identitaire Silencieuse',
-    tagline:'Qui suis-je — et qu\'est-ce que je ressens ?',
-    desc:'Votre masque Orange vous prive de l\'accès à vos ressentis — votre masque Violet vous prive d\'une identité stable. Double absence : vous ne savez pas ce que vous ressentez, et vous ne savez pas qui vous êtes. La vie peut sembler irréelle — observée de l\'extérieur plutôt que vécue de l\'intérieur.',
+    name:'Dissociation Totale',
+    tagline:'Qui suis-je et qu\'est-ce que je ressens ?',
+    desc:'Votre masque Orange vous prive de l\'accès à vos ressentis — votre masque Violet vous prive d\'une identité stable. Double absence : vous ne savez pas ce que vous ressentez, et vous ne savez pas qui vous êtes. La vie peut sembler irréelle — observée de l\'extérieur plutôt que vécue de l\'intérieur. Cette configuration répond particulièrement bien à un travail structuré et progressif.',
     cycle:[
       {step:'Un moment de calme arrive',effect:'Masque Violet cherche qui vous êtes — sans réponse.'},
       {step:'Masque Orange coupe l\'accès émotionnel',effect:'La question identitaire ne peut être ressentie ni résolue.'},
       {step:'Vous vivez en pilote automatique',effect:'Les deux masques s\'alimentent mutuellement.'},
       {step:'Le vide existentiel s\'approfondit silencieusement',effect:'Sans signal d\'alarme — jusqu\'à la rupture.'}
     ],
-    behaviors:['Vous vivez certains moments comme si vous les observiez de l\'extérieur — c\'est réel, compréhensible, et inconfortable à nommer','Vous avez du mal à dire ce que vous voulez, aimez, dont vous avez besoin — non par indifférence, parce que l\'accès à ces informations est limité','Les décisions importantes sont dictées par l\'extérieur — vos attentes, les contraintes, ce qui semble raisonnable. Votre propre boussole est peu accessible','Ce n\'est pas une situation permanente — c\'est une configuration qui évolue dès qu\'on commence à la nommer et à la travailler']
+    behaviors:['Vous vivez certains moments comme si vous les observiez de l\'extérieur. C\'est réel, compréhensible — et inconfortable à nommer.','Vous avez du mal à dire ce que vous voulez, aimez, dont vous avez besoin. Non par indifférence — parce que l\'accès à ces informations est limité.','Les décisions importantes sont dictées par l\'extérieur — les attentes, les contraintes, ce qui semble raisonnable. Votre propre boussole est peu accessible.','Ce n\'est pas une situation permanente. C\'est une configuration qui évolue dès qu\'on commence à la nommer et à la travailler.']
   },
   'bleu_vert': {
-    name:'Dépendance Contrôlante',
-    tagline:'J\'ai besoin de toi — et je te surveille pour ne pas te perdre',
-    desc:'Votre masque Vert a peur d\'être abandonné·e — votre masque Bleu contrôle pour se sentir en sécurité. Ensemble, ils créent un cycle épuisant entre besoin et emprise. Vous avez besoin de l\'autre et vous le contrôlez pour ne pas le perdre. L\'autre ressent la pression et s\'éloigne. Ce qui intensifie la peur d\'abandon.',
+    name:'Dépendance Dominante',
+    tagline:'J\'ai besoin de toi et je fais tout pour ne pas te perdre',
+    desc:'Votre masque Vert a peur d\'être abandonné·e — votre masque Bleu contrôle pour se sentir en sécurité. Ensemble, ils créent un cycle épuisant entre besoin et emprise. Vous avez besoin de l\'autre et vous le contrôlez pour ne pas le perdre. L\'autre ressent la pression et s\'éloigne. Ce qui intensifie la peur d\'abandon. Ce qui renforce le contrôle.',
     cycle:[
       {step:'La peur d\'être quitté·e s\'active',effect:'Masque Vert cherche à sécuriser le lien.'},
       {step:'Masque Bleu transforme cette peur en contrôle',effect:'Surveillance, vérifications, exigences.'},
       {step:'L\'autre ressent la pression et s\'éloigne',effect:'Ce qui intensifie la peur d\'abandon.'},
       {step:'Le contrôle se resserre',effect:'Créant l\'éloignement qu\'il cherchait à éviter.'}
     ],
-    behaviors:['Vous vérifiez où est l\'autre, avec qui, ce qu\'il fait — ce n\'est pas de la jalousie, c\'est la logique d\'un masque Vert qui a peur de perdre ET d\'un masque Bleu qui contrôle pour se rassurer','Vous oscillez entre demander beaucoup et reprendre votre distance — l\'autre ne comprend pas ces alternances','Vous justifiez votre surveillance en termes de sollicitude — ce n\'est pas faux. Et ce n\'est pas toute la vérité','Votre partenaire finit par s\'épuiser — de la surveillance ET des demandes simultanées']
+    behaviors:['Vous vérifiez où est l\'autre, avec qui, ce qu\'il ou elle fait. Ce n\'est pas de la jalousie — c\'est la logique d\'un masque Vert qui a peur de perdre ET d\'un masque Bleu qui contrôle pour se rassurer.','Vous oscillez entre demander beaucoup et reprendre votre distance. L\'autre ne comprend pas ces alternances — ni vous entièrement.','Vous justifiez votre surveillance en termes de sollicitude. Ce n\'est pas faux. Et ce n\'est pas toute la vérité.','Votre partenaire finit par s\'épuiser — de la surveillance ET des demandes simultanées. Les deux masques placent l\'autre dans une situation impossible.']
   },
   'vert_violet': {
     name:'Fusion Identitaire',
@@ -2270,22 +2270,20 @@ const DYADES_DATA = {
     behaviors:['Votre rôle — professionnel, familial, social — est devenu la totalité de votre identité. Vous n\'existez pas vraiment en dehors de lui','La perspective de ne plus occuper ce rôle déclenche une anxiété profonde et difficile à expliquer rationnellement','Votre valeur personnelle est liée à ce que vous gérez et décidez — ce qui crée une dépendance à l\'utilité et à la reconnaissance de votre maîtrise','Vous avez construit votre vie autour du contrôle. C\'est efficace. Et épuisant — parce que le vide identitaire reste toujours sous la surface']
   },
   'indigo_violet': {
-    name:'Imposture Existentielle',
-    tagline:'Je ne suis pas assez — ET je ne sais pas qui je suis',
-    desc:'Votre masque Indigo impose des standards impossibles — votre masque Violet cherche une identité floue. Double absence : perfectionnisme sans ancrage identitaire stable. Vous ne savez pas qui doit être parfait. Les standards s\'appliquent dans le vide — changeants, arbitraires, impossibles. Le sentiment d\'imposture est total et généralisé.',
+    name:'L\'Imposteur',
+    tagline:'Je ne suis pas assez ET je ne sais pas qui je suis',
+    desc:'Votre masque Indigo impose des standards impossibles — votre masque Violet cherche une identité floue. Double absence : perfectionnisme sans ancrage identitaire stable. Vous ne savez pas qui doit être parfait. Les standards s\'appliquent dans le vide — changeants, arbitraires, impossibles. Le sentiment d\'imposture est total et généralisé : pas seulement dans un domaine, mais dans l\'existence entière.',
     cycle:[
-      {step:'Un projet ou une décision se profile',effect:'Masque Indigo exige la perfection.'},
-      {step:'Masque Violet ne sait pas qui doit décider',effect:'Paralysie par double impossibilité.'},
-      {step:'Les standards varient selon les jours',effect:'Parfois impossibles, parfois absents — selon l\'identité du moment.'},
-      {step:'L\'errance s\'approfondit',effect:'Plus vous cherchez, moins vous trouvez où ancrer l\'exigence.'}
+      {step:'Un projet ou une décision se présente',effect:'Masque Indigo exige la perfection. Masque Violet ne sait pas qui doit décider.'},
+      {step:'Les standards s\'appliquent sans ancrage',effect:'Parfois impossibles, parfois absents — selon l\'identité du moment.'},
+      {step:'L\'imposture semble évidente',effect:'Vous vivez la vie de quelqu\'un d\'autre, imparfaitement.'},
+      {step:'Le cycle se répète à chaque nouvelle situation',effect:'Sans que la question \'qui suis-je ?\' trouve jamais de réponse stable.'}
     ],
-    behaviors:['Vous changez souvent de direction — non par inconstance, mais parce que vous cherchez où vous serez enfin à la fois assez ET vous-même','Le sentiment d\'imposture est généralisé — pas seulement professionnel, existentiel. Comme si vous viviez la vie de quelqu\'un d\'autre, imparfaitement','Vos standards varient selon les jours — parfois impossibles, parfois absents. Cette instabilité reflète l\'identité floue sur laquelle le perfectionnisme s\'applique','Ce n\'est pas une question de talent — ce sont deux masques qui créent ensemble une impossibilité : être parfait sans savoir qui on est']
+    behaviors:['Vous changez souvent de direction. Non par inconstance — parce que vous cherchez où vous serez enfin à la fois assez ET vous-même.','Le sentiment d\'imposture est généralisé. Pas seulement professionnel — existentiel. Comme si vous viviez la vie de quelqu\'un d\'autre, imparfaitement.','Vos standards varient selon les jours — parfois impossibles, parfois absents. Cette instabilité reflète l\'identité floue sur laquelle le perfectionnisme s\'applique.','Ce n\'est pas une question de talent. C\'est deux masques qui créent ensemble une impossibilité : être parfait sans savoir qui on est.']
   }
 };
 
-/* ═══ 15 TRIADES CLINIQUES ═══ */
-
-// ── TRIADES (15 combinaisons) ────────────────────────────────────────
+// ══ TRIADES (16 combinaisons) ══════════════════════════════════════════════
 const TRIADES_DATA = {
   'jaune_orange_rouge': {
     name:'Anxiété Généralisée Somatisée',
@@ -2342,7 +2340,7 @@ const TRIADES_DATA = {
     manifestations:['Réussite spectaculaire avec vide intérieur total — "je réussis et je ne le ressens pas"','Burnout brutal post-succès — l\'effondrement arrive après la réussite, pas pendant','Incapacité totale à jouir des accomplissements — toujours déjà au prochain objectif','Relations purement instrumentales — efficaces, sans profondeur','Crash existentiel après une réussite majeure — "j\'ai tout — et ça ne suffit pas"']
   },
   'jaune_orange_vert': {
-    name:'Dépendance Structurée Sans Émotion',
+    name:'Dépendance Planifiée Sans Émotion',
     tagline:'Sur-adapter, planifier, être là — sans jamais vraiment ressentir',
     desc:'Adaptation relationnelle automatique, routines rigides, absence de ressenti. Une vie structurée mais émotionnellement vide et relationnellement dépendante — vous êtes présent·e, disponible, organisé·e. Mais vous n\'habitez pas vraiment ce que vous vivez.',
     manifestations:['Sur-adaptation relationnelle automatique — vous vous pliez sans choisir','Routines rigides et planification excessive qui structurent la vie mais ne la nourrissent pas','Absence de ressenti émotionnel dans les moments importants','Vie structurée mais vide de sens — "je fais les bonnes choses mais ça ne me touche pas"','Relations superficielles malgré dépendance affective réelle']
@@ -2376,6 +2374,12 @@ const TRIADES_DATA = {
     tagline:'Être parfait·e sans savoir qui doit l\'être',
     desc:'Votre masque Indigo impose des standards, votre masque Jaune exige des certitudes, votre masque Violet ne sait pas qui doit atteindre ces standards. Standards rigides sur identité floue. La paralysie décisionnelle et l\'errance caractérisent cette configuration — vous cherchez constamment la bonne direction sans avoir la boussole pour la trouver.',
     manifestations:['Standards rigides appliqués à une identité floue — exigence sans ancrage','Paralysie décisionnelle totale — chaque choix semble menacer quelque chose d\'essentiel','Errance existentielle chronique — changements de direction répétés, projets abandonnés','Épuisement sans accomplissement — beaucoup d\'énergie dépensée pour peu de réalisation concrète','Sentiment d\'imposture généralisé — existentiel, pas seulement professionnel']
+  },
+  'indigo_vert_violet': {
+    name:'Triple Effacement de Soi',
+    tagline:'Je m\'efface, je me fonds, je ne sais plus qui je suis',
+    desc:'Trois masques orientés vers le même effacement — chacun pour une peur différente. Votre masque Vert efface pour ne pas être rejeté·e. Votre masque Indigo efface parce qu\'être vu·e est risqué. Votre masque Violet cherche une identité dans le regard de l\'autre. Triple dissolution de soi, cohérente dans sa logique, épuisante dans ses effets. Vous existez principalement en fonction des autres et de ce qu\'ils attendent.',
+    manifestations:['Compétences et réussites systématiquement minimisées ou réattribuées aux autres','Identité construite quasi-exclusivement dans le reflet des relations — qui suis-je hors du regard de l\'autre ?','Sentiment d\'imposture généralisé — pas seulement professionnel, existentiel','Difficulté profonde à exprimer ce que vous voulez, pensez ou ressentez vraiment','Auto-sabotage subtil dès que la visibilité ou la réussite devient trop réelle']
   }
 };
 
@@ -3654,8 +3658,25 @@ function buildPageFromOld(dominant,meta,data,playlist,scores,prenom,profile){
     c+='<span style="display:inline-flex;align-items:center;background:rgba(26,24,20,.05);border:1px solid rgba(26,24,20,.1);border-radius:20px;padding:2mm 3.5mm;font-size:10px;font-weight:600;color:rgba(26,24,20,.5);text-transform:capitalize">'+prof.type+(prof.subtype?' \u00b7 '+prof.subtype:'')+'</span>';
     c+='</div>';
 
+    // ── Force libérée — visible dès le début ─────────────────────────
+    var FL_EARLY={
+      rouge:{t:'Présence Incarnée et Paisible',d:'L\'énergie consommée par la vigilance se transforme en capacité d\'habiter pleinement le corps et le moment présent.'},
+      orange:{t:'Intelligence Émotionnelle Vivante',d:'L\'émotion n\'est plus un ennemi à fuir, mais une source d\'information riche. La créativité se débride.'},
+      jaune:{t:'Confiance Inébranlable et Action Juste',d:'Libéré·e du besoin de tout anticiper, vous découvrez une confiance moteur. Plus besoin de garanties pour avancer.'},
+      vert:{t:'Capacité d\'Aimer Authentique',d:'L\'amour n\'est plus une monnaie d\'échange. Il se donne librement, ancré en vous. L\'empathie devient un don, non un fardeau.'},
+      bleu:{t:'Autorité Naturelle et Communication Inspirée',d:'Vous cessez de contrôler les autres pour exister. Votre parole devient juste et créatrice.'},
+      indigo:{t:'Vision Claire et Intuition Affûtée',d:'Libéré·e du perfectionnisme, votre mental devient un outil de discernement. Vous osez suivre votre vision intérieure.'},
+      violet:{t:'Paix Profonde et Connexion au Sens',d:'Vous lâchez prise sur une identité figée. Vous n\'avez plus besoin d\'un rôle pour exister — vous incarnez votre sens.'}
+    };
+    var flE=FL_EARLY[dominant]||{t:'Votre force libérée',d:''};
+    c+='<div style="background:linear-gradient(135deg,rgba('+rgb.r+','+rgb.g+','+rgb.b+',.08),rgba('+rgb.r+','+rgb.g+','+rgb.b+',.03));border:1px solid rgba('+rgb.r+','+rgb.g+','+rgb.b+',.2);border-radius:8px;padding:4mm 5mm;margin-bottom:5mm">';
+    c+='<p style="font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:'+col+';margin-bottom:2mm">✦ Ce que ce masque cache comme force</p>';
+    c+='<p style="font-family:\'Cormorant Garamond\',serif;font-size:16px;font-weight:600;color:rgba(26,24,20,.88);margin-bottom:1.5mm">'+flE.t+'</p>';
+    c+='<p class="tli" style="font-size:12.5px;margin:0">'+flE.d+'</p>';
+    c+='</div>';
+
     // BLOC 1 — Dynamique nommée
-    if(prof.subtype==='dyade'){
+    if(prof.type==='dyade'){
       var dk=prof.masks.slice().sort().join('_');
       var dd=(typeof DYADES_DATA!=='undefined'&&DYADES_DATA[dk])||null;
       if(dd){
@@ -3677,7 +3698,7 @@ function buildPageFromOld(dominant,meta,data,playlist,scores,prenom,profile){
         var nm2=prof.masks.slice(0,2).map(function(k){return MASK_LABELS[k]+'\u00a0('+( scores[k]||0)+'%)';}).join(' et ');
         c+='<p class="tli" style="margin-bottom:4mm">Deux masques s\u2019activent en tandem\u00a0: <strong>'+nm2+'</strong>. Quand ces deux d\u00e9fenses se d\u00e9clenchent ensemble, leur effet n\u2019est pas additif \u2014 il est multiplicatif.</p>';
       }
-    } else if(prof.subtype==='triade'){
+    } else if(prof.type==='triade'){
       var tk=prof.masks.slice(0,3).sort().join('_');
       var td=(typeof TRIADES_DATA!=='undefined'&&TRIADES_DATA[tk])||null;
       if(td){
@@ -4449,9 +4470,7 @@ function buildPremiumReport(dominant, scores, prenom, profile, isGift) {
   var appEl = document.getElementById('app');
   if(appEl) appEl.style.display = 'block';
 
-  // Afficher le bouton PDF
-  var fab = document.getElementById('pdf-fab');
-  if(fab) fab.style.display = 'block';
+
 
   // Animate bars
   try { animateBars(scores); } catch(e) {}
@@ -4790,11 +4809,11 @@ async function buildPage(){
   // Amplitude badge (dyade/triade)
   if(profil.type==='dyade'||profil.type==='triade'||profil.type==='amplification'){
     const ampZone = document.getElementById('amplitude-zone');
-    const subLabel = profil.subtype==='dyade'?'Dyade':'Triade';
+    const subLabel = profil.type==='dyade'?'Dyade':'Triade';
     ampZone.innerHTML = `
       <div class="amplitude-badge">
         <div class="amp-label">Configuration ${subLabel}</div>
-        <div class="amp-name">${profil.subtype==='dyade'&&gd(profil.masks[0],profil.masks[1])?gd(profil.masks[0],profil.masks[1]).n:profil.subtype==='triade'&&gt(profil.masks)?gt(profil.masks).n:'—'}</div>
+        <div class="amp-name">${profil.type==='dyade'&&gd(profil.masks[0],profil.masks[1])?gd(profil.masks[0],profil.masks[1]).n:profil.type==='triade'&&gt(profil.masks)?gt(profil.masks).n:'—'}</div>
         <div class="amp-masks">${profil.masks.map(m=>`<span class="amp-tag">${MASK_META[m].emoji} ${MASK_META[m].name}</span>`).join('')}</div>
       </div>`;
   }
@@ -5130,29 +5149,7 @@ function _getCurrentMeta(){
   }catch(e){return null;}
 }
 
-function V_downloadPDF() {
-  var btn = document.getElementById('pdf-btn');
-  var wrap = document.getElementById('premium-report-wrap');
-  if(!wrap){ alert('Portrait non chargé.'); return; }
-
-  btn.textContent = 'Ouverture impression…';
-  btn.disabled = true;
-
-  // Ajouter classe sur body pour cibler les règles @media print
-  document.body.classList.add('printing-report');
-
-  // Petite pause pour que le navigateur applique les styles
-  setTimeout(function(){
-    window.print();
-
-    // Retirer la classe après impression
-    setTimeout(function(){
-      document.body.classList.remove('printing-report');
-      btn.innerHTML = '⎙ Imprimer / Enregistrer en PDF';
-      btn.disabled = false;
-    }, 1500);
-  }, 150);
-}
+// V_downloadPDF supprimé
 </script>
 
 </script>
