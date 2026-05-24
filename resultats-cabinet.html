@@ -1787,7 +1787,7 @@ st(['bleu','jaune','orange'], {n:'La Triade de l\'Anticipation Rigide'});
 st(['rouge','vert','violet'], {n:'La Triade de la Survie Identitaire'});
 st(['indigo','jaune','violet'],{n:'La Triade du Doute Existentiel'});
 
-function gt(keys){return TRIADES[[...keys].sort().join('+')]||null;}
+function gt(keys){return TRIADES[[...keys].sort().join('+')]||(typeof TRIADES_DATA!=='undefined'&&TRIADES_DATA[[...keys].sort().join('_')])||null;}
 function getTriadeData(keys){return gt(keys);}
 
 // ══ COULEURS ═══════════════════════════════════════════════════════════════
@@ -4596,9 +4596,35 @@ async function buildPage(){
     const urlSpa=urlP2.get('spa');
     try{localStorage.setItem('valeur_prenom',urlPrenom||'');}catch(e){}
     try{localStorage.setItem('valeur_email',urlEmail||'');}catch(e){}
-    if(urlSpa)    rawScores.spa=parseInt(urlSpa);
-    // Écraser le localStorage avec les nouveaux scores
+    if(urlSpa) rawScores.spa=parseInt(urlSpa);
+    // Écraser le localStorage avec les nouveaux scores + stocker le patientId courant
     try{localStorage.setItem('valeur_scores',JSON.stringify(rawScores));}catch(e){}
+    if(_patientId){
+      try{localStorage.setItem('valeur_patient_id',_patientId);}catch(e){}
+      // ── Sauvegarder en Neon (scores manuels cabinet) ──────────────────
+      const _scoresNeon={rouge:rawScores.rouge||0,orange:rawScores.orange||0,jaune:rawScores.jaune||0,
+        vert:rawScores.vert||0,bleu:rawScores.bleu||0,indigo:rawScores.indigo||0,violet:rawScores.violet||0};
+      const _spa=rawScores.spa||0;
+      fetch(VALEUR_API+'/bilans',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-cabinet-secret':'valeur-cab-2026'},
+        body:JSON.stringify({id:'auto_'+_patientId+'_'+Date.now(),patient_id:_patientId,
+          scores:_scoresNeon,spa:_spa,date:new Date().toISOString().split('T')[0],
+          source:'cabinet_manuel'})
+      }).catch(function(e){console.warn('Neon bilan save silenced:',e);});
+    }
+  }
+
+  // Guard anti-contamination : si pas de scores URL et patientId différent du dernier, ignorer localStorage
+  if(!rawScores && _patientId){
+    try{
+      const _storedPid=localStorage.getItem('valeur_patient_id');
+      if(_storedPid && _storedPid!==_patientId){
+        localStorage.removeItem('valeur_scores');
+        localStorage.removeItem('valeur_prenom');
+        localStorage.removeItem('valeur_email');
+      }
+    }catch(e){}
   }
 
   // PRIORITÉ 2 — cab_preview_scores (scores manuels cabinet → bridge localStorage)
@@ -5147,6 +5173,60 @@ function _getCurrentMeta(){
     const dom=MASKS.sort((a,b)=>{const d=(sc[b]||0)-(sc[a]||0);return d||TIEBREAK.indexOf(a)-TIEBREAK.indexOf(b);})[0];
     return typeof getMeta==='function'?getMeta(dom):null;
   }catch(e){return null;}
+}
+
+// ── Cabinet PDF attachment ──────────────────────────────────────────────────
+(function(){
+  var _pid = new URLSearchParams(window.location.search).get('patientId');
+  if(!_pid) return;
+  var zone = document.getElementById('cab-pdf-zone');
+  var attached = document.getElementById('cab-pdf-attached');
+  var link = document.getElementById('cab-pdf-link');
+  var inp = document.getElementById('cab-pdf-input');
+  if(!zone) return;
+  // Show zone
+  zone.style.display = 'block';
+  // Load existing attachment
+  try{
+    var stored = localStorage.getItem('patient_pdf_'+_pid);
+    if(stored){
+      var meta = JSON.parse(localStorage.getItem('patient_pdf_meta_'+_pid)||'{}');
+      link.textContent = meta.name||'document.pdf';
+      link.href = stored;
+      zone.style.display = 'none';
+      attached.style.display = 'flex';
+    }
+  }catch(e){}
+  // File input handler
+  function handleFile(file){
+    if(!file||file.type!=='application/pdf') return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        localStorage.setItem('patient_pdf_'+_pid, e.target.result);
+        localStorage.setItem('patient_pdf_meta_'+_pid, JSON.stringify({name:file.name}));
+        link.textContent = file.name;
+        link.href = e.target.result;
+        zone.style.display = 'none';
+        attached.style.display = 'flex';
+      }catch(ex){console.warn('PDF store error',ex);}
+    };
+    reader.readAsDataURL(file);
+  }
+  if(inp) inp.addEventListener('change', function(e){ handleFile(e.target.files[0]); });
+  // Drag-drop
+  zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', function(){ zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', function(e){ e.preventDefault(); zone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+})();
+function cabRemovePdf(){
+  var _pid = new URLSearchParams(window.location.search).get('patientId');
+  if(!_pid) return;
+  try{localStorage.removeItem('patient_pdf_'+_pid); localStorage.removeItem('patient_pdf_meta_'+_pid);}catch(e){}
+  var zone=document.getElementById('cab-pdf-zone');
+  var att=document.getElementById('cab-pdf-attached');
+  if(zone) zone.style.display='block';
+  if(att) att.style.display='none';
 }
 
 // V_downloadPDF supprimé
