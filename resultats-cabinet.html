@@ -4971,7 +4971,7 @@ async function buildPage(){
     };
     const _sendEmail = () => emailjs.send('Questionnaire VALEUR', _templateId, _templateVars)
       .catch(()=>{ setTimeout(()=>_sendEmail().catch(e=>console.warn('[EmailJS]',e)), 3000); });
-    _sendEmail();
+    if(!isPraticien) _sendEmail(); // CABINET: jamais d'email au patient
 
 
   }
