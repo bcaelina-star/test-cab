@@ -1554,7 +1554,7 @@ function detectProfile(sc){
   var m0=sorted[0],m1=sorted[1],m2=sorted[2],m3=sorted[3];
   var above60=sorted.filter(function(m){return m.pct>=60;});
   if(above60.length>=5&&(above60[0].pct-above60[above60.length-1].pct)<=20){
-    return{type:'pan',masks:above60.map(function(m){return m.key;}),all_sorted:sorted};
+    var _pS=above60[0].pct-above60[above60.length-1].pct;var _pT=_pS<=5?'ultra_plat':_pS<=10?'generalise':'structure';return{type:'pan',masks:above60.map(function(m){return m.key;}),spread:_pS,subtype:_pT,all_sorted:sorted};
   }
   if(m0.pct>=60&&m1&&m1.pct>=55&&m2&&m2.pct>=55&&(m0.pct-m2.pct)<=15&&(!m3||m1.pct-m3.pct>10)){
     return{type:'triade',masks:[m0.key,m1.key,m2.key],all_sorted:sorted};
@@ -1578,6 +1578,110 @@ function detectProfile(sc){
 }
 
 
+
+// ══ PAN-MASQUES — portraits depuis dyades & triades validées ══════════════
+
+var PAN_HEALTH_MSG = '<div style="background:rgba(29,95,138,.08);border-left:3px solid #1D5F8A;border-radius:6px;padding:20px 22px;margin:24px 0;font-size:14px;line-height:1.8;color:#1A1714"><div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1D5F8A;margin-bottom:12px">Un mot sur ce que r\u00e9v\u00e8le ce profil</div><p style="margin-bottom:10px">Votre questionnaire montre que votre syst\u00e8me nerveux est tr\u00e8s sollicit\u00e9 en ce moment — plusieurs m\u00e9canismes de protection actifs en m\u00eame temps, \u00e0 un niveau \u00e9lev\u00e9.</p><p style="margin-bottom:10px"><strong>V.A.L.E.U.R\u00a9 est une m\u00e9thode psycho\u00e9ducative</strong> : elle peut vous aider \u00e0 mieux comprendre comment vous fonctionnez — mais elle n\u2019est pas con\u00e7ue pour accompagner seule les situations de tension intense ou de stress durable. Ce n\u2019est pas un protocole de gestion de crise, et ce questionnaire ne constitue en aucun cas un diagnostic.</p><p style="margin-bottom:10px">Si vous vous reconnaissez dans ce niveau d\u2019activation, la premi\u00e8re chose que nous vous encourageons \u00e0 faire est simplement <strong>d\u2019en parler \u00e0 une personne de confiance</strong> — quelqu\u2019un dans votre entourage avec qui vous vous sentez en s\u00e9curit\u00e9.</p><p>Si cette tension persiste, un accompagnement orient\u00e9 vers la <strong>r\u00e9gulation \u00e9motionnelle</strong> peut vous aider \u00e0 retrouver davantage de calme int\u00e9rieur. Vous n\u2019avez pas \u00e0 traverser \u00e7a seul\u00b7e.</p></div>';
+
+function buildPanMasqueReport(profile, scores, prenom, isGift) {
+  var top3 = profile.masks.slice(0,3);
+  var satellites = profile.masks.slice(3);
+  var spread = typeof profile.spread==='number'?profile.spread:0;
+  var subtype = profile.subtype||'generalise';
+
+  var SPREAD = {
+    ultra_plat:{titre:'Suradaptation Totale',desc:'Votre syst\u00e8me nerveux r\u00e9pond \u00e0 toutes les classes de menace au m\u00eame niveau d\u2019intensit\u00e9 — aucun masque ne domine, ils s\u2019alimentent mutuellement dans un \u00e9tat de vigilance permanente.'},
+    generalise:{titre:'Activation G\u00e9n\u00e9ralis\u00e9e',desc:'Votre syst\u00e8me nerveux maintient une vigilance active sur plusieurs registres simultan\u00e9ment, avec une l\u00e9g\u00e8re organisation autour de trois masques principaux.'},
+    structure:{titre:'Diffusion Structur\u00e9e',desc:'Les masques actifs cr\u00e9ent un r\u00e9seau d\u2019amplification mutuelle, avec une triade l\u00e9g\u00e8rement plus intenses. Aucun masque ne structure la dynamique \u00e0 lui seul.'}
+  };
+  var sd = SPREAD[subtype]||SPREAD.generalise;
+  var mc = top3.map(function(k){return MASK_META[k]||{color:'#9E948A',name:k,peur:''};});
+
+  // ALL masks bars — equal presentation, no dominant
+  var allMasks = profile.masks;
+  var barsH = allMasks.map(function(k){
+    var m=MASK_META[k]||{color:'#9E948A',name:k};var p=scores[k]||0;
+    return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.05)">'+
+      '<div style="width:96px;font-size:12px;font-weight:500;color:'+m.color+';flex-shrink:0">'+m.name+'</div>'+
+      '<div style="flex:1;background:rgba(0,0,0,.07);border-radius:4px;height:8px;overflow:hidden">'+
+        '<div style="width:'+p+'%;background:'+m.color+';height:100%;border-radius:4px"></div></div>'+
+      '<div style="width:36px;font-size:12px;font-weight:600;color:'+m.color+';text-align:right;flex-shrink:0">'+p+'%</div></div>';
+  }).join('');
+
+  // Core: triade documentée or 3 dyades composantes
+  var triadeData = gt(top3);
+  var coreH;
+  if(triadeData){
+    coreH = '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:8px">Configuration centrale — document\u00e9e V.A.L.E.U.R\u00a9</div>'+
+      '<div style="font-family:Georgia,serif;font-size:18px;font-style:italic;color:#1A1714;margin-bottom:12px">'+triadeData.n+'</div>'+
+      '<div style="font-size:13px;color:#4A4138;line-height:1.75">'+
+        mc[0].name+', '+mc[1].name+' et '+mc[2].name+' forment le c\u0153ur de votre configuration d\u00e9fensive. Ces trois masques se renforcent mutuellement — quand l\u2019un s\u2019active, il tend \u00e0 amplifier les deux autres.'+
+      '</div>';
+  } else {
+    var coreDyades = [[top3[0],top3[1]],[top3[0],top3[2]],[top3[1],top3[2]]].map(function(p){var d=gd(p[0],p[1]);return d?'<div style="padding:7px 0;border-bottom:1px solid rgba(0,0,0,.05)"><span style="font-weight:600;color:#1A1714">'+d.n+'</span><span style="color:#8C8278;font-size:12px"> — '+d.b1+' · '+d.b2+'</span></div>':null;}).filter(Boolean).join('');
+    coreH = '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:8px">Configuration centrale — trois dynamiques en amplification</div>'+coreDyades;
+  }
+
+  // Satellites — lookup validated dyades only
+  var satH = satellites.map(function(s){
+    var sMeta=MASK_META[s]||{color:'#9E948A',name:s};
+    var links=top3.map(function(core){var d=gd(s,core);var cM=MASK_META[core]||{color:'#9E948A',name:core};return d?'<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.04)"><div style="font-size:11px;color:'+cM.color+';font-weight:600;width:72px;padding-top:1px;flex-shrink:0">+'+cM.name.replace('Masque ','')+'</div><div><span style="font-size:12px;font-weight:600;color:#1A1714">'+d.n+'</span><span style="font-size:12px;color:#8C8278"> — '+d.b1+' · '+d.b2+'</span></div></div>':null;}).filter(Boolean).join('');
+    if(!links)return '';
+    return '<div style="padding:11px 0;border-bottom:1px solid rgba(0,0,0,.08)"><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><div style="width:8px;height:8px;border-radius:50%;background:'+sMeta.color+';flex-shrink:0"></div><div style="font-size:13px;font-weight:600;color:'+sMeta.color+'">'+sMeta.name+'</div><span style="font-size:12px;color:#8C8278"> '+scores[s]+'% — r\u00e9sonances avec la configuration centrale\u00a0:</span></div>'+links+'</div>';
+  }).filter(Boolean).join('');
+
+  // Force section — lucidity as the key strength
+  var forceH = '<div style="background:#FAF8F4;border-radius:8px;padding:18px 20px;margin-bottom:16px;border-left:3px solid #C9A84C">'+
+    '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#C9A84C;margin-bottom:10px">La force derri\u00e8re les masques</div>'+
+    '<div style="font-size:14px;line-height:1.8;color:#1A1714;margin-bottom:10px">Votre force est une <strong>sensibilit\u00e9 et lucidit\u00e9 exceptionnelles</strong>. Vous percevez ce que la plupart ne voient pas — les dynamiques, les atmosph\u00e8res, les attentes non dites. Cette capacit\u00e9 d\u2019adaptation remarquable n\u2019est pas une faiblesse. C\u2019est ce qui vous a permis de traverser.</div>'+
+    '<div style="font-size:13px;line-height:1.75;color:#4A4138">Le probl\u00e8me n\u2019est pas votre lucid\u00e9. C\u2019est la <em>direction</em> dans laquelle elle s\u2019est orient\u00e9e\u00a0: vers l\u2019ext\u00e9rieur, vers les attentes des autres, vers la survie dans un monde exigeant. Quand cette m\u00eame \u00e9nergie se tourne vers l\u2019int\u00e9rieur — vers ce qui vous appartient vraiment — quelque chose de fondamental peut changer.</div>'+
+    '</div>';
+
+  var gradient='linear-gradient(135deg,'+mc[0].color+'1A 0%,'+mc[1].color+'1A 50%,'+mc[2].color+'1A 100%)';
+  var giftH=isGift?'<div style="background:rgba(168,135,58,.1);border:1px solid rgba(168,135,58,.3);border-radius:6px;padding:8px 16px;text-align:center;font-size:11px;color:#A8873A;letter-spacing:1px;margin-bottom:16px;font-weight:600">\uD83C\uDF81 Portrait offert — Acc\u00e8s partenaire V.A.L.E.U.R\u00a9</div>':'';
+  var coreTitle=triadeData?triadeData.n:mc.map(function(m){return m.name;}).join(' \u00b7 ');
+
+  var html=giftH+
+    // Header
+    '<div style="background:'+gradient+';border-radius:12px;padding:28px 24px;margin-bottom:20px;border:1px solid rgba(0,0,0,.08)">'+
+      '<div style="font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8C8278;margin-bottom:6px">Profil V.A.L.E.U.R\u00a9</div>'+
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:'+mc[0].color+';margin-bottom:6px">Pan-Masques — '+sd.titre+'</div>'+
+      '<div style="font-family:Georgia,serif;font-size:20px;font-weight:300;color:#1A1714;font-style:italic;margin-bottom:12px">'+coreTitle+'</div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">'+top3.map(function(k){var m=MASK_META[k]||{color:'#9E948A',name:k};return '<span style="background:'+m.color+'22;border:1px solid '+m.color+'55;color:'+m.color+';font-size:11px;padding:3px 10px;border-radius:12px;font-weight:600">'+m.name+'</span>';}).join('')+'</div>'+
+    '</div>'+
+    // Intro suradaptation
+    '<div style="background:#FAF8F4;border-radius:8px;padding:18px 20px;margin-bottom:16px;font-size:14px;line-height:1.8;color:#4A4138">'+
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:8px">Ce que votre profil r\u00e9v\u00e8le</div>'+
+      sd.desc+
+      '<br><br>Vous avez appris \u00e0 vous adapter \u00e0 tout — et \u00e0 tous. Cette capacit\u00e9 est impressionnante. Et elle a un co\u00fbt invisible\u00a0: l\u2019\u00e9nergie que vous mettez \u00e0 \u00eatre ce que chaque contexte attend de vous est une \u00e9nergie qui ne sert plus votre vie propre. Il y a quelqu\u2019un, en vous, qui attend d\u2019\u00eatre simplement — et qui n\u2019a pas encore eu l\u2019espace pour se manifester.'+
+    '</div>'+
+    // All masks bars — equal
+    '<div style="background:#fff;border-radius:8px;padding:18px 20px;margin-bottom:16px;border:1px solid #DDD8CF">'+
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:12px">Vos masques actifs — tous pr\u00e9sents, tous significatifs</div>'+
+      barsH+
+    '</div>'+
+    // Core
+    '<div style="background:#fff;border-radius:8px;padding:18px 20px;margin-bottom:16px;border:1px solid #DDD8CF">'+
+      coreH+
+    '</div>'+
+    // Satellites
+    (satH?'<div style="background:#fff;border-radius:8px;padding:18px 20px;margin-bottom:16px;border:1px solid #DDD8CF">'+
+      '<div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8C8278;margin-bottom:10px">Masques satellites — r\u00e9sonances document\u00e9es</div>'+
+      '<div style="font-size:13px;color:#4A4138;margin-bottom:8px">Chaque masque satellite entre en r\u00e9sonance avec la configuration centrale via des dynamiques valid\u00e9es\u00a0:</div>'+
+      satH+'</div>':'')+
+    forceH+
+    (spread<=10?PAN_HEALTH_MSG:'');
+
+  var rw=document.getElementById('premium-report-wrap');
+  if(!rw){rw=document.createElement('div');rw.id='premium-report-wrap';document.body.appendChild(rw);}
+  rw.innerHTML=html;rw.style.display='block';rw.style.maxWidth='900px';rw.style.margin='0 auto';rw.style.padding='20px 16px';
+  var _l=document.getElementById('loading');if(_l)_l.style.display='none';
+  var _a=document.getElementById('app');if(_a)_a.style.display='block';
+  var _pw=document.getElementById('paywall-section');if(_pw)_pw.style.display='none';
+  var _pt=document.getElementById('portrait');if(_pt)_pt.style.display='none';
+  var _fab=document.getElementById('pdf-fab');if(_fab)_fab.style.display='block';
+}
+
 // ══ DYADES (21 combinaisons) ════════════════════════════════════════════════
 const DYADES = {};
 function sd(key,data){DYADES[key]=data;}
@@ -1586,9 +1690,9 @@ sd('orange+rouge',{n:'Le Corps qui se Tait',b1:'Hypervigilance somatique',b2:'É
 sd('jaune+rouge',{n:'L\'Alerte Permanente',b1:'Anxiété de santé',b2:'Intolérance à l\'incertitude'});
 sd('rouge+vert',{n:'La Vigilance Relationnelle',b1:'Anxiété somatique',b2:'Peur du rejet'});
 sd('bleu+rouge',{n:'Le Corps sous Contrôle',b1:'Hypervigilance somatique',b2:'Besoin de maîtrise'});
-sd('indigo+rouge',{n:'La Performance ou la Catastrophe',b1:'Anxiété santé',b2:'Peur de l\'échec'});
+sd('indigo+rouge',{n:'L\'Angoisse de Performance',b1:'Anxi\u00e9t\u00e9 de survie et hypervigilance somatique',b2:'Peur du jugement et de l\'\u00e9chec'});
 sd('rouge+violet',{n:'L\'Existence Menacée',b1:'Peur de mourir',b2:'Peur de ne pas exister'});
-sd('jaune+orange',{n:'L\'Incertitude du Dedans',b1:'Alexithymie',b2:'Intolérance à l\'imprévu'});
+sd('jaune+orange',{n:'La Rumination Détachée',b1:'Rumination cognitive constante',b2:'Déconnexion émotionnelle'});
 sd('orange+vert',{n:'La Peur d\'Être Vu',b1:'Évitement émotionnel',b2:'Peur du rejet'});
 sd('bleu+orange',{n:'La Maîtrise sans Ressenti',b1:'Évitement émotionnel',b2:'Besoin de contrôle'});
 sd('indigo+orange',{n:'L\'Exigence Invisible',b1:'Alexithymie',b2:'Perfectionnisme'});
@@ -1688,7 +1792,17 @@ const PLAYLIST={
   vert:{peur:"le rejet et l\'abandon",bridge:"Ce que vos réponses dessinent : une <strong>sensibilité extrême aux signaux relationnels</strong>. Votre système nerveux a appris à surveiller en permanence les humeurs, les silences, les tonalités des autres — pour éviter la rupture. Ce radar fonctionne même avec des personnes bienveillantes, même quand rien ne menace le lien.",thoughts:["Qu\'est-ce qu\'ils pensent de moi ?","J\'ai sûrement dit quelque chose qui a mal passé.","Et s\'ils finissaient par se lasser de moi ?","Mieux vaut m\'adapter — si je prends trop de place, ils vont partir."]},
   bleu:{peur:"l\'impuissance et la perte de maîtrise",bridge:"Ce que vos réponses dessinent : un <strong>besoin de maîtriser les situations et les personnes</strong> autour de vous. Votre système nerveux a appris que lâcher prise exposait à l\'échec ou à l\'effondrement. Ce réflexe de contrôle s\'active même là où vous pourriez, en réalité, vous permettre de vous reposer.",thoughts:["Si je ne contrôle pas ça, ça va partir en vrille.","Les autres ne font jamais comme il faut.","Je dois vérifier, reprendre, corriger — sinon ça rate.","Je ne peux pas me permettre de ne pas être indispensable."]},
   indigo:{peur:"l\'échec et le sentiment d\'imposture",bridge:"Ce que vos réponses dessinent : une <strong>voix intérieure particulièrement sévère</strong> qui évalue, remet en question, anticipe le jugement des autres. Votre système nerveux a appris que cette exigence envers vous-même vous protégerait de l\'échec et du regard critique. Elle vous pousse — mais elle vous épuise davantage qu\'elle ne vous protège.",thoughts:["Ce n\'est pas assez bien. Je dois retravailler ça.","On va finir par voir que je ne mérite pas ma place.","C\'était la chance — pas ma compétence réelle.","Je ne peux pas commencer tant que je ne suis pas prêt(e)."]},
-  violet:{peur:"la perte de soi et du changement",bridge:"Ce que vos réponses dessinent : une <strong>résistance profonde au changement et à l\'inconnu de soi</strong>. Votre système nerveux a appris que maintenir des rôles stables et des routines connues était la meilleure façon de rester entier·e. Ce mécanisme vous stabilise — mais il peut aussi vous maintenir dans une vie qui ne vous ressemble plus.",thoughts:["Je suis coincé(e) dans cette vie.","Je ne sais plus vraiment qui je suis.","Si je change, je vais me perdre — ou perdre les autres.","Mieux vaut maintenir ce que je connais, même si ça me pèse."]}
+  violet:{
+    peur:"d\u2019\u00eatre jug\u00e9\u00b7e ou attaqu\u00e9\u00b7e sur qui l\u2019on est — et de ne pas \u00eatre aim\u00e9\u00b7e pour ce qu\u2019on est vraiment",
+    descriptor:"Sensibilité et lucidité profondes",
+    bridge:"Ce que vos r\u00e9ponses dessinent\u00a0: une <strong>hypersensibilit\u00e9 et hyperadaptabilit\u00e9 profondes</strong> \u2014 un profil cam\u00e9l\u00e9on. Vous avez appris tr\u00e8s t\u00f4t qu\u2019\u00eatre vraiment soi comportait un risque — celui d\u2019\u00eatre rejet\u00e9, incompris, jug\u00e9. Alors vous avez construit, soigneusement, une version de vous-m\u00eame qui serait accept\u00e9e. Brillante dans ses adaptations. Et profond\u00e9ment seule, car jamais vraiment vue.",
+    origine:"Quelque part dans votre histoire, il a \u00e9t\u00e9 plus s\u00fbr de s\u2019adapter que d\u2019exister. Peut-\u00eatre que vos \u00e9motions, vos questions, votre fa\u00e7on de voir le monde \u00e9taient trop intenses, trop diff\u00e9rentes. Peut-\u00eatre qu\u2019on attendait de vous une version plus conforme, plus lisible. Ce que votre syst\u00e8me nerveux a retenu est simple\u00a0: <em>pour \u00eatre aim\u00e9\u00b7e, il faut d\u2019abord \u00eatre acceptable.</em> Et \u2018acceptable\u2019 ne voulait pas dire vous-m\u00eame.",
+    prison:"Le Masque Violet est le plus silencieux de tous. Il ne se manifeste pas par des comportements \u00e9clatants. Il agit de l\u2019int\u00e9rieur, en effacement progressif. Il vous a appris \u00e0 vous \u00e9tudier depuis l\u2019ext\u00e9rieur — \u00e0 vous demander comment vous \u00eates per\u00e7u\u00b7e plut\u00f4t que ce que vous ressentez vraiment. La question <em>\u2018qui suis-je\u2019</em> est devenue anxiog\u00e8ne parce que vous ne savez plus faire la diff\u00e9rence entre ce que vous \u00eates et ce que vous avez construit pour survivre.",
+    mirror:"Vous avez probablement \u00e9t\u00e9 tr\u00e8s t\u00f4t sensible aux atmosph\u00e8res, au non-dit, au regard de l\u2019autre. Cette sensibilit\u00e9 — extraordinaire — vous a permis de vous adapter avec une pr\u00e9cision remarquable. Vous savez lire les situations. Vous savez quoi dire, comment vous pr\u00e9senter, ce qu\u2019on attend de vous.<br><br>Mais il y a un prix. Quand on passe autant d\u2019\u00e9nergie \u00e0 \u00eatre ce que les autres veulent voir, on finit par ne plus savoir ce qu\u2019on voulait, soi. Ce vide que vous sentez parfois — ce \u2018\u00e0 quoi \u00e7a sert, tout \u00e7a\u2019 — ce n\u2019est pas de la d\u00e9pression. C\u2019est la question de votre vraie vie qui attend d\u2019\u00eatre pos\u00e9e.",
+    force:"Votre force est une lucid\u00e9 exceptionnelle. Vous percevez ce que la plupart ne voient pas — les dynamiques, les non-dits, les \u00e9motions que l\u2019autre cache. Cette intelligence n\u2019est pas une compensation. C\u2019est votre nature profonde.\n\nLe probl\u00e8me n\u2019est pas votre lucid\u00e9. C\u2019est la <em>direction</em> dans laquelle elle s\u2019est orient\u00e9e\u00a0: vers l\u2019ext\u00e9rieur, vers le regard de l\u2019autre, vers la survie dans un monde qui ne vous a pas d\u2019embl\u00e9e fait une place. Quand cette m\u00eame \u00e9nergie se tourne vers l\u2019int\u00e9rieur — quand vous commencez \u00e0 voir avec la m\u00eame acuit\u00e9 <em>ce qui vous appartient vraiment</em> — quelque chose de fondamental change.",
+    liberation:"Ce que V.A.L.E.U.R\u00a9 vous invite \u00e0 d\u00e9couvrir\u00a0: il y a quelqu\u2019un en vous qui n\u2019a jamais eu besoin d\u2019\u00eatre diff\u00e9rent\u00b7e pour avoir de la valeur. Quelqu\u2019un qui ressent, qui pense, qui r\u00eave — et dont la pr\u00e9sence seule est suffisante.\n\nLe chemin n\u2019est pas de d\u00e9truire ce que vous avez construit. C\u2019est de comprendre que vous n\u2019en avez plus besoin pour la m\u00eame raison. Vous pouvez continuer \u00e0 vous adapter — avec l\u2019intelligence que vous avez — mais depuis un endroit stable en vous, et non depuis la peur d\u2019\u00eatre rejet\u00e9\u00b7e.",
+    thoughts:["Est-ce que les gens m\u2019aimeraient vraiment s\u2019ils savaient qui je suis au fond\u00a0?","Je me sens diff\u00e9rent\u00b7e — mais je ne sais pas comment le dire.","Je joue des r\u00f4les tellement bien que je ne sais plus qui je suis vraiment.","Qu\u2019est-ce qui reste si j\u2019arr\u00eate de m\u2019adapter\u00a0?"]
+  }
 };
 
 /* ═══ CONTENU 7 MASQUES ═══ */
@@ -4220,6 +4334,7 @@ function buildPageFromOld(dominant,meta,data,playlist,scores,prenom,profile){
 
 
 function buildPremiumReport(dominant, scores, prenom, profile, isGift) {
+  if(profile&&profile.type==='pan'){buildPanMasqueReport(profile,scores,prenom,isGift);return;}
   // Build meta object for old buildPage
   var meta = {
     color: MASK_COLORS[dominant] || '#2D7A4F',
@@ -4533,8 +4648,8 @@ async function buildPage(){
     profileTypeLabel = 'Profil Adaptatif';
     profileDesc = 'Votre profil ne présente pas de masque dominant marqué. Votre fonctionnement psychique est globalement flexible et adaptatif. Des zones de vigilance existent mais n\'entravent pas significativement votre capacité à être vous-même.';
   } else if(profil.type==='pan'){
-    profileTypeLabel = 'Profil Pan-masques — Suradaptation';
-    profileDesc = 'Toutes vos défenses sont hautement actives. Ce n\'est pas une accumulation de faiblesses — c\'est le signe d\'une suradaptation permanente\u00a0: vous avez appris à répondre à chaque peur, à jouer chaque rôle, si bien que vous ne savez plus sur quelle version de vous-même vous appuyer pour exister. C\'est précisément ce que nomme le Masque Violet\u00a0: avoir tout construit pour survivre, et avoir perdu en chemin le contact avec votre essence. Votre portrait travaille toutes vos peurs — de la plus active à la moins active — pour retrouver ce qui, en vous, n\'a jamais cessé d\'être vrai.';
+    profileTypeLabel = 'Profil Pan-Masques — Suradaptation';
+    profileDesc = 'Toutes vos d\u00e9fenses sont en \u00e9veil simultan\u00e9. Ce n\u2019est pas un d\u00e9faut — c\u2019est le signe d\u2019une <strong>suradaptation permanente</strong>\u00a0: vous avez appris \u00e0 r\u00e9pondre \u00e0 chaque environnement, \u00e0 chaque attente, avec une pr\u00e9cision et une \u00e9nergie remarquables. Vous \u00eates camouflage. Et ce camouflage vous a co\u00fbt\u00e9 quelque chose que vous n\u2019arrivez peut-\u00eatre pas encore tout \u00e0 fait \u00e0 nommer.';
   } else if((profil.type==='dyade'||profil.type==='amplification'&&profil.subtype==='dyade')){
     const dyadeData = gd(profil.masks[0],profil.masks[1]);
     profileTypeLabel = 'Amplification — Dyade';
