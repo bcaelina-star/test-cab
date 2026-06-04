@@ -737,9 +737,15 @@ ${port?V.views.patient._portResult(port,pid):''}`;
         const _pat=(V.data.getPatients()||[]).find(p=>p.id===pid)||{};
         const _prenom=_pat.prenom||'';
         const _email=_pat.email||'';
-        // Sauvegarder en local + Neon
+        // 1. Sauvegarder portrait en localStorage + déclencher sync Neon via V.sync
         V.views.patient._applyPortrait(pid,scores,_prenom,spa,null,_email);
-        // Ouvrir le portrait directement avec les scores dans l'URL — zéro localStorage
+        // 2. Forcer un flush Neon immédiat avec retour visuel
+        V.sync._flush().then(()=>{
+          V.ui.toast('✓ Scores sauvegardés dans Neon');
+        }).catch(()=>{
+          V.ui.toast('⚠ Neon hors-ligne — scores en local uniquement');
+        });
+        // 3. Ouvrir le portrait avec les scores dans l'URL
         const url=V.views.patient._scoresUrl(scores,spa,_prenom,pid);
         window.open(url,'_blank');
       },
