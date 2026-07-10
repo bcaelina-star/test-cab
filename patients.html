@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Fiche patient · Cabinet V.A.L.E.U.R©</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root{
+  --bg:#FCFAF7;--bg2:#F6F4F0;--ink:#1A1814;--ink2:#3A3632;--ink3:#8C827D;--ink4:#B8B0A5;
+  --gold:#C9A84C;--gold2:#A8873A;--gold-bg:rgba(201,168,76,.09);
+  --line:rgba(26,24,20,.08);--red:#B5312A;--green:#2D7A4F;--amber:#C4581F;
+  --shadow:0 1px 2px rgba(26,24,20,.04);--radius:14px;--radius-sm:9px;
+  --fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:var(--fb);font-weight:350;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:980px;margin:0 auto;padding:28px 20px 90px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--ink3);text-decoration:none;font-size:14px;margin-bottom:16px;transition:.2s}
+.back-link:hover{color:var(--gold)}
+.switcher{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.switcher select{font-family:var(--fb);font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:30px;background:#fff;color:var(--ink);min-width:190px;cursor:pointer}
+.nav-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer;font-size:14px;transition:.18s}
+.nav-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.switcher .count{margin-left:auto;font-size:12px;color:var(--ink3)}
+.phead{display:flex;align-items:center;gap:18px;margin-bottom:18px;flex-wrap:wrap}
+.avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--fd);font-size:26px;font-weight:500;flex-shrink:0}
+.pname{font-family:var(--fd);font-size:32px;font-weight:500;line-height:1}
+.pmeta{font-size:13px;color:var(--ink3);margin-top:2px}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--fb);font-size:13px;font-weight:500;padding:9px 18px;border-radius:30px;border:none;cursor:pointer;transition:.18s;white-space:nowrap}
+.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:var(--gold2)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink2)}.btn-ghost:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-del{background:transparent;border:1px solid rgba(181,49,42,.3);color:var(--red)}
+.tabs{display:flex;gap:6px;margin:6px 0 18px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:0}
+.tab{font-size:13.5px;padding:10px 16px;cursor:pointer;color:var(--ink3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:.18s}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--ink);border-bottom-color:var(--gold);font-weight:500}
+.panel{display:none}.panel.show{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);margin-bottom:18px}
+.card h2{font-family:var(--fd);font-size:21px;font-weight:500;color:var(--gold);margin-bottom:3px}
+.card h3{font-family:var(--fd);font-size:18px;font-weight:500;margin:0 0 12px}
+.sub{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;text-align:center;box-shadow:var(--shadow)}
+.stat .v{font-family:var(--fd);font-size:26px;font-weight:500;line-height:1}
+.stat .l{font-size:9.5px;text-transform:uppercase;letter-spacing:1.1px;color:var(--ink3);margin-top:5px}
+/* stepper */
+.stepper{display:flex;align-items:flex-start;justify-content:space-between;gap:4px;margin:6px 0 4px}
+.step{flex:1;text-align:center;position:relative;cursor:pointer}
+.step:not(:last-child)::after{content:'';position:absolute;top:15px;left:50%;width:100%;height:2px;background:var(--line);z-index:0}
+.step.done:not(:last-child)::after{background:var(--gold)}
+.step .dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;position:relative;z-index:1;font-size:13px;color:var(--ink3);transition:.2s}
+.step.done .dot{background:var(--gold);border-color:var(--gold);color:#fff}
+.step.current .dot{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 4px var(--gold-bg)}
+.step .lbl{font-size:11px;color:var(--ink3)}
+.step.current .lbl,.step.done .lbl{color:var(--ink2);font-weight:500}
+/* score bars */
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-name{width:62px;font-size:12.5px;font-weight:500}
+.bar-track{flex:1;height:7px;background:rgba(0,0,0,.05);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px}
+.bar-val{width:38px;text-align:right;font-size:12px;font-weight:600;color:var(--ink2)}
+/* scales */
+.scalegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.scale-box{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.scale-box .n{font-size:12px;color:var(--ink2);font-weight:500;margin-bottom:6px}
+.scale-box .big{font-family:var(--fd);font-size:30px;font-weight:500;line-height:1}
+.trend{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:6px}
+.trend.up{color:var(--green);background:rgba(45,122,79,.1)}.trend.down{color:var(--red);background:rgba(181,49,42,.08)}.trend.flat{color:var(--ink3);background:rgba(0,0,0,.04)}
+/* delta */
+.delta-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.delta-row:last-child{border-bottom:0}
+.delta-name{width:78px;font-size:13px;font-weight:500}.delta-bar{flex:1;font-size:12px;color:var(--ink3)}
+.delta-val{font-weight:600;font-size:13px;min-width:72px;text-align:right}
+.up{color:var(--green)}.down{color:var(--red)}.flat{color:var(--ink3)}
+svg{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 9px;border-radius:20px;border:1px solid var(--line);cursor:pointer;user-select:none}.lg .sw{width:10px;height:10px;border-radius:3px}.lg.off{opacity:.3}
+/* exercise cards */
+.exo{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;background:#fff}
+.exo-code{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:600}
+.exo-titre{font-family:var(--fd);font-size:17px;font-weight:500;margin:2px 0}
+.exo-sous{font-size:12.5px;color:var(--ink3)}
+.exo-force{font-size:12px;color:var(--green);margin-top:6px}
+.exo-actions{display:flex;gap:8px;margin-top:10px}
+.exo-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:var(--gold-bg);color:var(--gold2);margin-left:6px}
+/* assignation */
+.asg{border-left:3px solid var(--gold);background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.asg-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.asg-titre{font-weight:500;font-size:14px}
+.pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;border:1px solid var(--line)}
+.pill.a_faire{background:#fff;color:var(--ink3)}.pill.en_cours{background:rgba(196,88,31,.1);color:var(--amber);border-color:transparent}.pill.fait{background:rgba(45,122,79,.12);color:var(--green);border-color:transparent}
+.pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.step.focus .dot{box-shadow:0 0 0 4px var(--gold-bg);border-color:var(--gold)}
+.module{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.mod-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mod-name{font-family:var(--fd);font-size:17px;font-weight:500}
+.mod-status{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.mod-actions{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mod-exos{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.mod-exo{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;padding:7px 10px;background:var(--bg2);border-radius:8px}
+.milestones{display:flex;flex-wrap:wrap;gap:8px}
+.ms{font-size:12px;padding:6px 12px;border-radius:20px;border:1px solid var(--line);color:var(--ink4)}
+.ms.on{background:rgba(45,122,79,.1);color:var(--green);border-color:transparent;font-weight:500}
+/* forms */
+.field{margin-bottom:12px}
+label.fl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--ink3);margin-bottom:5px}
+input,textarea,select{font-family:var(--fb);font-size:14px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);width:100%}
+input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+textarea{resize:vertical;min-height:64px}
+.score-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:10px}
+.score-inputs .si label{font-size:11px;display:block;margin-bottom:4px}
+.note{border-left:3px solid var(--gold);background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin-bottom:9px}
+.note-date{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.note-text{font-size:14px;color:var(--ink2);white-space:pre-wrap}
+.row2{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.doc-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.doc-item a{color:var(--ink);text-decoration:none}.doc-item a:hover{color:var(--gold)}
+.history-table{width:100%;border-collapse:collapse;font-size:13px}
+.history-table th,.history-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.history-table th{color:var(--ink3);font-weight:500}
+.empty{color:var(--ink3);font-size:14px;font-style:italic}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--ink);color:#fff;padding:13px 26px;border-radius:40px;font-size:14px;z-index:1100;transition:.3s}
+.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:560px){.pname{font-size:25px}.step .lbl{font-size:9px}}
+.attente-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:rgba(196,88,31,.12);color:var(--amber);margin-top:5px}
+.modal-ov{position:fixed;inset:0;background:rgba(26,24,20,.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:999}
+.modal-ov.open{display:flex}
+.modal-bx{background:#fff;border-radius:16px;padding:28px;width:540px;max-width:92vw;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 12px 40px rgba(26,24,20,.2)}
+.modal-x{position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;color:var(--ink4);cursor:pointer}
+.passmode{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 4px}
+.passcard{border:1px solid var(--line);border-radius:12px;padding:16px 14px;text-align:center;cursor:pointer;transition:.18s;background:#fff}
+.passcard:hover{border-color:var(--gold);background:var(--gold-bg);transform:translateY(-1px)}
+.passcard .ic{font-size:24px}.passcard .t{font-weight:500;font-size:13.5px;margin-top:7px}.passcard .d{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.45}
+#qr-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:16px}
+#qr-zone>div:first-child{padding:10px;background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.1);border-radius:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html#patients" class="back-link">← Retour aux patients</a>
+  <div id="root"><div class="card"><p class="empty">Chargement du dossier…</p></div></div>
+</div>
+<div class="modal-ov" id="pass-modal"><div class="modal-bx">
+  <button class="modal-x" onclick="closePassModal()">✕</button>
+  <h3 style="font-family:var(--fd);font-size:22px;margin-bottom:2px">Faire passer le test</h3>
+  <p style="font-size:13px;color:var(--ink3)" id="pass-sub"></p>
+  <div class="passmode">
+    <div class="passcard" onclick="passCabinet()"><div class="ic">📝</div><div class="t">Ici, au cabinet</div><div class="d">Portrait immédiat à l'écran, avec vous</div></div>
+    <div class="passcard" onclick="passEmail()"><div class="ic">📧</div><div class="t">Envoyer par email</div><div class="d">Portrait différé — vous gardez la main</div></div>
+    <div class="passcard" onclick="passQR()"><div class="ic">▦</div><div class="t">QR code</div><div class="d">Le patient scanne sur sa tablette ou son téléphone</div></div>
+  </div>
+  <div id="qr-zone"></div>
+  <div id="pass-status" style="font-size:13px;color:var(--green);margin-top:10px"></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+var MASK_COLORS={rouge:'#B5312A',orange:'#C4581F',jaune:'#B8930A',vert:'#2D7A4F',bleu:'#1D5F8A',indigo:'#5C3280',violet:'#7A3594'};
+var MASK_NAMES={rouge:'Rouge',orange:'Orange',jaune:'Jaune',vert:'Vert',bleu:'Bleu',indigo:'Indigo',violet:'Violet'};
+var MASKS=['rouge','orange','jaune','vert','bleu','indigo','violet'];
+var SPA_COLOR='#2D7A4F';
+var SYNC_URL='https://valeur-backend-api.vercel.app/api/cabinet/sync';
+var VERCEL_API='https://valeur-backend-api.vercel.app/api';
+var QUESTIONNAIRE_URL='https://questionnaire.psyh.fr/index.html';
+var EMAILJS_PUBLIC_KEY='Qamyb35cCRJ5Pulqs';
+var EMAILJS_SERVICE_ID='service_psyh';
+var EMAILJS_TEMPLATE_INVITATION='template_yifwl2e'; /* invitation questionnaire — patient */
+var EMAILJS_TEMPLATE_PORTRAIT='template_42mn386';   /* envoi du portrait — patient */
+try{ if(window.emailjs) emailjs.init({publicKey: EMAILJS_PUBLIC_KEY}); }catch(e){}
+var STEPS=[
+  {k:'voir',n:'Voir',cats:['REV']},
+  {k:'accueillir',n:'Accueillir',cats:['PSY']},
+  {k:'localiser',n:'Localiser',cats:['PSY','CMB']},
+  {k:'explorer',n:'Explorer',cats:['ACT']},
+  {k:'unifier',n:'Unifier',cats:['INT']},
+  {k:'renforcer',n:'Renforcer',cats:['PRO','RIT']}
+];
+var SCALES=[
+  {k:'humeur',n:'Humeur',hint:'0 bas · 10 haut',good:'high'},
+  {k:'anxiete',n:'Anxiété perçue',hint:'0 calme · 10 intense',good:'low'},
+  {k:'emprise',n:'Emprise du masque',hint:'0 libre · 10 fort',good:'low'},
+  {k:'spaRessenti',n:'Présence (SPA ressenti)',hint:'0 absent · 10 présent',good:'high'},
+  {k:'regulation',n:'Régulation émot.',hint:'0 difficile · 10 aisée',good:'high'}
+];
+var STEP_STATUS=[['a_explorer','À explorer'],['en_cours','En cours'],['consolide','Consolidé']];
+var DATA={patients:[],agenda:[],postitText:'',notesPraticien:'',templates:[]};
+var ALL=[], patient=null, hidden={}, activeTab='apercu', CATALOGUE=null;
+var PID=new URLSearchParams(location.search).get('id');
+function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2300);}
+function today(){return new Date().toISOString().slice(0,10);}
+function fmtD(d){try{return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}catch(e){return d;}}
+function argmax(sc){var b=null,bv=-1;MASKS.forEach(function(m){var v=+sc[m]||0;if(v>bv){bv=v;b=m;}});return b;}
+/* ---------- sync & storage ---------- */
+function fromLocal(){
+  try { DATA.patients = JSON.parse(localStorage.getItem('cabinet_patients') || '[]'); } catch(e) { DATA.patients = []; }
+  try { DATA.agenda = JSON.parse(localStorage.getItem('cabinet_agenda') || '[]'); } catch(e) { DATA.agenda = []; }
+  DATA.postitText = localStorage.getItem('cabinet_postit') || '';
+  DATA.notesPraticien = localStorage.getItem('cabinet_notes_praticien') || '';
+  try { DATA.templates = JSON.parse(localStorage.getItem('cabinet_templates') || '[]'); } catch(e) { DATA.templates = []; }
+}
+function saveToLocal(){
+  localStorage.setItem('cabinet_patients', JSON.stringify(DATA.patients));
+  localStorage.setItem('cabinet_agenda', JSON.stringify(DATA.agenda));
+  localStorage.setItem('cabinet_postit', DATA.postitText);
+  localStorage.setItem('cabinet_notes_praticien', DATA.notesPraticien);
+  localStorage.setItem('cabinet_templates', JSON.stringify(DATA.templates || []));
+  localStorage.setItem('cabinet_last_modified', Date.now().toString());
+}
+function save(){
+  saveToLocal();
+  fetch(SYNC_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      patients: DATA.patients,
+      agenda: DATA.agenda,
+      postitText: DATA.postitText,
+      notesPraticien: DATA.notesPraticien,
+      templates: DATA.templates,
+      timestamp: Date.now()
+    })
+  }).then(function(){ toast('Enregistré'); }).catch(function(){ toast('Hors-ligne – gardé localement'); });
+}
+function normalize(p){
+  if(!Array.isArray(p.history)) p.history=[];
+  if(p.history.length===0 && p.scores){
+    var sc={};
+    try { sc = JSON.parse(p.scores || '{}'); } catch(e) {}
+    if(Object.keys(sc).length) p.history.push({
+      date: (p.created_at || new Date().toISOString()),
+      scores: sc,
+      spa: parseInt(p.spa)||0,
+      masque_dominant: p.masque_dominant || argmax(sc)
+    });
+  }
+  p.history.sort(function(a,b){ return new Date(a.date)-new Date(b.date); });
+  if(!Array.isArray(p.journal)) p.journal=[];
+  if(!Array.isArray(p.objectifs)) p.objectifs=[];
+  if(!Array.isArray(p.scales)) p.scales=[];
+  if(!Array.isArray(p.assignations)) p.assignations=[];
+  if(!Array.isArray(p.documents)) p.documents=[];
+  if(!p.etape) p.etape='voir';
+  if(!p.etapes || typeof p.etapes!=='object') p.etapes={};
+  STEPS.forEach(function(s){ if(!p.etapes[s.k]) p.etapes[s.k] = (p.etape===s.k ? 'en_cours' : 'a_explorer'); });
+  p.assignations.forEach(function(a){ if(!a.etape) a.etape = p.etape; });
+}
+function fullPass(){ return (patient.history||[]).filter(function(h){ return h.scores && Object.keys(h.scores).length>=4; }); }
+function syncLatest(){ var ps=fullPass(); if(ps.length){ var l=ps[ps.length-1]; patient.scores=JSON.stringify(l.scores); patient.spa=l.spa; patient.masque_dominant=l.masque_dominant; patient.items=l.items||''; } }
+function init(){
+  if(localStorage.getItem('cabinet_auth')!=='true'){ location.href='index.html'; return; }
+  fromLocal();
+  fetch(SYNC_URL)
+    .then(function(r){ return r.json(); })
+    .then(function(serverData){
+      var localTimestamp = parseInt(localStorage.getItem('cabinet_last_modified') || '0', 10);
+      if(serverData && serverData.timestamp && serverData.timestamp > localTimestamp){
+        DATA.patients = serverData.patients || [];
+        DATA.agenda = serverData.agenda || [];
+        DATA.postitText = serverData.postitText || '';
+        DATA.notesPraticien = serverData.notesPraticien || '';
+        DATA.templates = serverData.templates || [];
+        saveToLocal();
+        toast('Données restaurées depuis le cloud');
+      }
+    })
+    .catch(function(){ console.log('Sync indisponible, utilisation du stockage local'); })
+    .finally(function(){
+      ALL = DATA.patients;
+      patient = ALL.find(function(p){ return p.id === PID; });
+      if(!patient){
+        document.getElementById('root').innerHTML = '<div class="card"><h2>Patient introuvable</h2><p class="empty">Cette fiche n’existe pas ou pas encore synchronisée.</p></div>';
+        return;
+      }
+      normalize(patient);
+      render();
+      autoPullResult();
+    });
+  fetch('catalogue.json')
+    .then(function(r){ return r.json(); })
+    .then(function(c){ CATALOGUE = c; })
+    .catch(function(){ CATALOGUE = null; });
+}
+/* ---------- suggestions exercices ---------- */
+function maskOfFiche(f){ var t=((f.titre||'')+' '+(f.soustitre||'')+' '+(f.code||'')+' '+(f.fichier||'')).toLowerCase(); for(var i=0;i<MASKS.length;i++){ if(t.indexOf(MASK_NAMES[MASKS[i]].toLowerCase())>=0||t.indexOf(MASKS[i])>=0)return MASKS[i]; } return null; }
+function profileOf(){
+  var sc={};try{sc=JSON.parse(patient.scores||'{}');}catch(e){}
+  var TH={rouge:50,orange:60,jaune:60,vert:60,bleu:55,indigo:60,violet:55};
+  var act=MASKS.filter(function(m){return (+sc[m]||0)>=TH[m];});
+  var rk=MASKS.slice().sort(function(a,b){return (+sc[b]||0)-(+sc[a]||0);});
+  var dom=patient.masque_dominant||rk[0];var co=null;
+  if(rk[1]&&act.indexOf(rk[1])>=0&&((+sc[rk[0]]||0)-(+sc[rk[1]]||0))<=7)co=rk[1];
+  var pcts=act.map(function(m){return +sc[m]||0;});
+  var pan=act.length>=5&&(Math.max.apply(null,pcts)-Math.min.apply(null,pcts))<=20;
+  return {sc:sc,dom:dom,coDom:co,blocker:act.indexOf('orange')>=0&&dom!=='orange',amplifier:act.indexOf('jaune')>=0&&dom!=='jaune',active:act,pan:pan,adaptatif:act.length===0};
+}
+function prioBonus(f){var p=(f.priorite==null?3:f.priorite);return (4-p)*0.6;}
+function fMasks(f){if(Array.isArray(f.masques))return f.masques;var m=maskOfFiche(f);return m?[m]:[];}
+function fDyadeMatch(f,pr){if(!Array.isArray(f.dyades)||!pr.coDom)return false;var key=[pr.dom,pr.coDom].sort().join('+');return f.dyades.some(function(d){return d.split('+').sort().join('+')===key;});}
+function scoreFiche(f,pr,etapeK,cats){
+  var score=0,mks=fMasks(f);
+  if(f.cat==='CMB'){ if(fDyadeMatch(f,pr))score+=6; else return 0; }
+  if(mks.length>=5){ return pr.pan ? 10+prioBonus(f) : 0; }            /* fiches pan : réservées au profil pan */
+  if(/ADAPT/.test(f.code||'')){ return pr.adaptatif ? 10+prioBonus(f) : 0; }
+  if(pr.pan&&/PAN/.test(f.code||''))score+=6;
+  if(mks.indexOf(pr.dom)>=0)score+=4;
+  if(pr.coDom&&mks.indexOf(pr.coDom)>=0)score+=2;
+  if(pr.blocker&&mks.indexOf('orange')>=0)score+=3;
+  if(pr.amplifier&&mks.indexOf('jaune')>=0)score+=2;
+  if(Array.isArray(f.etapes)&&f.etapes.indexOf(etapeK)>=0)score+=3;
+  else if(cats.indexOf(f.cat)>=0)score+=3;
+  if(f.dispo)score+=1;
+  score+=prioBonus(f);
+  return score;
+}
+function suggestExos(){
+  if(!CATALOGUE||!CATALOGUE.fiches)return [];
+  var pr=profileOf(), step=STEPS.find(function(s){return s.k===patient.etape;})||STEPS[0];
+  return CATALOGUE.fiches.map(function(f){
+    return {f:f,score:scoreFiche(f,pr,patient.etape,step.cats||[]),mk:fMasks(f)[0]||null};
+  }).filter(function(x){return x.score>0;}).sort(function(a,b){return b.score-a.score;}).slice(0,8);
+}
+function parcoursPct(){var d=STEPS.filter(function(s){return patient.etapes[s.k]==='consolide';}).length;return Math.round(d/STEPS.length*100);}
+function statusMeta(st){return st==='consolide'?{n:'Consolidé',c:'var(--green)'}:(st==='en_cours'?{n:'En cours',c:'var(--amber)'}:{n:'À explorer',c:'var(--ink3)'});}
+function suggestForStep(s){if(!CATALOGUE||!CATALOGUE.fiches)return [];var pr=profileOf();return CATALOGUE.fiches.map(function(f){return {f:f,score:scoreFiche(f,pr,s.k,s.cats||[]),mk:fMasks(f)[0]||null};}).filter(function(x){return x.score>=3;}).sort(function(a,b){return b.score-a.score;});}
+function milestones(){var ps=fullPass();var done=STEPS.filter(function(s){return patient.etapes[s.k]==='consolide';}).length;var spaUp=ps.length>=2&&((+ps[ps.length-1].spa||0)-(+ps[0].spa||0))>0;var ex=patient.assignations.filter(function(a){return a.statut==='fait';}).length;return [{n:'Première évaluation',ok:ps.length>=1},{n:'Suivi engagé',ok:ps.length>=2},{n:'Présence en hausse',ok:spaUp},{n:'1ʳᵉ étape consolidée',ok:done>=1},{n:'Parcours à mi-chemin',ok:done>=3},{n:'3 exercices réalisés',ok:ex>=3},{n:'Parcours accompli',ok:done===STEPS.length}];}
+function nextAction(){var ps=fullPass();if(!ps.length)return {t:'Réaliser la première évaluation.',a:"go('evaluations')",l:'Évaluations'};var openA=patient.assignations.filter(function(a){return a.statut!=='fait';});if(openA.length)return {t:'Faire le point sur « '+esc(openA[0].titre)+' ».',a:"go('parcours')",l:'Parcours'};var e=suggestExos()[0];if(e)return {t:'Proposer : '+esc(e.f.titre)+'.',a:"assign('"+esc(e.f.code)+"')",l:'Assigner'};return {t:'Proposer une nouvelle évaluation pour mesurer l’évolution.',a:"go('evaluations')",l:'Évaluations'};}
+/* ---------- render ---------- */
+function render(){
+  var p=patient, sc={};try{sc=JSON.parse(p.scores||'{}');}catch(e){}
+  var dom=p.masque_dominant||argmax(sc), c=MASK_COLORS[dom]||'#C9A84C';
+  var init=((p.prenom||'?')[0]||'?').toUpperCase();
+  var i=ALL.findIndex(function(x){return x.id===PID;});
+  var prev=i>0?ALL[i-1]:null, next=(i>=0&&i<ALL.length-1)?ALL[i+1]:null;
+  var opts=ALL.map(function(x){return '<option value="'+x.id+'"'+(x.id===PID?' selected':'')+'>'+esc(((x.prenom||'')+' '+(x.nom||'')).trim()||'Sans nom')+'</option>';}).join('');
+  var tabs=[['apercu','Coup d’œil'],['parcours','Parcours'],['evaluations','Évaluations'],['seances','Séances & échelles'],['dossier','Dossier']];
+  var html=''
+   +'<div class="switcher"><button class="nav-btn" '+(prev?'onclick="goPatient(\''+prev.id+'\')"':'disabled')+'>◀</button>'
+   +'<select onchange="goPatient(this.value)">'+opts+'</select>'
+   +'<button class="nav-btn" '+(next?'onclick="goPatient(\''+next.id+'\')"':'disabled')+'>▶</button>'
+   +'<span class="count">'+(i+1)+' / '+ALL.length+' patients</span></div>'
+   +'<div class="phead"><div class="avatar" style="background:'+c+'">'+esc(init)+'</div>'
+   +'<div><div class="pname">'+esc(p.prenom||'')+' '+esc(p.nom||'')+'</div><div class="pmeta">'+esc(p.email||'—')+(p.tel?' · '+esc(p.tel):'')+'</div>'+(p.attente?'<span class="attente-badge">⏳ Test envoyé le '+fmtD(p.attente.date)+' — en attente</span>':'')+'</div>'
+   +'<div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-gold" onclick="openPassModal()">▶ Faire passer le test</button><button class="btn btn-ghost" onclick="pullResult()">⭳ Récupérer</button><button class="btn btn-ghost" onclick="proposePack()">✦ Pack conseillé</button><button class="btn btn-ghost" onclick="exportSynthese()">📄 Synthèse</button><button class="btn btn-gold" onclick="openPortrait()">🧠 Portrait</button>'+(fullPass().length?'<button class="btn btn-gold" title="Envoyer le portrait au patient par email — confirmation avant envoi" onclick="envoyerPortrait()">📤 Transmettre</button>':'')+'</div></div>'
+   +'<div class="tabs">'+tabs.map(function(t){return '<span class="tab '+(activeTab===t[0]?'active':'')+'" onclick="go(\''+t[0]+'\')">'+t[1]+'</span>';}).join('')+'</div>'
+   +'<div id="panels">'+panelApercu()+panelParcours()+panelEval()+panelSeances()+panelDossier()+'</div>';
+  document.getElementById('root').innerHTML=html;
+  if(activeTab==='evaluations')drawChart();
+}
+function go(t){activeTab=t;document.querySelectorAll('.tab').forEach(function(e){e.classList.remove('active');});document.querySelectorAll('.panel').forEach(function(e){e.classList.remove('show');});event.target.classList.add('active');var el=document.getElementById('panel-'+t);if(el)el.classList.add('show');if(t==='evaluations')drawChart();}
+function goPatient(id){if(id&&id!==PID)location.href='patients.html?id='+id;}
+/* ---------- COUP D'OEIL ---------- */
+function stepperHtml(clickable){
+  return '<div class="stepper">'+STEPS.map(function(s){
+    var st=patient.etapes[s.k]||'a_explorer';
+    var cls=st==='consolide'?'done':(st==='en_cours'?'current':'');
+    if(patient.etape===s.k)cls+=' focus';
+    var click=clickable?' onclick="setFocus(\''+s.k+'\')"':'';
+    return '<div class="step '+cls+'"'+click+'><div class="dot">'+(st==='consolide'?'✓':'')+'</div><div class="lbl">'+s.n+'</div></div>';
+  }).join('')+'</div>';
+}
+function lastScales(){return patient.scales.length?patient.scales[patient.scales.length-1]:null;}
+function scaleTrend(k){var s=patient.scales;if(s.length<2)return null;var a=s[s.length-2][k],b=s[s.length-1][k];if(a==null||b==null)return null;return b-a;}
+function panelApercu(){
+  var p=patient,sc={};try{sc=JSON.parse(p.scores||'{}');}catch(e){}
+  var dom=p.masque_dominant,ps=fullPass(),ls=lastScales();
+  var stepName=(STEPS.find(function(s){return s.k===p.etape;})||STEPS[0]).n;
+  var asgOpen=p.assignations.filter(function(a){return a.statut!=='fait';});
+  var exos=suggestExos().slice(0,3);
+  var h='<div class="panel '+(activeTab==='apercu'?'show':'')+'" id="panel-apercu">';
+  h+='<div class="statgrid">'
+    +'<div class="stat"><div class="v" style="color:'+(MASK_COLORS[dom]||'#C9A84C')+'">'+(dom?MASK_NAMES[dom]:'—')+'</div><div class="l">Masque dominant</div></div>'
+    +'<div class="stat"><div class="v" style="color:var(--green)">'+(p.spa||0)+'%</div><div class="l">SPA (test)</div></div>'
+    +'<div class="stat"><div class="v">'+ps.length+'</div><div class="l">Évaluations</div></div>'
+    +'<div class="stat"><div class="v" style="font-size:17px;padding-top:7px">'+stepName+'</div><div class="l">Étape en cours</div></div>'
+    +'<div class="stat"><div class="v">'+asgOpen.length+'</div><div class="l">Actions en cours</div></div>'
+  +'</div>';
+  var _na=nextAction(),_pct=parcoursPct();
+  h+='<div class="card"><h3>Parcours V.A.L.E.U.R · '+_pct+'%</h3>'+stepperHtml(false)
+    +'<div style="margin-top:12px;height:8px;background:rgba(0,0,0,.05);border-radius:5px;overflow:hidden"><div style="height:100%;width:'+_pct+'%;background:var(--gold);border-radius:5px"></div></div>'
+    +'<div style="margin-top:14px;padding:12px 14px;background:var(--gold-bg);border-radius:10px"><strong>Prochaine action :</strong> '+_na.t+' <button class="btn btn-ghost btn-sm" style="margin-left:6px" onclick="'+_na.a+'">'+_na.l+'</button><div style="font-size:11px;color:var(--ink3);margin-top:4px">Suggestion libre — vous décidez.</div></div></div>';
+  h+='<div class="grid2">';
+  h+='<div class="card"><h3>État du jour</h3>';
+  if(!ls)h+='<p class="empty">Aucune échelle saisie. Onglet « Séances & échelles ».</p>';
+  else{h+='<div class="scalegrid">'+SCALES.map(function(s){var v=ls[s.k];if(v==null)return '';var d=scaleTrend(s.k);var tb='';if(d!=null&&d!==0){var good=(s.good==='high'&&d>0)||(s.good==='low'&&d<0);tb='<span class="trend '+(good?'up':'down')+'">'+(d>0?'+':'')+d+'</span>';}return '<div class="scale-box"><div class="n">'+s.n+'</div><div class="big">'+v+'<span style="font-size:13px;color:var(--ink3)">/10</span>'+tb+'</div></div>';}).join('')+'</div>';}
+  h+='</div>';
+  h+='<div class="card"><h3>Actions en cours</h3>';
+  if(!asgOpen.length)h+='<p class="empty">Aucune action assignée.</p>';
+  else h+=asgOpen.slice(0,4).map(function(a){return '<div class="asg"><div class="asg-top"><span class="asg-titre">'+esc(a.titre)+'</span><span class="pill '+a.statut+'" onclick="cycleStatut(\''+a.id+'\')">'+statutLbl(a.statut)+'</span></div></div>';}).join('');
+  h+='<button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="go(\'parcours\')">Gérer le parcours →</button></div>';
+  h+='</div>';
+  h+='<div class="card"><h3>✦ Suggestions d’exercices</h3><div class="sub">Selon le masque '+(dom?MASK_NAMES[dom]:'')+' et l’étape '+stepName+'</div>';
+  if(!exos.length)h+='<p class="empty">'+(CATALOGUE?'Aucune suggestion pour cette configuration.':'Bibliothèque indisponible.')+'</p>';
+  else h+=exos.map(exoCard).join('');
+  h+='<button class="btn btn-ghost btn-sm" onclick="go(\'parcours\')">Voir toutes les suggestions →</button></div>';
+  h+='<div class="card"><h3>✦ Jalons franchis</h3><div class="milestones">'+milestones().map(function(m){return '<span class="ms '+(m.ok?'on':'')+'">'+(m.ok?'✓ ':'○ ')+m.n+'</span>';}).join('')+'</div></div>';
+  h+='<div class="card"><h3>Dernières séances</h3>';
+  var j=p.journal.slice().reverse().slice(0,3);
+  if(!j.length)h+='<p class="empty">Aucune note.</p>';
+  else h+=j.map(function(e){return '<div class="note"><div class="note-date">'+fmtD(e.date)+'</div><div class="note-text">'+esc(e.note)+'</div></div>';}).join('');
+  h+='</div>';
+  return h+'</div>';
+}
+function setFocus(k){patient.etape=k;save();render();go('parcours');}
+function setStatus(k,st){patient.etapes[k]=st;save();render();go('parcours');}
+/* ---------- PARCOURS ---------- */
+function exoCard(x){var f=x.f||x;var mk=x.mk||maskOfFiche(f);
+  return '<div class="exo"><div class="exo-code">'+esc(f.code||'')+(mk?'<span class="exo-tag" style="color:'+MASK_COLORS[mk]+'">'+MASK_NAMES[mk]+'</span>':'')+'</div>'
+    +'<div class="exo-titre">'+esc(f.titre||'')+'</div><div class="exo-sous">'+esc(f.soustitre||'')+'</div>'
+    +(f.force?'<div class="exo-force">✦ '+esc(f.force)+'</div>':'')
+    +'<div class="exo-actions">'
+      +(f.dispo?'<button class="btn btn-ghost btn-sm" onclick="window.open(\'fiches/'+f.fichier+'\',\'_blank\')">Ouvrir</button>':'<span class="empty" style="font-size:12px">En préparation</span>')
+      +'<button class="btn btn-gold btn-sm" onclick="assign(\''+esc(f.code)+'\')">+ Assigner</button>'
+    +'</div></div>';
+}
+function statutLbl(s){return s==='fait'?'✓ Fait':(s==='en_cours'?'En cours':'À faire');}
+function panelParcours(){
+  var p=patient,na=nextAction();
+  var h='<div class="panel" id="panel-parcours">';
+  h+='<div class="card"><h2>Parcours V.A.L.E.U.R · '+parcoursPct()+'%</h2><div class="sub">Vous restez maître de l’ordre — les suggestions ne contraignent jamais</div>'+stepperHtml(true)
+    +'<div style="margin-top:14px;padding:12px 14px;background:var(--gold-bg);border-radius:10px"><strong>Action suggérée :</strong> '+na.t+' <button class="btn btn-ghost btn-sm" style="margin-left:6px" onclick="'+na.a+'">'+na.l+'</button></div></div>';
+  var tpls=DATA.templates||[];
+  h+='<div class="card"><h2>Parcours-type</h2><div class="sub">Appliquer un modèle d’accompagnement, ou enregistrer le parcours actuel</div>'
+    +'<div class="row2">'+(tpls.length?'<select id="tpl-sel" style="flex:1;min-width:160px">'+tpls.map(function(t){return '<option value="'+t.id+'">'+esc(t.nom)+'</option>';}).join('')+'</select><button class="btn btn-ghost" onclick="applyTemplate()">Appliquer</button><button class="btn btn-del btn-sm" onclick="delTemplate()">Supprimer le modèle</button>':'<span class="empty">Aucun modèle enregistré.</span>')+'</div>'
+    +'<div style="margin-top:12px"><button class="btn btn-gold btn-sm" onclick="saveTemplate()">+ Enregistrer ce parcours comme modèle</button></div></div>';
+  h+='<div class="card"><h2>Modules</h2><div class="sub">Statut libre par étape, dans l’ordre que vous choisissez</div>';
+  STEPS.forEach(function(s){
+    var st=p.etapes[s.k]||'a_explorer', meta=statusMeta(st);
+    var exos=suggestForStep(s).slice(0,3);
+    var asg=p.assignations.filter(function(a){return a.etape===s.k;});
+    h+='<div class="module"><div class="mod-head"><span class="mod-name">'+(p.etape===s.k?'★ ':'')+s.n+'</span>'
+      +'<span class="mod-status" style="color:'+meta.c+'">'+meta.n+'</span>'
+      +'<span class="mod-actions">'+STEP_STATUS.map(function(ss){return '<button class="pill '+(st===ss[0]?'active':'')+'" onclick="setStatus(\''+s.k+'\',\''+ss[0]+'\')">'+ss[1]+'</button>';}).join('')+'<button class="btn btn-ghost btn-sm" onclick="setFocus(\''+s.k+'\')">★ Focus</button></span></div>';
+    if(exos.length)h+='<div class="mod-exos">'+exos.map(function(x){return '<div class="mod-exo"><span>'+esc(x.f.titre)+'</span><span style="display:flex;gap:6px">'+(x.f.dispo?'<button class="btn btn-ghost btn-sm" onclick="window.open(\'fiches/'+x.f.fichier+'\',\'_blank\')">Ouvrir</button>':'')+'<button class="btn btn-gold btn-sm" onclick="assign(\''+esc(x.f.code)+'\',\''+s.k+'\')">+ Assigner</button></span></div>';}).join('')+'</div>';
+    if(asg.length)h+='<div style="margin-top:8px">'+asg.map(function(a){return '<div class="asg"><div class="asg-top"><span class="asg-titre">'+esc(a.titre)+'</span><span class="pill '+a.statut+'" onclick="cycleStatut(\''+a.id+'\')">'+statutLbl(a.statut)+'</span>'+(a.fichier?'<button class="btn btn-ghost btn-sm" onclick="window.open(\'fiches/'+a.fichier+'\',\'_blank\')">Ouvrir</button>':'')+'<button class="btn btn-del btn-sm" onclick="delAsg(\''+a.id+'\')">✕</button></div><div style="margin-top:8px"><textarea placeholder="Retour du patient…" onchange="setRetour(\''+a.id+'\',this.value)">'+esc(a.retour||'')+'</textarea></div></div>';}).join('')+'</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  return h+'</div>';
+}
+function assign(code,step){
+  var f=(CATALOGUE&&CATALOGUE.fiches||[]).find(function(x){return x.code===code;});if(!f)return;
+  if(patient.assignations.some(function(a){return a.code===code&&a.statut!=='fait';})){toast('Déjà assigné');return;}
+  patient.assignations.push({id:'a_'+Date.now()+Math.random().toString(36).slice(2,6),code:code,titre:f.titre,fichier:f.fichier,date:today(),statut:'a_faire',retour:'',etape:step||patient.etape});
+  save();render();go('parcours');toast('Exercice assigné');
+}
+function cycleStatut(id){var a=patient.assignations.find(function(x){return x.id===id;});if(!a)return;a.statut=a.statut==='a_faire'?'en_cours':(a.statut==='en_cours'?'fait':'a_faire');save();render();}
+function setRetour(id,v){var a=patient.assignations.find(function(x){return x.id===id;});if(a){a.retour=v;save();}}
+function delAsg(id){if(!confirm('Supprimer cette action ?'))return;patient.assignations=patient.assignations.filter(function(x){return x.id!==id;});save();render();go('parcours');}
+/* ---------- EVALUATIONS ---------- */
+function panelEval(){
+  var p=patient,ps=fullPass();
+  var h='<div class="panel" id="panel-evaluations">';
+  h+='<div class="card"><h2>Suivi & transformations</h2><div class="sub">Masques & SPA au fil des évaluations</div>';
+  if(ps.length>=1){
+    h+='<svg id="chart" viewBox="0 0 720 300" preserveAspectRatio="xMidYMid meet"></svg>';
+    h+='<div class="legend">'+MASKS.concat(['spa']).map(function(m){var col=m==='spa'?SPA_COLOR:MASK_COLORS[m];var nm=m==='spa'?'SPA':MASK_NAMES[m];return '<span class="lg'+(hidden[m]?' off':'')+'" onclick="toggleLine(\''+m+'\')"><span class="sw" style="background:'+col+'"></span>'+nm+'</span>';}).join('')+'</div>';
+    if(ps.length>=2){var f=ps[0],l=ps[ps.length-1];
+      h+='<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line)"><div class="sub">Transformations depuis le '+fmtD(f.date)+'</div>';
+      MASKS.forEach(function(m){var d=(+l.scores[m]||0)-(+f.scores[m]||0);var cls=d<0?'up':(d>0?'down':'flat');var ar=d<0?'▼':(d>0?'▲':'=');h+='<div class="delta-row"><span class="delta-name" style="color:'+MASK_COLORS[m]+'">'+MASK_NAMES[m]+'</span><span class="delta-bar">'+(+f.scores[m]||0)+'% → '+(+l.scores[m]||0)+'%</span><span class="delta-val '+cls+'">'+ar+' '+Math.abs(d)+'</span></div>';});
+      var ds=(+l.spa||0)-(+f.spa||0);var dc=ds>0?'up':(ds<0?'down':'flat');h+='<div class="delta-row"><span class="delta-name" style="color:var(--green)">SPA</span><span class="delta-bar">'+(+f.spa||0)+'% → '+(+l.spa||0)+'%</span><span class="delta-val '+dc+'">'+(ds>0?'▲':(ds<0?'▼':'='))+' '+Math.abs(ds)+'</span></div></div>';
+    } else h+='<p class="empty" style="margin-top:12px">Le bilan des transformations apparaîtra dès la 2ᵉ évaluation.</p>';
+  } else h+='<p class="empty">Aucune évaluation. Ajoutez-en une ci-dessous.</p>';
+  h+='</div>';
+  h+='<div class="card"><h2>Évaluations enregistrées</h2><div class="sub">'+ps.length+' au total — chaque ligne rouvre le portrait tel qu’il a été passé</div>';
+  if(!ps.length)h+='<p class="empty">Aucune évaluation.</p>';
+  else h+='<table class="history-table"><tr><th>Date</th><th>Dominant</th><th>SPA</th><th>Réponses</th><th></th></tr>'+ps.slice().reverse().map(function(hh){var gi=patient.history.indexOf(hh);return '<tr><td>'+fmtD(hh.date)+'</td><td><span style="color:'+(MASK_COLORS[hh.masque_dominant]||'#999')+'">'+(MASK_NAMES[hh.masque_dominant]||'—')+'</span></td><td>'+(hh.spa||0)+'%</td><td>'+(hh.items?'<span style="color:var(--green)" title="Réponses complètes — portrait sur-mesure">✓ complètes</span>':'<span style="color:var(--ink3)" title="Scores seuls — portrait générique">scores seuls</span>')+'</td><td style="text-align:right"><button class="btn btn-ghost btn-sm" onclick="openPass('+gi+')">Portrait</button> <button class="btn btn-ghost btn-sm" title="Ouvre le portrait et lance l&#39;impression PDF" onclick="pdfPass('+gi+')">PDF</button> <button class="btn btn-ghost btn-sm" title="Archive le lien du portrait dans Documents" onclick="archivePass('+gi+')">💾</button> <button class="btn btn-ghost btn-sm" title="Envoyer ce portrait au patient — confirmation avant envoi" onclick="envoyerPortrait('+gi+')">📤</button> <button class="btn btn-del btn-sm" onclick="delPass('+gi+')">✕</button></td></tr>';}).join('')+'</table>';
+  h+='</div>';
+  var inputs=MASKS.map(function(m){return '<div class="si"><label style="color:'+MASK_COLORS[m]+'">'+MASK_NAMES[m]+'</label><input type="number" min="0" max="100" id="in-'+m+'" placeholder="0"></div>';}).join('')+'<div class="si"><label style="color:var(--green)">SPA</label><input type="number" min="0" max="100" id="in-spa" placeholder="0"></div>';
+  h+='<div class="card"><h2>+ Nouvelle évaluation</h2><div class="sub">Saisir les scores (%) d’un bilan — vous pouvez en enregistrer autant que de passations</div>'
+    +'<div class="field" style="max-width:200px"><label class="fl">Date</label><input type="date" id="in-date" value="'+today()+'"></div>'
+    +'<label class="fl">Scores par masque & SPA (0–100)</label><div class="score-inputs">'+inputs+'</div>'
+    +'<div style="margin-top:14px"><button class="btn btn-gold" onclick="addPass()">Enregistrer l’évaluation</button></div></div>';
+  return h+'</div>';
+}
+function addPass(){
+  var sc={},any=false;MASKS.forEach(function(m){var v=Math.max(0,Math.min(100,parseInt(document.getElementById('in-'+m).value)||0));sc[m]=v;if(v)any=true;});
+  var spa=Math.max(0,Math.min(100,parseInt(document.getElementById('in-spa').value)||0));var date=document.getElementById('in-date').value||today();
+  if(!any&&!spa){toast('Saisissez au moins un score');return;}
+  var ex=patient.history.find(function(hh){return (hh.date||'').slice(0,10)===date&&hh.scores;});
+  if(ex){ex.scores=sc;ex.spa=spa;ex.masque_dominant=argmax(sc);}
+  else patient.history.push({date:date,scores:sc,spa:spa,masque_dominant:argmax(sc)});
+  patient.history.sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+  syncLatest();save();render();go('evaluations');toast('Évaluation enregistrée');
+}
+function delPass(gi){if(!confirm('Supprimer cette évaluation ?'))return;patient.history.splice(gi,1);syncLatest();save();render();go('evaluations');}
+function openPass(gi){var hh=patient.history[gi];if(!hh)return;openPortraitWith(hh.scores,hh.spa,hh.items);}
+function toggleLine(m){hidden[m]=!hidden[m];render();go('evaluations');}
+function drawChart(){
+  var svg=document.getElementById('chart');if(!svg)return;var ps=fullPass();if(!ps.length){svg.innerHTML='';return;}
+  var W=720,H=300,pl=38,pr=14,pt=16,pb=42,iw=W-pl-pr,ih=H-pt-pb,n=ps.length;
+  function X(i){return n===1?pl+iw/2:pl+iw*i/(n-1);}function Y(v){return pt+ih*(1-v/100);}
+  var g='';[0,25,50,75,100].forEach(function(v){var y=Y(v);g+='<line x1="'+pl+'" y1="'+y+'" x2="'+(W-pr)+'" y2="'+y+'" stroke="#EAE3D6" stroke-width="1"/><text x="'+(pl-6)+'" y="'+(y+3)+'" font-size="9" fill="#8C827D" text-anchor="end">'+v+'</text>';});
+  ps.forEach(function(pa,i){g+='<text x="'+X(i)+'" y="'+(H-pb+18)+'" font-size="8.5" fill="#8C827D" text-anchor="middle">'+fmtD(pa.date).replace(/ /g,' ')+'</text>';});
+  function ser(key,col){if(hidden[key])return '';var pts=ps.map(function(pa,i){var v=key==='spa'?(+pa.spa||0):(+pa.scores[key]||0);return X(i)+','+Y(v);});var line=n>1?'<polyline points="'+pts.join(' ')+'" fill="none" stroke="'+col+'" stroke-width="'+(key==='spa'?3:2)+'" stroke-linejoin="round"/>':'';var dots=ps.map(function(pa,i){var v=key==='spa'?(+pa.spa||0):(+pa.scores[key]||0);return '<circle cx="'+X(i)+'" cy="'+Y(v)+'" r="'+(key==='spa'?4:3)+'" fill="'+col+'"/>';}).join('');return line+dots;}
+  MASKS.forEach(function(m){g+=ser(m,MASK_COLORS[m]);});g+=ser('spa',SPA_COLOR);svg.innerHTML=g;
+}
+/* ---------- SEANCES & ECHELLES ---------- */
+function panelSeances(){
+  var p=patient;
+  var inputs=SCALES.map(function(s){return '<div class="si"><label>'+s.n+'<br><span style="font-weight:400;color:var(--ink3);font-size:10px">'+s.hint+'</span></label><input type="number" min="0" max="10" id="sc-'+s.k+'"></div>';}).join('');
+  var h='<div class="panel" id="panel-seances">';
+  h+='<div class="card"><h2>Échelles courtes</h2><div class="sub">Mesure rapide en début/fin de séance (0–10)</div>'
+    +'<div class="field" style="max-width:200px"><label class="fl">Date</label><input type="date" id="sc-date" value="'+today()+'"></div>'
+    +'<div class="score-inputs">'+inputs+'</div>'
+    +'<div style="margin-top:14px"><button class="btn btn-gold" onclick="addScale()">Enregistrer la mesure</button></div></div>';
+  if(p.scales.length){
+    h+='<div class="card"><h3>Évolution des échelles</h3>'+SCALES.map(function(s){
+      var vals=p.scales.filter(function(x){return x[s.k]!=null;});
+      if(!vals.length)return '';
+      var spark=vals.map(function(x){return x[s.k];});
+      var first=spark[0],last=spark[spark.length-1],d=last-first;
+      var good=(s.good==='high'&&d>0)||(s.good==='low'&&d<0);
+      return '<div class="delta-row"><span class="delta-name">'+s.n+'</span><span class="delta-bar">'+sparkline(spark)+'</span><span class="delta-val '+(d===0?'flat':(good?'up':'down'))+'">'+first+' → '+last+'</span></div>';
+    }).join('')+'</div>';
+  }
+  h+='<div class="card"><h2>Journal de séances</h2>'
+    +'<div class="row2" style="margin-bottom:10px"><div style="flex:0 0 170px"><label class="fl">Date</label><input type="date" id="note-date" value="'+today()+'"></div></div>'
+    +'<div class="field"><textarea id="note-text" placeholder="Observations, axes travaillés, ressenti…"></textarea></div>'
+    +'<button class="btn btn-gold" onclick="addNote()">+ Ajouter la note</button>'
+    +'<div style="margin-top:16px">'+(p.journal.length?p.journal.slice().reverse().map(function(e,ri){var gi=p.journal.length-1-ri;return '<div class="note"><div class="note-date">'+fmtD(e.date)+' <span style="float:right;color:var(--red);cursor:pointer" onclick="delNote('+gi+')">supprimer</span></div><div class="note-text">'+esc(e.note)+'</div></div>';}).join(''):'<p class="empty">Aucune note.</p>')+'</div></div>';
+  return h+'</div>';
+}
+function sparkline(vals){var w=120,h=22,n=vals.length;if(n<2)return '<svg width="'+w+'" height="'+h+'"><circle cx="'+w/2+'" cy="'+h/2+'" r="3" fill="#C9A84C"/></svg>';var pts=vals.map(function(v,i){return (w*i/(n-1))+','+(h-(v/10*h));}).join(' ');return '<svg width="'+w+'" height="'+h+'"><polyline points="'+pts+'" fill="none" stroke="#C9A84C" stroke-width="2"/></svg>';}
+function addScale(){var o={date:document.getElementById('sc-date').value||today()};var any=false;SCALES.forEach(function(s){var el=document.getElementById('sc-'+s.k);var v=el.value===''?null:Math.max(0,Math.min(10,parseInt(el.value)));o[s.k]=v;if(v!=null)any=true;});if(!any){toast('Saisissez au moins une échelle');return;}var ex=patient.scales.find(function(x){return x.date===o.date;});if(ex)Object.assign(ex,o);else patient.scales.push(o);patient.scales.sort(function(a,b){return new Date(a.date)-new Date(b.date);});save();render();go('seances');toast('Mesure enregistrée');}
+function addNote(){var t=document.getElementById('note-text').value.trim(),d=document.getElementById('note-date').value||today();if(!t){toast('Note vide');return;}patient.journal.push({date:d,note:t});patient.journal.sort(function(a,b){return new Date(a.date)-new Date(b.date);});save();render();go('seances');}
+function delNote(gi){if(!confirm('Supprimer cette note ?'))return;patient.journal.splice(gi,1);save();render();go('seances');}
+/* ---------- DOSSIER ---------- */
+function panelDossier(){
+  var p=patient;
+  var h='<div class="panel" id="panel-dossier">';
+  h+='<div class="card"><h2>Informations</h2><div class="grid2">'
+    +'<div class="field"><label class="fl">Prénom</label><input id="d-prenom" value="'+esc(p.prenom||'')+'"></div>'
+    +'<div class="field"><label class="fl">Nom</label><input id="d-nom" value="'+esc(p.nom||'')+'"></div>'
+    +'<div class="field"><label class="fl">Email</label><input id="d-email" value="'+esc(p.email||'')+'"></div>'
+    +'<div class="field"><label class="fl">Téléphone</label><input id="d-tel" value="'+esc(p.tel||'')+'"></div>'
+    +'</div><div class="field"><label class="fl">Statut</label><select id="d-statut">'+['actif','en suivi','en pause','archivé'].map(function(s){return '<option '+((p.statut||'actif')===s?'selected':'')+'>'+s+'</option>';}).join('')+'</select></div>'
+    +'<button class="btn btn-gold" onclick="saveInfos()">Enregistrer</button></div>';
+  var objs=p.objectifs.length?p.objectifs:[{desc:'',progress:0},{desc:'',progress:0},{desc:'',progress:0}];
+  h+='<div class="card"><h2>Objectifs thérapeutiques</h2>'+objs.map(function(o,idx){return '<div class="row2" style="margin-bottom:8px"><div style="flex:1"><input id="ob-d-'+idx+'" value="'+esc(o.desc||'')+'" placeholder="Objectif '+(idx+1)+'"></div><div style="flex:0 0 80px"><input type="number" min="0" max="100" id="ob-p-'+idx+'" value="'+(o.progress||0)+'"></div><span style="align-self:center">%</span></div>';}).join('')+'<button class="btn btn-ghost btn-sm" onclick="saveObjectifs()">Enregistrer les objectifs</button></div>';
+  h+='<div class="card"><h2>Documents joints</h2>';
+  if(!p.documents.length)h+='<p class="empty">Aucun document.</p>';
+  else h+=p.documents.map(function(dc,idx){return '<div class="doc-item"><a href="'+(dc.type==='lien'?dc.url:dc.data)+'" '+(dc.type==='lien'?'target="_blank" rel="noopener"':'download="'+esc(dc.name)+'"')+'>'+(dc.type==='lien'?'🧠 ':'📄 ')+esc(dc.name)+'</a><button class="btn btn-del btn-sm" onclick="delDoc('+idx+')">✕</button></div>';}).join('');
+  h+='<div style="margin-top:12px"><input type="file" id="doc-up" style="display:none" onchange="upDoc()"><button class="btn btn-ghost" onclick="document.getElementById(\'doc-up\').click()">+ Joindre un fichier</button></div></div>';
+  return h+'</div>';
+}
+function saveInfos(){patient.prenom=document.getElementById('d-prenom').value.trim()||null;patient.nom=document.getElementById('d-nom').value.trim()||null;patient.email=document.getElementById('d-email').value.trim()||null;patient.tel=document.getElementById('d-tel').value.trim()||null;patient.statut=document.getElementById('d-statut').value;save();render();go('dossier');toast('Informations enregistrées');}
+function saveObjectifs(){var o=[];for(var k=0;k<3;k++){var dd=document.getElementById('ob-d-'+k);if(!dd)continue;o.push({desc:dd.value,progress:parseInt(document.getElementById('ob-p-'+k).value)||0});}patient.objectifs=o;save();toast('Objectifs enregistrés');}
+function upDoc(){var f=document.getElementById('doc-up').files[0];if(!f)return;if(f.size>5*1024*1024){toast('Fichier trop volumineux (max 5 Mo)');return;}var r=new FileReader();r.onload=function(e){patient.documents.push({name:f.name,size:f.size,data:e.target.result});save();render();go('dossier');toast('Document joint');};r.readAsDataURL(f);}
+function delDoc(i){patient.documents.splice(i,1);save();render();go('dossier');}
+/* ---------- parcours-type (modèles) ---------- */
+function saveTemplate(){var nom=prompt('Nom du parcours-type :','Parcours '+(patient.masque_dominant?MASK_NAMES[patient.masque_dominant]:''));if(!nom)return;var et={};STEPS.forEach(function(s){et[s.k]=patient.etapes[s.k]||'a_explorer';});var ex=patient.assignations.map(function(a){return {code:a.code,etape:a.etape};});DATA.templates=DATA.templates||[];DATA.templates.push({id:'t_'+Date.now(),nom:nom,etapes:et,exercices:ex});save();render();go('parcours');toast('Modèle enregistré');}
+function applyTemplate(){var sel=document.getElementById('tpl-sel');if(!sel)return;var t=(DATA.templates||[]).find(function(x){return x.id===sel.value;});if(!t)return;if(!confirm('Appliquer « '+t.nom+' » à ce patient ? Les statuts d’étape seront remplacés.'))return;STEPS.forEach(function(s){patient.etapes[s.k]=(t.etapes&&t.etapes[s.k])||'a_explorer';});(t.exercices||[]).forEach(function(e){var f=(CATALOGUE&&CATALOGUE.fiches||[]).find(function(x){return x.code===e.code;});if(!f)return;if(patient.assignations.some(function(a){return a.code===e.code&&a.statut!=='fait';}))return;patient.assignations.push({id:'a_'+Date.now()+Math.random().toString(36).slice(2,6),code:e.code,titre:f.titre,fichier:f.fichier,date:today(),statut:'a_faire',retour:'',etape:e.etape||patient.etape});});save();render();go('parcours');toast('Parcours-type appliqué');}
+function delTemplate(){var sel=document.getElementById('tpl-sel');if(!sel)return;if(!confirm('Supprimer ce modèle ?'))return;DATA.templates=(DATA.templates||[]).filter(function(x){return x.id!==sel.value;});save();render();go('parcours');}
+/* ---------- synthèse imprimable ---------- */
+function exportSynthese(){
+  var p=patient,ps=fullPass(),dom=p.masque_dominant,spa=p.spa||0,pct=parcoursPct();
+  var stepName=(STEPS.find(function(s){return s.k===p.etape;})||STEPS[0]).n;
+  var transfo='';
+  if(ps.length>=2){var f=ps[0],l=ps[ps.length-1];var rows=MASKS.map(function(m){var d=(+l.scores[m]||0)-(+f.scores[m]||0);if(Math.abs(d)<3)return '';return '<tr><td style="color:'+MASK_COLORS[m]+'">'+MASK_NAMES[m]+'</td><td>'+(+f.scores[m]||0)+'% &rarr; '+(+l.scores[m]||0)+'%</td><td>'+(d<0?'cette protection se détend ('+d+' pts)':'+'+d+' pts')+'</td></tr>';}).filter(Boolean).join('');var ds=(+l.spa||0)-(+f.spa||0);transfo='<h2>Votre évolution</h2><p>Entre le '+fmtD(f.date)+' et le '+fmtD(l.date)+'&nbsp;:</p><table>'+rows+'<tr><td style="color:#2D7A4F"><strong>Présence à vous-même</strong></td><td>'+(+f.spa||0)+'% &rarr; '+(+l.spa||0)+'%</td><td><strong>'+(ds>=0?'votre présence grandit (+'+ds+' pts)':ds+' pts')+'</strong></td></tr></table>';}
+  var jal=milestones().filter(function(m){return m.ok;}).map(function(m){return '<li>'+m.n+'</li>';}).join('')||'<li>Votre accompagnement commence.</li>';
+  var objs=(p.objectifs||[]).filter(function(o){return o.desc;}).map(function(o){return '<li>'+esc(o.desc)+' — '+(o.progress||0)+'%</li>';}).join('');
+  var doc='<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Synthèse — '+esc(p.prenom||'')+'</title>'
+   +'<style>@page{margin:18mm}body{font-family:Georgia,serif;color:#1A1814;line-height:1.6;max-width:720px;margin:0 auto;padding:20px}'
+   +'h1{font-size:30px;color:#9A7B35;font-weight:normal;margin-bottom:2px}.sub{color:#8C827D;font-size:13px;margin-bottom:24px}'
+   +'h2{font-size:19px;color:#9A7B35;font-weight:normal;border-bottom:1px solid #E4DDCE;padding-bottom:5px;margin:22px 0 10px}'
+   +'table{width:100%;border-collapse:collapse;font-size:14px}td{padding:6px 4px;border-bottom:1px solid #EEE}'
+   +'ul{margin:6px 0 0 18px}li{margin-bottom:4px}.bar{height:10px;background:#EEE;border-radius:5px;overflow:hidden;margin-top:6px}.fill{height:100%;background:#C9A84C}'
+   +'.note{background:#F6F4F0;border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px}.foot{margin-top:28px;font-size:11px;color:#aaa;text-align:center}'
+   +'.noprint{margin-top:24px;text-align:center}button{font-family:inherit;padding:10px 22px;border:none;border-radius:30px;background:#C9A84C;color:#fff;cursor:pointer;font-size:14px}@media print{.noprint{display:none}}</style></head><body>'
+   +'<h1>V.A.L.E.U.R&copy;</h1><div class="sub">Synthèse de votre accompagnement &middot; '+esc(p.prenom||'')+' '+esc(p.nom||'')+' &middot; '+fmtD(today())+'</div>'
+   +'<h2>Où vous en êtes</h2><p>Votre protection principale&nbsp;: <strong>'+(dom?MASK_NAMES[dom]:'—')+'</strong>. Étape de travail en cours&nbsp;: <strong>'+stepName+'</strong>.</p>'
+   +'<p>Avancement du parcours&nbsp;: <strong>'+pct+'%</strong></p><div class="bar"><div class="fill" style="width:'+pct+'%"></div></div>'
+   +transfo
+   +'<h2>Étapes franchies</h2><ul>'+jal+'</ul>'
+   +(objs?'<h2>Vos objectifs</h2><ul>'+objs+'</ul>':'')
+   +'<div class="note">Ce document n’est pas un diagnostic. Il retrace le chemin parcouru ensemble et la libération progressive de ce qui vous empêchait d’être pleinement vous-même.</div>'
+   +'<div class="foot">© Céline Bourbon · Méthode V.A.L.E.U.R©</div>'
+   +'<div class="noprint"><button onclick="window.print()">Imprimer / Enregistrer en PDF</button></div></body></html>';
+  var w=window.open('','_blank');w.document.write(doc);w.document.close();
+}
+/* ---------- portrait ---------- */
+function lancerQuestionnaire(){ window.open(QUESTIONNAIRE_URL+'?pid='+encodeURIComponent(patient.id)+'&mode=cabinet','_blank'); }
+function questionnaireLink(){ return QUESTIONNAIRE_URL+'?pid='+encodeURIComponent(patient.id)+'&mode=patient'; }
+/* copyLink/sendQuestionnaire supprimés : le lien du questionnaire ne circule jamais en clair — boutons et QR uniquement. */
+/* Importe une OU plusieurs passations depuis Neon.
+   Accepte : {found, scores, …} (une seule) · {found, results:[…]} (toutes) · […] (tableau brut) */
+function importScores(d){
+  if(!d) return 0;
+  var list = Array.isArray(d) ? d : (Array.isArray(d.results) ? d.results : (d.found && d.scores ? [d] : []));
+  var n = 0;
+  list.forEach(function(rec){
+    if(!rec || !rec.scores) return;
+    var sc = rec.scores;
+    if (typeof sc === 'string') { try { sc = JSON.parse(sc); } catch(e) { return; } }
+    if (!sc || !Object.keys(sc).length) return;
+    var dom = rec.dominant || argmax(sc);
+    var dateIso = rec.created_at ? new Date(rec.created_at).toISOString() : new Date().toISOString();
+    var key = dateIso.slice(0,16); // précision minute : plusieurs passations le même jour restent distinctes
+    var entry = { date: dateIso, scores: sc, spa: parseInt(rec.spa)||0, masque_dominant: dom, items: rec.items || '' };
+    var i = (patient.history||[]).findIndex(function(h){ return h.scores && (h.date||'').slice(0,16) === key; });
+    if (i >= 0) patient.history[i] = entry; else { patient.history.push(entry); n++; }
+  });
+  if (list.length) {
+    patient.history.sort(function(a,b){ return new Date(a.date)-new Date(b.date); });
+    if (n > 0 && patient.attente) delete patient.attente;
+    syncLatest(); save();
+  }
+  return n;
+}
+function fetchScores(all){ return fetch(VERCEL_API+'/get-scores?patient_id='+encodeURIComponent(patient.id)+(all?'&all=1':'')).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }); }
+function pullResult(){ toast('Recherche des résultats…');
+  fetchScores(true).then(function(d){
+    var n = importScores(d);
+    if(n > 0){render();go('evaluations');toast(n + ' passation' + (n>1?'s':'') + ' importée' + (n>1?'s':''));}
+    else toast('Historique à jour — aucune nouvelle passation');
+  }).catch(function(){toast('Connexion au cloud impossible');}); }
+function autoPullResult(){ fetchScores(true).then(function(d){ var n = importScores(d); if(n > 0){render();toast(n + ' nouvelle' + (n>1?'s':'') + ' passation' + (n>1?'s':'') + ' reçue' + (n>1?'s':''));} }).catch(function(){}); }
+function openPortrait(){var sc={};try{sc=JSON.parse(patient.scores||'{}');}catch(e){}openPortraitWith(sc,patient.spa,patient.items||'');}
+function portraitUrl(sc,spa,items){var pr=new URLSearchParams();MASKS.forEach(function(m){pr.set(m,sc[m]||0);});pr.set('spa',spa||0);pr.set('prenom',patient.prenom||'');if(patient.email)pr.set('email',patient.email);if(items)pr.set('items',items);pr.set('pid',patient.id);return 'https://questionnaire.psyh.fr/resultats.html?'+pr.toString();}
+function openPortraitWith(sc,spa,items,printMode){var u=portraitUrl(sc,spa,items);if(printMode)u+='&print=1';window.open(u,'_blank');}
+function pdfPass(gi){var hh=patient.history[gi];if(!hh)return;openPortraitWith(hh.scores,hh.spa,hh.items,true);}
+function archivePass(gi){var hh=patient.history[gi];if(!hh)return;var url=portraitUrl(hh.scores,hh.spa,hh.items);if(patient.documents.some(function(d){return d.url===url;})){toast('Déjà archivé');return;}patient.documents.push({type:'lien',name:'Portrait du '+fmtD(hh.date)+' — '+(MASK_NAMES[hh.masque_dominant]||'—')+' · SPA '+(hh.spa||0)+'%',url:url});save();render();toast('Portrait archivé dans Documents');}
+/* ---------- transmission du portrait au patient (confirmation obligatoire) ---------- */
+function envoyerPortrait(gi){
+  var ps=fullPass();
+  if(!ps.length){toast('Aucune passation à transmettre');return;}
+  var hh=(gi!=null)?patient.history[gi]:ps[ps.length-1];
+  if(!hh||!hh.scores){toast('Évaluation introuvable');return;}
+  var email=patient.email;
+  if(!email){email=prompt('Email du patient :','');if(!email)return;patient.email=email;save();}
+  if(!confirm('Envoyer le portrait du '+fmtD(hh.date)+' à '+email+' ?\n\nRien ne part sans cette confirmation.'))return;
+  if(!window.emailjs){toast('Service d\u2019envoi indisponible — réessayez dans un instant');return;}
+  toast('Envoi en cours…');
+  emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_PORTRAIT,{
+    to_email: email,
+    prenom: patient.prenom||'',
+    lien_portrait: portraitUrl(hh.scores,hh.spa,hh.items)
+  }).then(function(){
+    patient.journal.push({date:today(),note:'📤 Portrait du '+fmtD(hh.date)+' transmis par email à '+email+'.'});
+    patient.journal.sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+    save();render();toast('Portrait envoyé à '+email+' ✓');
+  },function(err){console.warn('EmailJS portrait:',err);toast('Échec de l\u2019envoi — réessayez');});
+}
+/* ---------- passation : modal, QR, EmailJS, statut d'attente ---------- */
+function openPassModal(){document.getElementById('pass-sub').textContent='Pour '+(((patient.prenom||'')+' '+(patient.nom||'')).trim()||'ce patient')+' — le lien contient son identifiant et le mode différé.';document.getElementById('qr-zone').innerHTML='';document.getElementById('pass-status').textContent='';document.getElementById('pass-modal').classList.add('open');}
+function closePassModal(){document.getElementById('pass-modal').classList.remove('open');}
+function setAttente(mode){patient.attente={date:new Date().toISOString(),mode:mode};save();render();}
+function passCabinet(){closePassModal();lancerQuestionnaire();}
+function passQR(){var z=document.getElementById('qr-zone');z.innerHTML='';if(typeof QRCode==='undefined'){document.getElementById('pass-status').textContent='QR indisponible hors-ligne — utilisez « Copier le lien ».';return;}var box=document.createElement('div');z.appendChild(box);new QRCode(box,{text:questionnaireLink(),width:220,height:220,colorDark:'#1A1814',colorLight:'#FFFFFF'});var d=document.createElement('div');d.style.cssText='font-size:12px;color:var(--ink3)';d.textContent='Le patient scanne : questionnaire ouvert, portrait différé.';z.appendChild(d);setAttente('qr');}
+function passEmail(){
+  var email=patient.email;
+  if(!email){email=prompt('Email du patient :','');if(!email)return;patient.email=email;}
+  var st=document.getElementById('pass-status');st.textContent='Envoi en cours…';
+  if(!window.emailjs){st.textContent='EmailJS indisponible — vérifiez votre connexion, puis réessayez (le lien ne circule jamais en clair).';return;}
+  emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_INVITATION,{
+    to_email: email,
+    prenom:   patient.prenom||'',
+    lien_test: questionnaireLink()
+  }).then(function(){st.textContent='Invitation envoyée à '+email+' ✓';setAttente('email');toast('Invitation envoyée');},
+  function(err){console.warn('EmailJS invitation:',err);st.textContent='Échec de l&#39;envoi — réessayez dans un instant (aucun lien n&#39;est exposé en clair).';});
+}
+/* ---------- pack de prescription en un clic ---------- */
+function proposePack(){
+  if(!CATALOGUE||!CATALOGUE.fiches){toast('Bibliothèque indisponible');return;}
+  var pr=profileOf(),F=CATALOGUE.fiches,pack=[];
+  function push(f,why){if(f&&!pack.some(function(x){return x.f.code===f.code;})&&!patient.assignations.some(function(a){return a.code===f.code&&a.statut!=='fait';}))pack.push({f:f,why:why});}
+  var first = fullPass().length<=1;
+  if(first)push(F.find(function(f){return f.code==='RIT-XX-001';}),'Rituel d\u2019entrée — première séance');
+  push(F.find(function(f){return f.code==='PSY-OBS-01';}),'Fiche inaugurale après le portrait');
+  push(F.find(function(f){return f.code==='PSY-EMPRISE-01';}),'Comprendre les scores du portrait');
+  if(pr.blocker||pr.amplifier)push(F.find(function(f){return f.code==='PSY-INFLU-01';}),'Vos deux influences — Orange/Jaune');
+  if(pr.pan)push(F.find(function(f){return f.code==='REV-PAN-00';}),'Profil pan-masques');
+  else if(pr.adaptatif)push(F.find(function(f){return f.code==='REV-ADAPT-00';}),'Profil adaptatif');
+  else push(F.find(function(f){return f.cat==='REV'&&/-00$/.test(f.code)&&fMasks(f).indexOf(pr.dom)>=0;}),'Révélation du masque dominant');
+  push(F.find(function(f){return /^ACT-DEFI/.test(f.code)&&fMasks(f).indexOf(pr.dom)>=0;}),'Workbook 21 Défis du dominant');
+  if(pr.blocker)push(F.find(function(f){return /^ACT-DEFI/.test(f.code)&&fMasks(f).indexOf('orange')>=0;}),'Bloqueur Orange actif');
+  if(pr.amplifier)push(F.find(function(f){return /^ACT-DEFI/.test(f.code)&&fMasks(f).indexOf('jaune')>=0;}),'Amplificateur Jaune actif');
+  if(pr.coDom)push(F.find(function(f){return f.cat==='CMB'&&fDyadeMatch(f,pr);}),'Duo dominant détecté');
+  push(F.find(function(f){return /^ACT-LIVRET/.test(f.code)&&Array.isArray(f.etapes)&&f.etapes.indexOf(patient.etape)>=0;}),'Livret de l\u2019étape en cours');
+  pack=pack.slice(0,8);
+  if(!pack.length){toast('Rien à proposer — tout est déjà assigné');return;}
+  var msg='Pack conseillé pour '+(patient.prenom||'ce patient')+' :\n\n'+pack.map(function(x,i){return (i+1)+'. '+x.f.titre+' ('+x.f.code+') — '+x.why+(x.f.dispo?'':' [en préparation]');}).join('\n')+'\n\nAssigner ces '+pack.length+' ressource'+(pack.length>1?'s':'')+' ?';
+  if(!confirm(msg))return;
+  pack.forEach(function(x){patient.assignations.push({id:'a_'+Date.now()+Math.random().toString(36).slice(2,6),code:x.f.code,titre:x.f.titre,fichier:x.f.fichier,date:today(),statut:'a_faire',retour:'',etape:patient.etape});});
+  save();render();go('parcours');toast(pack.length+' ressource'+(pack.length>1?'s':'')+' assignée'+(pack.length>1?'s':''));
+}
+init();
+</script>
+</body>
+</html>
